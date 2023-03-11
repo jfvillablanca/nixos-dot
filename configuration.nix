@@ -111,12 +111,22 @@ in
       nodejs
       go
       python39
+      nodePackages_latest.typescript
 
     # Fonts
       nerdfonts
 
     # Shell
       starship
+
+    # Utils
+      ripgrep
+
+    # Formatter
+      stylua
+      shfmt
+      nodePackages_latest.prettier
+
     ];
   };
   # NixOs Configuration
