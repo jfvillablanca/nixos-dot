@@ -127,6 +127,8 @@ in
       shfmt
       nodePackages_latest.prettier
 
+    # Language servers
+      nil
     ];
   };
   # NixOs Configuration
