@@ -115,9 +115,6 @@ in
       python311Packages.pip
       nodePackages_latest.typescript
 
-    # Fonts
-      nerdfonts
-
     # Shell
       starship
 
