@@ -74,6 +74,8 @@ in
     (nerdfonts.override {
       fonts = [
         "FiraCode"
+        "IBMPlexMono"
+        "JetBrainsMono"
       ];
     })
   ];
