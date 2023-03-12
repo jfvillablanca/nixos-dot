@@ -8,9 +8,6 @@
 
   # Packages to be installed
   home.packages = with pkgs; [
-    # Essentials
-    alacritty
-
     # Languages
     rustup
     nodejs
@@ -48,6 +45,13 @@
 
     starship = {
         enable = true;
+    };
+
+    alacritty = {
+        enable = true;
+        settings = {
+            shell: $NIXOS_CONFIG_DIR/bin/zsh;
+        };
     };
 
     neovim = {
