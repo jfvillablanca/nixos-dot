@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
-
+let
+    user = "jmfv";
+    etcProfile = "/etc/profiles/per-user/${user}/";
+in
 {
   home.username = "jmfv";
   home.homeDirectory = "/home/jmfv";
@@ -50,7 +53,7 @@
     alacritty = {
         enable = true;
         settings = {
-            shell = "$NIXOS_CONFIG_DIR/bin/zsh";
+            shell = "${etcProfile}/bin/zsh";
         };
     };
 
