@@ -67,6 +67,7 @@ in
         extraPackages = with pkgs; [
             shfmt
         ];
+        extraConfig = ":luafile ~/.config/nvim/init.lua";
     };
   };
 }
