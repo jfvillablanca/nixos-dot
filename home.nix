@@ -26,6 +26,7 @@
     gitui
     zellij
     starship
+    zsh
 
     # Utils
     ripgrep
