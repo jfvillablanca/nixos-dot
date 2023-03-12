@@ -25,7 +25,6 @@
     gitui
     zellij
     starship
-    zsh
 
     # Utils
     ripgrep
@@ -41,6 +40,13 @@
   ];
   
   programs = {
+    zsh = {
+        enable = true;
+        enableAutosuggestions = true;
+        enableCompletion = true;
+        enableSyntaxHighlighting = true;
+    };
+
     neovim = {
         enable = true;
         defaultEditor = true;
