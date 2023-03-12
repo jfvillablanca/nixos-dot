@@ -50,7 +50,7 @@
     alacritty = {
         enable = true;
         settings = {
-            shell: $NIXOS_CONFIG_DIR/bin/zsh;
+            shell = "$NIXOS_CONFIG_DIR/bin/zsh";
         };
     };
 
