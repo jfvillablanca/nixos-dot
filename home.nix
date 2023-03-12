@@ -29,6 +29,7 @@
 
     # Utils
     ripgrep
+    fd
 
     # Development
     nil
