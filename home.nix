@@ -34,7 +34,6 @@
     # Development
     nil
     stylua
-    shfmt
     nodePackages_latest.prettier
 
     # Browser
@@ -46,6 +45,12 @@
         enable = true;
         defaultEditor = true;
         vimAlias = true;
+        withNodeJs = true;
+        withPython3 = true;
+
+        extraPackages = with pkgs; [
+            shfmt
+        ];
     };
   };
 }
