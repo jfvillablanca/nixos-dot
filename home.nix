@@ -24,7 +24,6 @@
     fzf
     gitui
     zellij
-    starship
 
     # Utils
     ripgrep
@@ -45,6 +44,10 @@
         enableAutosuggestions = true;
         enableCompletion = true;
         enableSyntaxHighlighting = true;
+    };
+
+    starship = {
+        enable = true;
     };
 
     neovim = {
