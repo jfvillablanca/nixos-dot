@@ -10,7 +10,6 @@
   home.packages = with pkgs; [
     # Essentials
     alacritty
-    neovim
 
     # Languages
     rustup
