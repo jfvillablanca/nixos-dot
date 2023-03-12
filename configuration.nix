@@ -102,32 +102,9 @@ in
     systemPackages = with pkgs; [
       git
       wget
-      neovim
-      alacritty
+      gcc
       gnumake
 
-    # Languages
-      gcc
-      rustup
-      nodejs
-      go
-      python311
-      python311Packages.pip
-      nodePackages_latest.typescript
-
-    # Shell
-      starship
-
-    # Utils
-      ripgrep
-
-    # Formatter
-      stylua
-      shfmt
-      nodePackages_latest.prettier
-
-    # Language servers
-      nil
     ];
   };
   # NixOs Configuration
