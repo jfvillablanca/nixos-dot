@@ -39,6 +39,10 @@ in
   ];
   
   programs = {
+    clipmenu = {
+        enable = true;
+    };
+
     zsh = {
         enable = true;
         enableAutosuggestions = true;
