@@ -67,7 +67,10 @@ in
         extraPackages = with pkgs; [
             shfmt
         ];
-        extraConfig = ":luafile ~/.config/nvim/init.lua";
+
+        plugins = with pkgs.vimPlugins; [
+            nvim-treesitter
+        ];
     };
   };
 }
