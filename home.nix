@@ -34,6 +34,7 @@ in
     zellij
 
     # Utils
+    xclip
     ripgrep
     fd
 
