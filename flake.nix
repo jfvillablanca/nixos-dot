@@ -7,10 +7,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  # outputs = inputs@{ nixpkgs, home-manager, neovim-nightly-overlay, ... }: 
   outputs = inputs@{ nixpkgs, home-manager, ... }: 
   let
     system = "x86_64-linux";
@@ -19,9 +17,6 @@
         config.allowUnfree = true;
     };
     lib = nixpkgs.lib;
-    # overlays = [
-    #     neovim-nightly-overlay.overlay
-    # ];
   in
     {
       nixosConfigurations = {

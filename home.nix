@@ -2,21 +2,8 @@
 let
     user = "jmfv";
     etcProfile = "/etc/profiles/per-user/${user}/";
-    
-    nvim-nightly = 
-        (import (builtins.fetchTarball 
-        {
-            url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-            sha256 = "0a79rnzh6snbdnanwjvh0yhlv2v66mg40k1jhh96sa9x7s8xj0nf";
-        }
-        ));     
 in
 {
-  nixpkgs = {
-      overlays = [
-        nvim-nightly
-    ];
-  };
 
   home.username = "jmfv";
   home.homeDirectory = "/home/jmfv";
@@ -80,7 +67,6 @@ in
 
     neovim = {
         enable = true;
-        package = nvim-nightly.neovim-nightly;
         defaultEditor = true;
         vimAlias = true;
         withNodeJs = true;
