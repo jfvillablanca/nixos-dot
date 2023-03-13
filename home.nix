@@ -75,12 +75,9 @@ in
         ];
 
         plugins = with pkgs.vimPlugins; [
-            nvim-treesitter.withAllGrammars
-
             nvim-lspconfig
             mason-lspconfig-nvim
             mason-nvim
-
         ];
     };
   };
