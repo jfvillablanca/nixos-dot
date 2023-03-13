@@ -4,13 +4,13 @@ let
     etcProfile = "/etc/profiles/per-user/${user}/";
 in
 {
-  nixpkgs = {
-      overlays = [
-        (import (builtins.fetchTarball {
-            url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-        }))
-      ];
-  };
+  # nixpkgs = {
+  #     overlays = [
+  #       (self: super:
+  #           neovim = ne
+  #       );
+  #     ];
+  # };
 
   home.username = "jmfv";
   home.homeDirectory = "/home/jmfv";
@@ -73,7 +73,7 @@ in
 
     neovim = {
         enable = true;
-        package = pkgs.neovim-nightly;
+        # package = pkgs.neovim-nightly;
         defaultEditor = true;
         vimAlias = true;
         withNodeJs = true;
