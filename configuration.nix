@@ -45,6 +45,8 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
+  # Spice VDA
+  services.spice-vdagentd.enable = true;
 
   # Enable window manager
   services = {
