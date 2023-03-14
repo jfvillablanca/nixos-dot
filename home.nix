@@ -79,4 +79,11 @@ in
     };
   };
 
+    xsession = {
+        windowManager = {
+            xmonad = {
+                enable = true;
+            };
+        };
+    };
 }
