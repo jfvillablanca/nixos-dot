@@ -93,7 +93,6 @@ in
     isNormalUser = true;
     description = "jmfv";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
   };
 
   # Allow unfree packages
