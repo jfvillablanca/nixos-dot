@@ -40,12 +40,6 @@ in
     librewolf
   ];
   
-  services = {
-    clipmenu = {
-        enable = true;
-    };
-  };
-
   programs = {
     zsh = {
         enable = true;
