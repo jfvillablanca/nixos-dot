@@ -45,6 +45,9 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
+  # Doas
+  security.doas.enable = true;
+
   # Spice VDA
   services.spice-vdagentd.enable = true;
 
