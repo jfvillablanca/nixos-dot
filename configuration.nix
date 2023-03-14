@@ -54,10 +54,16 @@ in
       enable = true;
       displayManager = {
         lightdm.enable = true;
-	defaultSession = "xfce";
+        defaultSession = "xfce";
       };
       desktopManager = {
         xfce.enable = true;
+      };
+      windowManager = {
+        xmonad = {
+            enable = true;
+            enableContribAndExtras = true;
+        };
       };
     };
   };
