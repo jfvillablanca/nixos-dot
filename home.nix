@@ -67,6 +67,7 @@ in
 
     neovim = {
         enable = true;
+        # package = pkgs.neovim-nightly;
         defaultEditor = true;
         vimAlias = true;
         withNodeJs = true;
