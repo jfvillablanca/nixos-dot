@@ -1,10 +1,5 @@
-{ config, pkgs, ... }:
-let
-    user = "jmfv";
-    etcProfile = "/etc/profiles/per-user/${user}/";
-in
+{ pkgs, ... }:
 {
-
   home.username = "jmfv";
   home.homeDirectory = "/home/jmfv";
 
@@ -55,7 +50,6 @@ in
     alacritty = {
         enable = true;
         settings = {
-            # shell = "${etcProfile}/bin/zsh";
             shell = "zsh";
         };
     };
