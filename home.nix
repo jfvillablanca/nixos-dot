@@ -48,6 +48,15 @@
         enableZshIntegration = true;
     };
 
+    exa = {
+        enable = true;
+        git = true;
+        icons = true;
+        extraOptions = [
+            "--group-directories-first"
+        ];
+    };
+
     starship = {
         enable = true;
     };
