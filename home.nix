@@ -62,6 +62,7 @@
         enable = true;
         theme = 
         ''
+        (
             /* Color Palette: rebelot/kanagawa.nvim */
             selected_tab: Reset,
             command_fg: Rgb(220, 215, 186),              // #DCD7BA (fujiWhite) 
@@ -108,6 +109,7 @@
             /* push_gauge_fg: Reset, */
             /* tag_fg: LightMagenta, */
             /* branch_fg: LightYellow, */
+        )
         '';
     };
 
