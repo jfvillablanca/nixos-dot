@@ -60,6 +60,9 @@
 
     bat = {
         enable = true;
+        config = {
+            theme = "dracula";
+        };
         themes = {
           dracula = builtins.readFile (pkgs.fetchFromGitHub {
             owner = "dracula";
