@@ -162,6 +162,7 @@
                 crystalblue = "#7E9CD8";
                 surimiorange = "#FFA066";
                 samuraired = "#E82424";
+                autumnred = "#C34043";
             };
 
             username = {
@@ -217,7 +218,7 @@
 
             nix_shell = {
                 disabled = false;
-                impure_msg = "[impure shell](bold samuraired)";
+                impure_msg = "[impure shell](bold autumnred)";
                 pure_msg = "[pure shell](bold autumngreen)";
                 unknown_msg = "[unknown shell](bold roninyellow)";
                 format = "via [☃️ $state( ($name))](bold crystalblue) ";
