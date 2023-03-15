@@ -138,6 +138,7 @@
             "$hostname"
             "$directory"
             "$nix_shell"
+            "$shlvl"
             "$git_branch"
             "$git_state"
             "$git_status"
@@ -223,6 +224,12 @@
                 unknown_msg = "[unknown shell](bold roninyellow)";
                 format = "[$symbol $state( ($name))](bold crystalblue) ";
                 symbol = " ";
+            };
+
+            shlvl = {
+              disabled = false;
+              symbol = "ﰬ";
+              style = "samuraired bold";
             };
 
             jobs = {
