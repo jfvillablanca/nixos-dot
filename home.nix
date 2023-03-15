@@ -55,7 +55,8 @@ in
     alacritty = {
         enable = true;
         settings = {
-            shell = "${etcProfile}/bin/zsh";
+            # shell = "${etcProfile}/bin/zsh";
+            shell = "zsh";
         };
     };
 
