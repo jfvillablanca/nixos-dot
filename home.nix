@@ -55,6 +55,7 @@
         extraOptions = [
             "--group-directories-first"
         ];
+        enableAliases = true;
     };
 
     starship = {
