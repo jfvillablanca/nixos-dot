@@ -43,6 +43,11 @@
         enableSyntaxHighlighting = true;
     };
 
+    zoxide = {
+        enable = true;
+        enableZshIntegration = true;
+    };
+
     starship = {
         enable = true;
     };
