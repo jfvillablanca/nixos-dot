@@ -216,7 +216,7 @@
             };
 
             nix_shell = {
-                disabled = true;
+                disabled = false;
                 impure_msg = "[impure shell](bold samuraired)";
                 pure_msg = "[pure shell](bold autumngreen)";
                 unknown_msg = "[unknown shell](bold roninyellow)";
