@@ -137,6 +137,7 @@
             "$username"
             "$hostname"
             "$directory"
+            "$nix_shell"
             "$git_branch"
             "$git_state"
             "$git_status"
@@ -144,7 +145,6 @@
             "$fill"
             "$nodejs"
             "$rust"
-            "$nix_shell"
             "$jobs"
             "$memory_usage"
             "$line_break"
@@ -221,7 +221,8 @@
                 impure_msg = "[impure shell](bold autumnred)";
                 pure_msg = "[pure shell](bold autumngreen)";
                 unknown_msg = "[unknown shell](bold roninyellow)";
-                format = "via [☃️ $state( ($name))](bold crystalblue) ";
+                format = "[$symbol $state( ($name))](bold crystalblue) ";
+                symbol = " ";
             };
 
             jobs = {
