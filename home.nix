@@ -36,6 +36,36 @@
         };
     };
   programs = {
+    git = {
+        enable = true;
+        extraConfig = {
+            init.defaultBranch = "main";
+            user = {
+                name = "jfvillablanca";
+                email = "31008330+jfvillablanca@users.noreply.github.com";
+            };
+            color.ui = "auto";
+            interactive.diffFilter = "delta --color-only --features=interactive";
+        };
+        delta = {
+            enable = true;
+            options = {
+                features = "decorations";
+                decorations = {
+                  commit-decoration-style = "blue ol";
+                  commit-style = "raw";
+                  file-style = "omit";
+                  hunk-header-decoration-style = "blue box";
+                  hunk-header-file-style = "red";
+                  hunk-header-line-number-style = "#067a00";
+                  hunk-header-style = "file line-number syntax";
+                };
+                interactive = {
+                  keep-plus-minus-markers = false;
+                };
+            };
+        };
+    };
     zsh = {
         enable = true;
         enableAutosuggestions = true;

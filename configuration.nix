@@ -105,7 +105,6 @@ in
   # $ nix search wget
   environment = {
     systemPackages = with pkgs; [
-      git
       wget
       gcc
       gnumake
