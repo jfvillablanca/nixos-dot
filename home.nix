@@ -341,6 +341,18 @@
         enableZshIntegration = true;
         nix-direnv.enable = true;
     };
+
+    # Need to organize with services.autorandr
+    autorandr = {
+        enable = true;
+    };
+  };
+
+  services = {
+      # Need to organize with programs.autorandr
+      autorandr = {
+          enable = true;
+      };
   };
 
     xsession = {
