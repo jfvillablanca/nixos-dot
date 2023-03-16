@@ -20,6 +20,7 @@
             xclip
             ripgrep
             fd
+            scrot                           # Screenshot utility
 
             # Development
             nil
