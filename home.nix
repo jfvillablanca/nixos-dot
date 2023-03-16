@@ -319,7 +319,7 @@
                 enable = true;
                 enableContribAndExtras = true;
                 config = pkgs.writeText "xmonad.hs" ''
-                import Xmonad
+                import XMonad
                 main = xmonad defaultConfig
                     { terminal    = "alacritty"
                     , modMask     = mod4Mask
