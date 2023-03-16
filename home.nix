@@ -28,6 +28,9 @@
 
             # Browser
             librewolf
+
+            # Misc
+            neofetch
           ];
         sessionVariables = {
             TERMINAL = "alacritty"; 
