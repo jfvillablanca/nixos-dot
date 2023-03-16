@@ -53,12 +53,12 @@
             options = {
                 features = "decorations";
                 decorations = {
-                  commit-decoration-style = "blue ol";
+                  commit-decoration-style = "#7FB4CA ol";
                   commit-style = "raw";
                   file-style = "omit";
-                  hunk-header-decoration-style = "blue box";
-                  hunk-header-file-style = "red";
-                  hunk-header-line-number-style = "#067a00";
+                  hunk-header-decoration-style = "#7FB4CA box";
+                  hunk-header-file-style = "#E46876";
+                  hunk-header-line-number-style = "#98BB6C";
                   hunk-header-style = "file line-number syntax";
                 };
             };
