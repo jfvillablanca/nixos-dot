@@ -37,6 +37,7 @@
             MANPAGER =  "nvim +Man!";
         };
     };
+
   programs = {
     git = {
         enable = true;
@@ -317,6 +318,14 @@
             xmonad = {
                 enable = true;
                 enableContribAndExtras = true;
+                config = pkgs.writeText "xmonad.hs" ''
+                import Xmonad
+                main = xmonad defaultConfig
+                    { terminal    = "alacritty"
+                    , modMask     = mod4Mask
+                    , borderWidth = 3
+                    }
+                '';
             };
         };
     };
