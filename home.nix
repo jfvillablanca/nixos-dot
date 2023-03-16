@@ -356,6 +356,7 @@
   };
 
     xsession = {
+        enable = true;
         windowManager = {
             xmonad = {
                 enable = true;
