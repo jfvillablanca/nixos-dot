@@ -33,6 +33,8 @@
             TERMINAL = "alacritty"; 
             EDITOR = "nvim";
             VISUAL = "nvim";
+            GIT_EDITOR = "nvim";
+            MANPAGER =  "nvim +Man!";
         };
     };
   programs = {
