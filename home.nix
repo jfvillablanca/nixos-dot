@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
     home = {
         username = "jmfv";
@@ -45,7 +45,7 @@
                 email = "31008330+jfvillablanca@users.noreply.github.com";
             };
             color.ui = "auto";
-            interactive.diffFilter = "delta --color-only --features=interactive";
+            interactive.diffFilter = lib.mkForce "delta --color-only --features=interactive";
         };
         delta = {
             enable = true;
