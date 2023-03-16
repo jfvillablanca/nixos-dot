@@ -222,7 +222,7 @@
                 impure_msg = "[impure shell](bold autumnred)";
                 pure_msg = "[pure shell](bold autumngreen)";
                 unknown_msg = "[unknown shell](bold roninyellow)";
-                format = "[$symbol [$state]( ($name))](crystalblue) ";
+                format = ''[$symbol \[$state\]( ($name))](crystalblue) '';
                 symbol = "";
             };
 
