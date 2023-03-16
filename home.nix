@@ -1,6 +1,11 @@
 { pkgs, ... }:
 let
-    xmonadConfig = builtins.readFile ~/.config/nixos/modules/wm/xmonad/xmonad.hs;
+    user = "jmfv";
+    homeDirectory = "/home/${user}";
+    configHome = "${homeDirectory}/nixos/.config/";
+    flakeModules = "${configHome}/nixos/modules";
+
+    xmonadConfig = "${flakeModules}/wm/xmonad/xmonad.hs";
 in
 {
     home = {
