@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
     home = {
         username = "jmfv";
@@ -45,7 +45,6 @@
                 email = "31008330+jfvillablanca@users.noreply.github.com";
             };
             color.ui = "auto";
-            interactive.diffFilter = lib.mkForce "delta --color-only --features=interactive";
         };
         delta = {
             enable = true;
@@ -59,9 +58,6 @@
                   hunk-header-file-style = "red";
                   hunk-header-line-number-style = "#067a00";
                   hunk-header-style = "file line-number syntax";
-                };
-                interactive = {
-                  keep-plus-minus-markers = false;
                 };
             };
         };

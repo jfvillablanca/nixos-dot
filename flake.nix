@@ -35,7 +35,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users.jmfv = import ./home.nix {inherit pkgs lib;};
+                home-manager.users.jmfv = import ./home.nix {inherit pkgs;};
               } 
           ];
         };
