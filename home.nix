@@ -137,12 +137,12 @@
             "$username"
             "$hostname"
             "$directory"
-            "$nix_shell"
             "$shlvl"
             "$git_branch"
             "$git_state"
             "$git_status"
             "$git_metrics"
+            "$nix_shell"
             "$fill"
             "$nodejs"
             "$rust"
@@ -222,8 +222,8 @@
                 impure_msg = "[impure shell](bold autumnred)";
                 pure_msg = "[pure shell](bold autumngreen)";
                 unknown_msg = "[unknown shell](bold roninyellow)";
-                format = "[$symbol $state( ($name))](bold crystalblue) ";
-                symbol = " ";
+                format = "[$symbol [$state]( ($name))](crystalblue) ";
+                symbol = "";
             };
 
             shlvl = {
