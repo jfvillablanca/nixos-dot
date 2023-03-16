@@ -397,6 +397,14 @@
         nix-direnv.enable = true;
     };
 
+    xmobar = {
+        enable = true;
+    };
+
+    rofi = {
+        enable = true;
+    };
+    
     # Need to organize with services.autorandr
     autorandr = {
         enable = true;
