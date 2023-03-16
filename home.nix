@@ -411,6 +411,7 @@ in
 
     rofi = {
         enable = true;
+        terminal = "${pkgs.alacritty}/bin/alacritty";
     };
     
     # Need to organize with services.autorandr
