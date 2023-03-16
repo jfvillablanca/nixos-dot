@@ -1,40 +1,36 @@
 { pkgs, ... }:
 {
-  home.username = "jmfv";
-  home.homeDirectory = "/home/jmfv";
+    home = {
+        username = "jmfv";
+        homeDirectory = "/home/jmfv";
+        stateVersion = "22.11";
+        packages = with pkgs; [
+            # Languages
+            rustup
+            nodejs
+            go
+            python311
+            python311Packages.pip
+            nodePackages_latest.typescript
 
-  home.stateVersion = "22.11";
+            # Terminal
+            fzf
 
-  # Packages to be installed
-  home.packages = with pkgs; [
-    # Languages
-    rustup
-    nodejs
-    go
-    python311
-    python311Packages.pip
-    nodePackages_latest.typescript
+            # Utils
+            xclip
+            ripgrep
+            fd
 
-    # Terminal
-    exa
-    fzf
-    gitui
-    zellij
+            # Development
+            nil
+            stylua
+            nodePackages_latest.prettier
 
-    # Utils
-    xclip
-    ripgrep
-    fd
+            # Browser
+            librewolf
+          ];
 
-    # Development
-    nil
-    stylua
-    nodePackages_latest.prettier
-
-    # Browser
-    librewolf
-  ];
-  
+    };
   programs = {
     zsh = {
         enable = true;
