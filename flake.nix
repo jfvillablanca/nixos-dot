@@ -19,6 +19,9 @@
     pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+            neovim-nightly-overlay.overlay
+        ];
     };
     lib = nixpkgs.lib;
   in
@@ -33,9 +36,6 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.jmfv = import ./home.nix;
-                pkgs.overlays = [
-                    neovim-nightly-overlay.overlay
-                ];
               } 
           ];
         };
