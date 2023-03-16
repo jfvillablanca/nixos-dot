@@ -29,7 +29,11 @@
             # Browser
             librewolf
           ];
-
+        sessionVariables = {
+            TERMINAL = "alacritty"; 
+            EDITOR = "nvim";
+            VISUAL = "nvim";
+        };
     };
   programs = {
     zsh = {

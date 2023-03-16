@@ -104,11 +104,6 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
-    variables = {
-      TERMINAL = "alacritty";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-    };
     systemPackages = with pkgs; [
       git
       wget
