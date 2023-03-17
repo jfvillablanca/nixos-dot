@@ -1,4 +1,9 @@
 { pkgs, lib, ... }:
+let
+    modules = import ./modules { inherit lib; };
+in
+lib.recursiveUpdate 
+modules
 {
     home = {
         username = "jmfv";
@@ -94,18 +99,6 @@
             };
             theme = "kanagawa";
         };
-    };
-
-    zsh = {
-        enable = true;
-        enableAutosuggestions = true;
-        enableCompletion = true;
-        enableSyntaxHighlighting = true;
-    };
-
-    zoxide = {
-        enable = true;
-        enableZshIntegration = true;
     };
 
     exa = {
