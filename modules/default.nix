@@ -16,8 +16,10 @@ let
     autorandr = import ./wm/autorandr {};
     polybar = import ./wm/polybar {};
     rofi = import ./wm/rofi { inherit pkgs; };
+    xmonad = import ./wm/xmonad { inherit pkgs; };
 
     modules = [
+        xmonad
         autorandr
         polybar
         rofi
