@@ -53,17 +53,9 @@ modules
         terminal = "${pkgs.alacritty}/bin/alacritty";
     };
     
-    # Need to organize with services.autorandr
-    autorandr = {
-        enable = true;
-    };
   };
 
   services = {
-    # Need to organize with programs.autorandr
-    autorandr = {
-        enable = true;
-    };
 
     polybar = {
         enable = true;

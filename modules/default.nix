@@ -12,7 +12,12 @@ let
     git = import ./git {};
     bat = import ./bat { inherit pkgs; };
 
+    # Window Manager
+    autorandr = import ./wm/autorandr {};
+
     modules = [
+        autorandr
+
         alacritty
         starship
         direnv
