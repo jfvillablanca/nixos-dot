@@ -10,6 +10,7 @@ let
     zsh = import ./zsh {};
     gitui = import ./gitui {};
     git = import ./git {};
+    bat = import ./bat { inherit pkgs; };
 
     modules = [
         alacritty
@@ -22,6 +23,7 @@ let
         zsh
         gitui
         git
+        bat
     ];
 in
 lib.lists.foldl lib.recursiveUpdate {} modules
