@@ -366,11 +366,6 @@ modules
         };
     };
 
-    direnv = {
-        enable = true;
-        enableZshIntegration = true;
-        nix-direnv.enable = true;
-    };
 
     rofi = {
         enable = true;
