@@ -8,6 +8,8 @@ let
     zellij = import ./zellij {};
     exa = import ./exa {};
     zsh = import ./zsh {};
+    gitui = import ./gitui {};
+    git = import ./git {};
 
     modules = [
         alacritty
@@ -18,6 +20,8 @@ let
         zellij
         exa
         zsh
+        gitui
+        git
     ];
 in
 lib.lists.foldl lib.recursiveUpdate {} modules
