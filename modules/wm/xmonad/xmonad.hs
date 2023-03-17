@@ -15,11 +15,11 @@ main :: IO ()
 main = xmonad
      . ewmhFullscreen
      . ewmh
-     . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
+     . withEasySB (statusBarProp "xmobar" (pure def)) defToggleStrutsKey
      $ myConfig
 
 xmobarProp config =
-  withEasySB (statusBarProp "xmobar" (pure xmobarPP)) toggleStrutsKey config
+  withEasySB (statusBarProp "xmobar" (pure xmobarPP)) defToggleStrutsKey config
 
 myConfig = def
     { terminal    = "alacritty"
