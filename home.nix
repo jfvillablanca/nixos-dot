@@ -29,6 +29,8 @@ modules
             ripgrep                         # Grep alternative
             fd                              # Find
             scrot                           # Screenshot utility
+            killall                         # Kill processes
+            ncdu                            # NCurses Disk Usage
 
             # Development
             nil
