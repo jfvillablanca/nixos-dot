@@ -57,10 +57,7 @@ in
       enable = true;
       displayManager = {
         lightdm.enable = true;
-        defaultSession = "xfce";
-      };
-      desktopManager = {
-        xfce.enable = true;
+        defaultSession = "none+xmonad";
       };
       windowManager = {
         xmonad = {
