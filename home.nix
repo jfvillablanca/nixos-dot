@@ -434,7 +434,11 @@ in
             xmonad = {
                 enable = true;
                 enableContribAndExtras = true;
-                config = xmonadConfig;
+                # config = xmonadConfig;
+                config = pkgs.writeText "xmonad.hs" ''
+                ${builtins.readFile ./modules/wm/xmonad/xmonad.hs}
+                '';
+
                 # config = pkgs.writeText "xmonad.hs" ''
                 # import XMonad
 
