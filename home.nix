@@ -31,6 +31,7 @@ modules
             nil
             stylua
             nodePackages_latest.prettier
+            haskellPackages.haskell-language-server
 
             # Browser
             librewolf
