@@ -19,15 +19,15 @@ modules
             nodePackages_latest.typescript
 
             # Terminal
-            fzf
+            fzf                             # Fuzzy search
             xplr                            # TUI file explorer
             imv                             # Image viewer
             tldr                            # Lazy man's help/man page
 
             # Utils
-            xclip
-            ripgrep
-            fd
+            xclip                           # Clipboard
+            ripgrep                         # Grep alternative
+            fd                              # Find
             scrot                           # Screenshot utility
 
             # Development
