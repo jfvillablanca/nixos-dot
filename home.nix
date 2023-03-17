@@ -405,10 +405,6 @@ in
         nix-direnv.enable = true;
     };
 
-    polybar = {
-        enable = true;
-    };
-
     rofi = {
         enable = true;
         terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -421,10 +417,14 @@ in
   };
 
   services = {
-      # Need to organize with programs.autorandr
-      autorandr = {
-          enable = true;
-      };
+    # Need to organize with programs.autorandr
+    autorandr = {
+        enable = true;
+    };
+
+    polybar = {
+        enable = true;
+    };
   };
 
     xsession = {
