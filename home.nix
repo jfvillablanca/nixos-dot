@@ -405,7 +405,7 @@ in
         nix-direnv.enable = true;
     };
 
-    xmobar = {
+    polybar = {
         enable = true;
     };
 
