@@ -47,21 +47,9 @@ modules
         };
     };
 
-  programs = {
-    rofi = {
-        enable = true;
-        terminal = "${pkgs.alacritty}/bin/alacritty";
-    };
-    
-  };
+    programs = {};
 
-  services = {
-
-    polybar = {
-        enable = true;
-        script = "polybar bar &";
-    };
-  };
+    services = {};
 
     xsession = {
         enable = true;

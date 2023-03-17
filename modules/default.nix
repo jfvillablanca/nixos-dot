@@ -14,9 +14,13 @@ let
 
     # Window Manager
     autorandr = import ./wm/autorandr {};
+    polybar = import ./wm/polybar {};
+    rofi = import ./wm/rofi { inherit pkgs; };
 
     modules = [
         autorandr
+        polybar
+        rofi
 
         alacritty
         starship
