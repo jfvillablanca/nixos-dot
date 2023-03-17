@@ -63,8 +63,10 @@ in
         xfce.enable = true;
       };
       windowManager = {
-          xmonad.enable = true;
+        xmonad = {
+          enable = true;
           enableContribAndExtras = true;
+        };
       };
     };
   };
