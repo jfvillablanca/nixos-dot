@@ -2,7 +2,7 @@
 let
     alacritty = import ./alacritty {};
     neovim = import ./neovim { inherit pkgs; };
-    starship = import ./neovim { inherit lib; };
+    starship = import ./starship { inherit lib; };
     direnv = import ./direnv {};
     zoxide = import ./zoxide {};
     zellij = import ./zellij {};
