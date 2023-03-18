@@ -116,14 +116,13 @@ modules
             i3 = {
                 enable = true;
                 config = {
-                    gaps.outer = 3;
-                    bars = {
-                        status = {
-                            fonts = [ "JetBrainsMono Nerd Font" ];
-                            style = "SemiBold";
-                            size = 11.0;
-                        };
+                    modifier = "Mod4";
+                    gaps = {
+                        outer = 3;
+                        inner = 2;
                     };
+                    window.border = 0;
+                    bars = [ ];
                 };
             };
         };
