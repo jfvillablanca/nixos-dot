@@ -31,6 +31,7 @@ modules
             scrot                           # Screenshot utility
             killall                         # Kill processes
             ncdu                            # NCurses Disk Usage
+            imagemagick                     # Edit, compose, convert bmp
 
             # Development
             nil

@@ -33,7 +33,7 @@
                     };
                 };
                 extraConfig = ''
-                set $i3lockwall i3lock -i ~/.wallpaper/haskell.png -t
+                set $i3lockwall sh ./lock.sh
                 bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
                 '';
             };
