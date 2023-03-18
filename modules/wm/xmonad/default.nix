@@ -3,7 +3,7 @@
     xsession = {
         windowManager = {
             xmonad = {
-                enable = true;
+                enable = false;
                 enableContribAndExtras = true;
                 config = pkgs.writeText "xmonad.hs" ''
                     ${ builtins.readFile ./xmonad.hs }

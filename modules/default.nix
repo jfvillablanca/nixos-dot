@@ -17,9 +17,11 @@ let
     polybar = import ./wm/polybar {};
     rofi = import ./wm/rofi { inherit pkgs; };
     xmonad = import ./wm/xmonad { inherit pkgs; };
+    i3 = import ./wm/i3 { inherit pkgs; inherit lib;  };
 
     modules = [
         xmonad
+        i3
         autorandr
         polybar
         rofi

@@ -95,7 +95,6 @@ modules
         initExtra = "spice-vdagent &"; # starts the x11 spice-vdagent manually especially if running on none+someWM
 
         windowManager = {
-            xmonad.enable = false;
             spectrwm = {
                 enable = false;
                 settings = {
@@ -112,21 +111,6 @@ modules
                     "MOD+S+Return"              # term default
                     "MOD+t"                     # float_toggle default
                 ];
-            };
-            i3 = {
-                enable = true;
-                config = rec {
-                    modifier = "Mod4";
-                    gaps = {
-                        outer = 3;
-                        inner = 2;
-                    };
-                    window.border = 0;
-                    bars = [ ];
-                    keybindings = lib.mkOptionDefault {
-                        "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
-                    };
-                };
             };
         };
     };
