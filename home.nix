@@ -97,7 +97,7 @@ modules
         windowManager = {
             xmonad.enable = false;
             spectrwm = {
-                enable = true;
+                enable = false;
                 settings = {
                     modkey = "Mod4";
                     workspace_limit = 8;
@@ -112,6 +112,19 @@ modules
                     "MOD+S+Return"              # term default
                     "MOD+t"                     # float_toggle default
                 ];
+            };
+            i3 = {
+                enable = true;
+                config = {
+                    gaps.outer = 3;
+                    bars = {
+                        status = {
+                            fonts = [ "JetBrainsMono Nerd Font" ];
+                            style = "SemiBold";
+                            size = 11.0;
+                        };
+                    };
+                };
             };
         };
     };

@@ -67,6 +67,9 @@ in
         spectrwm = {
             enable = true;
         };
+        i3 = {
+            enable = true;
+        };
       };
     };
   };
