@@ -1,8 +1,7 @@
 { pkgs, lib, ... }:
 let
     modules = import ./modules { inherit pkgs; inherit lib; };
-    activeWM = "spectrwm";
-    cfg = pkgs.config.xsession.windowManager.${activeWM};
+    activeWM = "spectrwm"; # or xmonad
 in
 lib.recursiveUpdate 
 modules
@@ -96,7 +95,7 @@ modules
         enable = true;
         initExtra = "spice-vdagent &"; # starts the x11 spice-vdagent manually especially if running on none+someWM
 
-        windowManager.command = "${cfg.package}/bin/${activeWM}"; # set the active window manager if multiple WMs are installed
+        windowManager.command = "${pkgs.${activeWM}}/bin/${activeWM}"; # set the active window manager if multiple WMs are installed
 
         windowManager = {
             spectrwm = {
