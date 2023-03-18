@@ -54,6 +54,7 @@ modules
     };
 
     programs = {
+        feh.enable = true;
         xmobar = {
             enable = false;
             extraConfig = ''
