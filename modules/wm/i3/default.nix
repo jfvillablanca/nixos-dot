@@ -15,6 +15,13 @@
                     keybindings = lib.mkOptionDefault {
                         "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
                     };
+                    fonts = [
+                    {
+                        names = [ "JetBrainsMono Nerd Font" ];
+                        style = "SemiBold";
+                        size = 11.0;
+                    }
+                    ];
                 };
             };
         };
