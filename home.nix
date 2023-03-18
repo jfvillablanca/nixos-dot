@@ -106,10 +106,11 @@ modules
                     term = "alacritty";
                 };
                 bindings = {
-                    term = "Mod+Return";
+                    term = "Mod+t";
                 };
                 unbindings = [
-                    "MOD+S+Return"              # Unbind term default
+                    "MOD+S+Return"              # term default
+                    "MOD+t"                     # float_toggle default
                 ];
             };
         };
