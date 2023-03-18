@@ -64,6 +64,9 @@ in
           enable = true;
           enableContribAndExtras = true;
         };
+        spectrwm = {
+            enable = true;
+        };
       };
     };
   };
