@@ -15,6 +15,7 @@ let
     # Window Manager
     autorandr = import ./wm/autorandr {};
     polybar = import ./wm/polybar {};
+    i3status-rust = import ./wm/i3status-rust {};
     rofi = import ./wm/rofi { inherit pkgs; };
     xmonad = import ./wm/xmonad { inherit pkgs; };
     i3 = import ./wm/i3 { inherit pkgs; inherit lib;  };
@@ -24,6 +25,7 @@ let
         i3
         autorandr
         polybar
+        i3status-rust
         rofi
 
         alacritty

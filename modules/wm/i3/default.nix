@@ -1,9 +1,5 @@
 { pkgs, lib, ... }:
 {
-    programs.i3status-rust = {
-        enable = true;
-    };
-
     xsession = {
         windowManager = {
             i3 = {
