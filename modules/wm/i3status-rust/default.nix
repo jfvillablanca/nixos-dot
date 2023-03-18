@@ -2,7 +2,7 @@
 {
     programs = {
         i3status-rust = {
-            enable = false;
+            enable = true;
         };
     };
 }
