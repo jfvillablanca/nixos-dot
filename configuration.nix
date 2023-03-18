@@ -57,7 +57,7 @@ in
       enable = true;
       displayManager = {
         lightdm.enable = true;
-        defaultSession = "none+xmonad";
+        defaultSession = "none+spectrwm";
       };
       windowManager = {
         xmonad = {
