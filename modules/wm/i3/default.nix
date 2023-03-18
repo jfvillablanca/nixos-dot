@@ -7,8 +7,8 @@
                 config = rec {
                     modifier = "Mod4";
                     gaps = {
-                        outer = 5;
-                        inner = 5;
+                        outer = 1;
+                        inner = 7;
                     };
                     window.border = 0;
                     bars = [
