@@ -93,25 +93,5 @@ modules
     xsession = {
         enable = true;
         initExtra = "spice-vdagent &"; # starts the x11 spice-vdagent manually especially if running on none+someWM
-
-        windowManager = {
-            spectrwm = {
-                enable = false;
-                settings = {
-                    modkey = "Mod4";
-                    workspace_limit = 8;
-                };
-                programs = {
-                    term = "alacritty";
-                };
-                bindings = {
-                    term = "Mod+t";
-                };
-                unbindings = [
-                    "MOD+S+Return"              # term default
-                    "MOD+t"                     # float_toggle default
-                ];
-            };
-        };
     };
 }
