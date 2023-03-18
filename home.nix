@@ -115,7 +115,7 @@ modules
             };
             i3 = {
                 enable = true;
-                config = {
+                config = rec {
                     modifier = "Mod4";
                     gaps = {
                         outer = 3;
@@ -123,6 +123,9 @@ modules
                     };
                     window.border = 0;
                     bars = [ ];
+                    keybindings = lib.mkOptionDefault {
+                        "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
+                    };
                 };
             };
         };
