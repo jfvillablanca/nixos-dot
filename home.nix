@@ -102,6 +102,15 @@ modules
                     modkey = "Mod4";
                     workspace_limit = 8;
                 };
+                programs = {
+                    term = "alacritty";
+                };
+                bindings = {
+                    term = "Mod+Return";
+                };
+                unbindings = [
+                    "MOD+S+Return"              # Unbind term default
+                ];
             };
         };
     };
