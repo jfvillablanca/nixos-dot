@@ -8,7 +8,7 @@
                     modifier = "Mod4";
                     gaps = {
                         outer = 5;
-                        inner = 3;
+                        inner = 5;
                     };
                     window.border = 0;
                     bars = [ ];
