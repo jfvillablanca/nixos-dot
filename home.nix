@@ -55,7 +55,7 @@ modules
 
     programs = {
         xmobar = {
-            enable = true;
+            enable = false;
             extraConfig = ''
             Config 
             { overrideRedirect = False
