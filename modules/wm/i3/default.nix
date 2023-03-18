@@ -15,6 +15,7 @@
                     keybindings = lib.mkOptionDefault {
                         "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
                     };
+                    menu = "${pkgs.rofi}/bin/rofi";
                     fonts = [
                     {
                         names = [ "JetBrainsMono Nerd Font" ];
