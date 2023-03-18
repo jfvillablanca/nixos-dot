@@ -13,8 +13,13 @@
                     window.border = 0;
                     bars = [
                     {
-                        statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-top.toml";
                         position = "top";
+                        statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-top.toml";
+                        fonts = {
+                            names = [ "JetBrainsMono Nerd Font" ];
+                            style = "SemiBold";
+                            size = 13.0;
+                        };
                     }
                     ];
                     keybindings = lib.mkOptionDefault {
