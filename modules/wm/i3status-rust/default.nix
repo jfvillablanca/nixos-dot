@@ -10,7 +10,7 @@
                 {
                   block = "time";
                   interval = 60;
-                  format = "%a %d/%m %k:%M %p";
+                  format = "%a %d/%m %k:%M";
                 }
                 ];
             };
