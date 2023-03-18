@@ -32,6 +32,10 @@
                         size = 11.0;
                     };
                 };
+                extraConfig = ''
+                set $i3lockwall i3lock -i ~/.wallpaper/haskell.png -t
+                bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
+                '';
             };
         };
     };
