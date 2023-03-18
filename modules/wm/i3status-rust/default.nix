@@ -4,6 +4,8 @@
         i3status-rust = {
             enable = true;
             bars.top = {
+                theme = "nord-dark";
+                icons = "awesome6";
                 blocks = [
                 {
                   block = "time";
