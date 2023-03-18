@@ -16,13 +16,11 @@
                         "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
                     };
                     menu = "${pkgs.rofi}/bin/rofi";
-                    fonts = [
-                    {
+                    fonts = {
                         names = [ "JetBrainsMono Nerd Font" ];
                         style = "SemiBold";
                         size = 11.0;
-                    }
-                    ];
+                    };
                 };
             };
         };
