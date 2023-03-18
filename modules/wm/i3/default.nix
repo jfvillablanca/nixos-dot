@@ -11,7 +11,12 @@
                         inner = 5;
                     };
                     window.border = 0;
-                    bars = [ ];
+                    bars = [
+                    {
+                        statusCommand = "${pkgs.i3status}/bin/i3status";
+                        position = "top";
+                    }
+                    ];
                     keybindings = lib.mkOptionDefault {
                         "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
                     };
