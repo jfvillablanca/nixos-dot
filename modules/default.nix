@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-    alacritty = import ./alacritty {};
+    alacritty = import ./alacritty { inherit pkgs; };
     neovim = import ./neovim { inherit pkgs; };
     starship = import ./starship { inherit lib; };
     direnv = import ./direnv {};

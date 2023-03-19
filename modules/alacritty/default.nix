@@ -1,4 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
+let
+    shell = "zsh";
+in
 {
     programs = {
         alacritty = {
@@ -59,7 +62,7 @@
                     };
                     # indexed_colors = {};
                 };
-                shell = "zsh";
+                shell = "${pkgs.${shell}}/bin/${shell}";
             };
         };
     };
