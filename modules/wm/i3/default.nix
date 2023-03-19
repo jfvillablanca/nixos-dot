@@ -27,7 +27,11 @@ in
                         always = true;
                     }
                     ];
-                    window.border = 0;
+                    window = {
+                        titlebar = false;
+                        border = 2;
+                        hideEdgeBorders = "smart";
+                    };
                     bars = [
                     {
                         position = "top";
