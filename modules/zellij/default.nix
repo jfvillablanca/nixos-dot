@@ -24,7 +24,9 @@
                     };
                 };
                 theme = "kanagawa";
-                # TODO: set bindings. @j is the macro, unless it gets overwritten somehow
+                # TODO: 
+                # - set bindings. @j is the macro, unless it gets overwritten somehow
+                # - set keybind for gitui to open as floating pane
                 keybinds = {
                     normal = {
                         # uncomment this and adjust key if using copy_on_select=false
