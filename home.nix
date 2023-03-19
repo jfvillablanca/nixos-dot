@@ -62,7 +62,11 @@ modules
         feh.enable = true;
     };
 
-    services = {};
+    services = {
+        picom = {
+            enable = true;
+        };
+    };
 
     xsession = {
         enable = true;
