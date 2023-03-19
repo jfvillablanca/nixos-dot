@@ -9,6 +9,8 @@ modules
     # - configure nvim to be reproducible. 
     # - xrandr autodetect?
     # - how to wallpaper with feh and git
+    # - configure zellij keybinds for gitui
+
     home = {
         username = "jmfv";
         homeDirectory = "/home/jmfv";
