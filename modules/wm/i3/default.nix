@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 let
     mod = "Mod4";
+    term = "alacritty";
 in
 {
     xsession = {
@@ -9,6 +10,7 @@ in
                 enable = true;
                 config = {
                     modifier = mod;
+                    terminal = term;
                     gaps = {
                         outer = 1;
                         inner = 7;
@@ -38,7 +40,7 @@ in
                     }
                     ];
                     keybindings = lib.mkOptionDefault {
-                        "${mod}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
+                        "${mod}+t" = "exec ${term}";
                     };
                     menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
                     fonts = {
