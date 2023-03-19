@@ -6,6 +6,7 @@
             settings = {
                 window = {
                     padding.x = 5;
+                    padding.y = 5;
                     opacity = 1.0;
                 };
                 font = {
