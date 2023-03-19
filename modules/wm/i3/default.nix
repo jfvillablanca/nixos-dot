@@ -10,6 +10,9 @@
                         outer = 1;
                         inner = 7;
                     };
+                    startup = [
+                    { command = "feh --bg-fill ~/.config/nixos/.wallpapers/nixos-light-gray.png"; notification = false; always = true; }
+                    ];
                     window.border = 0;
                     bars = [
                     {
