@@ -6,7 +6,7 @@
             settings = {
                 window = {
                     padding.x = 5;
-                    opacity = 0.9;
+                    opacity = 1.0;
                 };
                 font = {
                     size = 14.0;
