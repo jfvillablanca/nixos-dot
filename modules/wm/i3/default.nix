@@ -32,6 +32,12 @@ in
                         border = 2;
                         hideEdgeBorders = "smart";
                     };
+                    floating = {
+                        border = 7;
+                        criteria = [ ];
+                        modifier = mod;
+                        titlebar = true;
+                    };
                     bars = [
                     {
                         position = "top";
