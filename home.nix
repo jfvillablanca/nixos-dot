@@ -5,6 +5,9 @@ in
 lib.recursiveUpdate 
 modules
 {
+    # TODO: 
+    # - configure nvim to be reproducible. 
+    # - xrandr autodetect?
     home = {
         username = "jmfv";
         homeDirectory = "/home/jmfv";
