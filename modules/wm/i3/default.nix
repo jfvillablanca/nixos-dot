@@ -11,8 +11,16 @@
                         inner = 7;
                     };
                     startup = [
-                    { command = "exec --no-startup-id feh --bg-fill ~/.config/nixos/.wallpapers/nixos-light-gray.png"; notification = false; always = true; }
-                    { command = "exec --no-startup-id picom"; notification = false; always = true; }
+                    {
+                        command = "--no-startup-id picom";
+                        notification = false;
+                        always = true;
+                    }
+                    {
+                        command = "--no-startup-id feh --bg-fill ~/.config/nixos/.wallpapers/nixos-light-gray.png";
+                        notification = false;
+                        always = true;
+                    }
                     ];
                     window.border = 0;
                     bars = [
