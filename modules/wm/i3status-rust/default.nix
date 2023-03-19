@@ -17,8 +17,10 @@
                     path = "/";
                     interval = 60.0;
                     info_type = "available";
-                    unit = "GB";
+                    alert_unit = "GB";
                     alert = 20.0;
+                    format = " $icon $available ";
+                    format_alt = " $icon $available / $total ";
                 }
                 ];
             };
