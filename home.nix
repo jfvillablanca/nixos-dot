@@ -8,8 +8,9 @@ modules
     # TODO: 
     # - configure nvim to be reproducible. 
     # - xrandr autodetect?
-    # - how to wallpaper with feh and git
     # - configure zellij keybinds for gitui
+    # - configure i3 layout default
+
 
     home = {
         username = "jmfv";
