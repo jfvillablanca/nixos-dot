@@ -9,7 +9,6 @@ modules
     # - configure nvim to be reproducible. 
     # - xrandr autodetect?
     # - how to wallpaper with feh and git
-    # - troubleshoot spice, guest-host copy paste not working after flake update
     home = {
         username = "jmfv";
         homeDirectory = "/home/jmfv";
