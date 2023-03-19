@@ -1,11 +1,14 @@
 { pkgs, lib, ... }:
+let
+    mod = "Mod4";
+in
 {
     xsession = {
         windowManager = {
             i3 = {
                 enable = true;
-                config = rec {
-                    modifier = "Mod4";
+                config = {
+                    modifier = mod;
                     gaps = {
                         outer = 1;
                         inner = 7;
@@ -35,7 +38,7 @@
                     }
                     ];
                     keybindings = lib.mkOptionDefault {
-                        "${modifier}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
+                        "${mod}+t" = "exec ${pkgs.alacritty}/bin/alacritty";
                     };
                     menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
                     fonts = {
