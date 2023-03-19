@@ -10,7 +10,10 @@
                 {
                   block = "time";
                   interval = 60;
-                  format = "%a %d/%m %k:%M";
+                  format = {
+                      full = " $icon $timestamp.datetime(f:'%a %Y-%m-%d %R', l:en_US) ";
+                      short = " $icon $timestamp.datetime(f:%R) ";
+                  };
                 }
                 {
                     block = "disk_space";
