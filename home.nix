@@ -1,6 +1,6 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
-    modules = import ./modules { inherit pkgs; inherit lib; };
+    modules = import ./modules { inherit config pkgs lib; };
 in
 lib.recursiveUpdate 
 modules

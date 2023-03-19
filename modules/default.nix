@@ -1,7 +1,7 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
     alacritty = import ./alacritty { inherit pkgs; };
-    neovim = import ./neovim { inherit pkgs; };
+    neovim = import ./neovim { inherit config pkgs; };
     starship = import ./starship { inherit lib; };
     direnv = import ./direnv {};
     zoxide = import ./zoxide {};
@@ -18,7 +18,7 @@ let
     i3status-rust = import ./wm/i3status-rust {};
     rofi = import ./wm/rofi { inherit pkgs; };
     xmonad = import ./wm/xmonad { inherit pkgs; };
-    i3 = import ./wm/i3 { inherit pkgs; inherit lib;  };
+    i3 = import ./wm/i3 { inherit pkgs lib;  };
 
     modules = [
         xmonad
