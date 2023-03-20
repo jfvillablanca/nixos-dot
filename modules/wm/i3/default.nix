@@ -27,7 +27,7 @@ in
                         always = true;
                     }
                     {
-                        command = "--no-startup-id polybar-msg cmd quit && polybar";
+                        command = "--no-startup-id polybar-msg cmd quit; polybar &";
                         notification = false;
                         always = true;
                     }
