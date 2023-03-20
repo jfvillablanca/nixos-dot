@@ -1,5 +1,13 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+let
+    mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+in
 {
+    home.file.".config/nvim" = {
+        source = mkOutOfStoreSymlink ./nvim;
+        recursive = true;
+    };
+
     programs = {
         neovim = {
             enable = true;

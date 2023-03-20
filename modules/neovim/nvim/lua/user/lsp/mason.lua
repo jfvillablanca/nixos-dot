@@ -7,7 +7,6 @@ local servers = {
 	"grammarly",
 	"html",
 	"jsonls",
-    "nil_ls",
 	"lua_ls",
 	"rust_analyzer",
 	"tailwindcss",
