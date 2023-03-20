@@ -116,7 +116,7 @@ in
                     format-mounted-prefix-foreground = colors.primary;
                     format-mounted = "<label-mounted>";
 
-                    label-mounted = "%used% / %total%";
+                    label-mounted = "%used% used";
                 };
 
                 "module/memory" = {
