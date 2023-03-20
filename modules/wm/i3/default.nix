@@ -22,7 +22,7 @@ in
                         always = true;
                     }
                     {
-                        command = "--no-startup-id feh --bg-fill ~/.config/nixos/.wallpapers/nixos-light-gray.png";
+                        command = "--no-startup-id feh --bg-fill ~/.config/nixos/.wallpapers/firewatch.jpg";
                         notification = false;
                         always = true;
                     }
