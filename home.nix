@@ -6,10 +6,13 @@ lib.recursiveUpdate
 modules
 {
     # TODO: 
-    # - configure nvim to be reproducible. 
+    # - partial: configure nvim to be reproducible. 
+    #   - done: symlinked nvim config in ./modules/neovim/nvim to ~/.config/nvim
+    #   - pending: lsp needs to find the bin paths from the nix store, somehow
     # - xrandr autodetect?
     # - configure zellij keybinds for gitui
     # - configure i3 layout default
+    # - refactor modules/default.nix to use imports []
 
 
     home = {
