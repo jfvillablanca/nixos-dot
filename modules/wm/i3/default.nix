@@ -31,6 +31,9 @@ in
                         notification = false;
                         always = true;
                     }
+                    {
+                        command = "--no-startup-id i3-msg 'workspace 1; exec alacritty'";
+                    }
                     ];
                     window = {
                         titlebar = false;
