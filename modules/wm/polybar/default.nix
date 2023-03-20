@@ -2,7 +2,7 @@
 {
     services = {
         polybar = {
-            enable = false;
+            enable = true;
             script = "polybar bar &";
         };
     };

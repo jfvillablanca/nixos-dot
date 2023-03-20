@@ -2,7 +2,7 @@
 {
     programs = {
         i3status-rust = {
-            enable = true;
+            enable = false;
             bars.top = {
                 theme = "nord-dark";
                 icons = "awesome6";
