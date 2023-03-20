@@ -71,7 +71,7 @@ modules
     services = {
         picom = {
             enable = true;
-            activeOpacity = 0.9;
+            activeOpacity = 0.95;
             inactiveOpacity = 0.7;
             backend = "xrender";
 
