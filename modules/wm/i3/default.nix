@@ -4,6 +4,8 @@ let
     term = "alacritty";
 in
 {
+    # TODO:
+    # - package this shit: https://github.com/JonnyHaystack/i3-resurrect
     xsession = {
         windowManager = {
             i3 = {
