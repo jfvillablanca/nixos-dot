@@ -73,6 +73,16 @@ modules
             enable = true;
             activeOpacity = 0.9;
             inactiveOpacity = 0.7;
+
+            settings = {
+                wintypes = {
+                    normal = { blur-background = true; };
+                };
+                blur = {
+                    method = "dual_kawase";
+                    strength = 2;
+                };
+            };
         };
     };
 
