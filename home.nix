@@ -71,8 +71,6 @@ modules
     services = {
         picom = {
             enable = true;
-            backend = "glx";
-            extraArgs = [ "--experimental-backends" ];
             activeOpacity = 0.9;
             inactiveOpacity = 0.7;
         };
