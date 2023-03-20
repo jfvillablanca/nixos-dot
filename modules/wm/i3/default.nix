@@ -113,10 +113,10 @@ in
                         size = 11.0;
                     };
                 };
-                extraConfig = ''
-                set $i3lockwall sh ./lock.sh
-                bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
-                '';
+                # extraConfig = ''
+                # set $i3lockwall sh ./lock.sh
+                # bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
+                # '';
             };
         };
     };
