@@ -12,8 +12,8 @@ in
                     modifier = mod;
                     terminal = term;
                     gaps = {
-                        outer = 1;
-                        inner = 7;
+                        outer = 0;
+                        inner = 5;
                     };
                     startup = [
                     {
