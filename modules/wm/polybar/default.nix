@@ -1,13 +1,25 @@
 { ... }:
 let
     colors = {
-        background = "#282A2E";
-        background-alt = "#373B41";
-        foreground = "#C5C8C6";
-        primary = "#F0C674";
-        secondary = "#8ABEB7";
-        alert = "#A54242";
-        disabled = "#707880";
+        background = "#552A2A37";        # "#2A2A37"
+        background-alt = "#66363646";      # "#363646" 
+        foreground = "#DCD7BA";
+        primary = "#FF9E3B";
+        secondary = "#7E9CD8";
+        alert = "#C34043";
+        disabled = "#727169";
+
+        # fg = "#DCD7BA";
+        # bg = "#2A2A37";
+        # red = "#C34043";
+        # green = "#76946A"; #
+        # yellow = "#FF9E3B";
+        # blue = "#7E9CD8";
+        magenta = "#957FB8";
+        orange = "#FFA066";
+        cyan = "#7FB4CA";
+        black = "#2A2A37";
+        white = "#DCD7BA";
     };
 in
 {
@@ -21,15 +33,15 @@ in
                     width = "100%";
                     height = "24pt";
                     radius = 0;
-                    # dpi = 96;
-                    # override-redirect = true;
+                    dpi = 0;
+                    override-redirect = false;
                     background = colors.background;
                     foreground = colors.foreground;
 
-                    line-size = "3pt";
+                    line-size = "1pt";
 
-                    border-size = "4pt";
-                    border-color = "#00000000";
+                    # border-size = "4pt";
+                    # border-color = "#00000000";
 
                     padding-left = 0;
                     padding-right = 1;
@@ -42,17 +54,15 @@ in
                     font-0 = "JetBrainsMono Nerd Font:style=Regular:size=10;2";
 
                     modules-left = "xworkspaces xwindow";
-                    modules-right = "pulseaudio memory cpu date";
+                    modules-right = "memory cpu date";
 
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
 
                     enable-ipc = true;
 
-                #     # tray-position = right;
-
                 #     # wm-restack = "generic";
-                    wm-restack = "i3";
+                    # wm-restack = "i3";
                 };
 
                 "module/xworkspaces" = {
@@ -80,18 +90,18 @@ in
                 };
 
 
-                "module/pulseaudio" = {
-                    type = "internal/pulseaudio";
+                # "module/pulseaudio" = {
+                #     type = "internal/pulseaudio";
 
-                    format-volume-prefix = "VOL ";
-                    format-volume-prefix-foreground = colors.primary;
-                    format-volume = "<label-volume>";
+                #     format-volume-prefix = "VOL ";
+                #     format-volume-prefix-foreground = colors.primary;
+                #     format-volume = "<label-volume>";
 
-                    label-volume = "%percentage%%";
+                #     label-volume = "%percentage%%";
 
-                    label-muted = "muted";
-                    label-muted-foreground = colors.disabled;
-                };
+                #     label-muted = "muted";
+                #     label-muted-foreground = colors.disabled;
+                # };
 
                 "module/memory" = {
                     type = "internal/memory";
@@ -142,7 +152,7 @@ in
 
                 "settings" = {
                     screenchange-reload = true;
-                    pseudo-transparency = true;
+                    pseudo-transparency = false;
                 };
             };
         };
