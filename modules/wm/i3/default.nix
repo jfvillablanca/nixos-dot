@@ -112,6 +112,7 @@ in
                         style = "SemiBold";
                         size = 11.0;
                     };
+                    defaultWorkspace = "workspace 1";
                     workspaceAutoBackAndForth = true;
                 };
                 # extraConfig = ''
