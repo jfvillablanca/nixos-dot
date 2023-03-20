@@ -5,9 +5,10 @@
             enable = true;
             settings = {
                 default_shell = "zsh";
-                ui = {
-                    pane_frames.rounded_corners = true;
-                };
+                pane_frames = false;
+                # ui = {
+                #     pane_frames.rounded_corners = true;
+                # };
                 themes = {
                     kanagawa = {
                         fg = "#DCD7BA";
