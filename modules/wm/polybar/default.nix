@@ -122,7 +122,7 @@ in
                 "module/memory" = {
                     type = "internal/memory";
                     interval = 2;
-                    format-prefix = "RAM ";
+                    format-prefix = "RAM %{T2}%{T-} ";
                     format-prefix-foreground = colors.primary;
                     label = "%percentage_used:2%%";
                 };
@@ -130,7 +130,7 @@ in
                 "module/cpu" = {
                     type = "internal/cpu";
                     interval = 2;
-                    format-prefix = "CPU ";
+                    format-prefix = "CPU %{T2}%{T-} ";
                     format-prefix-foreground = colors.primary;
                     label = "%percentage:2%%";
                 };
