@@ -73,6 +73,7 @@ modules
             enable = true;
             activeOpacity = 0.9;
             inactiveOpacity = 0.7;
+            backend = "xr_glx_hybrid";
 
             settings = {
                 wintypes = {
