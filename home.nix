@@ -75,15 +75,15 @@ modules
             inactiveOpacity = 0.7;
             backend = "xrender";
 
-            settings = {
-                wintypes = {
-                    normal = { blur-background = true; };
-                };
-                blur = {
-                    method = "dual_kawase";
-                    strength = 2;
-                };
-            };
+            # settings = {
+            #     wintypes = {
+            #         normal = { blur-background = true; };
+            #     };
+            #     blur = {
+            #         method = "dual_kawase";
+            #         strength = 2;
+            #     };
+            # };
         };
     };
 
