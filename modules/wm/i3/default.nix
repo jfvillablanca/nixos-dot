@@ -112,6 +112,7 @@ in
                         style = "SemiBold";
                         size = 11.0;
                     };
+                    workspaceAutoBackAndForth = true;
                 };
                 # extraConfig = ''
                 # set $i3lockwall sh ./lock.sh
