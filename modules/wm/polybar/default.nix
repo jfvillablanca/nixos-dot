@@ -54,7 +54,7 @@ in
                     font-0 = "JetBrainsMono Nerd Font:style=Regular:size=10;2";
 
                     modules-left = "xworkspaces xwindow";
-                    modules-right = "memory cpu date";
+                    modules-right = "filesystem memory cpu date";
 
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
@@ -102,6 +102,19 @@ in
                 #     label-muted = "muted";
                 #     label-muted-foreground = colors.disabled;
                 # };
+                "module/filesystem" = {
+                    type = "internal/fs";
+                    mount-0 = "/";
+                    interval = 40;
+                    fixed-values = true;
+                    warn-percentage = 20;
+
+                    format-mounted-prefix = "DISK %{T2}%{T-} ";
+                    format-mounted-prefix-foreground = colors.primary;
+                    format-mounted = "<label-mounted>";
+
+                    label-mounted = "%used% / %total%";
+                };
 
                 "module/memory" = {
                     type = "internal/memory";
