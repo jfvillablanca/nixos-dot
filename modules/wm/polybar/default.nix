@@ -52,6 +52,9 @@ in
                     separator-foreground = colors.disabled;
 
                     font-0 = "JetBrainsMono Nerd Font:style=Regular:size=10;2";
+                    font-1 = "Font Awesome 6 Free-Solid:style=Regular:size=10;2";
+                    font-2 = "Font Awesome 6 Free-Brands:style=Regular:size=10;2";
+                    font-3 = "Font Awesome 6 Free-Regular:style=Regular:size=10;2";
 
                     modules-left = "xworkspaces xwindow";
                     modules-right = "filesystem memory cpu date";
