@@ -1,8 +1,8 @@
 { ... }:
 let
     colors = {
-        background = "#552A2A37";        # "#2A2A37"
-        background-alt = "#66363646";      # "#363646" 
+        background = "#AA2A2A37";        # "#2A2A37"
+        background-alt = "#BB363646";      # "#363646" 
         foreground = "#DCD7BA";
         primary = "#FF9E3B";
         secondary = "#7E9CD8";
