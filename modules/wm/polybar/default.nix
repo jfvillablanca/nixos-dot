@@ -94,7 +94,7 @@ in
                     fixed-values = true;
                     warn-percentage = 20;
 
-                    format-mounted-prefix = "%{T2}%{T-} ";
+                    format-mounted-prefix = "%{T2}%{T-} ";
                     format-mounted-prefix-foreground = colors.primary;
                     format-mounted = "<label-mounted>";
 
