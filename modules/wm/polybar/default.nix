@@ -1,20 +1,17 @@
 { ... }:
 let
     colors = {
-        background = "#AA2A2A37";        # "#2A2A37"
-        background-alt = "#BB363646";      # "#363646" 
+        background = "#AA2A2A37";           # "#2A2A37"
+        background-alt = "#BB363646";       # "#363646" 
         foreground = "#DCD7BA";
         primary = "#FF9E3B";
         secondary = "#7E9CD8";
         alert = "#C34043";
         disabled = "#727169";
-
-        green = "#76946A"; #
+        green = "#76946A";
         magenta = "#957FB8";
         orange = "#FFA066";
         cyan = "#7FB4CA";
-        black = "#2A2A37";
-        white = "#DCD7BA";
     };
 in
 {
@@ -32,51 +29,36 @@ in
                     override-redirect = false;
                     background = colors.background;
                     foreground = colors.foreground;
-
                     line-size = "1pt";
-
-                    # border-size = "4pt";
-                    # border-color = "#00000000";
-
                     padding-left = 0;
                     padding-right = 3;
-
                     module-margin = 1;
-
                     separator = "|";
                     separator-foreground = colors.disabled;
-
                     font-0 = "JetBrainsMono:style=Regular:size=11;2";
                     font-1 = "Font Awesome 6 Free:pixelsize=13;2";
                     font-2 = "Font Awesome 6 Free Solid:pixelsize=13;2";
                     font-3 = "Font Awesome 6 Brands:pixelsize=13;2";
                     font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
-
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
                     modules-right = "filesystem network-speed memory cpu date powermenu";
-
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
-
                     enable-ipc = true;
                 };
 
                 "module/xworkspaces" = {
                     type = "internal/xworkspaces";
-
                     label-active = "%name%";
                     label-active-background = colors.background-alt;
                     label-active-underline= colors.primary;
                     label-active-padding = 1;
-
                     label-occupied = "%name%";
                     label-occupied-padding = 1;
-
                     label-urgent = "%name%";
                     label-urgent-background = colors.alert;
                     label-urgent-padding = 1;
-
                     label-empty = "%name%";
                     label-empty-foreground = colors.disabled;
                     label-empty-padding = 1;
@@ -93,14 +75,11 @@ in
                     interval = 40;
                     fixed-values = true;
                     warn-percentage = 20;
-
                     format-mounted-prefix = "%{T2}%{T-} ";
                     format-mounted-prefix-foreground = colors.primary;
                     format-mounted = "<label-mounted>";
-
                     label-mounted = "%used% used";
                 };
-
 
                 "module/memory" = {
                     type = "internal/memory";
@@ -132,21 +111,16 @@ in
                 "module/date" = {
                     type = "internal/date";
                     interval = 1;
-
                     date = "%H:%M";
                     date-alt = "%Y-%m-%d %H:%M:%S";
-
                     label = "%date%";
                     label-foreground = colors.primary;
                 };
 
                 "module/powermenu" = {
                     type = "custom/menu";
-
                     expand-right = false;
-
                     format-spacing = 1;
-
                     label-open = "";
                     label-open-foreground = colors.primary;
                     label-close = "󰜺";
