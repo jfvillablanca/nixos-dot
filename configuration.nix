@@ -85,6 +85,7 @@ in
     source-code-pro
     font-awesome
     corefonts
+    jetbrains-mono
     (nerdfonts.override {
       fonts = [
         "FiraCode"
