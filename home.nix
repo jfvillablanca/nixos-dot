@@ -92,4 +92,8 @@ modules
         enable = true;
         initExtra = "spice-vdagent &"; # starts the x11 spice-vdagent manually especially if running on none+someWM
     };
+
+    xdg = {
+        enable = true;
+    };
 }
