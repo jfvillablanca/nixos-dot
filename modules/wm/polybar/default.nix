@@ -46,10 +46,11 @@ in
                     separator = "|";
                     separator-foreground = colors.disabled;
 
-                    font-0 = "JetBrainsMono Nerd Font:style=Regular:size=11;2";
-                    font-1 = "Font Awesome 6 Free-Solid:style=Regular:size=11;2";
-                    font-2 = "Font Awesome 6 Free-Brands:style=Regular:size=11;2";
-                    font-3 = "Font Awesome 6 Free-Regular:style=Regular:size=11;2";
+                    font-0 = "JetBrainsMono:style=Regular:size=11;2";
+                    font-1 = "Font Awesome 6 Free:pixelsize=13;2";
+                    font-2 = "Font Awesome 6 Free Solid:pixelsize=13;2";
+                    font-3 = "Font Awesome 6 Brands:pixelsize=13;2";
+                    font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
 
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
