@@ -94,17 +94,18 @@ in
                     fixed-values = true;
                     warn-percentage = 20;
 
-                    format-mounted-prefix = "DISK %{T2}%{T-} ";
+                    format-mounted-prefix = "%{T2}%{T-} ";
                     format-mounted-prefix-foreground = colors.primary;
                     format-mounted = "<label-mounted>";
 
                     label-mounted = "%used% used";
                 };
 
+
                 "module/memory" = {
                     type = "internal/memory";
                     interval = 2;
-                    format-prefix = "RAM %{T2}%{T-} ";
+                    format-prefix = "%{T2}%{T-} ";
                     format-prefix-foreground = colors.primary;
                     label = "%percentage_used:2%%";
                 };
@@ -112,7 +113,7 @@ in
                 "module/cpu" = {
                     type = "internal/cpu";
                     interval = 2;
-                    format-prefix = "CPU %{T2}%{T-} ";
+                    format-prefix = "%{T2}%{T-} ";
                     format-prefix-foreground = colors.primary;
                     label = "%percentage:2%%";
                 };
