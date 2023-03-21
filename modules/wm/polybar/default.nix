@@ -54,7 +54,7 @@ in
 
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
-                    modules-right = "filesystem memory cpu date powermenu";
+                    modules-right = "filesystem network-speed memory cpu date powermenu";
 
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
@@ -118,13 +118,16 @@ in
                     label = "%percentage:2%%";
                 };
 
-            #     "network-base" = {
-            #         type = "internal/network";
-            #         interval = 5;
-            #         format-connected = "<label-connected>";
-            #         format-disconnected = "<label-disconnected>";
-            #         label-disconnected = "%{F#F0C674}%ifname%%{F#707880} disconnected";
-            #     };
+                "module/network-speed" = {
+                    type = "internal/network";
+                    interface-type = "wired";
+                    interval = 5;
+                    format-connected-prefix = "%{T2}%{T-} ";
+                    format-connected-prefix-foreground = colors.primary;
+                    label-connected = "%{F${colors.green}} %{F-}%downspeed% %{F${colors.magenta}} %{F-}%upspeed%";
+                    label-disconnected = "disconnected";
+                    label-connected-background = colors.background;
+                };
 
                 "module/date" = {
                     type = "internal/date";
