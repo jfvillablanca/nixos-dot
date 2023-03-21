@@ -9,12 +9,7 @@ let
         alert = "#C34043";
         disabled = "#727169";
 
-        # fg = "#DCD7BA";
-        # bg = "#2A2A37";
-        # red = "#C34043";
-        # green = "#76946A"; #
-        # yellow = "#FF9E3B";
-        # blue = "#7E9CD8";
+        green = "#76946A"; #
         magenta = "#957FB8";
         orange = "#FFA066";
         cyan = "#7FB4CA";
@@ -44,7 +39,7 @@ in
                     # border-color = "#00000000";
 
                     padding-left = 0;
-                    padding-right = 1;
+                    padding-right = 3;
 
                     module-margin = 1;
 
@@ -64,9 +59,6 @@ in
                     cursor-scroll = "ns-resize";
 
                     enable-ipc = true;
-
-                #     # wm-restack = "generic";
-                    # wm-restack = "i3";
                 };
 
                 "module/xworkspaces" = {
@@ -88,24 +80,12 @@ in
                     label-empty-foreground = colors.disabled;
                     label-empty-padding = 1;
                 };
+
                 "module/xwindow" = {
                     type = "internal/xwindow";
                     label = "%title:0:60:...%";
                 };
 
-
-                # "module/pulseaudio" = {
-                #     type = "internal/pulseaudio";
-
-                #     format-volume-prefix = "VOL ";
-                #     format-volume-prefix-foreground = colors.primary;
-                #     format-volume = "<label-volume>";
-
-                #     label-volume = "%percentage%%";
-
-                #     label-muted = "muted";
-                #     label-muted-foreground = colors.disabled;
-                # };
                 "module/filesystem" = {
                     type = "internal/fs";
                     mount-0 = "/";
@@ -142,18 +122,6 @@ in
             #         format-connected = "<label-connected>";
             #         format-disconnected = "<label-disconnected>";
             #         label-disconnected = "%{F#F0C674}%ifname%%{F#707880} disconnected";
-            #     };
-
-            #     "module/wlan" = {
-            #         "inherit" = "network-base";
-            #         interface-type = "wireless";
-            #         label-connected = "%{F#F0C674}%ifname%%{F-} %essid% %local_ip%";
-            #     };
-
-            #     "module/eth" = {
-            #         "inherit" = "network-base";
-            #         interface-type = "wired";
-            #         label-connected = "%{F#F0C674}%ifname%%{F-} %local_ip%";
             #     };
 
                 "module/date" = {
