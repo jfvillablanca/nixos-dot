@@ -53,7 +53,7 @@ in
 
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
-                    modules-right = "filesystem memory cpu date";
+                    modules-right = "filesystem memory cpu date powermenu";
 
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
@@ -133,6 +133,47 @@ in
 
                     label = "%date%";
                     label-foreground = colors.primary;
+                };
+
+                "module/powermenu" = {
+                    type = "custom/menu";
+
+                    expand-right = false;
+
+                    format-spacing = 1;
+
+                    label-open = "";
+                    label-open-foreground = colors.primary;
+                    label-close = "󰜺";
+                    label-close-foreground = colors.secondary;
+                    label-separator = "|";
+                    label-separator-foreground = colors.disabled;
+
+                    # Powermenu
+                    menu-0-0 = "Reboot";
+                    menu-0-0-exec = "menu-open-1";
+                    menu-0-0-foreground = colors.orange;
+
+                    menu-0-1 = "Power Off";
+                    menu-0-1-exec = "menu-open-2";
+                    menu-0-1-foreground = colors.orange;
+
+                    # Reboot
+                    menu-1-0 = "Reboot";
+                    menu-1-0-exec = "systemctl reboot";
+                    menu-1-0-foreground = colors.alert;
+                    menu-1-1 = "󰌍";
+                    menu-1-1-exec = "menu-open-0";
+                    menu-1-1-foreground = colors.secondary;
+
+                    # Shutdown
+                    menu-2-0 = "Power off";
+                    menu-2-0-exec = "systemctl poweroff";
+                    menu-2-0-foreground = colors.alert;
+                    menu-2-1 = "󰌍";
+                    menu-2-1-exec = "menu-open-0";
+                    menu-2-1-foreground = colors.secondary;
+
                 };
 
                 "settings" = {
