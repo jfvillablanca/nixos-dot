@@ -4,6 +4,7 @@
     starship = {
         enable = true;
         enableZshIntegration = true;
+        enableBashIntegration = true;
         settings = 
         {
             format = lib.concatStrings [
