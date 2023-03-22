@@ -61,11 +61,8 @@ in
       };
       windowManager = {
         xmonad = {
-          enable = true;
-          enableContribAndExtras = true;
-        };
-        spectrwm = {
-            enable = true;
+          enable = false;
+          enableContribAndExtras = false;
         };
         i3 = {
             enable = true;
