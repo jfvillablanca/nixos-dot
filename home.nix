@@ -1,9 +1,4 @@
 { config, pkgs, lib, ... }:
-let
-    modules = import ./modules { inherit config pkgs lib; };
-in
-lib.recursiveUpdate 
-modules
 {
     # TODO: 
     # - .source attrib bug (?) configure zellij keybinds for gitui
@@ -14,6 +9,7 @@ modules
     # - configure i3 layout default
     # - refactor modules/default.nix to use imports []
 
+    imports = [ ({ ... }: import ./modules { inherit config pkgs lib; }) ];
 
     home = {
         username = "jmfv";
