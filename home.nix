@@ -39,12 +39,6 @@
             ncdu                            # NCurses Disk Usage
             imagemagick                     # Edit, compose, convert bmp
 
-            # Development
-            nil
-            stylua
-            nodePackages_latest.prettier
-            haskellPackages.haskell-language-server
-
             # Browser
             librewolf
 

@@ -41,6 +41,22 @@ let
     ];
 in
 {
+    home.packages = with pkgs; [
+        nodePackages_latest.prettier
+        stylua
+        shfmt
+
+        nodePackages_latest.bash-language-server
+        nodePackages_latest.typescript-language-server
+        nodePackages_latest.tailwindcss
+
+        nil
+        gopls
+        sumneko-lua-language-server
+        rust-analyzer
+        haskellPackages.haskell-language-server
+    ];
+
     programs.neovim = {
         enable = true;
         package = pkgs.neovim-nightly;
