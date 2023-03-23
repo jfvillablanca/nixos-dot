@@ -8,6 +8,12 @@ let
         ./lua/nvim-tree.lua
         ./lua/lualine.lua
         ./lua/toggleterm.lua
+        ./lua/indentline.lua
+        ./lua/whichkey.lua
+            ./lua/colorschemes/rosepine.lua
+            ./lua/colorschemes/kanagawa.lua
+        ./lua/colorscheme.lua
+            
     ];
 in
 {
@@ -31,6 +37,13 @@ in
             nvim-tree-lua
             lualine-nvim
             toggleterm-nvim
+            indent-blankline-nvim
+            which-key-nvim
+
+            # Colorschemes
+            tokyonight-nvim
+            rose-pine
+            kanagawa-nvim
 
             nvim-lspconfig
             mason-lspconfig-nvim
