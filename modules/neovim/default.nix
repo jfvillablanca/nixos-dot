@@ -19,6 +19,7 @@ let
 
         ./lua/lsp/lsp.lua
         ./lua/lsp/null-ls.lua
+        # ./lua/typescript-nvim.lua -- need to package 
 
         ./lua/telescope.lua
 
