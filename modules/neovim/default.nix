@@ -108,19 +108,11 @@ in
                 require('lspconfig').lua_ls.setup({
                     cmd = { "${pkgs.lua-language-server}/bin/lua-language-server" }
                 })
+                require('lspconfig').tsserver.setup({})
+                require('lspconfig').tailwindcss.setup({})
+                require('lspconfig').bashls.setup({})
                 '';
-                # -- require('lspconfig').bashls.setup({
-                # --     cmd = { "${pkgs.bash-language-server}/bin/bash-language-server" }
-                # -- })
-                # require('lspconfig').tsserver.setup({
-                #     cmd = { "${pkgs.tsserver}/bin/tsserver" }
-                # })
-                # require('lspconfig').tailwindcss.setup({
-                #     cmd = { "${pkgs.tailwindcss}/bin/tailwindcss" }
-                # })
-                # require('lspconfig').rust_analyzer.setup({
-                #     cmd = { "${pkgs.rust-analyzer}/bin/rust-analyzer" }
-                # })
+                # require('lspconfig').rust_analyzer.setup({})
                 # require('lspconfig').gopls.setup({
                 #     cmd = { "${pkgs.gopls}/bin/gopls" }
                 # })
