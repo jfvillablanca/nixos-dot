@@ -4,6 +4,10 @@ let
         ./lua/impatient.lua
         ./lua/options.lua
         ./lua/keymaps.lua
+
+        ./lua/nvim-tree.lua
+        ./lua/lualine.lua
+        ./lua/toggleterm.lua
     ];
 in
 {
@@ -23,6 +27,10 @@ in
         plugins = with pkgs.vimPlugins; [
             plenary-nvim
             impatient-nvim
+            nvim-web-devicons
+            nvim-tree-lua
+            lualine-nvim
+            toggleterm-nvim
 
             nvim-lspconfig
             mason-lspconfig-nvim
