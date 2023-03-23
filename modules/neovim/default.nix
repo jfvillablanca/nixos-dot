@@ -6,11 +6,6 @@ let
         ./lua/keymaps.lua
         ./lua/autocommands.lua
 
-        ./lua/nvim-tree.lua
-        ./lua/lualine.lua
-        ./lua/toggleterm.lua
-        ./lua/indentline.lua
-        ./lua/whichkey.lua
             ./lua/colorschemes/rosepine.lua
             ./lua/colorschemes/kanagawa.lua
         ./lua/colorscheme.lua
@@ -20,16 +15,6 @@ let
         ./lua/lsp/lsp.lua
         ./lua/lsp/null-ls.lua
         # ./lua/typescript-nvim.lua -- need to package 
-
-        ./lua/telescope.lua
-
-        ./lua/treesitter.lua
-
-        ./lua/gitsigns.lua
-
-        ./lua/comment.lua
-
-        ./lua/trouble.lua
     ];
 in
 {
@@ -66,11 +51,32 @@ in
             plenary-nvim
             impatient-nvim
             nvim-web-devicons
-            nvim-tree-lua
-            lualine-nvim
-            toggleterm-nvim
-            indent-blankline-nvim
-            which-key-nvim
+            
+            {
+                plugin = nvim-tree-lua;
+                type = "lua";
+                config = builtins.readFile ./lua/nvim-tree.lua;
+            }
+            {
+                plugin = lualine-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/lualine.lua;
+            }
+            {
+                plugin = toggleterm-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/toggleterm.lua;
+            }
+            {
+                plugin = indent-blankline-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/indentline.lua;
+            }
+            {
+                plugin = which-key-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/whichkey.lua;
+            }
 
             # Colorschemes
             tokyonight-nvim
@@ -115,18 +121,40 @@ in
             null-ls-nvim
 
             # Telescope
-            telescope-nvim
-            telescope-fzf-native-nvim
+            {
+                plugin = telescope-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/telescope.lua;
+            }
+            # telescope-fzf-native-nvim
             
             # Treesitter
-            nvim-treesitter.withAllGrammars
+            {
+                plugin = nvim-treesitter.withAllGrammars;
+                type = "lua";
+                config = builtins.readFile ./lua/treesitter.lua;
+            }
 
-            gitsigns-nvim
-
-            comment-nvim
-            # nvim-ts-context-commentstring
-
-            trouble-nvim
+            {
+                plugin = gitsigns-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/gitsigns.lua;
+            }
+            {
+                plugin = comment-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/comment.lua;
+            }
+                # Need to package
+            # {
+            #     plugin = nvim-ts-context-commentstring;
+            #     type = "lua";
+            # }
+            {
+                plugin = trouble-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/trouble.lua;
+            }
             {
                 plugin = todo-comments-nvim;
                 type = "lua";
