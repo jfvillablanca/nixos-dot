@@ -9,7 +9,11 @@
         withPython3 = true;
         withRuby = true;
 
-        extraLuaConfig = builtins.readFile ./lua/options.lua;
+        extraLuaConfig = 
+            builtins.concatStringsSep "\n" [ 
+                (builtins.readFile ./lua/options.lua) 
+                (builtins.readFile ./lua/keymaps.lua)
+            ];
 
         plugins = with pkgs.vimPlugins; [
             plenary-nvim
