@@ -21,7 +21,7 @@ let
 
         ./lua/telescope.lua
 
-        # ./lua/treesitter.lua
+        ./lua/treesitter.lua
 
         ./lua/gitsigns.lua
 
@@ -91,7 +91,7 @@ in
             telescope-fzf-native-nvim
             
             # Treesitter
-            # nvim-treesitter.withAllGrammars
+            nvim-treesitter.withAllGrammars
 
             gitsigns-nvim
 
