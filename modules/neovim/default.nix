@@ -18,6 +18,14 @@ let
 
         ./lua/lsp/lsp.lua
         ./lua/lsp/null-ls.lua
+
+        ./lua/telescope.lua
+
+        # ./lua/treesitter.lua
+
+        ./lua/gitsigns.lua
+
+        ./lua/comment.lua
     ];
 in
 {
@@ -61,10 +69,23 @@ in
             luasnip
             friendly-snippets
 
+            # LSP
             nvim-lspconfig
             mason-nvim
             mason-lspconfig-nvim
             null-ls-nvim
+
+            # Telescope
+            telescope-nvim
+            telescope-fzf-native-nvim
+            
+            # Treesitter
+            # nvim-treesitter.withAllGrammars
+
+            gitsigns-nvim
+
+            comment-nvim
+            # nvim-ts-context-commentstring
         ];
     };
 }
