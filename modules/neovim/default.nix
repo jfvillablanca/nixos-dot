@@ -9,20 +9,14 @@
         withPython3 = true;
         withRuby = true;
 
-        extraLuaConfig = builtins.readFile ./nvim/lua/user/options.lua;
+        extraLuaConfig = builtins.readFile ./lua/options.lua;
 
         plugins = with pkgs.vimPlugins; [
             plenary-nvim
             {
                 plugin = impatient-nvim;
                 type = "lua";
-                config = ''
-                    local status_ok, impatient = pcall(require,  "impatient")
-                    if not status_ok then
-                        return
-                    end
-                    impatient.enable_profile()
-                '';
+                config = builtins.readFile ./lua/impatient.lua;
             }
 
             nvim-lspconfig
