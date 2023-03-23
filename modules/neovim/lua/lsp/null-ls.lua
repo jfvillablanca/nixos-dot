@@ -12,7 +12,7 @@ null_ls.setup({
 	debug = false,
 	sources = {
 		-- webdev --
-		require("typescript.extensions.null-ls.code-actions"),
+		-- require("typescript.extensions.null-ls.code-actions"),
 
 		-- formatting.deno_fmt,
 		formatting.prettier.with({

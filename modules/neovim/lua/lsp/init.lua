@@ -4,5 +4,5 @@ if not status_ok then
 end
 
 require "mason"
-require("handlers").setup()
+handlers.setup() -- refactor
 require "null-ls"

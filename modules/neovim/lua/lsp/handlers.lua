@@ -1,15 +1,15 @@
-local M = {}
+local handlers = {}
 
 local status_cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_cmp_ok then
 	return
 end
 
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
-M.capabilities.textDocument.completion.completionItem.snippetSupport = true
-M.capabilities = cmp_nvim_lsp.default_capabilities(M.capabilities)
+handlers.capabilities = vim.lsp.protocol.make_client_capabilities()
+handlers.capabilities.textDocument.completion.completionItem.snippetSupport = true
+handlers.capabilities = cmp_nvim_lsp.default_capabilities(handlers.capabilities)
 
-M.setup = function()
+handlers.setup = function()
 	local signs = {
 
 		{ name = "DiagnosticSignError", text = "" },
@@ -107,7 +107,7 @@ end
 -- if you want to set up formatting on save, you can use this as a callback
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-M.on_attach = function(client, bufnr)
+handlers.on_attach = function(client, bufnr)
 	if client.name == "tsserver" then
 		client.server_capabilities.documentFormattingProvider = false
 	end
@@ -135,5 +135,3 @@ M.on_attach = function(client, bufnr)
 
 	illuminate.on_attach(client)
 end
-
-return M
