@@ -23,17 +23,6 @@ handlers.setup = function()
 	end
 
 	local config = {
-		-- virtual_text = false, -- disable virtual text
-		-- virtual_text = {
-		-- 	-- severity = nil,
-		-- 	source = "if_many",
-		-- 	format = function(diagnostic)
-		-- 		if diagnostic.severity == vim.diagnostic.severity.ERROR then
-		-- 			return string.format("E: %s", diagnostic.message)
-		-- 		end
-		-- 		return diagnostic.message
-		-- 	end,
-		-- },
 		signs = {
 			active = signs, -- show signs
 		},
@@ -128,70 +117,33 @@ handlers.on_attach = function(client, bufnr)
 	end
 
 	lsp_keymaps(bufnr)
-	local status_ok, illuminate = pcall(require, "illuminate")
-	if not status_ok then
-		return
-	end
-
-	illuminate.on_attach(client)
 end
 
--- local servers = {
--- 	"bashls",
--- 	"cssls",
--- 	-- "denols",
--- 	"emmet_ls",
---     "gopls",
--- 	"grammarly",
--- 	"html",
--- 	"jsonls",
--- 	"lua_ls",
--- 	"rust_analyzer",
--- 	"tailwindcss",
--- 	"tsserver",
--- 	"yamlls",
--- }
--- 
--- local settings = {
--- 	ui = {
--- 		border = "none",
--- 		icons = {
--- 			package_installed = "",
--- 			package_pending = "ﲐ",
--- 			package_uninstalled = "",
--- 		},
--- 	},
--- 	log_level = vim.log.levels.INFO,
--- 	max_concurrent_installers = 4,
--- }
--- 
--- require("mason").setup(settings)
--- require("mason-lspconfig").setup({
--- 	ensure_installed = servers,
--- 	automatic_installation = true,
--- })
+local servers = {
+	"bashls",
+	"tsserver",
+	"tailwindcss",
+	-- "nil_ls",
+	-- "lua_ls",
+	-- "gopls",
+	-- "rust_analyzer",
+	-- "hls",
+}
 
--- local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
--- if not lspconfig_status_ok then
--- 	return
--- end
--- 
--- local opts = {}
--- 
--- for _, server in pairs(servers) do
--- 	opts = {
--- 		on_attach = handlers.on_attach,
--- 		capabilities = handlers.capabilities,
--- 	}
--- 
--- 	server = vim.split(server, "@")[1]
--- 
--- 	local require_ok, conf_opts = pcall(require, server)
--- 	if require_ok then
--- 		opts = vim.tbl_deep_extend("force", conf_opts, opts)
--- 	end
--- 
--- 	lspconfig[server].setup(opts)
--- end
+local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
+if not lspconfig_status_ok then
+	return
+end
+
+local opts = {}
+
+for _, server in pairs(servers) do
+	opts = {
+		on_attach = handlers.on_attach,
+		capabilities = handlers.capabilities,
+	}
+
+	lspconfig[server].setup(opts)
+end
 
 handlers.setup()

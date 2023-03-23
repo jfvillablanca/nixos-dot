@@ -5,9 +5,7 @@ let
         ./lua/options.lua
         ./lua/keymaps.lua
         ./lua/autocommands.lua
-
         ./lua/cmp.lua
-
         ./lua/lsp/lsp.lua
         # ./lua/typescript-nvim.lua -- need to package 
     ];
@@ -123,10 +121,10 @@ in
                 require('lspconfig').lua_ls.setup({
                     cmd = { "${pkgs.lua-language-server}/bin/lua-language-server" }
                 })
-                require('lspconfig').tsserver.setup({})
-                require('lspconfig').tailwindcss.setup({})
-                require('lspconfig').bashls.setup({})
                 '';
+                # require('lspconfig').tsserver.setup({})
+                # require('lspconfig').tailwindcss.setup({})
+                # require('lspconfig').bashls.setup({})
                 # require('lspconfig').rust_analyzer.setup({})
                 # require('lspconfig').gopls.setup({
                 #     cmd = { "${pkgs.gopls}/bin/gopls" }
