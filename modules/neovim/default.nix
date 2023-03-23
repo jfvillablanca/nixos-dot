@@ -15,6 +15,11 @@ let
         ./lua/colorscheme.lua
         
         ./lua/cmp.lua
+
+            ./lua/lsp/mason.lua
+            ./lua/lsp/handlers.lua
+            ./lua/lsp/null-ls.lua
+        ./lua/lsp/init.lua
     ];
 in
 {
@@ -59,8 +64,9 @@ in
             friendly-snippets
 
             nvim-lspconfig
-            mason-lspconfig-nvim
             mason-nvim
+            mason-lspconfig-nvim
+            null-ls-nvim
         ];
     };
 }
