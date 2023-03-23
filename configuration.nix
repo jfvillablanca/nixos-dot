@@ -8,7 +8,8 @@ let
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -65,7 +66,7 @@ in
           enableContribAndExtras = false;
         };
         i3 = {
-            enable = true;
+          enable = true;
         };
       };
     };
@@ -113,7 +114,7 @@ in
     ];
   };
   # NixOs Configuration
-  nix = { 
+  nix = {
     settings.auto-optimise-store = true;
     gc = {
       automatic = true;
