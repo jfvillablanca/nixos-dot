@@ -1,13 +1,10 @@
 local colorscheme = "kanagawa"
 
-if colorscheme == "gruvbox-baby" then
-	require("user.colorschemes.gruvboxbaby")
-end
 if colorscheme == "rose-pine" then
-	require("user.colorschemes.rosepine")
+	require("rosepine")
 end
 if colorscheme == "kanagawa" then
-	require("user.colorschemes.kanagawa")
+	require("kanagawa")
 end
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
