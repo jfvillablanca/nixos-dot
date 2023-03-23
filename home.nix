@@ -16,14 +16,6 @@
         homeDirectory = "/home/jmfv";
         stateVersion = "22.11";
         packages = with pkgs; [
-            # Languages
-            rustup
-            nodejs
-            go
-            python311
-            python311Packages.pip
-            nodePackages_latest.typescript
-
             # Terminal
             fzf                             # Fuzzy search
             xplr                            # TUI file explorer

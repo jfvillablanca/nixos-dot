@@ -108,9 +108,6 @@ in
   environment = {
     systemPackages = with pkgs; [
       wget
-      gcc
-      gnumake
-
     ];
   };
   # NixOs Configuration
