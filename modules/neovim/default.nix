@@ -4,6 +4,7 @@ let
         ./lua/impatient.lua
         ./lua/options.lua
         ./lua/keymaps.lua
+        ./lua/autocommands.lua
 
         ./lua/nvim-tree.lua
         ./lua/lualine.lua
