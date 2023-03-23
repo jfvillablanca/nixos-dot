@@ -6,7 +6,7 @@ let
         ./lua/keymaps.lua
         ./lua/autocommands.lua
         ./lua/cmp.lua
-        ./lua/lsp/lsp.lua
+        ./lua/lsp.lua
         # ./lua/typescript-nvim.lua -- need to package 
     ];
 in
@@ -26,6 +26,11 @@ in
         rust-analyzer
         haskellPackages.haskell-language-server
     ];
+
+    xdg.configFile."nvim/servers" = {
+        source = ./lua/servers;
+        recursive = true;
+    };
 
     programs.neovim = {
         enable = true;
