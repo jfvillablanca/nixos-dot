@@ -26,6 +26,17 @@ let
         ./lua/gitsigns.lua
 
         ./lua/comment.lua
+
+        ./lua/trouble.lua
+        ./lua/todo-comments.lua
+        ./lua/leap.lua
+        ./lua/wilder.lua
+        ./lua/zk-nvim.lua
+        # ./lua/markdownpreview.lua
+        ./lua/zen-mode.lua
+        ./lua/twilight.lua
+        ./lua/nvim-highlight-colors.lua
+        ./lua/nvim-lastplace.lua
     ];
 in
 {
@@ -86,6 +97,20 @@ in
 
             comment-nvim
             # nvim-ts-context-commentstring
+
+            trouble-nvim
+            todo-comments-nvim
+
+            leap-nvim
+            wilder-nvim
+            zk-nvim
+            # markdown-preview-nvim
+
+            zen-mode-nvim
+            twilight-nvim
+            nvim-highlight-colors
+            # kmonad-vim (not a package yet)
+            nvim-lastplace
         ];
     };
 }
