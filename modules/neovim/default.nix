@@ -9,7 +9,6 @@ let
         ./lua/cmp.lua
 
         ./lua/lsp/lsp.lua
-        ./lua/lsp/null-ls.lua
         # ./lua/typescript-nvim.lua -- need to package 
     ];
 in
@@ -130,7 +129,11 @@ in
                 #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
                 # })
             }
-            null-ls-nvim
+            {
+                plugin = null-ls-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/null-ls.lua;
+            }
 
             # Telescope
             {
