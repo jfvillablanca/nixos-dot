@@ -47,26 +47,31 @@ in
             impatient-nvim
             nvim-web-devicons
             
+            # nvim-tree
             {
                 plugin = nvim-tree-lua;
                 type = "lua";
                 config = builtins.readFile ./lua/nvim-tree.lua;
             }
+            # lualine
             {
                 plugin = lualine-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/lualine.lua;
             }
+            # toggleterm
             {
                 plugin = toggleterm-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/toggleterm.lua;
             }
+            # indent-blankline
             {
                 plugin = indent-blankline-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/indentline.lua;
             }
+            # which-key
             {
                 plugin = which-key-nvim;
                 type = "lua";
@@ -107,6 +112,7 @@ in
             friendly-snippets
 
             # LSP
+            # nvim-lspconfig
             {
                 plugin = nvim-lspconfig;
                 type = "lua";
@@ -129,6 +135,7 @@ in
                 #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
                 # })
             }
+            # null-ls
             {
                 plugin = null-ls-nvim;
                 type = "lua";
@@ -150,11 +157,13 @@ in
                 config = builtins.readFile ./lua/treesitter.lua;
             }
 
+            # gitsigns
             {
                 plugin = gitsigns-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/gitsigns.lua;
             }
+            # comment-nvim
             {
                 plugin = comment-nvim;
                 type = "lua";
@@ -165,21 +174,25 @@ in
             #     plugin = nvim-ts-context-commentstring;
             #     type = "lua";
             # }
+            # trouble-nvim
             {
                 plugin = trouble-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/trouble.lua;
             }
+            # todo-comments
             {
                 plugin = todo-comments-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/todo-comments.lua;
             }
+            # leap
             {
                 plugin = leap-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/leap.lua;
             }
+            # wilder
             {
                 plugin = wilder-nvim;
                 type = "lua";
@@ -196,26 +209,31 @@ in
             #     type = "lua";
             #     config = builtins.readFile ./lua/markdownpreview.lua;
             # }
+            # zen mode
             {
                 plugin = zen-mode-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/zen-mode.lua;
             }
+            # twilight-nvim
             {
                 plugin = twilight-nvim;
                 type = "lua";
                 config = builtins.readFile ./lua/twilight.lua;
             }
+            # nvim-highlight-colors
             {
                 plugin = nvim-highlight-colors;
                 type = "lua";
                 config = builtins.readFile ./lua/nvim-highlight-colors.lua;
             }
+            # nvim-lastplace
             {
                 plugin = nvim-lastplace;
                 type = "lua";
                 config = builtins.readFile ./lua/nvim-lastplace.lua;
             }
+            # kmonad (syntax highlighting)
             # {
             #     plugin = kmonad-vim;
             #     type = "lua";
