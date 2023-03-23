@@ -30,15 +30,6 @@ let
         ./lua/comment.lua
 
         ./lua/trouble.lua
-        ./lua/todo-comments.lua
-        ./lua/leap.lua
-        ./lua/wilder.lua
-        ./lua/zk-nvim.lua
-        # ./lua/markdownpreview.lua
-        ./lua/zen-mode.lua
-        ./lua/twilight.lua
-        ./lua/nvim-highlight-colors.lua
-        ./lua/nvim-lastplace.lua
     ];
 in
 {
@@ -136,18 +127,56 @@ in
             # nvim-ts-context-commentstring
 
             trouble-nvim
-            todo-comments-nvim
-
-            leap-nvim
-            wilder-nvim
-            zk-nvim
-            # markdown-preview-nvim
-
-            zen-mode-nvim
-            twilight-nvim
-            nvim-highlight-colors
-            # kmonad-vim (not a package yet)
-            nvim-lastplace
+            {
+                plugin = todo-comments-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/todo-comments.lua;
+            }
+            {
+                plugin = leap-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/leap.lua;
+            }
+            {
+                plugin = wilder-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/wilder.lua;
+            }
+                # Test how zk would work in Nix
+            # {
+            #     plugin = zk-nvim;
+            #     type = "lua";
+            #     config = builtins.readFile ./lua/zk-nvim.lua;
+            # }
+            # {
+            #     plugin = markdown-preview-nvim;
+            #     type = "lua";
+            #     config = builtins.readFile ./lua/markdownpreview.lua;
+            # }
+            {
+                plugin = zen-mode-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/zen-mode.lua;
+            }
+            {
+                plugin = twilight-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/twilight.lua;
+            }
+            {
+                plugin = nvim-highlight-colors;
+                type = "lua";
+                config = builtins.readFile ./lua/nvim-highlight-colors.lua;
+            }
+            {
+                plugin = nvim-lastplace;
+                type = "lua";
+                config = builtins.readFile ./lua/nvim-lastplace.lua;
+            }
+            # {
+            #     plugin = kmonad-vim;
+            #     type = "lua";
+            # }
         ];
     };
 }
