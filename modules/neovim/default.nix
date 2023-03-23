@@ -120,13 +120,13 @@ in
                 plugin = nvim-lspconfig;
                 type = "lua";
                 config = ''
-                require('lspconfig').nil_ls.setup({
-                    cmd = { "${pkgs.nil}/bin/nil" }
-                })
                 require('lspconfig').lua_ls.setup({
                     cmd = { "${pkgs.lua-language-server}/bin/lua-language-server" }
                 })
                 '';
+                # require('lspconfig').nil_ls.setup({
+                #     cmd = { "${pkgs.nil}/bin/nil" }
+                # })
                 # require('lspconfig').tsserver.setup({})
                 # require('lspconfig').tailwindcss.setup({})
                 # require('lspconfig').bashls.setup({})
