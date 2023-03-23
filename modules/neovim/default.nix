@@ -1,4 +1,11 @@
 { config, pkgs, ... }:
+let
+    luaConfig = [
+        ./lua/impatient.lua
+        ./lua/options.lua
+        ./lua/keymaps.lua
+    ];
+in
 {
     programs.neovim = {
         enable = true;
@@ -10,18 +17,12 @@
         withRuby = true;
 
         extraLuaConfig = 
-            builtins.concatStringsSep "\n" [ 
-                (builtins.readFile ./lua/options.lua) 
-                (builtins.readFile ./lua/keymaps.lua)
-            ];
+            builtins.concatStringsSep "\n" 
+            (map builtins.readFile luaConfig);
 
         plugins = with pkgs.vimPlugins; [
             plenary-nvim
-            {
-                plugin = impatient-nvim;
-                type = "lua";
-                config = builtins.readFile ./lua/impatient.lua;
-            }
+            impatient-nvim
 
             nvim-lspconfig
             mason-lspconfig-nvim
