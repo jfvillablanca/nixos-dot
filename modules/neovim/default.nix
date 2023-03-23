@@ -13,7 +13,8 @@ let
             ./lua/colorschemes/rosepine.lua
             ./lua/colorschemes/kanagawa.lua
         ./lua/colorscheme.lua
-            
+        
+        ./lua/cmp.lua
     ];
 in
 {
@@ -44,6 +45,18 @@ in
             tokyonight-nvim
             rose-pine
             kanagawa-nvim
+
+            # Cmp
+            nvim-cmp
+            cmp-buffer
+            cmp-path
+            cmp_luasnip
+            cmp-nvim-lsp
+            cmp-nvim-lua
+
+            # Snippets
+            luasnip
+            friendly-snippets
 
             nvim-lspconfig
             mason-lspconfig-nvim
