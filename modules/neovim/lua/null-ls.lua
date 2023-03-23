@@ -36,6 +36,9 @@ null_ls.setup({
 		-- bash --
 		formatting.shfmt,
 
+        -- nix --
+        formatting.nixpkgs_fmt,
+
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
 	},
