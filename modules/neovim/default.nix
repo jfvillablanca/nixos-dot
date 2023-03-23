@@ -98,9 +98,36 @@ in
             friendly-snippets
 
             # LSP
-            nvim-lspconfig
-            mason-nvim
-            mason-lspconfig-nvim
+            {
+                plugin = nvim-lspconfig;
+                type = "lua";
+                config = ''
+                require('lspconfig').nil_ls.setup({
+                    cmd = { "${pkgs.nil}/bin/nil" }
+                })
+                require('lspconfig').lua_ls.setup({
+                    cmd = { "${pkgs.lua-language-server}/bin/lua-language-server" }
+                })
+                '';
+                # -- require('lspconfig').bashls.setup({
+                # --     cmd = { "${pkgs.bash-language-server}/bin/bash-language-server" }
+                # -- })
+                # require('lspconfig').tsserver.setup({
+                #     cmd = { "${pkgs.tsserver}/bin/tsserver" }
+                # })
+                # require('lspconfig').tailwindcss.setup({
+                #     cmd = { "${pkgs.tailwindcss}/bin/tailwindcss" }
+                # })
+                # require('lspconfig').rust_analyzer.setup({
+                #     cmd = { "${pkgs.rust-analyzer}/bin/rust-analyzer" }
+                # })
+                # require('lspconfig').gopls.setup({
+                #     cmd = { "${pkgs.gopls}/bin/gopls" }
+                # })
+                # require('lspconfig').hls.setup({
+                #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
+                # })
+            }
             null-ls-nvim
 
             # Telescope
