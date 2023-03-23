@@ -16,10 +16,8 @@ let
         
         ./lua/cmp.lua
 
-            ./lua/lsp/handlers.lua
-            ./lua/lsp/mason.lua
-            ./lua/lsp/null-ls.lua
-        ./lua/lsp/init.lua
+        ./lua/lsp/lsp.lua
+        ./lua/lsp/null-ls.lua
     ];
 in
 {
