@@ -21,6 +21,7 @@
             xplr                            # TUI file explorer
             imv                             # Image viewer
             tldr                            # Lazy man's help/man page
+            manix                           # Nix document searcher
 
             # Utils
             xclip                           # Clipboard
