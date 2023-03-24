@@ -8,6 +8,8 @@ let
         ./lua/cmp.lua
         ./lua/lsp.lua
         # ./lua/typescript-nvim.lua -- need to package 
+        # ./lua/markdownpreview.lua -- need to package 
+        # ./lua/zk-nvim.lua -- need to package 
     ];
 in
 {
