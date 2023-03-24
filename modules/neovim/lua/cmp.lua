@@ -18,7 +18,7 @@ end
 --   פּ ﯟ   some other good icons
 local kind_icons = {
 	Text = "",
-	Method = "m",
+	Method = "",
 	Function = "",
 	Constructor = "",
 	Field = "",
@@ -38,7 +38,7 @@ local kind_icons = {
 	Folder = "",
 	EnumMember = "",
 	Constant = "",
-	Struct = "",
+	Struct = "",
 	Event = "",
 	Operator = "",
 	TypeParameter = "",
@@ -95,12 +95,10 @@ cmp.setup({
 		}),
 	},
 	formatting = {
-		-- fields = { "kind", "abbr", "menu" },
 		fields = { "abbr", "kind", "menu" },
 		format = function(entry, vim_item)
 			-- Kind icons
-			-- vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-			vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+			vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind) -- This concatenates the icons with the name of the item kind
 			vim_item.menu = ({
 				nvim_lsp = "[LSP]",
 				luasnip = "[Snippet]",
@@ -109,7 +107,7 @@ cmp.setup({
 			})[entry.source.name]
 			return vim_item
 		end,
-	 },
+	},
 	sources = {
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
@@ -130,7 +128,7 @@ cmp.setup({
 	},
 	experimental = {
 		ghost_text = true,
-    native_menu = false,
+		native_menu = false,
 	},
 	enabled = function()
 		local buftype = vim.api.nvim_buf_get_option(0, "buftype")
