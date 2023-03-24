@@ -90,27 +90,6 @@ in
                 config = builtins.readFile ./lua/whichkey.lua;
             }
 
-            # Colorschemes
-            {
-                plugin = kanagawa-nvim;
-                # plugin = tokyonight-nvim;
-                # plugin = rose-pine;
-                type = "lua";
-                config = builtins.readFile ./lua/colorschemes/kanagawa.lua + ''
-                local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "kanagawa")
-                if not status_ok then
-                    return
-                end
-                vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-                vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-                vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
-                vim.api.nvim_set_hl(0, "FloatermBorder", { bg = "none" })
-                vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = "none" })
-                vim.api.nvim_set_hl(0, "LspInfoBorder", { bg = "none" })
-                vim.api.nvim_set_hl(0, "PMenu", { bg = "none" })
-                '';
-            }
-
             # Cmp
             nvim-cmp
             cmp-buffer
@@ -250,6 +229,20 @@ in
             #     plugin = kmonad-vim;
             #     type = "lua";
             # }
+            
+            # Colorschemes
+            {
+                plugin = kanagawa-nvim;
+                # plugin = tokyonight-nvim;
+                # plugin = rose-pine;
+                type = "lua";
+                config = builtins.readFile ./lua/colorschemes/kanagawa.lua + ''
+                local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "kanagawa")
+                if not status_ok then
+                    return
+                end
+                '' + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
+            }
         ];
     };
 }
