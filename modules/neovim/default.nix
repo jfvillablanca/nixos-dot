@@ -142,7 +142,6 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/telescope.lua;
             }
-            # telescope-fzf-native-nvim
             
             # Treesitter
             {
@@ -150,6 +149,7 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/treesitter.lua;
             }
+            telescope-manix
 
             # gitsigns
             {
