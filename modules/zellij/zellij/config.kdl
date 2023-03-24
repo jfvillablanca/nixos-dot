@@ -1,6 +1,7 @@
 default_shell "zsh"
 
 layout_dir "./layouts"
+default_layout "default"
 
 themes {
     kanagawa {
@@ -229,11 +230,6 @@ plugins {
 //   - false
 //
 // auto_layout true
-
-// The name of the default layout to load on startup
-// Default: "default"
-//
-// default_layout "compact"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal
