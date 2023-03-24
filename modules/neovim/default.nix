@@ -14,20 +14,26 @@ let
 in
 {
     home.packages = with pkgs; [
-        nodePackages_latest.prettier
-        stylua
-        shfmt
-        nixpkgs-fmt
+        # Formatters
+        nodePackages_latest.prettier                    # webdev
+        stylua                                          # lua
+        shfmt                                           # sh
+        nixpkgs-fmt                                     # nix
+        rustfmt                                         # rust
 
-        nodePackages_latest.bash-language-server
-        nodePackages_latest.typescript-language-server
-        nodePackages_latest.tailwindcss
+        # Linters
+        statix                                          # nix
+        shellcheck                                      # sh
 
-        nil
-        gopls
-        sumneko-lua-language-server
-        rust-analyzer
-        haskellPackages.haskell-language-server
+        # Language Servers
+        nodePackages_latest.bash-language-server        # sh
+        nodePackages_latest.typescript-language-server  # webdev
+        nodePackages_latest.tailwindcss                 # tailwind
+        nil                                             # nix
+        gopls                                           # go
+        sumneko-lua-language-server                     # lua
+        rust-analyzer                                   # rust
+        haskellPackages.haskell-language-server         # haskell
     ];
 
     xdg.configFile."nvim/servers" = {
