@@ -75,6 +75,12 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/indentline.lua;
             }
+            # autopairs
+            {
+                plugin = nvim-autopairs;
+                type = "lua";
+                config = builtins.readFile ./lua/autopairs.lua;
+            }
             # which-key
             {
                 plugin = which-key-nvim;
