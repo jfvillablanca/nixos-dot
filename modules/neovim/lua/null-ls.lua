@@ -18,31 +18,38 @@ null_ls.setup({
 		formatting.prettier.with({
 			extra_args = { "--jsx-single-quote", "--tab-width", "4", "--html-whitespace-sensitivity", "ignore" },
 			filetypes = {
-				"html",
-				"markdown",
-				"css",
-				"scss",
-				"sass",
 				"javascript",
 				"javascriptreact",
 				"typescript",
 				"typescriptreact",
+				"vue",
+				"css",
+				"sass",
+				"scss",
+				"less",
+				"html",
+				"json",
+				"jsonc",
+				"yaml",
+				"markdown",
+				"markdown.mdx",
+				"graphql",
+				"handlebars",
 			},
 		}),
 
 		-- lua --
 		formatting.stylua,
 
-		-- bash --
+		-- sh --
 		formatting.shfmt,
+		diagnostics.shellcheck,
 
-        -- nix --
-        formatting.nixpkgs_fmt,
+		-- nix --
+		formatting.nixpkgs_fmt,
+		diagnostics.statix,
 
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
-	},
-	diagnostics = {
-		filetypes = { "javascript", "javascriptreact" },
 	},
 })

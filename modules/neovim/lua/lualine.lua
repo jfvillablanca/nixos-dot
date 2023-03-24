@@ -10,10 +10,8 @@ end
 local diagnostics = {
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
-	-- sections = { "error", "warn", "info", "hint", },
-	-- symbols = { error = " ", warn = " ", info = " ", hint = " " },
-	sections = { "error", "warn" },
-	symbols = { error = " ", warn = " " },
+	sections = { "error", "warn" }, -- [possible values] sections = { "error", "warn", "info", "hint", },
+	symbols = { error = " ", warn = " " }, -- [possible values] symbols = { error = " ", warn = " ", info = " ", hint = " " },
 	colored = true,
 	update_in_insert = false,
 	always_visible = true,
@@ -23,22 +21,20 @@ local diff = {
 	"diff",
 	colored = true,
 	symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
-  cond = hide_in_width
+	cond = hide_in_width,
 }
 
 local mode = {
 	"mode",
 	fmt = function(str)
-		-- return "-- " .. str .. " --"
 		return str
 	end,
-  color = { gui = 'bold' },
+	color = { gui = "bold" },
 }
 
 local filetype = {
 	"filetype",
 	icons_enabled = true,
-	-- icon = nil,
 }
 
 local branch = {
@@ -52,39 +48,25 @@ local location = {
 	padding = 0,
 }
 
--- cool function for progress
-local progress = function()
-	local current_line = vim.fn.line(".")
-	local total_lines = vim.fn.line("$")
-	local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-	local line_ratio = current_line / total_lines
-	local index = math.ceil(line_ratio * #chars)
-	return chars[index]
-end
-
 local lspserver = {
-  function()
-    local msg = 'No Active Lsp'
-    local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    local clients = vim.lsp.get_active_clients()
-    if next(clients) == nil then
-      return msg
-    end
-    for _, client in ipairs(clients) do
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
-      end
-    end
-    return msg
-  end,
-  icon = '',
-  -- color = { fg = '#ffffff', gui = 'bold' },
+	function()
+		local msg = "No Active Lsp"
+		local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+		local clients = vim.lsp.get_active_clients()
+		if next(clients) == nil then
+			return msg
+		end
+		for _, client in ipairs(clients) do
+			local filetypes = client.config.filetypes
+			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+				return client.name
+			end
+		end
+		return msg
+	end,
+	icon = " ",
+	color = { gui = "bold" },
 }
-
-local spaces = function()
-	return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-end
 
 lualine.setup({
 	options = {
@@ -99,11 +81,9 @@ lualine.setup({
 		lualine_a = { mode },
 		lualine_b = { branch, diagnostics },
 		lualine_c = { "filename" },
-		-- lualine_x = { "encoding", "fileformat", "filetype" },
 		lualine_x = { diff, filetype },
 		lualine_y = { location, lspserver },
-		-- lualine_z = { progress },
-    lualine_z = {},
+		lualine_z = {},
 	},
 	inactive_sections = {
 		lualine_a = {},
