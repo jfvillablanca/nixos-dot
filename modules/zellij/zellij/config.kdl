@@ -1,8 +1,5 @@
 default_shell "zsh"
 
-layout_dir "$XDG_CONFIG_HOME/zellij/layouts"
-default_layout "default"
-
 themes {
     kanagawa {
         fg "#DCD7BA"
