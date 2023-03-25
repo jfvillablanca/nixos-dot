@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 {
     # TODO: 
-    # - .source attrib bug (?) configure zellij keybinds for gitui
     # - xrandr autodetect?
     # - configure i3 layout default
 
