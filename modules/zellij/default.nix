@@ -1,7 +1,7 @@
 { ... }:
 {
     xdg.configFile."zellij" = {
-        source = ./zellij;
+        source = ./configs;
         recursive = true;
     };
 
