@@ -9,6 +9,7 @@
         ./zellij 
         ./exa 
         ./zsh 
+        ./bash
         ./gitui 
         ./git 
         ./bat 
