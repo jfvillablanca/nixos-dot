@@ -5,6 +5,7 @@
 { config, pkgs, ... }:
 let
   user = "jmfv";
+  isWayland = false;
 in
 {
   imports =
@@ -55,9 +56,9 @@ in
   # Enable window manager
   services = {
     xserver = {
-      enable = true;
+      enable = !isWayland;
       displayManager = {
-        lightdm.enable = true;
+        lightdm.enable = !isWayland;
         defaultSession = "none+i3";
       };
       windowManager = {
@@ -66,7 +67,7 @@ in
           enableContribAndExtras = false;
         };
         i3 = {
-          enable = true;
+          enable = !isWayland;
         };
       };
     };
@@ -80,6 +81,17 @@ in
 
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
+
+  # Kanshi (for sway)
+  # systemd.user.services.kanshi = {
+  #     description = "kanshi daemon";
+  #     serviceConfig = {
+  #         Type = "simple";
+  #         ExecStart = ''
+  #         ${pkgs.kanshi}/bin/kanshi -c kanshi_config_file
+  #         '';
+  #     };
+  # };
 
   # Fonts
   fonts.fonts = with pkgs; [
