@@ -1,10 +1,13 @@
 { config, pkgs, lib, ... }:
+let
+    isWayland = false;
+in
 {
     # TODO: 
     # - xrandr autodetect?
     # - configure i3 layout default
 
-    imports = [ ({ ... }: import ./modules { inherit config pkgs lib; }) ];
+    imports = [ ({ ... }: import ./modules { inherit config pkgs lib isWayland; }) ];
 
     home = {
         username = "jmfv";
