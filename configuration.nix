@@ -78,6 +78,9 @@ in
     xkbVariant = "";
   };
 
+  # Polkit (need enabled for sway)
+  security.polkit.enable = true;
+
   # Fonts
   fonts.fonts = with pkgs; [
     source-code-pro
