@@ -22,10 +22,8 @@ in
       manix                             # Nix document searcher
 
       # Utils
-      xclip                             # Clipboard
       ripgrep                           # Grep alternative
       fd                                # Find
-      scrot                             # Screenshot utility
       killall                           # Kill processes
       ncdu                              # NCurses Disk Usage
       imagemagick                       # Edit, compose, convert bmp
@@ -46,7 +44,6 @@ in
   };
 
   programs = {
-    feh.enable = true;
   };
 
   services = {

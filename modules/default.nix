@@ -16,6 +16,7 @@ let
   ];
 
   x11Modules = [
+    ./wm/x11
     # ./wm/x11/xmonad 
     ./wm/x11/autorandr
     ./wm/x11/polybar
