@@ -13,17 +13,16 @@ let
     ./gitui
     ./git
     ./bat
-
-    # Window Manager
-    ./wm/rofi
   ];
 
   x11Modules = [
-    # ./wm/xmonad 
-    ./wm/autorandr
-    ./wm/polybar
-    ./wm/i3status-rust
-    ./wm/i3
+    # ./wm/x11/xmonad 
+    ./wm/x11/autorandr
+    ./wm/x11/polybar
+    ./wm/x11/i3status-rust
+    ./wm/x11/i3
+    ./wm/x11/picom
+    ./wm/x11/rofi
   ];
 
   waylandModules = [
