@@ -27,6 +27,8 @@ let
   ];
 
   waylandModules = [
+    ./wm/wayland
+    ./wm/wayland/sway
   ];
 in
 {
