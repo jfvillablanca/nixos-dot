@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   mod = "Mod4";
   term = "alacritty";
@@ -22,7 +22,7 @@ in
               always = true;
             }
             {
-              command = "--no-startup-id feh --bg-fill ~/.config/nixos/.wallpapers/firewatch.jpg";
+              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/firewatch.jpg";
               notification = false;
               always = true;
             }
