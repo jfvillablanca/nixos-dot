@@ -1,4 +1,4 @@
-{ config, pkgs, lib, isWayland, ... }:
+{ config, pkgs, lib, isWayland, user, ... }:
 {
   # TODO: 
   # - xrandr autodetect?
@@ -7,8 +7,8 @@
   imports = [ ({ ... }: import ./modules { inherit config pkgs lib isWayland; }) ];
 
   home = {
-    username = "jmfv";
-    homeDirectory = "/home/jmfv";
+    username = "${user}";
+    homeDirectory = "/home/${user}";
     stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal

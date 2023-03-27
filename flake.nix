@@ -15,6 +15,7 @@
 
   outputs = { nixpkgs, home-manager, neovim-nightly-overlay, ... }@inputs: 
   let
+    user = "jmfv";
     system = "x86_64-linux";
     pkgs = import nixpkgs {
         inherit system;
@@ -28,11 +29,11 @@
   in
     {
       nixosConfigurations = {
-        jmfv = lib.nixosSystem {
+        ${user} = lib.nixosSystem {
             inherit system;
           modules = [
             ({ config, ... }: import ./configuration.nix {
-            inherit config pkgs isWayland;
+            inherit config pkgs isWayland user;
             })
               home-manager.nixosModules.home-manager 
               {
@@ -40,7 +41,7 @@
                 home-manager.useUserPackages = true;
                 home-manager.users.jmfv.imports = [ 
                     ({ config, ... }: import ./home.nix {
-                    inherit config pkgs lib isWayland;
+                    inherit config pkgs lib isWayland user;
                     })
                 ];
               } 
