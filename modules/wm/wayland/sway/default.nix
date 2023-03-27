@@ -47,8 +47,8 @@ in
           "${mod}+q" = "kill";
           "${mod}+Shift+r" = "restart";
           "${mod}+Shift+c" = "reload";
-          "${mod}+Shift+e" =
-            "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+          # "${mod}+Shift+e" =
+          #   "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
 
           "${mod}+Left" = "focus left";
           "${mod}+Down" = "focus down";
