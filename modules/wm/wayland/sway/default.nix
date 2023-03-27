@@ -17,7 +17,10 @@ in
         };
         startup = [
           {
-            command = "waybar";
+            command = "--no-startup-id waybar";
+          }
+          {
+            command = "--no-startup-id swaymsg 'workspace 1; exec ${term}'";
           }
         ];
 
