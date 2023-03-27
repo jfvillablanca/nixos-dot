@@ -9,7 +9,7 @@ let
     ./zellij
     ./exa
     ./zsh
-    ./bash
+    ({ ... }: import ./bash { inherit isWayland; })
     ./gitui
     ./git
     ./bat
