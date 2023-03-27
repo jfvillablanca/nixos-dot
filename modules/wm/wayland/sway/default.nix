@@ -7,6 +7,9 @@ in
   wayland = {
     windowManager.sway = {
       enable = true;
+      swaynag = {
+        enable = true;
+      };
       config = {
         modifier = mod;
         terminal = term;
@@ -50,8 +53,8 @@ in
           "${mod}+q" = "kill";
           "${mod}+Shift+r" = "restart";
           "${mod}+Shift+c" = "reload";
-          # "${mod}+Shift+e" =
-          #   "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+          "${mod}+Shift+e" =
+            "exec swaynag -t warning -m 'Do you want to sway off? This will end your Wayland session' -b 'Yes' 'swaymsg exit'";
 
           "${mod}+Left" = "focus left";
           "${mod}+Down" = "focus down";
