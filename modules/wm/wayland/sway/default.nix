@@ -13,7 +13,6 @@ in
       config = {
         modifier = mod;
         terminal = term;
-
         gaps = {
           outer = 0;
           inner = 5;
@@ -26,14 +25,12 @@ in
             command = "--no-startup-id swaymsg 'workspace 1; exec ${term}'";
           }
         ];
-
         output = {
           Virtual-1 = {
             mode = "1920x1080";
             bg = "${config.xdg.configHome}/.wallpapers/firewatch.jpg fill";
           };
         };
-
         window = {
           titlebar = false;
           border = 2;
