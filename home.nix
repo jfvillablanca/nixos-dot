@@ -1,7 +1,4 @@
-{ config, pkgs, lib, ... }:
-let
-  isWayland = true;
-in
+{ config, pkgs, lib, isWayland, ... }:
 {
   # TODO: 
   # - xrandr autodetect?

@@ -24,20 +24,23 @@
         ];
     };
     lib = nixpkgs.lib;
+    isWayland = true;
   in
     {
       nixosConfigurations = {
         jmfv = lib.nixosSystem {
             inherit system;
           modules = [
-              ./configuration.nix
+            ({ config, ... }: import ./configuration.nix {
+            inherit config pkgs isWayland;
+            })
               home-manager.nixosModules.home-manager 
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.jmfv.imports = [ 
                     ({ config, ... }: import ./home.nix {
-                    inherit config pkgs lib;
+                    inherit config pkgs lib isWayland;
                     })
                 ];
               } 
