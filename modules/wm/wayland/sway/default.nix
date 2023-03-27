@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   mod = "Mod4";
   term = "alacritty";
@@ -20,6 +20,14 @@ in
             command = "alacritty";
           }
         ];
+
+        output = {
+          Virtual-1 = {
+            mode = "1920x1080";
+            bg = "${config.xdg.configHome}/.wallpapers/firewatch.jpg fill";
+          };
+        };
+
         window = {
           titlebar = false;
           border = 2;
@@ -94,7 +102,6 @@ in
         defaultWorkspace = "workspace 1";
         workspaceAutoBackAndForth = true;
       };
-
     };
   };
 }
