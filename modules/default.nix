@@ -30,6 +30,7 @@ let
   waylandModules = [
     ./wm/wayland
     ./wm/wayland/sway
+    ./wm/wayland/waybar
   ];
 in
 {

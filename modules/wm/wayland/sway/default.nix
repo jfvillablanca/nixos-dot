@@ -17,7 +17,7 @@ in
         };
         startup = [
           {
-            command = "alacritty";
+            command = "waybar";
           }
         ];
 
