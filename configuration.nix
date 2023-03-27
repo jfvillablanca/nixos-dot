@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 let
   user = "jmfv";
-  isWayland = false;
+  isWayland = true;
 in
 {
   imports =

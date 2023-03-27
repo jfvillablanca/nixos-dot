@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  isWayland = false;
+  isWayland = true;
 in
 {
   # TODO: 
@@ -50,7 +50,7 @@ in
   };
 
   xsession = {
-    enable = true;
+    enable = !isWayland;
     initExtra = "spice-vdagent &"; # starts the x11 spice-vdagent manually especially if running on none+someWM
   };
 
