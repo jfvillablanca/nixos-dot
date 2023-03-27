@@ -108,6 +108,9 @@ in
         defaultWorkspace = "workspace 1";
         workspaceAutoBackAndForth = true;
       };
+      extraSessionCommands = ''
+        export MOZ_ENABLE_WAYLAND="1";
+      '';
     };
   };
 }
