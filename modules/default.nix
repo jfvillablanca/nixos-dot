@@ -1,6 +1,7 @@
 { config, pkgs, lib, isWayland, ... }:
 let
   modules = [
+    ./wallpapers
     ./alacritty
     ({ ... }: import ./neovim { inherit config pkgs; })
     ./starship
