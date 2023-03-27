@@ -29,7 +29,7 @@ in
       imagemagick                       # Edit, compose, convert bmp
 
       # Browser
-      librewolf
+      (if !isWayland then firefox else firefox-wayland)
 
       # Misc
       neofetch
