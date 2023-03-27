@@ -56,10 +56,13 @@ in
   # Enable window manager
   services = {
     xserver = {
-      enable = !isWayland;
+      enable = true;
       displayManager = {
+        gdm = {
+            enable = isWayland;
+            wayland = isWayland;
+        };
         lightdm.enable = !isWayland;
-        defaultSession = "none+i3";
       };
       windowManager = {
         xmonad = {
