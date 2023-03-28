@@ -25,7 +25,7 @@
         ];
     };
     lib = nixpkgs.lib;
-    isWayland = true;
+    isWayland = false;
   in
     {
       nixosConfigurations = {
