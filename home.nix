@@ -3,6 +3,7 @@
   # TODO: 
   # - xrandr autodetect?
   # - configure i3 layout default
+    # Move colorschemes/themes to separate module and import instead of prop drill
 
   imports = [ ({ ... }: import ./modules { inherit config pkgs lib isWayland; }) ];
 
