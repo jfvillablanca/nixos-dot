@@ -46,6 +46,8 @@ in
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
                     enable-ipc = true;
+
+                    tray-position = "right";
                 };
 
                 "module/xworkspaces" = {
