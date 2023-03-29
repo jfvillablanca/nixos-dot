@@ -124,7 +124,7 @@ local servers = {
 	-- "nil_ls",
 	-- "lua_ls",
 	-- "gopls",
-	-- "rust_analyzer",
+	"rust_analyzer",
 	-- "hls",
 }
 
