@@ -116,6 +116,29 @@ in
                     label-connected-background = colors.background;
                 };
 
+                # "module/network" = {
+                #     type = "internal/network";
+                #     # interface =  wlp0s26u1u4
+                #     interface-type = "wireless";
+                #
+                #     interval = 1.0;
+                #     accumulate-stats = true;
+                #     unknown-as-up = true;
+                #
+                #     label-connected = "%essid%  %downspeed:9%";
+                #     label-disconnected = "";
+                #
+                #     format-connected = "<ramp-signal> <label-connected>";
+                #     format-disconnected = "<label-disconnected>";
+                #
+                #     ramp-signal-0 = "";
+                #     ramp-signal-1 = "";
+                #     ramp-signal-2 = "";
+                #     ramp-signal-3 = "";
+                #     ramp-signal-4 = "";
+                #     ramp-signal-5 = "";
+                # };
+
                 "module/date" = {
                     type = "internal/date";
                     interval = 1;
