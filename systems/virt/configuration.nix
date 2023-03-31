@@ -8,7 +8,6 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # ../../modules/kmonad/nixos-modules.nix
     ];
 
   # Bootloader.
@@ -78,27 +77,10 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "";
-    # xkbOptions = "compose:ralt";
   };
-
-  # services.kmonad = {
-  #   enable = true;
-  #   configfiles = [ ];
-  # };
 
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
-
-  # Kanshi (for sway)
-  # systemd.user.services.kanshi = {
-  #     description = "kanshi daemon";
-  #     serviceConfig = {
-  #         Type = "simple";
-  #         ExecStart = ''
-  #         ${pkgs.kanshi}/bin/kanshi -c kanshi_config_file
-  #         '';
-  #     };
-  # };
 
   # Fonts
   fonts.fonts = with pkgs; [
