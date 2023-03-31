@@ -43,7 +43,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.jmfv.imports = [
+              home-manager.users.${user}.imports = [
                 ({ config, ... }: import ./home.nix {
                   inherit config pkgs lib isWayland user;
                 })
