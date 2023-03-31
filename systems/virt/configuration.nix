@@ -3,9 +3,6 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, isWayland, user, ... }:
-let
-  user = "jmfv";
-in
 {
   imports =
     [
