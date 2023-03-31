@@ -17,7 +17,7 @@
     let
       user = "jmfv";
       hosts = {
-          virt = "virt";
+        virt = "virt";
       };
       system = "x86_64-linux";
       pkgs = import nixpkgs {
