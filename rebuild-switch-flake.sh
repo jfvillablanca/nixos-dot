@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo nixos-rebuild switch --flake .#jmfv
+sudo nixos-rebuild switch --flake .#"${1:-virt}"
