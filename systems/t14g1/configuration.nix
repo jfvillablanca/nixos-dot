@@ -130,7 +130,7 @@
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "uinput" "input" ];
   };
 
   # Allow unfree packages
