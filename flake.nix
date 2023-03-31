@@ -18,6 +18,7 @@
       user = "jmfv";
       hosts = {
         virt = "virt";
+        t14g1 = "t14g1";
       };
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -38,6 +39,26 @@
             ({ config, ... }: import ./systems/virt/configuration.nix {
               inherit config pkgs isWayland user;
               hostName = hosts.virt;
+            })
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${user}.imports = [
+                ({ config, ... }: import ./home.nix {
+                  inherit config pkgs lib isWayland user;
+                })
+              ];
+            }
+          ];
+        };
+
+        ${hosts.t14g1} = lib.nixosSystem {
+          inherit system;
+          modules = [
+            ({ config, ... }: import ./systems/t14g1/configuration.nix {
+              inherit config pkgs isWayland user;
+              hostName = hosts.t14g1;
             })
             home-manager.nixosModules.home-manager
             {
