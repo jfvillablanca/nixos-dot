@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, neovim-nightly-overlay, ... }@inputs:
+  outputs = { nixpkgs, home-manager, neovim-nightly-overlay, ... }:
     let
       user = "jmfv";
       system = "x86_64-linux";
@@ -24,7 +24,7 @@
           neovim-nightly-overlay.overlay
         ];
       };
-      lib = nixpkgs.lib;
+      inherit (nixpkgs) lib;
       isWayland = false;
     in
     {
