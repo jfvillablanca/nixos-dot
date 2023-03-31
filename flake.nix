@@ -32,7 +32,7 @@
         ${user} = lib.nixosSystem {
           inherit system;
           modules = [
-            ({ config, ... }: import ./configuration.nix {
+            ({ config, ... }: import ./systems/virt/configuration.nix {
               inherit config pkgs isWayland user;
             })
             home-manager.nixosModules.home-manager
