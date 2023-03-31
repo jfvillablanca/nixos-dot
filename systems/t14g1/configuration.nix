@@ -77,6 +77,14 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+
+    # Touchpad
+    libinput = {
+        enable = false;
+        touchpad = {
+
+        };        
+    };
   };
 
   # Polkit (need enabled for sway)
