@@ -16,6 +16,9 @@
   outputs = { nixpkgs, home-manager, neovim-nightly-overlay, ... }:
     let
       user = "jmfv";
+      hosts = {
+          virt = "virt";
+      };
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
@@ -29,11 +32,12 @@
     in
     {
       nixosConfigurations = {
-        ${user} = lib.nixosSystem {
+        ${hosts.virt} = lib.nixosSystem {
           inherit system;
           modules = [
             ({ config, ... }: import ./systems/virt/configuration.nix {
               inherit config pkgs isWayland user;
+              hostName = hosts.virt;
             })
             home-manager.nixosModules.home-manager
             {
