@@ -8,6 +8,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/kmonad/nixos-modules.nix
     ];
 
   # Bootloader.
@@ -77,8 +78,16 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "colemak";
+    xkbOptions = "compose:ralt";
+  };
+
+  services.kmonad = {
+    enable = true;
+    configfiles = [ ../../modules/kmonad/kbd/colemak-extended.kbd ];
+  };
 
     # Touchpad
+  services.xserver = {
     libinput = {
         enable = false;
         touchpad = {
