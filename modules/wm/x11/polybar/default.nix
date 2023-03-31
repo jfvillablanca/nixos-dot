@@ -42,7 +42,7 @@ in
                     font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
-                    modules-right = "filesystem network-speed memory cpu date powermenu";
+                    modules-right = "filesystem network-speed memory cpu battery date powermenu";
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
                     enable-ipc = true;
@@ -105,6 +105,14 @@ in
                     label = "%percentage:2%%";
                 };
 
+                "module/battery" = {
+                    type = "internal/battery";
+                    full-at = 99;
+                    low-at = 15;
+                    battery = "BAT0";
+                    adapter = "ADP1";
+                };
+                
                 "module/network-speed" = {
                     type = "internal/network";
                     interface-type = "wired";
