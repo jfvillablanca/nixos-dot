@@ -12,11 +12,10 @@
 
 (defcfg
   ;; For Linux
-  input  (device-file "/dev/input/by-id/usb-Keychron_Keychron_K2-event-kbd")
+  input  (device-file "/dev/input/event0")
   output (uinput-sink "Kmonad Keychron Output"
     ;; To understand the importance of the following line, see the section on
     ;; Compose-key sequences at the near-bottom of this file.
-    "/run/current-system/sw/bin/sleep 1 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
 
   cmp-seq ralt    ;; Set the compose key to `RightAlt'
   cmp-seq-delay 5 ;; 5ms delay between each compose-key sequence press

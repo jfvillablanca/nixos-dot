@@ -8,6 +8,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # ../../modules/kmonad/nixos-modules.nix
     ];
 
   # Bootloader.
@@ -77,7 +78,13 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+    # xkbOptions = "compose:ralt";
   };
+
+  # services.kmonad = {
+  #   enable = true;
+  #   configfiles = [ ];
+  # };
 
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
@@ -112,7 +119,7 @@
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "uinput" ];
   };
 
   # Allow unfree packages

@@ -14,7 +14,6 @@ let
     ./gitui
     ./git
     ./bat
-    ./kmonad
   ];
 
   x11Modules = [
