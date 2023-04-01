@@ -78,7 +78,7 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "colemak";
-    xkbOptions = "compose:ralt";
+    # xkbOptions = "compose:ralt";
   };
 
     # Touchpad
