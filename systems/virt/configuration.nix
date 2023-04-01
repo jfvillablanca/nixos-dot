@@ -8,7 +8,14 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/kmonad-module.nix
     ];
+
+    services.kmonad = {
+        enable = true;
+        # configfiles = [];
+    };
+
 
   # Bootloader.
   boot.loader.grub.enable = true;
