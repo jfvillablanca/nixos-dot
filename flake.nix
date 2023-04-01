@@ -68,6 +68,7 @@
                 ({ config, ... }: import ./home.nix {
                   inherit config pkgs lib isWayland user;
                 })
+                ./modules/t14g1-overrides.nix
               ];
             }
           ];
