@@ -81,8 +81,6 @@ XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   
                                                                XX   XX   XX
 )
 
-  -------------------------------------------------------------------------- |#
-
 (defsrc
      mute vold volu
 esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  home end  ins  del
