@@ -81,13 +81,18 @@
     # xkbOptions = "compose:ralt";
   };
 
-    # Touchpad
+  # Touchpad
   services.xserver = {
     libinput = {
-        enable = false;
-        touchpad = {
-
-        };        
+      enable = true;
+      mouse = {
+        naturalScrolling = true;
+        tapping = true;
+      };
+      touchpad = {
+        naturalScrolling = true;
+        tapping = true;
+      };
     };
   };
 
