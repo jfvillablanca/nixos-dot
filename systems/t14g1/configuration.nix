@@ -57,8 +57,8 @@
       enable = true;
       displayManager = {
         gdm = {
-            enable = isWayland;
-            wayland = isWayland;
+          enable = isWayland;
+          wayland = isWayland;
         };
         lightdm.enable = !isWayland;
       };
