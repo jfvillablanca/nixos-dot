@@ -13,6 +13,7 @@
 
     services.kmonad = {
         enable = true;
+        package = import ./modules/kmonad.nix;
         # configfiles = [];
     };
 
