@@ -41,6 +41,8 @@ keymap("n", "<S-Up>", "mz:m-2<cr>`z", opts)
 -- Remap for dealing with word wrap
 keymap("n", "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap("n", "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap("v", "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap("v", "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Visual --
 -- Stay in indent mode
