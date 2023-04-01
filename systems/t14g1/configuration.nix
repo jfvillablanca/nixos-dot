@@ -8,7 +8,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # (./. + "/../../modules/kmonad/nixos-modules.nix")
+      (./. + "/../../modules/kmonad/nixos-modules.nix")
     ];
 
   # Bootloader.
@@ -77,7 +77,7 @@
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
-    xkbVariant = "colemak";
+    xkbVariant = "";
     # xkbOptions = "compose:ralt";
   };
 
@@ -92,6 +92,25 @@
       touchpad = {
         naturalScrolling = true;
         tapping = true;
+      };
+    };
+  };
+
+  services.kmonad = {
+    enable = true;
+    package = import (./. + "/../../modules/kmonad/kmonad-pkg.nix") { inherit pkgs; };
+    extraArgs = [ "--log-level" "debug" ];
+    keyboards = {
+      "laptop" = {
+        defcfg = {
+          enable = true;
+          compose.key = null;
+          fallthrough = false;
+          allowCommands = false;
+        };
+
+        device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+        config = builtins.readFile (./. + "/../../modules/kmonad/kbd/thinkpad-t14.kbd");
       };
     };
   };
