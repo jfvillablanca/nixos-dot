@@ -11,9 +11,13 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, neovim-nightly-overlay, ... }:
+  outputs = { nixpkgs, home-manager, neovim-nightly-overlay, nixos-hardware, ... }:
     let
       user = "jmfv";
       hosts = {
@@ -58,6 +62,7 @@
         ${hosts.t14g1} = lib.nixosSystem {
           inherit system;
           modules = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
             ({ config, ... }: import ./systems/t14g1/configuration.nix {
               inherit config pkgs isWayland user;
               hostName = hosts.t14g1;
