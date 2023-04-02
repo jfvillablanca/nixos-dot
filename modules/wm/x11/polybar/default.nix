@@ -107,10 +107,36 @@ in
 
                 "module/battery" = {
                     type = "internal/battery";
-                    full-at = 99;
-                    low-at = 15;
+                    full-at = 98;
+                    low-at = 10;
                     battery = "BAT0";
-                    adapter = "ADP1";
+
+                    format-charging-prefix = "%{T2}%{T-} ";
+                    format-charging-prefix-foreground = colors.primary;
+                    format-charging = "<label-charging>";
+                    label-charging = "%percentage%%";
+
+                    format-full-prefix = "%{T2}%{T-} ";
+                    format-full-prefix-foreground = colors.green;
+                    format-full = "<label-full>";
+                    label-full = "%percentage%%";
+
+                    ramp-capacity-0 = "";
+                    ramp-capacity-1 = "";
+                    ramp-capacity-2 = "";
+                    ramp-capacity-3 = "";
+                    ramp-capacity-4 = "";
+                    ramp-capacity-foreground = colors.primary;
+                    format-discharging = "<ramp-capacity> <label-discharging>";
+                    label-discharging = "%percentage%%";
+
+                    animation-low-0 = "";
+                    animation-low-1 = "";
+                    animation-low-framerate = 200;
+                    animation-low-0-foreground = colors.primary;
+                    animation-low-1-foreground = colors.alert;
+                    format-low = "<animation-low> <label-low>";
+                    label-low = "%percentage%%";
                 };
                 
                 "module/network-speed" = {
