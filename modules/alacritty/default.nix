@@ -13,7 +13,7 @@ in
                     opacity = 1.0;
                 };
                 font = {
-                    size = 14.0;
+                    size = 8.0;
                     normal = {
                         family = "JetBrainsMono Nerd Font";
                         style = "Regular";
