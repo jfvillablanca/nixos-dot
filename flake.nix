@@ -67,7 +67,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${user}.imports = [
-                ({ config, ... }: import ./t14g1-home.nix {
+                ({ config, ... }: import ./home.nix {
                   inherit config pkgs lib isWayland user;
                 })
               ];
