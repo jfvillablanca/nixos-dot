@@ -23,6 +23,8 @@
         virt = "virt";
         t14g1 = "t14g1";
       };
+      projectRoot = builtins.toString ./.;
+
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
@@ -31,6 +33,7 @@
           neovim-nightly-overlay.overlay
         ];
       };
+
       inherit (nixpkgs) lib;
       isWayland = false;
     in
@@ -63,7 +66,12 @@
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
             ({ config, ... }: import ./systems/t14g1/configuration.nix {
-              inherit config pkgs isWayland user;
+              inherit  
+                config 
+                pkgs 
+                isWayland 
+                user 
+                projectRoot;
               hostName = hosts.t14g1;
             })
             home-manager.nixosModules.home-manager

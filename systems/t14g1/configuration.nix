@@ -1,13 +1,13 @@
 # TODO: 
 # - Organize placement of kmonad module
 
-{ config, pkgs, isWayland, user, hostName, ... }:
+{ config, pkgs, isWayland, user, projectRoot, hostName, ... }:
 {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      (./. + "/../../modules/kmonad/nixos-modules.nix")
+      "${projectRoot}/modules/kmonad/nixos-modules.nix"
     ];
 
   # Bootloader.
@@ -97,7 +97,7 @@
 
   services.kmonad = {
     enable = true;
-    package = import (./. + "/../../modules/kmonad/kmonad-pkg.nix") { inherit pkgs; };
+    package = import "${projectRoot}/modules/kmonad/kmonad-pkg.nix" { inherit pkgs; };
     extraArgs = [ "--log-level" "debug" ];
     keyboards = {
       "laptop" = {
@@ -109,7 +109,7 @@
         };
 
         device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-        config = builtins.readFile (./. + "/../../modules/kmonad/kbd/thinkpad-t14.kbd");
+        config = builtins.readFile "${projectRoot}/modules/kmonad/kbd/thinkpad-t14.kbd";
       };
     };
   };
