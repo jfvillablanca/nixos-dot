@@ -22,7 +22,7 @@ in
               always = true;
             }
             {
-              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/firewatch.jpg";
+              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/nixos-dracula.png";
               notification = false;
               always = true;
             }
