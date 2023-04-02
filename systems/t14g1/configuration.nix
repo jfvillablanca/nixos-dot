@@ -154,11 +154,18 @@
     })
   ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
-    extraGroups = [ "networkmanager" "wheel" "uinput" "input" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "uinput"
+      "input"
+      "sound"
+      "audio"
+      "video"
+    ];
   };
 
   # Allow unfree packages
