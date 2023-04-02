@@ -34,6 +34,8 @@
     {
       nixosConfigurations = {
         ${hosts.virt} = lib.nixosSystem {
+            # NOTE: Will probably be broken once I start messing 
+            # with global system settings for laptop 
           inherit system;
           modules = [
             ({ config, ... }: import ./systems/virt/configuration.nix {
