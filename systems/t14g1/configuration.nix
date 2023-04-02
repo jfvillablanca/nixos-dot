@@ -7,6 +7,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./extras.nix
       "${projectRoot}/modules/kmonad/nixos-modules.nix"
     ];
 
@@ -26,14 +27,7 @@
   networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
 
-  # Screen Brightness
-  programs.light.enable = true;
-  services.actkbd = {
     enable = true;
-    bindings = [
-      { keys = [ 224 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -U 10"; }
-      { keys = [ 225 ]; events = [ "key" ]; command = "/run/current-system/sw/bin/light -A 10"; }
-    ];
   };
 
   # Set your time zone.
