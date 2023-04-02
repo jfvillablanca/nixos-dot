@@ -27,9 +27,6 @@
   networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
 
-    enable = true;
-  };
-
   # Set your time zone.
   time.timeZone = "Asia/Manila";
 
