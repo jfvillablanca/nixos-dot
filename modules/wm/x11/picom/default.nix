@@ -5,18 +5,17 @@
       enable = true;
       activeOpacity = 0.95;
       inactiveOpacity = 0.7;
-      backend = "xrender";
+      backend = "glx";
 
-      # NOTE: Don't know how to use glx in QEMU/KVM machine
-      # settings = {
-      #     wintypes = {
-      #         normal = { blur-background = true; };
-      #     };
-      #     blur = {
-      #         method = "dual_kawase";
-      #         strength = 2;
-      #     };
-      # };
+      settings = {
+          wintypes = {
+              normal = { blur-background = true; };
+          };
+          blur = {
+              method = "dual_kawase";
+              strength = 2;
+          };
+      };
     };
   };
 }
