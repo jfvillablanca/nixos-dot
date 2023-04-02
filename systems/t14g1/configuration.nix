@@ -47,9 +47,6 @@
   # Doas
   security.doas.enable = true;
 
-  # Spice VDA
-  services.spice-vdagentd.enable = true;
-
   # Enable window manager
   services = {
     xserver = {
