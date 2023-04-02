@@ -6,6 +6,7 @@
       activeOpacity = 0.98;
       inactiveOpacity = 0.7;
       backend = "glx";
+      vSync = true;             # had to enable due to some screen tearing
 
       settings = {
           wintypes = {
