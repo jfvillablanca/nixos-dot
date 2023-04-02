@@ -145,7 +145,8 @@ in
                     interval = 5;
                     format-connected-prefix = "%{T2}%{T-} ";
                     format-connected-prefix-foreground = colors.primary;
-                    label-connected = "%{F${colors.green}} %{F-}%downspeed% %{F${colors.magenta}} %{F-}%upspeed%";
+                    # label-connected = "%{F${colors.green}} %{F-}%downspeed% %{F${colors.magenta}} %{F-}%upspeed%";
+                    label-connected = "%{F${colors.green}} %{F-}%downspeed%";
                     label-disconnected = "disconnected";
                     label-connected-background = colors.background;
                 };
