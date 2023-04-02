@@ -141,7 +141,7 @@ in
                 
                 "module/network-speed" = {
                     type = "internal/network";
-                    interface-type = "wired";
+                    interface-type = "wireless";
                     interval = 5;
                     format-connected-prefix = "%{T2}%{T-} ";
                     format-connected-prefix-foreground = colors.primary;
