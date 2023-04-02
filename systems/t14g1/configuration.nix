@@ -117,16 +117,18 @@
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
 
-  # Kanshi (for sway)
-  # systemd.user.services.kanshi = {
-  #     description = "kanshi daemon";
-  #     serviceConfig = {
-  #         Type = "simple";
-  #         ExecStart = ''
-  #         ${pkgs.kanshi}/bin/kanshi -c kanshi_config_file
-  #         '';
-  #     };
-  # };
+  # Power Management Daemon 
+  services.tlp = {
+    enable = true;
+    settings = {
+      # Values for "always plugged"
+      START_CHARGE_THRESH_BAT0 = 40;
+      STOP_CHARGE_THRESH_BAT0 = 50;
+      # Values for "unplugged all the time"
+      # START_CHARGE_THRESH_BAT0 = 85;
+      # STOP_CHARGE_THRESH_BAT0 = 90;
+    };
+  };
 
   # Fonts
   fonts.fonts = with pkgs; [
