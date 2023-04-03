@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 let
     colors = {
         background = "#AA2A2A37";           # "#2A2A37"
@@ -15,6 +15,10 @@ let
     };
 in
 {
+    xdg.configFile."polybar/sound.sh" = {
+        source = ./sound.sh;
+    };
+
     services = {
         polybar = {
             enable = true;
@@ -42,7 +46,7 @@ in
                     font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
-                    modules-right = "filesystem network-speed memory cpu battery date powermenu";
+                    modules-right = "filesystem network-speed memory cpu battery pulseaudio-devices date powermenu";
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
                     enable-ipc = true;
@@ -149,6 +153,18 @@ in
                     label-connected = "%{F${colors.green}} %{F-}%downspeed%";
                     label-disconnected = "disconnected";
                     label-connected-background = colors.background;
+                };
+
+                "module/pulseaudio-devices" = {
+                    type = "custom/script";
+                    label = "%output%";
+                    label-font = 2;
+                    interval = 2;
+                    exec = "${config.xdg.configHome}/polybar/sound.sh";
+                    click-right = "exec pavucontrol &";
+                    click-left = "${config.xdg.configHome}/polybar/sound.sh mute &";
+                    scroll-up = "${config.xdg.configHome}/polybar/sound.sh up &";
+                    scroll-down = "${config.xdg.configHome}/polybar/sound.sh down &";
                 };
 
                 # "module/network" = {
