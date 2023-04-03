@@ -19,7 +19,7 @@
       tldr                              # Lazy man's help/man page
       manix                             # Nix document searcher
 
-      # Utils
+      # Terminal Utils
       ripgrep                           # Grep alternative
       fd                                # Find
       killall                           # Kill processes
@@ -31,6 +31,9 @@
 
       # Misc
       neofetch
+
+      # Utils
+      pavucontrol
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
