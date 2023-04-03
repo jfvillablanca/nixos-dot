@@ -46,7 +46,7 @@ in
                     font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
                     modules-left = "xworkspaces";
                     modules-center = "xwindow";
-                    modules-right = "filesystem network-speed memory cpu battery pulseaudio-devices date powermenu";
+                    modules-right = "filesystem network-speed memory cpu battery pipewire date powermenu";
                     cursor-click = "pointer";
                     cursor-scroll = "ns-resize";
                     enable-ipc = true;
@@ -155,7 +155,7 @@ in
                     label-connected-background = colors.background;
                 };
 
-                "module/pulseaudio-devices" = {
+                "module/pipewire" = {
                     type = "custom/script";
                     label = "%output%";
                     label-font = 2;

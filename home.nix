@@ -34,6 +34,7 @@
 
       # Utils
       pavucontrol
+      pamixer
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
