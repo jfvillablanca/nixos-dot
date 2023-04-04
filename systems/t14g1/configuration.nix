@@ -83,11 +83,9 @@
     libinput = {
       enable = true;
       mouse = {
-        naturalScrolling = true;
         tapping = true;
       };
       touchpad = {
-        naturalScrolling = true;
         tapping = true;
       };
     };
