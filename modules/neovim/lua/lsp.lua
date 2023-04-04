@@ -121,8 +121,8 @@ local servers = {
 	"bashls",
 	"tsserver",
 	"tailwindcss",
-	-- "nil_ls",
-	-- "lua_ls",
+	-- "nil_ls",        -- needs to be explicitly directed to use nix store path
+	-- "lua_ls",        -- needs to be explicitly directed to use nix store path
 	-- "gopls",
 	"rust_analyzer",
 	-- "hls",
