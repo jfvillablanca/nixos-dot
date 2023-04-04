@@ -28,7 +28,7 @@ in
         # Language Servers
         nodePackages_latest.bash-language-server        # sh
         nodePackages_latest.typescript-language-server  # webdev
-        nodePackages_latest.tailwindcss                 # tailwind
+        nodePackages_latest."@tailwindcss/language-server"                 # tailwind
         nil                                             # nix
         gopls                                           # go
         sumneko-lua-language-server                     # lua
