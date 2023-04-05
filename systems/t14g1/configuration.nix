@@ -86,6 +86,7 @@
         tapping = true;
       };
       touchpad = {
+        naturalScrolling = true;
         tapping = true;
       };
     };
