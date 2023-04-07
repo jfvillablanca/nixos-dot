@@ -34,6 +34,7 @@ in
         sumneko-lua-language-server                     # lua
         rust-analyzer                                   # rust
         haskellPackages.haskell-language-server         # haskell
+        # nodePackages_latest.emmet-ls
     ];
 
     xdg.configFile."nvim/servers" = {
