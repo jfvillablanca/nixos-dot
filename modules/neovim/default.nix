@@ -14,6 +14,9 @@ let
 in
 {
     home.packages = with pkgs; [
+        # Treesitter complains for a C compiler on the PATH acc to checkhealth
+        gcc
+
         # Formatters
         nodePackages_latest.prettier                    # webdev
         stylua                                          # lua
