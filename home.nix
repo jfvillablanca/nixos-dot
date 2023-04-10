@@ -30,11 +30,11 @@
       (if !isWayland then firefox else firefox-wayland)
 
       # Misc
-      neofetch
+      neofetch                          # System lookup
 
       # Utils
-      pavucontrol
-      pamixer
+      pavucontrol                       # Volume control UI
+      pamixer                           # PipeWire CLI tool
       barrier                           # KVM Switchmy custom node shell env
     ];
     sessionVariables = {
