@@ -35,7 +35,7 @@
       # Utils
       pavucontrol
       pamixer
-
+      barrier                           # KVM Switchmy custom node shell env
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
