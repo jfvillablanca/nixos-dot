@@ -48,7 +48,6 @@ in
     programs.neovim = {
         enable = true;
         package = pkgs.neovim-nightly;
-        # package = pkgs.neovim;
         defaultEditor = true;
         vimAlias = true;
         withNodeJs = true;
