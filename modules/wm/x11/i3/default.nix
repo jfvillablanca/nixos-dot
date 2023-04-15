@@ -17,6 +17,17 @@ in
           };
           startup = [
             {
+              command = ''
+              xrandr \
+                  --output eDP-1 --primary \
+                      --mode 1920x1080 --pos 0x0    --rotate normal \
+                  --output HDMI-1 \
+                      --mode 1920x1080 --pos 1920x0 --rotate normal
+              '';
+              notification = false;
+              always = true;
+            }
+            {
               command = "--no-startup-id picom";
               notification = false;
               always = true;
