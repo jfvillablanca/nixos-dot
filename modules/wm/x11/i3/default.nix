@@ -83,8 +83,8 @@ in
             "${mod}+Right" = "focus right";
 
             "${mod}+Shift+Left" = "move left";
-            "${mod}+Shift+Down" = "move down";
-            "${mod}+Shift+Up" = "move up";
+            "${mod}+Shift+Down" = "move workspace to output right";
+            "${mod}+Shift+Up" = "move workspace to output left";
             "${mod}+Shift+Right" = "move right";
 
             "${mod}+1" = "workspace 1";
