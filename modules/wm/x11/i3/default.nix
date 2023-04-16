@@ -89,16 +89,16 @@ in
             # "${mod}+Shift+j" = "move container to workspace next_on_output; workspace next_on_output; focus output current";
             # "${mod}+Shift+k" = "move container to workspace prev_on_output; workspace prev_on_output; focus output current";
 
-            "${mod}+1" = "workspace 1";
-            "${mod}+2" = "workspace 2";
-            "${mod}+3" = "workspace 3";
-            "${mod}+4" = "workspace 4";
-            "${mod}+5" = "workspace 5";
-            "${mod}+6" = "workspace 6";
-            "${mod}+7" = "workspace 7";
-            "${mod}+8" = "workspace 8";
-            "${mod}+9" = "workspace 9";
-            "${mod}+0" = "workspace 10";
+            "${mod}+1" = "workspace 1;  workspace 11";
+            "${mod}+2" = "workspace 2;  workspace 12";
+            "${mod}+3" = "workspace 3;  workspace 13";
+            "${mod}+4" = "workspace 4;  workspace 14";
+            "${mod}+5" = "workspace 5;  workspace 15";
+            "${mod}+6" = "workspace 6;  workspace 16";
+            "${mod}+7" = "workspace 7;  workspace 17";
+            "${mod}+8" = "workspace 8;  workspace 18";
+            "${mod}+9" = "workspace 9;  workspace 19";
+            "${mod}+0" = "workspace 10; workspace 20";
 
             "${mod}+Shift+1" = "move container to workspace 1";
             "${mod}+Shift+2" = "move container to workspace 2";
@@ -131,10 +131,29 @@ in
           defaultWorkspace = "workspace 1";
           workspaceAutoBackAndForth = false;
         };
-        # extraConfig = ''
-        # set $i3lockwall sh ./lock.sh
-        # bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
-        # '';
+        extraConfig = ''
+        workspace 1  output eDP-1
+        workspace 2  output eDP-1
+        workspace 3  output eDP-1
+        workspace 4  output eDP-1
+        workspace 5  output eDP-1
+        workspace 6  output eDP-1
+        workspace 7  output eDP-1
+        workspace 8  output eDP-1
+        workspace 9  output eDP-1
+        workspace 10 output eDP-1
+
+        workspace 11 output HDMI-1
+        workspace 12 output HDMI-1
+        workspace 13 output HDMI-1
+        workspace 14 output HDMI-1
+        workspace 15 output HDMI-1
+        workspace 16 output HDMI-1
+        workspace 17 output HDMI-1
+        workspace 18 output HDMI-1
+        workspace 19 output HDMI-1
+        workspace 20 output HDMI-1
+        '';
       };
     };
   };
