@@ -153,6 +153,8 @@ in
         workspace 18 output HDMI-1
         workspace 19 output HDMI-1
         workspace 20 output HDMI-1
+
+        mouse_warping none
         '';
       };
     };
