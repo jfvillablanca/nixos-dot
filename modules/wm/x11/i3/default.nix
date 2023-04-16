@@ -127,7 +127,7 @@ in
             size = 11.0;
           };
           defaultWorkspace = "workspace 1";
-          workspaceAutoBackAndForth = true;
+          workspaceAutoBackAndForth = false;
         };
         # extraConfig = ''
         # set $i3lockwall sh ./lock.sh
