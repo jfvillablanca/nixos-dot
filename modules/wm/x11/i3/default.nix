@@ -121,6 +121,10 @@ in
 
             "${mod}+Shift+space" = "floating toggle";
             "${mod}+space" = "focus mode_toggle";
+
+            "${mod}+semicolon" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/maim-full.sh";
+            "${mod}+Shift+semicolon" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/maim-select-and-save-to-xclip.sh";
+            "${mod}+Shift+y" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/maim-select";
           };
           menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
           fonts = {
