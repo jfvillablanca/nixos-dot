@@ -4,7 +4,7 @@
     picom = {
       enable = true;
       activeOpacity = 0.98;
-      inactiveOpacity = 0.7;
+      inactiveOpacity = 0.90;
       backend = "glx";
       vSync = true;             # had to enable due to some screen tearing
 
