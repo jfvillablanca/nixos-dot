@@ -16,6 +16,7 @@ let
     ./bat
     ({ ... }: import ./flameshot { inherit config; })
     ./fzf
+    ({ ... }: import ./tmux { inherit pkgs; })
   ];
 
   x11Modules = [
