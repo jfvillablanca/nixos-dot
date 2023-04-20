@@ -13,7 +13,6 @@
     stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal
-      fzf                               # Fuzzy search
       xplr                              # TUI file explorer
       imv                               # Image viewer
       tldr                              # Lazy man's help/man page

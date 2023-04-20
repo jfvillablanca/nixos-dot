@@ -15,6 +15,7 @@ let
     ./git
     ./bat
     ({ ... }: import ./flameshot { inherit config; })
+    ./fzf
   ];
 
   x11Modules = [
