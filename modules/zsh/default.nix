@@ -6,8 +6,19 @@
       enableAutosuggestions = true;
       enableCompletion = true;
       enableSyntaxHighlighting = true;
+      initExtra = ''
+        function nvim_fzf() {
+            local fname
+            fname=$(fzf --preview='bat --color=always --theme=dracula --style=numbers {}') || return
+            nvim "$fname"
+        }
+      '';
       shellAliases = {
         ".." = "cd ..";
+
+        "vf" = "nvim_fzf";
+
+        # Nix-specific
         "use" = "nix-shell -p";
         "usep" = "nix-shell --pure -p";
         "review" = " nix-shell -p nixpkgs-review --run 'nixpkgs-review rev HEAD'";
