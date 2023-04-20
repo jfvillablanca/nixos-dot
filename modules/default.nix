@@ -14,6 +14,7 @@ let
     ./gitui
     ./git
     ./bat
+    ({ ... }: import ./flameshot { inherit config; })
   ];
 
   x11Modules = [
