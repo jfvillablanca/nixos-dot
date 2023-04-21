@@ -6,7 +6,7 @@
     shell = "${pkgs.zsh}/bin/zsh";
     terminal = "tmux-256color";
     keyMode = "vi";
-    newSession = true;
+    prefix = "C-a";
     sensibleOnTop = true;
     historyLimit = 5000;
     plugins = with pkgs; [
