@@ -9,7 +9,18 @@
       initExtra = ''
         function nvim_fzf() {
             local fname
-            fname=$(fd --hidden --type f | fzf --preview='bat --color=always --theme=Dracula --style=numbers {}') || return
+            fname=$(fd                                    \
+                    --type f                              \
+                    --hidden                              \
+                    --exclude node_modules                \
+                    --exclude .git                        \
+                    | fzf                                 \
+                    --multi                               \
+                    --preview='bat                        \
+                              --color=always              \
+                              --theme=catppuccin-mocha    \
+                              --style=numbers {}          \
+            ') || return
             nvim "$fname"
         }
       '';
