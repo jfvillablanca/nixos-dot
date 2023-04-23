@@ -39,5 +39,8 @@
         } + "/Catppuccin-mocha.tmTheme");
 
     };
+    extraPackages = with pkgs.bat-extras; [
+      batgrep
+    ];
   };
 }
