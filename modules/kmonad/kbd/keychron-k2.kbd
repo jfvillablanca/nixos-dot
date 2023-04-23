@@ -7,13 +7,20 @@
 ;;   _    _    _              _              _    _    _              _    _    _
 ;; )
 
+(defalias
+  mta  (multi-tap 
+        300 lctl 
+        300 (around lctl a) 
+        lctl)
+)
+
 (deflayer colemak
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  sys  del
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc      pgup
   tab  q    w    f    p    g    j    l    u    y    ;    [    ]    \         pgdn
   @ext a    r    s    t    d    h    n    e    i    o    '    ret            home
   lsft z    x    c    v    b    k    m    ,    .    /    rsft           up   end
-  lctl lmet lalt           spc            @lyr cmp  rctl           lft  down rght
+  @mta lmet lalt           spc            @lyr cmp  rctl           lft  down rght
 )
 
 (deflayer qwerty
@@ -22,7 +29,7 @@
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \         pgdn
   @ext a    s    d    f    g    h    j    k    l    ;    '    ret            home
   lsft z    x    c    v    b    n    m    ,    .    /    rsft           up   end
-  lctl lmet lalt           spc            @lyr cmp  rctl           lft  down rght
+  @mta lmet lalt           spc            @lyr cmp  rctl           lft  down rght
 )
 
 (defalias lyr (layer-toggle layout-swap))
@@ -45,7 +52,7 @@
 (defalias
   cpy C-c
   pst C-v
-  ;; cut C-x
+  cut C-x
 )
 
 ;; I want to have my "hjkl" navigation in colemak. Sue me
@@ -54,7 +61,7 @@
   XX   f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  XX        XX
   XX   lmet XX   $    %    XX   -    =    XX   XX   esc  XX   XX   XX        XX
   _    lalt XX   lsft lctl XX   lft  down up   rght bspc XX   XX             XX
-  XX   XX   XX   @cpy @pst XX   home end  XX   XX   XX   XX             XX   XX
+  XX   XX   @cut @cpy @pst XX   home end  XX   XX   XX   XX             XX   XX
   XX   lmet @num           ret            XX   XX   XX             XX   XX   XX
 )
 
