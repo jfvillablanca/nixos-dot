@@ -5,6 +5,7 @@
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
     terminal = "tmux-256color";
+    keyMode = "vi";
     prefix = "C-a";
     sensibleOnTop = true;
     plugins = with pkgs; [
@@ -45,6 +46,10 @@
       bind -n M-Right select-pane -R
       bind -n M-Up select-pane -U
       bind -n M-Down select-pane -D
+
+      # Copy-paste
+      bind-key -T copy-mode-vi 'C-v' send -X begin-selection
+      bind-key -T copy-mode-vi 'C-y' send -X copy-selection
     '';
     tmuxinator.enable = true;
   };
