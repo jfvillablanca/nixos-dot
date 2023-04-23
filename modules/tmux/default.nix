@@ -28,17 +28,12 @@
       # tmuxPlugins.tilish
     ];
     extraConfig = ''
-      set-option -ga terminal-overrides ",tmux-256color:Tc"
-      set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-      set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
-      set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
-
             set -g status-right '#{prefix_highlight} | %a %Y-%m-%d %H:%M'
-
       # palette: kanagawa
       set-option -g status-style bg=#2A2A37
       set-option -g status-position top
-
+      # True Color (after a million tries, this is the override that works)
+      set -ag terminal-overrides ",$TERM:RGB" 
 
       # switch panes using Alt-arrow without prefix
       bind -n M-Left select-pane -L
