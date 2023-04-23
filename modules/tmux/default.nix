@@ -5,14 +5,14 @@
     mouse = true;
     shell = "${pkgs.zsh}/bin/zsh";
     terminal = "tmux-256color";
-    keyMode = "vi";
     prefix = "C-a";
     sensibleOnTop = true;
-    historyLimit = 5000;
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.resurrect;
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim 'session'
+        '';
       }
       {
         plugin = tmuxPlugins.continuum;
