@@ -23,15 +23,20 @@
       }
       {
         plugin = tmuxPlugins.prefix-highlight;
-        extraConfig = "";
+        extraConfig = ''
+          # status bar
+          set -g status-right '#{prefix_highlight}'
+          set -g @prefix_highlight_fg 'white' # default is 'colour231'
+          set -g @prefix_highlight_bg 'red'  # default is 'colour04'
+
+          # palette: kanagawa
+          set-option -g status-style bg=#2A2A37
+          set-option -g status-position top
+        '';
       }
       # tmuxPlugins.tilish
     ];
     extraConfig = ''
-            set -g status-right '#{prefix_highlight} | %a %Y-%m-%d %H:%M'
-      # palette: kanagawa
-      set-option -g status-style bg=#2A2A37
-      set-option -g status-position top
       # True Color (after a million tries, this is the override that works)
       set -ag terminal-overrides ",$TERM:RGB" 
 
