@@ -17,18 +17,20 @@ in
         # Treesitter complains for a C compiler on the PATH acc to checkhealth
         gcc
 
-        # Formatters
+        # Formatters (can be exposed via flake.nix)
         nodePackages_latest.prettier                    # webdev
         stylua                                          # lua
         shfmt                                           # sh
         nixpkgs-fmt                                     # nix
         rustfmt                                         # rust
+        # python310Packages.black                       # python
 
-        # Linters
+        # Linters (can be exposed via flake.nix)
         statix                                          # nix
         shellcheck                                      # sh
+        # python310Packages.flake8                      # python
 
-        # Language Servers
+        # Language Servers (can be exposed via flake.nix)
         nodePackages_latest.bash-language-server        # sh
         nodePackages_latest.typescript-language-server  # webdev
         nodePackages_latest."@tailwindcss/language-server"                 # tailwind
@@ -37,6 +39,7 @@ in
         sumneko-lua-language-server                     # lua
         rust-analyzer                                   # rust
         haskellPackages.haskell-language-server         # haskell
+        # python311Packages.python-lsp-server           # python
         # nodePackages_latest.emmet-ls
     ];
 

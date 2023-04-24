@@ -126,6 +126,7 @@ local servers = {
 	-- "gopls",
 	"rust_analyzer",
 	-- "hls",
+    "pylsp",
 }
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")

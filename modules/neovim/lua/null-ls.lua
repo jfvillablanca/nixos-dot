@@ -51,5 +51,10 @@ null_ls.setup({
 
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
+
+		-- python --
+		formatting.black,               -- Include python310Packages.black to flake.nix packages
+		diagnostics.flake8,             -- Include python310Packages.flake8 to flake.nix packages
+
 	},
 })
