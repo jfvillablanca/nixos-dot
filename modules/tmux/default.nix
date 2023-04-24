@@ -50,6 +50,9 @@
       # Copy-paste
       bind-key -T copy-mode-vi 'C-v' send -X begin-selection
       bind-key -T copy-mode-vi 'C-y' send -X copy-selection
+
+      # Set base index of windows to 1
+      set -g base-index 1
     '';
     tmuxinator.enable = true;
   };
