@@ -36,6 +36,15 @@
           set-option -g status-position top
         '';
       }
+      {
+        plugin = tmuxPlugins.yank;
+        extraConfig = ''
+          # Yank-paste
+          bind-key -T copy-mode-vi v   send-keys -X begin-selection
+          bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+          bind-key -T copy-mode-vi y   send-keys -X copy-selection-and-cancel
+        '';
+      }
       # tmuxPlugins.tilish
     ];
     extraConfig = ''
