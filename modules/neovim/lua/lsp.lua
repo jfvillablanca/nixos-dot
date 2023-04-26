@@ -37,6 +37,9 @@ handlers.setup = function()
 			header = "",
 			prefix = "",
 		},
+		virtual_text = {
+			prefix = "",
+		},
 	}
 
 	vim.diagnostic.config(config)
