@@ -52,14 +52,11 @@
       set -ag terminal-overrides ",$TERM:RGB" 
 
       # switch panes using Alt-arrow without prefix
-      bind -n M-Left select-pane -L
+      bind -n M-Left  select-pane -L
       bind -n M-Right select-pane -R
-      bind -n M-Up select-pane -U
-      bind -n M-Down select-pane -D
+      bind -n M-Up    select-pane -U
+      bind -n M-Down  select-pane -D
 
-      # Copy-paste
-      bind-key -T copy-mode-vi 'C-v' send -X begin-selection
-      bind-key -T copy-mode-vi 'C-y' send -X copy-selection
 
       # Set base index of windows to 1
       set        -g  base-index 1
