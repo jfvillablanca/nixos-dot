@@ -62,7 +62,11 @@
       bind-key -T copy-mode-vi 'C-y' send -X copy-selection
 
       # Set base index of windows to 1
-      set -g base-index 1
+      set        -g  base-index 1
+      set        -g  pane-base-index 1
+      set-option -wg pane-base-index 1
+      set-option -g  renumber-windows on
+
     '';
     tmuxinator.enable = true;
   };
