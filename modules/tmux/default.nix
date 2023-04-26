@@ -45,6 +45,15 @@
           bind-key -T copy-mode-vi y   send-keys -X copy-selection-and-cancel
         '';
       }
+      {
+        plugin = tmuxPlugins.tmux-fzf;
+        extraConfig = ''
+          TMUX_FZF_LAUNCH_KEY="C-f"
+          TMUX_FZF_OPTIONS="-p -w 62% -h 38% -m"
+          TMUX_FZF_ORDER="session|window|pane|command|keybinding|clipboard|process"
+          TMUX_FZF_PANE_FORMAT="[#{window_name}] #{pane_current_command}  [#{pane_width}x#{pane_height}] [history #{history_size}/#{history_limit}, #{history_bytes} bytes] #{?pane_active,[active],[inactive]}"
+        '';
+      }
       # tmuxPlugins.tilish
     ];
     extraConfig = ''
