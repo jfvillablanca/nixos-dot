@@ -57,6 +57,9 @@
       bind -n M-Up    select-pane -U
       bind -n M-Down  select-pane -D
 
+      # switch windows using Alt-H/L without prefix
+      bind -n M-H previous-window
+      bind -n M-L next-window
 
       # Set base index of windows to 1
       set        -g  base-index 1
@@ -64,6 +67,9 @@
       set-option -wg pane-base-index 1
       set-option -g  renumber-windows on
 
+      # Open panes in current directory (similar to Zellij) 
+      bind '"' split-window -v -c "#{pane_current_path}"
+      bind  %  split-window -h -c "#{pane_current_path}"
     '';
     tmuxinator.enable = true;
   };
