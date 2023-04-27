@@ -54,21 +54,42 @@
           TMUX_FZF_PANE_FORMAT="[#{window_name}] #{pane_current_command}  [#{pane_width}x#{pane_height}] [history #{history_size}/#{history_limit}, #{history_bytes} bytes] #{?pane_active,[active],[inactive]}"
         '';
       }
-      # tmuxPlugins.tilish
+      {
+        plugin = tmuxPlugins.tilish;
+        extraConfig = ''
+          # switch windows using Alt-H/L without prefix
+          bind -n M-H previous-window
+          bind -n M-L next-window
+
+          set -g @tilish-default 'main-vertical'
+          set -g @tilish-dmenu 'on'
+
+          # I use Colemak so "hjkl" is "hnei" which is remapped to arrow keys with Caps+h/n/e/i
+          set -g @tilish-easymode 'on'
+
+          # Tilish keybindings
+          # M-(0-9)   Switch to window number
+          # M-S-(0-9) Move pane to window number
+          # M-    Move focus
+          # M-S-  Move pane
+          # M-Ret     Create new pane at the end of curr layout
+          # M-s       Switch to layout: split then vsplit
+          # M-S-s     Switch to layout: only split
+          # M-v       Switch to layout: vsplit then split
+          # M-S-v     Switch to layout: only vsplit
+          # M-t       Switch to layout: fully tiled
+          # M-z       Switch to layout: zoom (fullscreen)
+          # M-r       Refresh current layout
+          # M-n       Name current window
+          # M-S-q     Quit (close) pane
+          # M-S-e     Exit (detach) tmux
+          # M-S-c     Reload config
+        '';
+      }
     ];
     extraConfig = ''
       # True Color (after a million tries, this is the override that works)
       set -ag terminal-overrides ",$TERM:RGB" 
-
-      # switch panes using Alt-arrow without prefix
-      bind -n M-Left  select-pane -L
-      bind -n M-Right select-pane -R
-      bind -n M-Up    select-pane -U
-      bind -n M-Down  select-pane -D
-
-      # switch windows using Alt-H/L without prefix
-      bind -n M-H previous-window
-      bind -n M-L next-window
 
       # Set base index of windows to 1
       set        -g  base-index 1
