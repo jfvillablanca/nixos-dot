@@ -79,6 +79,13 @@
       # Open panes in current directory (similar to Zellij) 
       bind '"' split-window -v -c "#{pane_current_path}"
       bind  %  split-window -h -c "#{pane_current_path}"
+
+      # Scratchpad terminal
+      bind -n M-/ display-popup -E "tmux new-session -A -s scratch"
+
+      # GitUI popup
+      bind -n M-g display-popup -E -h 70% -w 70% "tmux new-session -A -s scratch -c '#{pane_current_path}' 'gitui'"
+
     '';
     tmuxinator.enable = true;
   };
