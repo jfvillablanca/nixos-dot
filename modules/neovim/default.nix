@@ -96,6 +96,12 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/autopairs.lua;
             }
+            # autosession
+            {
+                plugin = auto-session;
+                type = "lua";
+                config = builtins.readFile ./lua/autosession.lua;
+            }
             # which-key
             {
                 plugin = which-key-nvim;
