@@ -173,6 +173,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
+    # Disable DPMS and prevent screen from blanking 
+    extraInit = ''
+      xset s off -dpms
+    '';
     systemPackages = with pkgs; [
       wget
     ];
