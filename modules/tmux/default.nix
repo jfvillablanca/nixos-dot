@@ -8,21 +8,9 @@
     keyMode = "vi";
     escapeTime = 0;
     prefix = "C-a";
+    newSession = false;
     sensibleOnTop = true;
     plugins = with pkgs; [
-      {
-        plugin = tmuxPlugins.resurrect;
-        extraConfig = ''
-          set -g @resurrect-strategy-nvim 'session'
-        '';
-      }
-      {
-        plugin = tmuxPlugins.continuum;
-        extraConfig = ''
-          set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '60' # minutes
-        '';
-      }
       {
         plugin = tmuxPlugins.prefix-highlight;
         extraConfig = ''
@@ -34,6 +22,19 @@
           # palette: kanagawa
           set-option -g status-style bg=#2A2A37
           set-option -g status-position top
+        '';
+      }
+      {
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim 'session'
+        '';
+      }
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '15' # minutes
         '';
       }
       {
