@@ -122,6 +122,9 @@ end
 
 local servers = {
     "bashls",
+    "cssls",
+    "html",
+    "jsonls",
     "tsserver",
     "tailwindcss",
     -- "nil_ls",        -- needs to be explicitly directed to use nix store path

@@ -32,7 +32,6 @@ in
 
         # Language Servers (can be exposed via flake.nix)
         nodePackages_latest.bash-language-server                            # sh
-        nodePackages_latest.typescript-language-server                      # webdev
         nodePackages_latest."@tailwindcss/language-server"                  # tailwind
         nil                                                                 # nix
         gopls                                                               # go
@@ -40,6 +39,9 @@ in
         rust-analyzer                                                       # rust
         haskellPackages.haskell-language-server                             # haskell
         # python311Packages.python-lsp-server                               # python
+
+        nodePackages_latest.typescript-language-server                      # js-related grammars
+        nodePackages_latest.vscode-langservers-extracted                    # html, css, json, eslint
         # nodePackages_latest.emmet-ls
     ];
 
