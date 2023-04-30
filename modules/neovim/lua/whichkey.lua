@@ -165,7 +165,36 @@ local mappings = {
 		name = "Terminal",
 		n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
 	},
+	r = {
+		name = "Refactoring",
+		b = { "<Cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract Block" },
+		bf = { "<Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract Block To File" },
+		i = { "<Cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline Variable" },
+	},
+}
+
+local optsVisual = {
+	mode = "v", -- VISUAL mode
+	prefix = "<leader>",
+	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+	silent = true, -- use `silent` when creating keymaps
+	noremap = true, -- use `noremap` when creating keymaps
+	nowait = true, -- use `nowait` when creating keymaps
+}
+
+local mappingsVisual = {
+	r = {
+		name = "Refactoring",
+		r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescope Refactor Options" },
+		e = { "<Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>", "Extract Function" },
+		f = {
+			"<Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
+			"Extract Function To File",
+		},
+		v = { "<Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>", "Extract Variable" },
+	},
 }
 
 which_key.setup(setup)
 which_key.register(mappings, opts)
+which_key.register(mappingsVisual, optsVisual)

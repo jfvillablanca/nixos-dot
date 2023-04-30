@@ -150,6 +150,12 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/null-ls.lua;
             }
+            # refactoring
+            {
+                plugin = refactoring-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/refactoring.lua;
+            }
 
             # Telescope
             {
