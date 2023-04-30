@@ -49,6 +49,7 @@ null_ls.setup({
 		-- nix --
 		formatting.nixpkgs_fmt,
 		diagnostics.statix,
+		code_actions.statix,
 
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
