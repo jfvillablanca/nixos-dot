@@ -170,6 +170,8 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/treesitter.lua;
             }
+
+            # telescope-manix
             telescope-manix
 
             # gitsigns
@@ -184,9 +186,17 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/comment.lua;
             }
+
             # nvim-ts-context-commentstring 
             #   config is integrated with treesitter and comment-nvim
             nvim-ts-context-commentstring 
+
+            # nvim-ts-autotag
+            {
+                plugin = nvim-ts-autotag;
+                type = "lua";
+                config = builtins.readFile ./lua/nvim-ts-autotag.lua;
+            }
 
             # trouble-nvim
             {
