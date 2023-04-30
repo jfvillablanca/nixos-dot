@@ -19,9 +19,9 @@ configs.setup({
 		lint_events = { "BufWrite", "CursorHold" },
 	},
 
-    -- For 'JoosepAlviste/nvim-ts-context-commentstring'
-	-- context_commentstring = {
-	-- 	enable = true,
- --        enable_autocmd = false,
-	-- },
+	-- For 'JoosepAlviste/nvim-ts-context-commentstring'
+	context_commentstring = {
+		enable = true,
+		enable_autocmd = false, -- REQUIRED
+	},
 })

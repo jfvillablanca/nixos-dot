@@ -184,11 +184,10 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/comment.lua;
             }
-                # Need to package
-            # {
-            #     plugin = nvim-ts-context-commentstring;
-            #     type = "lua";
-            # }
+            # nvim-ts-context-commentstring 
+            #   config is integrated with treesitter and comment-nvim
+            nvim-ts-context-commentstring 
+
             # trouble-nvim
             {
                 plugin = trouble-nvim;
