@@ -35,7 +35,7 @@
         config.allowUnfree = true;
         overlays = [
           neovim-nightly-overlay.overlay
-          # (import ./overlays/emmet-ls)
+          # (import ./overlays/emmet-ls.nix)
         ];
       };
 

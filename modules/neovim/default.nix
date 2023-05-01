@@ -42,7 +42,7 @@ in
 
         nodePackages_latest.typescript-language-server                      # js-related grammars
         nodePackages_latest.vscode-langservers-extracted                    # html, css, json, eslint
-        # nodePackages_latest.emmet-ls
+        # emmet-ls
     ];
 
     xdg.configFile."nvim/servers" = {
