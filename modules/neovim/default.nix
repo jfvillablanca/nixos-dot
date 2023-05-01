@@ -228,11 +228,11 @@ in
             #     type = "lua";
             #     config = builtins.readFile ./lua/zk-nvim.lua;
             # }
-            # {
-            #     plugin = markdown-preview-nvim;
-            #     type = "lua";
-            #     config = builtins.readFile ./lua/markdownpreview.lua;
-            # }
+            {
+                plugin = markdown-preview-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/markdownpreview.lua;
+            }
             # zen mode
             {
                 plugin = zen-mode-nvim;
