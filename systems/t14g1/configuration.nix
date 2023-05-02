@@ -9,6 +9,7 @@
       ./hardware-configuration.nix
       ./extras.nix
       "${projectRoot}/modules/kmonad/nixos-modules.nix"
+      ../../modules/steam
     ];
 
   # Bootloader.
