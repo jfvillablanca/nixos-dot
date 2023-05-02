@@ -99,10 +99,18 @@ in
                 config = builtins.readFile ./lua/autopairs.lua;
             }
             # autosession
+            # {
+            #     plugin = auto-session;
+            #     type = "lua";
+            #     config = builtins.readFile ./lua/autosession.lua;
+            # }
+            # persistence-nvim
             {
-                plugin = auto-session;
+                plugin = persistence-nvim;
                 type = "lua";
-                config = builtins.readFile ./lua/autosession.lua;
+                config = ''
+                require("persistence").setup()
+                '';
             }
             # which-key
             {
@@ -144,6 +152,12 @@ in
                 #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
                 # })
             }
+            # TEST typescript-nvim
+            # {
+            #     plugin = typescript-nvim;
+            #     type = "lua";
+            #     config = builtins.readFile ./lua/typescript-nvim.lua;
+            # }
             # null-ls
             {
                 plugin = null-ls-nvim;
