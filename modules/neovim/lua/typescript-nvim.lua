@@ -10,6 +10,6 @@ typescript.setup({
         fallback = true, -- fall back to standard LSP definition on failure
     },
     server = { -- pass options to lspconfig's setup method
-        on_attach = require("user.lsp.handlers").on_attach,
+        on_attach = require("lsp.handlers").on_attach,
     },
 })

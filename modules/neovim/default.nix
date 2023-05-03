@@ -152,12 +152,12 @@ in
                 #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
                 # })
             }
-            # TEST typescript-nvim
-            # {
-            #     plugin = typescript-nvim;
-            #     type = "lua";
-            #     config = builtins.readFile ./lua/typescript-nvim.lua;
-            # }
+            # typescript-nvim
+            {
+                plugin = typescript-nvim;
+                type = "lua";
+                config = builtins.readFile ./lua/typescript-nvim.lua;
+            }
             # null-ls
             {
                 plugin = null-ls-nvim;
