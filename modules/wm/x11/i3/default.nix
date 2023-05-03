@@ -33,7 +33,7 @@ in
               always = true;
             }
             {
-              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/nixos-dracula.png";
+              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/purplemountain.jpg";
               notification = false;
               always = true;
             }
