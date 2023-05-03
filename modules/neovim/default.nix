@@ -45,8 +45,8 @@ in
         # emmet-ls
     ];
 
-    xdg.configFile."nvim/servers" = {
-        source = ./lua/servers;
+    xdg.configFile."nvim/lua/lsp" = {
+        source = ./lua/lsp;
         recursive = true;
     };
 

@@ -148,7 +148,7 @@ for _, server in pairs(servers) do
         capabilities = handlers.capabilities,
     }
 
-    local require_ok, conf_opts = pcall(require, "lsp." .. server)
+    local require_ok, conf_opts = pcall(require, "lsp.servers." .. server)
     if require_ok then
         opts = vim.tbl_deep_extend("force", conf_opts, opts)
     end
