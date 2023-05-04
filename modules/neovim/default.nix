@@ -102,6 +102,12 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/nvim-surround.lua;
             }
+            # treesj
+            {
+                plugin = treesj;
+                type = "lua";
+                config = builtins.readFile ./lua/treesj.lua;
+            }
             # autosession
             # {
             #     plugin = auto-session;
