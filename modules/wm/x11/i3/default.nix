@@ -84,8 +84,10 @@ in
 
             "${mod}+Shift+Left" = "move left";
             "${mod}+Shift+Right" = "move right";
-            "${mod}+Shift+Down" = "move container to output right; focus output right";
-            "${mod}+Shift+Up" = "move container to output left; focus output left";
+            "${mod}+Shift+Down" = "move down";
+            "${mod}+Shift+Up" = "move up";
+            # "${mod}+Shift+Down" = "move container to output right; focus output right";
+            # "${mod}+Shift+Up" = "move container to output left; focus output left";
             # "${mod}+Shift+j" = "move container to workspace next_on_output; workspace next_on_output; focus output current";
             # "${mod}+Shift+k" = "move container to workspace prev_on_output; workspace prev_on_output; focus output current";
 
