@@ -96,6 +96,12 @@ in
                 type = "lua";
                 config = builtins.readFile ./lua/autopairs.lua;
             }
+            # nvim-surround
+            {
+                plugin = nvim-surround;
+                type = "lua";
+                config = builtins.readFile ./lua/nvim-surround.lua;
+            }
             # autosession
             # {
             #     plugin = auto-session;
