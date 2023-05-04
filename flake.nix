@@ -36,7 +36,7 @@
         overlays = [
           neovim-nightly-overlay.overlay
           # (import ./overlays/emmet-ls.nix)
-          (import ./overlays/vimPlugins-typescript-nvim.nix)
+          (import ./overlays/vimPlugins/typescript-nvim)
         ];
       };
 
