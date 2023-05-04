@@ -282,7 +282,7 @@ in
         config = builtins.readFile ./lua/nvim-lastplace.lua;
       }
       # kmonad-vim (kbd syntax highlighting)
-      # kmonad-vim
+      kmonad-vim
 
       # Colorschemes
       {

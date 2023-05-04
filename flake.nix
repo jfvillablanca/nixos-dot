@@ -37,6 +37,7 @@
           neovim-nightly-overlay.overlay
           # (import ./overlays/emmet-ls.nix)
           (import ./overlays/vimPlugins/typescript-nvim)
+          (import ./overlays/vimPlugins/kmonad-vim)
         ];
       };
 
