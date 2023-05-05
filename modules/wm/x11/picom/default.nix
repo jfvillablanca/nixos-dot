@@ -7,8 +7,16 @@
       inactiveOpacity = 0.90;
       backend = "glx";
       vSync = true;             # had to enable due to some screen tearing
-
+      opacityRules = [
+        "100:class_g='firefox' && focused"
+        "90:class_g='firefox' && !focused"
+        "90:class_g='Alacritty' && focused"
+        "70:class_g='Alacritty' && !focused"
+        "100:name^='steam_app' && focused"
+        "100:name^='steam_app' && !focused"
+      ];
       settings = {
+          inactive-opacity-override = false;
           wintypes = {
               normal = { blur-background = true; };
               tooltip = {  
