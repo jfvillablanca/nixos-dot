@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   programs = {
     zsh = {
@@ -30,8 +30,8 @@
         "vf" = "nvim_fzf";
 
         # Nix-specific
-        "use" = "nix-shell -p";
-        "usep" = "nix-shell --pure -p";
+        "use" = "nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz -p";
+        "usep" = "nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz --pure -p";
         "review" = " nix-shell -p nixpkgs-review --run 'nixpkgs-review rev HEAD'";
         "nixmeta" = "nix-shell -p nix-info --run 'nix-info -m'";
         "nixs" = ''
