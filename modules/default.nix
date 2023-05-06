@@ -3,20 +3,20 @@ let
   modules = [
     ./wallpapers
     ./alacritty
-    ({ ... }: import ./neovim { inherit config pkgs; })
+    (_: import ./neovim { inherit config pkgs; })
     ./starship
     ./direnv
     ./zoxide
     ./zellij
     ./exa
     ./zsh
-    ({ ... }: import ./bash { inherit isWayland; })
+    (_: import ./bash { inherit isWayland; })
     ./gitui
     ./git
     ./bat
-    ({ ... }: import ./flameshot { inherit config; })
+    (_: import ./flameshot { inherit config; })
     ./fzf
-    ({ ... }: import ./tmux { inherit pkgs; })
+    (_: import ./tmux { inherit pkgs; })
   ];
 
   x11Modules = [
