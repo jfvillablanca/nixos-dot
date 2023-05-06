@@ -39,7 +39,7 @@ _:
         };
         blur = {
           method = "dual_kawase";
-          strength = 2;
+          strength = 5;
         };
       };
     };
