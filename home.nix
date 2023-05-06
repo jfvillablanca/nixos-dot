@@ -26,7 +26,7 @@
       imagemagick                       # Edit, compose, convert bmp
 
       # Browser
-      (if !isWayland then firefox else firefox-wayland)
+      # (if !isWayland then firefox else firefox-wayland)
 
       # Misc
       neofetch                          # System lookup
