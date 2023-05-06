@@ -10,10 +10,11 @@ final: prev:
         rev = "282cbdd3d8fb86a326f70261b655fe7d9b0f1f1b";
         hash = "sha256-TmsJpVLF9FZf/6uOM9LZBKC6S3bMPjA3QMiRMPaY9Dg=";
       };
+      # npmDepsHash = "sha256-6aqJ0/9smv6sm5qF0t/NcN1PYp5enJxboE8IhLwaMKE=";
       npmDepsHash = "sha256-azK0KGPo1r3jJA87E1QNnj54KMxCmBnh6wcagwSU6Fo=";
       # npmPackFlags = [ "--ignore-scripts" ];
       # npmFlags = [ "--legacy-peer-deps" ];
-      # makeCacheWritable = true;
+      makeCacheWritable = true;
     };
   };
 }
