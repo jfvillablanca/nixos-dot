@@ -7,6 +7,7 @@ _:
       enableCompletion = true;
       enableSyntaxHighlighting = true;
       initExtra = ''
+        export PATH="$PATH:$HOME/.npm-global/bin"         # (temporary) for non-declarative npm global installs
         function nvim_fzf() {
             local fname
             fname=$(fd                                    \
