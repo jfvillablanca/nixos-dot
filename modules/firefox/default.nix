@@ -8,7 +8,7 @@ let
     ./overrides/no_search_engines_in_url_bar.css
 
     ./overrides/popout_bookmarks_bar_on_hover.css
-    ./overrides/remove_folder_icons_from_bookmarks.css
+    ./overrides/transparent_bookmarks_bar.css
 
     ./overrides/icons_in_main_menu.css
     ./overrides/privacy_blur_email_in_main_menu.css
