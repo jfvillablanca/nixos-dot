@@ -11,7 +11,7 @@ local diagnostics = {
 	"diagnostics",
 	sources = { "nvim_diagnostic" },
 	sections = { "error", "warn" }, -- [possible values] sections = { "error", "warn", "info", "hint", },
-	symbols = { error = " ", warn = " " }, -- [possible values] symbols = { error = " ", warn = " ", info = " ", hint = " " },
+	symbols = { error = " ", warn = " " }, -- [possible values] symbols = { error = " ", warn = " ", info = "󰋼 ", hint = "󰌵 " },
 	colored = true,
 	update_in_insert = false,
 	always_visible = true,

@@ -57,7 +57,7 @@
 
             directory = {
                 style = "crystalblue";
-                read_only = " ";
+                read_only = " ";
                 truncation_length = 1;
                 truncate_to_repo = false;
             };
@@ -102,7 +102,7 @@
 
             shlvl = {
               disabled = false;
-              symbol = "ﰬ";
+              symbol = "󰜮";
               style = "samuraired bold";
             };
 
@@ -114,7 +114,7 @@
             };
 
             memory_usage = {
-                symbol = " ";
+                symbol = "󰍛 ";
             };
 
             character = {

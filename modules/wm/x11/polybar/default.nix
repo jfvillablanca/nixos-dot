@@ -87,7 +87,7 @@ in
                     interval = 40;
                     fixed-values = true;
                     warn-percentage = 20;
-                    format-mounted-prefix = "%{T2}%{T-} ";
+                    format-mounted-prefix = "%{T2}󰨣%{T-} ";
                     format-mounted-prefix-foreground = colors.primary;
                     format-mounted = "<label-mounted>";
                     label-mounted = "%used% used";
@@ -147,10 +147,9 @@ in
                     type = "internal/network";
                     interface-type = "wireless";
                     interval = 5;
-                    format-connected-prefix = "%{T2}%{T-} ";
+                    format-connected-prefix = "%{T2}󱚶 %{T-} ";
                     format-connected-prefix-foreground = colors.primary;
-                    # label-connected = "%{F${colors.green}} %{F-}%downspeed% %{F${colors.magenta}} %{F-}%upspeed%";
-                    label-connected = "%{F${colors.green}} %{F-}%downspeed%";
+                    label-connected = "%downspeed%";
                     label-disconnected = "disconnected";
                     label-connected-background = colors.background;
                 };
@@ -176,7 +175,7 @@ in
                 #     accumulate-stats = true;
                 #     unknown-as-up = true;
                 #
-                #     label-connected = "%essid%  %downspeed:9%";
+                #     label-connected = "%essid%  󰇚%downspeed:9%";
                 #     label-disconnected = "";
                 #
                 #     format-connected = "<ramp-signal> <label-connected>";
