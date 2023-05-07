@@ -16,7 +16,29 @@ _:
         "100:name^='steam_app' && !focused"
       ];
       settings = {
+        # OPACITY (extra rules)
         inactive-opacity-override = false;
+
+        # FADING
+        fading = true;
+        fade-in-step = 0.04;
+        fade-out-step = 0.04;
+        fade-delta = 2;
+        no-fading-openclose = false;
+
+        # CORNERS
+        corner-radius = 10;
+        rounded-corners-exclude = [
+          "window_type = 'dock'"
+        ];
+
+        # BLUR
+        blur = {
+          method = "dual_kawase";
+          strength = 5;
+        };
+
+        # WINTYPES
         wintypes = {
           normal = { blur-background = true; };
           tooltip = {
@@ -36,10 +58,6 @@ _:
             opacity = 1.0;
             fade = false;
           };
-        };
-        blur = {
-          method = "dual_kawase";
-          strength = 5;
         };
       };
     };
