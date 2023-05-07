@@ -1,6 +1,6 @@
-_:
+{ pkgs, ... }:
 let
-  profile = "hello";
+  profile = "dev-edition-default";
   mozillaPath = ".mozilla/firefox/${profile}/chrome";
   addtlCss = [
     ./overrides/cleaner_extensions_menu.css
@@ -33,6 +33,7 @@ in
 
   programs.firefox = {
     enable = true;
+    package = pkgs.firefox-devedition; 
     profiles = {
       "${profile}" = {
         isDefault = true;

@@ -17,7 +17,7 @@ let
     (_: import ./flameshot { inherit config; })
     ./fzf
     (_: import ./tmux { inherit pkgs; })
-    ./firefox
+    (_: import ./firefox { inherit pkgs; })
   ];
 
   x11Modules = [
