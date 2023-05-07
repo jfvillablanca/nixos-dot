@@ -16,6 +16,7 @@ local servers = {
     "rust_analyzer",
     -- "hls",
     "pylsp",
+    "emmet_ls",         -- installed non-declaratively (temporarily) via npm install -g emmet-ls (installed in ~/.npm-global)
 }
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
