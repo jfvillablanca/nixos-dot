@@ -44,6 +44,7 @@ in
           "privacy.userContext.extension" = "@contain-facebook";
           "privacy.userContext.newTabContainerOnLeftClick.enabled" = true;
           "privacy.userContext.ui.enabled" = true;
+          "ui.key.menuAccessKeyFocuses" = false;
         };
         search = {
           default = "DuckDuckGo";
