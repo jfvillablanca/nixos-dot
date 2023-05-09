@@ -13,7 +13,7 @@ in
           terminal = term;
           gaps = {
             outer = 0;
-            inner = 5;
+            inner = 10;
           };
           startup = [
             {
