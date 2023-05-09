@@ -36,6 +36,15 @@
       pavucontrol                       # Volume control UI
       pamixer                           # PipeWire CLI tool
       barrier                           # KVM Switchmy custom node shell env
+
+      # GUI
+      lxappearance                      # theming and fonts for gtk applications
+      xfce.thunar                       # Xfce file manager
+      xfce.thunar-volman                # Removable media Thunar extension
+
+      # Themes and Icons
+      catppuccin-gtk
+      catppuccin-papirus-folders
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
