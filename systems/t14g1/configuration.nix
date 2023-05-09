@@ -79,6 +79,9 @@
     # xkbOptions = "compose:ralt";
   };
 
+  # Virtual filesystem support
+  services.gvfs.enable = true;
+
   # Touchpad
   services.xserver = {
     libinput = {
