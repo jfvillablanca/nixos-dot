@@ -18,11 +18,11 @@ in
           startup = [
             {
               command = ''
-              xrandr \
-                  --output eDP-1 --primary \
-                      --mode 1920x1080 --pos 0x0    --rotate normal \
-                  --output HDMI-1 \
-                      --mode 1920x1080 --pos 1920x0 --rotate normal
+                xrandr \
+                    --output eDP-1 --primary \
+                        --mode 1920x1080 --pos 0x0    --rotate normal \
+                    --output HDMI-1 \
+                        --mode 1920x1080 --pos 1920x0 --rotate normal
               '';
               notification = false;
               always = true;
@@ -141,29 +141,29 @@ in
           workspaceAutoBackAndForth = false;
         };
         extraConfig = ''
-        workspace 1  output eDP-1
-        workspace 2  output eDP-1
-        workspace 3  output eDP-1
-        workspace 4  output eDP-1
-        workspace 5  output eDP-1
-        workspace 6  output eDP-1
-        workspace 7  output eDP-1
-        workspace 8  output eDP-1
-        workspace 9  output eDP-1
-        workspace 10 output eDP-1
+          workspace 1  output eDP-1
+          workspace 2  output eDP-1
+          workspace 3  output eDP-1
+          workspace 4  output eDP-1
+          workspace 5  output eDP-1
+          workspace 6  output eDP-1
+          workspace 7  output eDP-1
+          workspace 8  output eDP-1
+          workspace 9  output eDP-1
+          workspace 10 output eDP-1
 
-        workspace 11 output HDMI-1
-        workspace 12 output HDMI-1
-        workspace 13 output HDMI-1
-        workspace 14 output HDMI-1
-        workspace 15 output HDMI-1
-        workspace 16 output HDMI-1
-        workspace 17 output HDMI-1
-        workspace 18 output HDMI-1
-        workspace 19 output HDMI-1
-        workspace 20 output HDMI-1
+          workspace 11 output HDMI-1
+          workspace 12 output HDMI-1
+          workspace 13 output HDMI-1
+          workspace 14 output HDMI-1
+          workspace 15 output HDMI-1
+          workspace 16 output HDMI-1
+          workspace 17 output HDMI-1
+          workspace 18 output HDMI-1
+          workspace 19 output HDMI-1
+          workspace 20 output HDMI-1
 
-        mouse_warping none
+          mouse_warping none
         '';
       };
     };
