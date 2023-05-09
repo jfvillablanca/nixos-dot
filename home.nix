@@ -5,7 +5,7 @@
   # - configure i3 layout default
     # Move colorschemes/themes to separate module and import instead of prop drill
 
-  imports = [ ({ ... }: import ./modules { inherit config pkgs lib isWayland; }) ];
+  imports = [ (_: import ./modules { inherit config pkgs lib isWayland; }) ];
 
   home = {
     username = "${user}";
