@@ -17,6 +17,7 @@
       imv                               # Image viewer
       tldr                              # Lazy man's help/man page
       manix                             # Nix document searcher
+      trashy                            # Trash in cli
 
       # Terminal Utils
       ripgrep                           # Grep alternative

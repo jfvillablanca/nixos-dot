@@ -30,6 +30,10 @@ _:
 
         "vf" = "nvim_fzf";
 
+        # Trashy
+        "restore" = "trash list | fzf --multi | awk '{$1=$1;print}' | rev | cut -d ' ' -f1 | rev | xargs trash restore --match=exact --force";
+        "empty" = "trash list | fzf --multi | awk '{$1=$1;print}' | rev | cut -d ' ' -f1 | rev | xargs trash empty --match=exact --force";
+
         # Nix-specific
         "use" = "nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz -p";
         "usep" = "nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz --pure -p";
