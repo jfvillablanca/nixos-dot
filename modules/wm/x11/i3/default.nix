@@ -76,6 +76,7 @@ in
             "${mod}+Shift+c" = "reload";
             "${mod}+Shift+e" =
               "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+            "${mod}+Shift+l" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/i3lock";
 
             "${mod}+Left" = "focus left";
             "${mod}+Down" = "focus down";
