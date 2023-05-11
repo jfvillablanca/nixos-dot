@@ -45,6 +45,9 @@
       # Themes and Icons
       catppuccin-gtk
       catppuccin-papirus-folders
+      nordic
+      rose-pine-gtk-theme
+      sierra-gtk-theme
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
