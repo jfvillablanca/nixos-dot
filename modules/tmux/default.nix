@@ -91,6 +91,7 @@
     extraConfig = ''
       # True Color (after a million tries, this is the override that works)
       set -ag terminal-overrides ",$TERM:RGB" 
+      set-option -ga terminal-features ",alacritty:usstyle"
 
       # Set base index of windows to 1
       set        -g  base-index 1
