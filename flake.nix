@@ -73,11 +73,11 @@
           modules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
             ({ config, ... }: import ./systems/t14g1/configuration.nix {
-              inherit  
-                config 
-                pkgs 
-                isWayland 
-                user 
+              inherit
+                config
+                pkgs
+                isWayland
+                user
                 projectRoot;
               hostName = hosts.t14g1;
             })
