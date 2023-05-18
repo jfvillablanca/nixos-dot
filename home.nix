@@ -20,13 +20,12 @@
       trashy                            # Trash in cli
       htop                              # System monitor with explicit processes
       gotop                             # System monitor but cool graphics
-
-      # Terminal Utils
       ripgrep                           # Grep alternative
       fd                                # Find
       killall                           # Kill processes
       ncdu                              # NCurses Disk Usage
       imagemagick                       # Edit, compose, convert bmp
+      unzip
 
       # Browser
       # (if !isWayland then firefox else firefox-wayland)
