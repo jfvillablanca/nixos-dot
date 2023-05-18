@@ -18,6 +18,8 @@
       tldr                              # Lazy man's help/man page
       manix                             # Nix document searcher
       trashy                            # Trash in cli
+      htop                              # System monitor with explicit processes
+      gotop                             # System monitor but cool graphics
 
       # Terminal Utils
       ripgrep                           # Grep alternative
