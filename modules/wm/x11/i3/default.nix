@@ -33,7 +33,7 @@ in
               always = true;
             }
             {
-              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/thoughtcabinet.jpg";
+              command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/desertsunset.jpg";
               notification = false;
               always = true;
             }
@@ -70,7 +70,7 @@ in
 
           ];
           keybindings = lib.mkOptionDefault {
-            "${mod}+t" = "exec ${term}";
+            "${mod}+Enter" = "exec ${term}";
             "${mod}+q" = "kill";
             "${mod}+Shift+r" = "restart";
             "${mod}+Shift+c" = "reload";
@@ -91,6 +91,8 @@ in
             # "${mod}+Shift+Up" = "move container to output left; focus output left";
             # "${mod}+Shift+j" = "move container to workspace next_on_output; workspace next_on_output; focus output current";
             # "${mod}+Shift+k" = "move container to workspace prev_on_output; workspace prev_on_output; focus output current";
+            "${mod}+Shift+j" = "resize shrink width 10 px";
+            "${mod}+Shift+k" = "resize grow width 10 px";
 
             "${mod}+1" = "workspace 1;  workspace 11";
             "${mod}+2" = "workspace 2;  workspace 12";
