@@ -168,6 +168,12 @@ in
         type = "lua";
         config = builtins.readFile ./lua/typescript-nvim.lua;
       }
+      # rust-tools-nvim
+      # {
+      #   plugin = rust-tools-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
+      # }
       # null-ls
       {
         plugin = null-ls-nvim;
