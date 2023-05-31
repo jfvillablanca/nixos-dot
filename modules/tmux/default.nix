@@ -27,7 +27,15 @@
       {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
+          # resurrect_dir="~/.local/share/tmux/resurrect"
+
+          # set -g @resurrect-hook-post-save-all '~/.tmux/post_save.sh $resurrect_dir/last'
+
+          # set -g @plugin 'tmux-plugins/tmux-resurrect'
+          set -g @resurrect-strategy-vim 'session'
           set -g @resurrect-strategy-nvim 'session'
+          set -g @resurrect-processes 'nvim'
+          set -g @resurrect-capture-pane-contents 'on'
         '';
       }
       {
