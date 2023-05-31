@@ -37,6 +37,8 @@
       pavucontrol                       # Volume control UI
       pamixer                           # PipeWire CLI tool
       barrier                           # KVM Switchmy custom node shell env
+      vlc                               # Video player
+      simplescreenrecorder              # Screen recorder
 
       # GUI
       lxappearance                      # theming and fonts for gtk applications
