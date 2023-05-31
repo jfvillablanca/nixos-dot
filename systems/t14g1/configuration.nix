@@ -157,6 +157,8 @@
     })
   ];
 
+  virtualisation.docker.enable = true;
+
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
@@ -168,6 +170,7 @@
       "sound"
       "audio"
       "video"
+      "docker"
     ];
   };
 
