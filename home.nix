@@ -25,7 +25,8 @@
       killall                           # Kill processes
       ncdu                              # NCurses Disk Usage
       imagemagick                       # Edit, compose, convert bmp
-      unzip
+      unzip                             # Zip utility
+      lazydocker                        # Docker and Docker compose management utility
 
       # Browser
       # (if !isWayland then firefox else firefox-wayland)
