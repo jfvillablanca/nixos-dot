@@ -5,7 +5,7 @@ _:
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      enableSyntaxHighlighting = true;
+      syntaxHighlighting.enable = true;
       initExtra = ''
         export PATH="$PATH:$HOME/.npm-global/bin"         # (temporary) for non-declarative npm global installs
         function nvim_fzf() {
