@@ -33,6 +33,7 @@
 
       # Misc
       neofetch                          # System lookup
+      musescore                         # Music notation and composition
 
       # Utils
       pavucontrol                       # Volume control UI
