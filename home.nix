@@ -34,6 +34,7 @@
       # Misc
       neofetch                          # System lookup
       musescore                         # Music notation and composition
+      discord                           # Communications
 
       # Utils
       pavucontrol                       # Volume control UI
