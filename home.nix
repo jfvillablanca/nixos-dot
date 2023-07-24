@@ -26,6 +26,7 @@
       ncdu                              # NCurses Disk Usage
       imagemagick                       # Edit, compose, convert bmp
       unzip                             # Zip utility
+      zip                               # Zip utility
       lazydocker                        # Docker and Docker compose management utility
 
       # Browser
@@ -42,6 +43,7 @@
       barrier                           # KVM Switchmy custom node shell env
       vlc                               # Video player
       simplescreenrecorder              # Screen recorder
+      gnome.file-roller                 # File archiving
 
       # GUI
       lxappearance                      # theming and fonts for gtk applications
