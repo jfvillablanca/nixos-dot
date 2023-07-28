@@ -44,6 +44,7 @@
       vlc                               # Video player
       simplescreenrecorder              # Screen recorder
       gnome.file-roller                 # File archiving
+      gnome.eog                         # GUI image viewer
 
       # GUI
       lxappearance                      # theming and fonts for gtk applications
