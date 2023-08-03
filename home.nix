@@ -45,6 +45,7 @@
       simplescreenrecorder              # Screen recorder
       gnome.file-roller                 # File archiving
       gnome.eog                         # GUI image viewer
+      onboard                           # On-screen keyboard
 
       # GUI
       lxappearance                      # theming and fonts for gtk applications
