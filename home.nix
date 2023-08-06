@@ -36,6 +36,7 @@
       neofetch                          # System lookup
       musescore                         # Music notation and composition
       discord                           # Communications
+      torrential                        # BitTorrent client
 
       # Utils
       pavucontrol                       # Volume control UI
