@@ -40,7 +40,8 @@ in
 
     nodePackages_latest.typescript-language-server                      # js-related grammars
     nodePackages_latest.vscode-langservers-extracted                    # html, css, json, eslint
-    # nodePackages_latest.emmet-ls
+    nodePackages_latest.volar                                           # vue
+    # emmet-ls                                                            # html snippets
   ];
 
   xdg.configFile."nvim/lua/lsp" = {

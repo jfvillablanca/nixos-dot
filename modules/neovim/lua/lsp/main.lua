@@ -17,6 +17,7 @@ local servers = {
     -- "hls",
     "pylsp",
     "emmet_ls",         -- installed non-declaratively (temporarily) via npm install -g emmet-ls (installed in ~/.npm-global)
+    "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
 }
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
