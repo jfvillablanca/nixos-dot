@@ -30,7 +30,6 @@ in
 
     # Language Servers (can be exposed via flake.nix)
     nodePackages_latest.bash-language-server                            # sh
-    nodePackages_latest."@tailwindcss/language-server"                  # tailwind
     nil                                                                 # nix
     gopls                                                               # go
     sumneko-lua-language-server                                         # lua
@@ -38,6 +37,8 @@ in
     # haskellPackages.haskell-language-server                           # haskell
     # python311Packages.python-lsp-server                               # python
 
+    nodePackages_latest."@tailwindcss/language-server"                  # tailwind
+    nodePackages_latest."@prisma/language-server"                       # prisma
     nodePackages_latest.typescript-language-server                      # js-related grammars
     nodePackages_latest.vscode-langservers-extracted                    # html, css, json, eslint
     nodePackages_latest.volar                                           # vue
