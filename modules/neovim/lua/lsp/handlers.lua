@@ -102,6 +102,10 @@ M.on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
     end
 
+    if client.name == "volar" then
+        client.server_capabilities.documentFormattingProvider = false
+    end
+
     if client.name == "lua_ls" then
         client.server_capabilities.documentFormattingProvider = false
     end
