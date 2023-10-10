@@ -21,12 +21,12 @@ in
     shfmt                                                               # sh
     nixpkgs-fmt                                                         # nix
     rustfmt                                                             # rust
-    # python310Packages.black                                           # python
+    python310Packages.black                                             # python
 
     # Linters (can be exposed via flake.nix)
     statix                                                              # nix
     shellcheck                                                          # sh
-    # python310Packages.flake8                                          # python
+    python310Packages.flake8                                            # python
 
     # Language Servers (can be exposed via flake.nix)
     nodePackages_latest.bash-language-server                            # sh
@@ -35,7 +35,7 @@ in
     sumneko-lua-language-server                                         # lua
     rust-analyzer                                                       # rust
     # haskellPackages.haskell-language-server                           # haskell
-    # python311Packages.python-lsp-server                               # python
+    python311Packages.python-lsp-server                                 # python
 
     nodePackages_latest."@tailwindcss/language-server"                  # tailwind
     nodePackages_latest."@prisma/language-server"                       # prisma
