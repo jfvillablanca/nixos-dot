@@ -34,7 +34,7 @@ in
     gopls                                                               # go
     sumneko-lua-language-server                                         # lua
     rust-analyzer                                                       # rust
-    # haskellPackages.haskell-language-server                           # haskell
+    haskellPackages.haskell-language-server                             # haskell
     python311Packages.python-lsp-server                                 # python
 
     nodePackages_latest."@tailwindcss/language-server"                  # tailwind

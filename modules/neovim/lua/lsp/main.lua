@@ -13,9 +13,9 @@ local servers = {
     "prismals",
     -- "nil_ls",        -- needs to be explicitly directed to use nix store path
     -- "lua_ls",        -- needs to be explicitly directed to use nix store path
-    -- "gopls",
+    "gopls",
     "rust_analyzer",
-    -- "hls",
+    "hls",
     "pylsp",
     "emmet_ls",         -- installed non-declaratively (temporarily) via npm install -g emmet-ls (installed in ~/.npm-global)
     "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
