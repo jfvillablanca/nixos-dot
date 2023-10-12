@@ -117,6 +117,23 @@ local mappings = {
 			"Diff",
 		},
 	},
+    h = {
+        name = "crates.nvim",
+        a = { '<cmd>lua require("crates").toggle()<cr>', "Toggle crates.nvim"},
+        r = { '<cmd>lua require("crates").reload()<cr>', "Reload crates.nvim"},
+
+        d = { '<cmd>lua require("crates").show_dependencies_popup()<cr>', "Show dependencies"},
+        f = { '<cmd>lua require("crates").show_features_popup()<cr>', "Show features"},
+        v = { '<cmd>lua require("crates").show_versions_popup()<cr>', "Show versions"},
+
+        n = { '<cmd>lua require("crates").upgrade_crate()<cr>', "Upgrade crate"},
+        A = { '<cmd>lua require("crates").upgrade_all_crates()<cr>', "Upgrade all crates"},
+
+        H = { '<cmd>lua require("crates").open_homepage()<cr>', "Open homepage"},
+        R = { '<cmd>lua require("crates").open_repository()<cr>', "Open repository"},
+        D = { '<cmd>lua require("crates").open_documentation()<cr>', "Open documentation"},
+        C = { '<cmd>lua require("crates").open_crates_io()<cr>', "Open Crates.io"},
+    },
 	l = {
 		name = "LSP",
 		a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },

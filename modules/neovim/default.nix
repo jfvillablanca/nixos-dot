@@ -170,6 +170,12 @@ in
         type = "lua";
         config = builtins.readFile ./lua/typescript-nvim.lua;
       }
+      # crates.nvim
+      {
+        plugin = crates-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/crates.nvim.lua;
+      }
       # rust-tools-nvim
       # {
       #   plugin = rust-tools-nvim;

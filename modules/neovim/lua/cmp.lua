@@ -111,6 +111,9 @@ cmp.setup({
         { name = "luasnip" },
         { name = "buffer" },
         { name = "path" },
+
+        -- crates.nvim
+        { name = "crates" },
     },
     confirm_opts = {
         behavior = cmp.ConfirmBehavior.Replace,
