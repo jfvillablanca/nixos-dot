@@ -118,7 +118,8 @@ local mappings = {
 		},
 	},
     h = {
-        name = "crates.nvim",
+        name = "rust-tools and crates.nvim",
+
         a = { '<cmd>lua require("crates").toggle()<cr>', "Toggle crates.nvim"},
         r = { '<cmd>lua require("crates").reload()<cr>', "Reload crates.nvim"},
 
@@ -133,6 +134,9 @@ local mappings = {
         R = { '<cmd>lua require("crates").open_repository()<cr>', "Open repository"},
         D = { '<cmd>lua require("crates").open_documentation()<cr>', "Open documentation"},
         C = { '<cmd>lua require("crates").open_crates_io()<cr>', "Open Crates.io"},
+
+        -- k = { '<cmd>lua require("rust-tools").hover_actions.hover_actions()<cr>', "Hover actions"},
+        -- b = { '<cmd>lua require("rust-tools").code_action_group.code_action_group()<cr>', "Code action group"},
     },
 	l = {
 		name = "LSP",

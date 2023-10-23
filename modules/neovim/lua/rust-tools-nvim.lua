@@ -22,10 +22,10 @@ rust_tools.setup({
         inlay_hints = {
             -- automatically set inlay hints (type hints)
             -- default: true
-            auto = true,
+            auto = false,
 
             -- Only show inlay hints for the current line
-            only_current_line = false,
+            only_current_line = true,
 
             -- whether to show parameter hints with the inlay hints or not
             -- default: true
