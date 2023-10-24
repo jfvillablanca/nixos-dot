@@ -1,7 +1,7 @@
 final: prev:
 {
   vimPlugins = prev.vimPlugins // {
-    typescript-nvim = prev.vimUtils.buildVimPluginFrom2Nix {
+    typescript-nvim = prev.vimUtils.buildVimPlugin {
       pname = "typescript.nvim";
       version = "2023-01-03";
       src = prev.fetchFromGitHub {

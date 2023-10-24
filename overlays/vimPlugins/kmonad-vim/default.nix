@@ -1,7 +1,7 @@
 final: prev:
 {
   vimPlugins = prev.vimPlugins // {
-    kmonad-vim = prev.vimUtils.buildVimPluginFrom2Nix {
+    kmonad-vim = prev.vimUtils.buildVimPlugin {
       pname = "kmonad-vim";
       version = "2022-03-20";
       src = prev.fetchFromGitHub {
