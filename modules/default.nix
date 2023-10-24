@@ -8,7 +8,7 @@ let
     ./direnv
     ./zoxide
     ./zellij
-    ./exa
+    ./eza
     ./zsh
     (_: import ./bash { inherit isWayland; })
     ./gitui
