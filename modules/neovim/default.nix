@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 let
   luaConfig = [
-    ./lua/impatient.lua
     ./lua/options.lua
     ./lua/keymaps.lua
     ./lua/autocommands.lua
@@ -65,7 +64,6 @@ in
 
     plugins = with pkgs.vimPlugins; [
       plenary-nvim
-      impatient-nvim
       nvim-web-devicons
 
       # nvim-tree
