@@ -17,7 +17,7 @@ local servers = {
     "rust_analyzer",
     "hls",
     "pylsp",
-    "emmet_ls",         -- installed non-declaratively (temporarily) via npm install -g emmet-ls (installed in ~/.npm-global)
+    "emmet_ls",
     "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
 }
 

@@ -10,39 +10,6 @@ let
   ];
 in
 {
-  home.packages = with pkgs; [
-    # Treesitter complains for a C compiler on the PATH acc to checkhealth
-    gcc
-
-    # Formatters (can be exposed via flake.nix)
-    nodePackages_latest.prettier # webdev
-    stylua                                                              # lua
-    shfmt                                                               # sh
-    nixpkgs-fmt                                                         # nix
-    rustfmt                                                             # rust
-    python310Packages.black                                             # python
-
-    # Linters (can be exposed via flake.nix)
-    statix                                                              # nix
-    shellcheck                                                          # sh
-    python310Packages.flake8                                            # python
-
-    # Language Servers (can be exposed via flake.nix)
-    nodePackages_latest.bash-language-server                            # sh
-    nil                                                                 # nix
-    gopls                                                               # go
-    sumneko-lua-language-server                                         # lua
-    rust-analyzer                                                       # rust
-    haskellPackages.haskell-language-server                             # haskell
-    python311Packages.python-lsp-server                                 # python
-
-    nodePackages_latest."@tailwindcss/language-server"                  # tailwind
-    nodePackages_latest."@prisma/language-server"                       # prisma
-    nodePackages_latest.typescript-language-server                      # js-related grammars
-    nodePackages_latest.vscode-langservers-extracted                    # html, css, json, eslint
-    nodePackages_latest.volar                                           # vue
-    # emmet-ls                                                            # html snippets
-  ];
 
   xdg.configFile."nvim/lua/lsp" = {
     source = ./lua/lsp;
@@ -309,6 +276,40 @@ in
           end
         '' + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
       }
+    ];
+
+    extraPackages = with pkgs; [
+      # Treesitter complains for a C compiler on the PATH acc to checkhealth
+      gcc
+
+      # Formatters
+      nodePackages_latest.prettier                                              # webdev
+      stylua                                                                    # lua
+      shfmt                                                                     # sh
+      nixpkgs-fmt                                                               # nix
+      # rustfmt                                                                   # rust
+      # python311Packages.black                                                   # python
+
+      # Linters
+      statix                                                                    # nix
+      shellcheck                                                                # sh
+      # python311Packages.flake8                                                  # python
+
+      # Language Servers
+      nodePackages_latest.bash-language-server                                  # sh
+      nil                                                                       # nix
+      # gopls                                                                     # go
+      sumneko-lua-language-server                                               # lua
+      # rust-analyzer                                                             # rust
+      # haskellPackages.haskell-language-server                                   # haskell
+      # python311Packages.python-lsp-server                                       # python
+
+      nodePackages_latest."@tailwindcss/language-server"                        # tailwind
+      nodePackages_latest."@prisma/language-server"                             # prisma
+      nodePackages_latest.typescript-language-server                            # js-related grammars
+      nodePackages_latest.vscode-langservers-extracted                          # html, css, json, eslint
+      nodePackages_latest.volar                                                 # vue
+      emmet-ls                                                                  # html snippets
     ];
   };
 }
