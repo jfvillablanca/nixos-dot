@@ -109,12 +109,6 @@ in
       friendly-snippets
 
       # LSP
-      # typescript-nvim
-      {
-        plugin = typescript-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/typescript-nvim.lua;
-      }
       # crates.nvim
       {
         plugin = crates-nvim;

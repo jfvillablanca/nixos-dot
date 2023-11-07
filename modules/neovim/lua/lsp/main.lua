@@ -8,7 +8,7 @@ local servers = {
     "cssls",
     "html",
     "jsonls",
-    -- "tsserver",      -- managed by jose-elias-alvarez/typescript.nvim 
+    "tsserver",
     "tailwindcss",
     "prismals",
     "nil_ls",
