@@ -174,9 +174,6 @@ in
         config = builtins.readFile ./lua/treesitter.lua;
       }
 
-      # telescope-manix
-      telescope-manix
-
       # gitsigns
       {
         plugin = gitsigns-nvim;
