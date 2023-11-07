@@ -11,8 +11,8 @@ local servers = {
     -- "tsserver",      -- managed by jose-elias-alvarez/typescript.nvim 
     "tailwindcss",
     "prismals",
-    -- "nil_ls",        -- needs to be explicitly directed to use nix store path
-    -- "lua_ls",        -- needs to be explicitly directed to use nix store path
+    "nil_ls",
+    "lua_ls",
     "gopls",
     "rust_analyzer",
     "hls",

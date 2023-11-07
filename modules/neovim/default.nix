@@ -109,26 +109,6 @@ in
       friendly-snippets
 
       # LSP
-      # nvim-lspconfig
-      {
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = ''
-          require('lspconfig').nil_ls.setup({
-              cmd = { "${pkgs.nil}/bin/nil" }
-          })
-          require('lspconfig').lua_ls.setup({
-              cmd = { "${pkgs.lua-language-server}/bin/lua-language-server" }
-          })
-        '';
-        # require('lspconfig').rust_analyzer.setup({})
-        # require('lspconfig').gopls.setup({
-        #     cmd = { "${pkgs.gopls}/bin/gopls" }
-        # })
-        # require('lspconfig').hls.setup({
-        #     cmd = { "${pkgs.haskell-language-server}/bin/haskell-language-server" }
-        # })
-      }
       # typescript-nvim
       {
         plugin = typescript-nvim;
@@ -142,6 +122,8 @@ in
         config = builtins.readFile ./lua/crates.nvim.lua;
       }
       # rust-tools-nvim
+      nvim-lspconfig
+
       # {
       #   plugin = rust-tools-nvim;
       #   type = "lua";
