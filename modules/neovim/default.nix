@@ -122,18 +122,17 @@ in
       #   plugin = rust-tools-nvim;
       #   type = "lua";
       #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
+      # # refactoring
+      # {
+      #   plugin = refactoring-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/refactoring.lua;
       # }
       # null-ls
       {
         plugin = null-ls-nvim;
         type = "lua";
         config = builtins.readFile ./lua/null-ls.lua;
-      }
-      # refactoring
-      {
-        plugin = refactoring-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/refactoring.lua;
       }
 
       # Telescope
