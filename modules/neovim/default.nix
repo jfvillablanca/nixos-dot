@@ -133,12 +133,6 @@ in
       #   type = "lua";
       #   config = builtins.readFile ./lua/refactoring.lua;
       # }
-      # null-ls
-      {
-        plugin = null-ls-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/null-ls.lua;
-      }
 
       # Telescope
       {
