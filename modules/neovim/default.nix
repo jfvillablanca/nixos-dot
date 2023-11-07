@@ -109,17 +109,22 @@ in
       friendly-snippets
 
       # LSP
-      # crates.nvim
-      {
-        plugin = crates-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/crates.nvim.lua;
-      }
-      # rust-tools-nvim
       nvim-lspconfig
 
+      # # crates.nvim
       # {
-      #   plugin = rust-tools-nvim;
+      #   plugin = crates-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/crates.nvim.lua;
+      # }
+
+      # # rust-tools-nvim
+      # # {
+      # #   plugin = rust-tools-nvim;
+      # #   type = "lua";
+      # #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
+      # # }
+
       #   type = "lua";
       #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
       # # refactoring
