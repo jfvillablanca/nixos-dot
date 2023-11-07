@@ -4,9 +4,8 @@ let
     ./lua/options.lua
     ./lua/keymaps.lua
     ./lua/autocommands.lua
-    ./lua/cmp.lua
+    ./lua/cmp.lua                                   # requires luasnip
     ./lua/lsp/main.lua
-    # ./lua/zk-nvim.lua -- need to package 
   ];
 in
 {
@@ -30,65 +29,64 @@ in
         (map builtins.readFile luaConfig);
 
     plugins = with pkgs.vimPlugins; [
-      plenary-nvim
-      nvim-web-devicons
+      # # nvim-tree
+      # {
+      #   plugin = nvim-tree-lua;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/nvim-tree.lua;
+      # }
 
-      # nvim-tree
-      {
-        plugin = nvim-tree-lua;
-        type = "lua";
-        config = builtins.readFile ./lua/nvim-tree.lua;
-      }
       # lualine
       {
         plugin = lualine-nvim;
         type = "lua";
         config = builtins.readFile ./lua/lualine.lua;
       }
-      # toggleterm
-      {
-        plugin = toggleterm-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/toggleterm.lua;
-      }
+
       # indent-blankline
       {
         plugin = indent-blankline-nvim;
         type = "lua";
         config = builtins.readFile ./lua/indentline.lua;
       }
+
       # autopairs
       {
         plugin = nvim-autopairs;
         type = "lua";
         config = builtins.readFile ./lua/autopairs.lua;
       }
+
       # nvim-surround
       {
         plugin = nvim-surround;
         type = "lua";
         config = builtins.readFile ./lua/nvim-surround.lua;
       }
+
       # treesj
       {
         plugin = treesj;
         type = "lua";
         config = builtins.readFile ./lua/treesj.lua;
       }
-      # autosession
+
+      # # autosession
+      # # {
+      # #     plugin = auto-session;
+      # #     type = "lua";
+      # #     config = builtins.readFile ./lua/autosession.lua;
+      # # }
+
+      # # persistence-nvim
       # {
-      #     plugin = auto-session;
-      #     type = "lua";
-      #     config = builtins.readFile ./lua/autosession.lua;
+      #   plugin = persistence-nvim;
+      #   type = "lua";
+      #   config = ''
+      #     require("persistence").setup()
+      #   '';
       # }
-      # persistence-nvim
-      {
-        plugin = persistence-nvim;
-        type = "lua";
-        config = ''
-          require("persistence").setup()
-        '';
-      }
+
       # which-key
       {
         plugin = which-key-nvim;
@@ -125,8 +123,6 @@ in
       # #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
       # # }
 
-      #   type = "lua";
-      #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
       # # refactoring
       # {
       #   plugin = refactoring-nvim;
@@ -154,6 +150,7 @@ in
         type = "lua";
         config = builtins.readFile ./lua/gitsigns.lua;
       }
+
       # comment-nvim
       {
         plugin = comment-nvim;
@@ -184,55 +181,64 @@ in
         type = "lua";
         config = builtins.readFile ./lua/todo-comments.lua;
       }
+
       # leap
       {
         plugin = leap-nvim;
         type = "lua";
         config = builtins.readFile ./lua/leap.lua;
       }
-      # wilder
-      {
-        plugin = wilder-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/wilder.lua;
-      }
-      # Test how zk would work in Nix
+
+      # # wilder
       # {
-      #     plugin = zk-nvim;
-      #     type = "lua";
-      #     config = builtins.readFile ./lua/zk-nvim.lua;
+      #   plugin = wilder-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/wilder.lua;
       # }
-      {
-        plugin = markdown-preview-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/markdownpreview.lua;
-      }
-      # zen mode
-      {
-        plugin = zen-mode-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/zen-mode.lua;
-      }
-      # twilight-nvim
-      {
-        plugin = twilight-nvim;
-        type = "lua";
-        config = builtins.readFile ./lua/twilight.lua;
-      }
+
+      # # Test how zk would work in Nix
+      # # {
+      # #     plugin = zk-nvim;
+      # #     type = "lua";
+      # #     config = builtins.readFile ./lua/zk-nvim.lua;
+      # # }
+
+      # {
+      #   plugin = markdown-preview-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/markdownpreview.lua;
+      # }
+
+      # # zen mode
+      # {
+      #   plugin = zen-mode-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/zen-mode.lua;
+      # }
+
+      # # twilight-nvim
+      # {
+      #   plugin = twilight-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/twilight.lua;
+      # }
+
       # nvim-highlight-colors
       {
         plugin = nvim-highlight-colors;
         type = "lua";
         config = builtins.readFile ./lua/nvim-highlight-colors.lua;
       }
-      # nvim-lastplace
-      {
-        plugin = nvim-lastplace;
-        type = "lua";
-        config = builtins.readFile ./lua/nvim-lastplace.lua;
-      }
-      # kmonad-vim (kbd syntax highlighting)
-      kmonad-vim
+
+      # # nvim-lastplace                                            # deprecated
+      # {
+      #   plugin = nvim-lastplace;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/nvim-lastplace.lua;
+      # }
+
+      # # kmonad-vim (kbd syntax highlighting)
+      # kmonad-vim
 
       # Colorschemes
       {
