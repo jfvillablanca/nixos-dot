@@ -240,6 +240,13 @@ in
       # # kmonad-vim (kbd syntax highlighting)
       # kmonad-vim
 
+      # conform-nvim
+      {
+          plugin = conform-nvim;
+          type = "lua";
+          config = builtins.readFile ./lua/conform-nvim.lua;
+      }
+
       # nvim-lint
       {
           plugin = nvim-lint;
@@ -269,6 +276,7 @@ in
       gcc
 
       # Formatters
+      codespell                                                                 # general (fix common misspellings)
       nodePackages_latest.prettier                                              # webdev
       stylua                                                                    # lua
       shfmt                                                                     # sh
