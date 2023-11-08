@@ -35,9 +35,6 @@
         config.allowUnfree = true;
         overlays = [
           neovim-nightly-overlay.overlay
-          # (import ./overlays/nodePackages/emmet-ls)
-          (import ./overlays/vimPlugins/typescript-nvim)
-          (import ./overlays/vimPlugins/kmonad-vim)
         ];
       };
 
