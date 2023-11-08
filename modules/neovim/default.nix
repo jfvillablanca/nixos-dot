@@ -241,10 +241,12 @@ in
       # kmonad-vim
 
       # Colorschemes
+      gruvbox
+      tokyonight-nvim
+      rose-pine
+      catppuccin-nvim
       {
         plugin = kanagawa-nvim;
-        # plugin = tokyonight-nvim;
-        # plugin = rose-pine;
         type = "lua";
         config = builtins.readFile ./lua/colorschemes/kanagawa.lua + ''
           local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "kanagawa")
