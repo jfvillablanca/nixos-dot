@@ -170,6 +170,7 @@ in
       }
 
       # trouble-nvim
+      nvim-web-devicons                     # optional requirement for trouble-nvim
       {
         plugin = trouble-nvim;
         type = "lua";
