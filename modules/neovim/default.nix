@@ -240,6 +240,13 @@ in
       # # kmonad-vim (kbd syntax highlighting)
       # kmonad-vim
 
+      # nvim-lint
+      {
+          plugin = nvim-lint;
+          type = "lua";
+          config = builtins.readFile ./lua/nvim-lint.lua;
+      }
+
       # Colorschemes
       gruvbox
       tokyonight-nvim
@@ -273,6 +280,7 @@ in
       statix                                                                    # nix
       shellcheck                                                                # sh
       # python311Packages.flake8                                                  # python
+      write-good                                                                # english prose
 
       # Language Servers
       nodePackages_latest.bash-language-server                                  # sh
