@@ -5,6 +5,7 @@ end
 
 local servers = {
     "bashls",
+    "ccls",
     "cssls",
     "html",
     "jsonls",
