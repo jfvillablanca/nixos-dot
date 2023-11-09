@@ -286,6 +286,7 @@ in
       # python311Packages.black                                                   # python
 
       # Linters
+      luajitPackages.luacheck                                                   # lua
       statix                                                                    # nix
       shellcheck                                                                # sh
       # python311Packages.flake8                                                  # python
