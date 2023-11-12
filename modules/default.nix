@@ -18,6 +18,7 @@ let
     ./fzf
     (_: import ./tmux { inherit pkgs; })
     (_: import ./firefox { inherit pkgs; })
+    (_: import ./wezterm { inherit pkgs; })
   ];
 
   x11Modules = [
