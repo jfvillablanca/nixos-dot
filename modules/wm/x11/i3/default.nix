@@ -71,7 +71,7 @@ in
           ];
           keybindings = lib.mkOptionDefault {
             "${mod}+Enter" = "exec ${term}";
-            "${mod}+q" = "kill";
+            "${mod}+Shift+q" = "kill";
             "${mod}+Shift+r" = "restart";
             "${mod}+Shift+c" = "reload";
             "${mod}+Shift+e" =
