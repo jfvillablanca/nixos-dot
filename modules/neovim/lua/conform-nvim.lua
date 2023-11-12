@@ -37,6 +37,8 @@ conform.setup({
 
     go = { { "gofmt", "gofumpt" }, },
 
+    sql = { "sql_formatter" },
+
     -- Run on all filetypes.
     ["*"] = { "codespell" },
 
