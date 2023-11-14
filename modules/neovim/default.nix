@@ -184,10 +184,17 @@ in
       }
 
       # leap
+      # {
+      #   plugin = leap-nvim;
+      #   type = "lua";
+      #   config = builtins.readFile ./lua/leap.lua;
+      # }
+
+      # flash.nvim
       {
-        plugin = leap-nvim;
+        plugin = flash-nvim;
         type = "lua";
-        config = builtins.readFile ./lua/leap.lua;
+        config = builtins.readFile ./lua/flash-nvim.lua;
       }
 
       # # wilder
