@@ -29,6 +29,12 @@ keybinds {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
+
+        bind "Alt g" {
+          Run "zellij" "run" "--floating" "--close-on-exit" "--" "gitui" {
+            close_on_exit true
+          }
+        }
     }
     locked {
         bind "Ctrl g" { SwitchToMode "Normal"; }
