@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   mod = "Mod4";
-  term = "alacritty";
+  term = "wezterm";
 in
 {
   xsession = {
@@ -43,7 +43,7 @@ in
               always = true;
             }
             {
-              command = "--no-startup-id i3-msg 'workspace 1; exec alacritty'";
+              command = "--no-startup-id i3-msg 'workspace 1; exec ${term}'";
             }
           ];
           window = {
