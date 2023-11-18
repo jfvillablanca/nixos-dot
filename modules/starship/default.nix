@@ -155,6 +155,10 @@
             disabled = true;
           };
 
+          python = {
+            symbol = "󰌠 ";
+          };
+
           rust = {
             symbol = " ";
           };
