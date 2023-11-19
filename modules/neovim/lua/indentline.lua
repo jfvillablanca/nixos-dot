@@ -29,7 +29,7 @@ vim.g.rainbow_delimiters = { highlight = highlight }
 
 -- Default setup requires treesitter for scope highlighting
 indent_blankline.setup({
-    indent = { char = "╏" },
+    indent = { char = "┊" },
     scope = {
         highlight = highlight,
         char = "▎"
