@@ -47,6 +47,7 @@
       gnome.file-roller                 # File archiving
       gnome.eog                         # GUI image viewer
       onboard                           # On-screen keyboard
+      zathura                           # PDF Viewer
 
       # GUI
       lxappearance                      # theming and fonts for gtk applications
