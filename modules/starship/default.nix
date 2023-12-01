@@ -165,10 +165,10 @@
 
           nix_shell = {
             disabled = false;
-            impure_msg = "[impure shell](bold autumnred)";
-            pure_msg = "[pure shell](bold autumngreen)";
-            unknown_msg = "[unknown shell](bold roninyellow)";
-            format = ''[$symbol \[$state\]( ($name))](crystalblue) '';
+            # impure_msg = "[impure shell](bold autumnred)";
+            # pure_msg = "[pure shell](bold autumngreen)";
+            # unknown_msg = "[unknown shell](bold roninyellow)";
+            format = ''[$symbol shell](bold crystalblue) '';
             symbol = "";
           };
 
