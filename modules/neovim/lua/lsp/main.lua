@@ -20,6 +20,7 @@ local servers = {
     "pylsp",
     "emmet_ls",
     "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
+    "texlab"
 }
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
