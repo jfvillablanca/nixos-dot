@@ -143,6 +143,7 @@ in
         type = "lua";
         config = builtins.readFile ./lua/treesitter.lua;
       }
+      nvim-treesitter-textobjects
 
       # gitsigns
       {
