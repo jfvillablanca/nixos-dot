@@ -150,11 +150,9 @@
     font-awesome
     corefonts
     jetbrains-mono
-    iosevka
     (nerdfonts.override {
       fonts = [
         "FiraCode"
-        "IBMPlexMono"
         "JetBrainsMono"
       ];
     })
