@@ -163,7 +163,7 @@ in
       }
 
       # nvim-ts-context-commentstring 
-      #   config is integrated with treesitter and comment-nvim
+      #   config is integrated with comment-nvim
       nvim-ts-context-commentstring
 
       # nvim-ts-autotag

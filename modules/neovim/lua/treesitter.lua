@@ -19,12 +19,6 @@ configs.setup({
 		lint_events = { "BufWrite", "CursorHold" },
 	},
 
-	-- For 'JoosepAlviste/nvim-ts-context-commentstring'
-	context_commentstring = {
-		enable = true,
-		enable_autocmd = false, -- REQUIRED
-	},
-
 	-- needs 'nvim-treesitter/nvim-treesitter-textobjects'
 	textobjects = {
 		select = {
