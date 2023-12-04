@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 {
   programs = {
     zsh = {
@@ -24,6 +24,10 @@ _:
             ') || return
             nvim "$fname"
         }
+        function lfcd () {
+            # `command` is needed in case `lfcd` is aliased to `lf`
+            cd "$(command lf -print-last-dir "$@")" || exit
+        }
       '';
       shellAliases = {
         ".." = "cd ..";
@@ -33,6 +37,9 @@ _:
         # Trashy
         "restore" = "trash list | fzf --multi | awk '{$1=$1;print}' | rev | cut -d ' ' -f1 | rev | xargs trash restore --match=exact --force";
         "empty" = "trash list | fzf --multi | awk '{$1=$1;print}' | rev | cut -d ' ' -f1 | rev | xargs trash empty --match=exact --force";
+
+        # lf
+        "lf" = "lfcd";
 
         # Nix-specific
         "use" = "nix-shell -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz -p";

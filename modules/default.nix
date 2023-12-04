@@ -19,6 +19,7 @@ let
     (_: import ./tmux { inherit pkgs; })
     (_: import ./firefox { inherit pkgs; })
     ./wezterm
+    ./lf
   ];
 
   x11Modules = [
