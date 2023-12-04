@@ -18,6 +18,8 @@ lint.linters_by_ft = {
 
 	python = { "pylint" },
 
+    haskell = { "hlint" },
+
 	markdown = { "write_good" },
 }
 

@@ -35,6 +35,8 @@ conform.setup({
 
     c = { "clang_format" },
 
+    haskell = { "fourmolu" },
+
     go = { { "gofmt", "gofumpt" }, },
 
     sql = { "sql_formatter" },

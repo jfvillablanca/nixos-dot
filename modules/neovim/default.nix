@@ -109,6 +109,9 @@ in
       # LSP
       nvim-lspconfig
 
+      # Haskell
+      haskell-tools-nvim
+
       # # crates.nvim
       # {
       #   plugin = crates-nvim;

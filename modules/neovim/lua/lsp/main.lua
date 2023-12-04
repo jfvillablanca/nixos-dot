@@ -16,7 +16,7 @@ local servers = {
     "lua_ls",
     "gopls",
     "rust_analyzer",
-    "hls",
+    -- "hls",
     "pylsp",
     "emmet_ls",
     "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
