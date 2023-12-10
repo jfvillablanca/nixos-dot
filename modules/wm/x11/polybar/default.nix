@@ -56,24 +56,18 @@ in
 
                 "module/xworkspaces" = {
                     type = "internal/xworkspaces";
-                    label-active = "%name%:%icon%";
+                    label-active = "%name%";
                     label-active-background = colors.background-alt;
                     label-active-underline= colors.primary;
                     label-active-padding = 1;
-                    label-occupied = "%name%:%icon%";
+                    label-occupied = "%name%";
                     label-occupied-padding = 1;
-                    label-urgent = "%name%:%icon%";
+                    label-urgent = "%name%";
                     label-urgent-background = colors.alert;
                     label-urgent-padding = 1;
-                    label-empty = "%name%:%icon%";
+                    label-empty = "%name%";
                     label-empty-foreground = colors.disabled;
                     label-empty-padding = 1;
-                    icon-0 = "1;♚";
-                    icon-1 = "2;♛";
-                    icon-2 = "3;♜";
-                    icon-3 = "4;♝";
-                    icon-4 = "5;♞";
-                    icon-default = "♟";
                 };
 
                 "module/xwindow" = {
