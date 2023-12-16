@@ -318,12 +318,13 @@ in
       {
         plugin = kanagawa-nvim;
         type = "lua";
-        config = builtins.readFile ./lua/colorschemes/kanagawa.lua + ''
-          local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "kanagawa")
+        config = builtins.readFile ./lua/colorschemes/rosepine.lua + ''
+          local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "rose-pine")
           if not status_ok then
               return
           end
-        '' + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
+        '';
+        # '' + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
       }
     ];
 
