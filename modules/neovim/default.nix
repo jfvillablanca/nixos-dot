@@ -106,6 +106,15 @@ in
       luasnip
       friendly-snippets
 
+      # neogen
+      {
+        plugin = neogen;
+        type = "lua";
+        config = ''
+          require("neogen").setup({ snippet_engine = "luasnip" })
+        '';
+      }
+
       # LSP
       nvim-lspconfig
 
