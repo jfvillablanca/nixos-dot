@@ -31,6 +31,3 @@ tsj.setup({
 	-- Use `dot` for repeat action
 	dot_repeat = true,
 })
-
-local keymap = vim.api.nvim_set_keymap
-keymap("n", "<leader>mt", "<cmd>TSJToggle<cr>", { desc = "TreeSJ toggle" })

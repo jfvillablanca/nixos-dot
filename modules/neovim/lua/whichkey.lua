@@ -1,4 +1,4 @@
-local status_ok, which_key = pcall(require, "which-key")
+local status_ok, wk = pcall(require, "which-key")
 if not status_ok then
 	return
 end
@@ -78,67 +78,73 @@ local opts = {
 	nowait = true, -- use `nowait` when creating keymaps
 }
 
-local mappings = {
-	["b"] = {
-		"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-		"Buffers",
-	},
-	["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
+local general = {
 	["w"] = { "<cmd>w!<CR>", "Save" },
 	["q"] = { "<cmd>q!<CR>", "Quit" },
 	["c"] = { "<cmd>bd!<CR>", "Close Buffer" },
-	["f"] = {
-		"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-		"Find files",
-	},
-	["F"] = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
-	["P"] = { "<cmd>lua require('telescope').extensions.projects.projects()<cr>", "Projects" },
 	["T"] = { "<cmd>set foldmethod=expr<cr>", "Treesitter foldmethod" },
-	["Z"] = { "<cmd>ZenMode<cr>", "ZenMode Toggle" },
+}
+
+local nvimtree = {
+	n = {
+		name = "NvimTree",
+		e = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
+	},
+}
+
+local gitsigns = {
 	g = {
 		name = "Git",
-		g = { "<cmd>lua _GITUI_TOGGLE()<CR>", "GitUI" },
-		j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
-		k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-		l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
-		p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
-		r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-		R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
-		s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
+		n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
+		e = { "<cmd>Gitsigns prev_hunk<cr>", "Prev Hunk" },
+		l = { "<cmd>Gitsigns blame_line<cr>", "Blame" },
+		p = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
+		r = { "<cmd>Gitsigns reset_hunk<cr>", "Reset Hunk" },
+		R = { "<cmd>Gitsigns reset_buffer<cr>", "Reset Buffer" },
+		s = { "<cmd>Gitsigns stage_hunk<cr>", "Stage Hunk" },
 		u = {
-			"<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+			"<cmd>Gitsigns undo_stage_hunk<cr>",
 			"Undo Stage Hunk",
 		},
-		o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
+	},
+}
+
+local telescope = {
+	t = {
+		name = "Telescope",
 		b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
 		c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-		d = {
-			"<cmd>Gitsigns diffthis HEAD<cr>",
-			"Diff",
+		o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
+		f = {
+			"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+			"Find files",
 		},
+		h = {
+			"<cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+			"Find help",
+		},
+		k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+		r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+		w = {
+			"<cmd>Telescope grep_string<cr>",
+			"Search current word",
+		},
+		R = { "<cmd>Telescope registers<cr>", "Registers" },
+		C = { "<cmd>Telescope commands<cr>", "Commands" },
 	},
-    -- h = {
-    --     name = "rust-tools and crates.nvim",
+	["<space>"] = { "<cmd>Telescope buffers<cr>", "Buffers", },
+	["/"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+}
 
-    --     a = { '<cmd>lua require("crates").toggle()<cr>', "Toggle crates.nvim"},
-    --     r = { '<cmd>lua require("crates").reload()<cr>', "Reload crates.nvim"},
+local treesj = {
+	m = {
+		name = "TreeSJ",
+		t = { "<cmd>TSJToggle<cr>", "TreeSJ Toggle" },
+	},
+}
 
-    --     d = { '<cmd>lua require("crates").show_dependencies_popup()<cr>', "Show dependencies"},
-    --     f = { '<cmd>lua require("crates").show_features_popup()<cr>', "Show features"},
-    --     v = { '<cmd>lua require("crates").show_versions_popup()<cr>', "Show versions"},
-
-    --     n = { '<cmd>lua require("crates").upgrade_crate()<cr>', "Upgrade crate"},
-    --     A = { '<cmd>lua require("crates").upgrade_all_crates()<cr>', "Upgrade all crates"},
-
-    --     H = { '<cmd>lua require("crates").open_homepage()<cr>', "Open homepage"},
-    --     R = { '<cmd>lua require("crates").open_repository()<cr>', "Open repository"},
-    --     D = { '<cmd>lua require("crates").open_documentation()<cr>', "Open documentation"},
-    --     C = { '<cmd>lua require("crates").open_crates_io()<cr>', "Open Crates.io"},
-
-    --     -- k = { '<cmd>lua require("rust-tools").hover_actions.hover_actions()<cr>', "Hover actions"},
-    --     -- b = { '<cmd>lua require("rust-tools").code_action_group.code_action_group()<cr>', "Code action group"},
-    -- },
-	l = {
+local lsp = {
+	["<leader>l"] = {
 		name = "LSP",
 		a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
 		d = {
@@ -151,19 +157,10 @@ local mappings = {
 		},
 		f = {
 			"<cmd>lua require('conform').format({ async=true, })<cr>",
-            "Format",
-        },
+			"Format",
+		},
 		i = { "<cmd>LspInfo<cr>", "Info" },
-		Down = {
-			"<cmd>lua vim.lsp.diagnostic.goto_next()<CR>",
-			"Next Diagnostic",
-		},
-		Up = {
-			"<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>",
-			"Prev Diagnostic",
-		},
 		l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
-		q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
 		r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
 		S = {
@@ -171,53 +168,57 @@ local mappings = {
 			"Workspace Symbols",
 		},
 	},
-	s = {
-		name = "Search",
-		b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-		h = {
-			"<cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-			"Find help",
-		},
-		M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-		r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-		R = { "<cmd>Telescope registers<cr>", "Registers" },
-		k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-		C = { "<cmd>Telescope commands<cr>", "Commands" },
+	["<leader>m"] = {
+		name = "Trouble",
+		x = { "<cmd>TroubleToggle<cr>", "Toggle" },
+		w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
+		d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
+		l = { "<cmd>TroubleToggle loclist<cr>", "Loclist" },
+		q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
 	},
-	t = {
-		name = "Terminal",
-		n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
+	g = {
+		d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "LSP Definition" },
+		D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "LSP Declaration" },
+		I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "LSP Implementation" },
+		r = { "<cmd>TroubleToggle lsp_references<cr>", "LSP References" },
 	},
-	-- r = {
-	-- 	name = "Refactoring",
-	-- 	b = { "<Cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract Block" },
-	-- 	bf = { "<Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract Block To File" },
-	-- 	i = { "<Cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline Variable" },
-	-- },
+	["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>", "LSP Hover" },
 }
 
-local optsVisual = {
-	mode = "v", -- VISUAL mode
-	prefix = "<leader>",
-	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-	silent = true, -- use `silent` when creating keymaps
-	noremap = true, -- use `noremap` when creating keymaps
-	nowait = true, -- use `nowait` when creating keymaps
-}
+wk.setup(setup)
+wk.register(general, opts)
+wk.register(nvimtree, opts)
+wk.register(gitsigns, opts)
+wk.register(telescope, opts)
+wk.register(treesj, opts)
+wk.register(lsp, {
+	mode = "n",
+	buffer = nil,
+	silent = true,
+	noremap = true,
+	nowait = true,
+})
 
-local mappingsVisual = {
-	-- r = {
-	-- 	name = "Refactoring",
-	-- 	r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescope Refactor Options" },
-	-- 	e = { "<Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>", "Extract Function" },
-	-- 	f = {
-	-- 		"<Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
-	-- 		"Extract Function To File",
-	-- 	},
-	-- 	v = { "<Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>", "Extract Variable" },
-	-- },
-}
+-- wk.register({
+-- 	h = {
+-- 		name = "rust-tools and crates.nvim",
 
-which_key.setup(setup)
-which_key.register(mappings, opts)
-which_key.register(mappingsVisual, optsVisual)
+-- 		a = { '<cmd>lua require("crates").toggle()<cr>', "Toggle crates.nvim" },
+-- 		r = { '<cmd>lua require("crates").reload()<cr>', "Reload crates.nvim" },
+
+-- 		d = { '<cmd>lua require("crates").show_dependencies_popup()<cr>', "Show dependencies" },
+-- 		f = { '<cmd>lua require("crates").show_features_popup()<cr>', "Show features" },
+-- 		v = { '<cmd>lua require("crates").show_versions_popup()<cr>', "Show versions" },
+
+-- 		n = { '<cmd>lua require("crates").upgrade_crate()<cr>', "Upgrade create" },
+-- 		A = { '<cmd>lua require("crates").upgrade_all_crates()<cr>', "Upgrade all crates" },
+
+-- 		H = { '<cmd>lua require("crates").open_homepage()<cr>', "Open homepage" },
+-- 		R = { '<cmd>lua require("crates").open_repository()<cr>', "Open repository" },
+-- 		D = { '<cmd>lua require("crates").open_documentation()<cr>', "Open documentation" },
+-- 		C = { '<cmd>lua require("crates").open_crates_io()<cr>', "Open Crates.io" },
+
+-- 		-- k = { '<cmd>lua require("rust-tools").hover_actions.hover_actions()<cr>', "Hover actions"},
+-- 		-- b = { '<cmd>lua require("rust-tools").code_action_group.code_action_group()<cr>', "Code action group"},
+-- 	},
+-- }, opts)
