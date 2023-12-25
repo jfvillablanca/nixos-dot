@@ -142,6 +142,13 @@ in
       #   config = builtins.readFile ./lua/refactoring.lua;
       # }
 
+       # null-ls
+       {
+         plugin = none-ls-nvim;
+         type = "lua";
+         config = builtins.readFile ./lua/null-ls.lua;
+       }
+
       # Telescope
       {
         plugin = telescope-nvim;
@@ -261,19 +268,20 @@ in
       # # kmonad-vim (kbd syntax highlighting)
       # kmonad-vim
 
-      # conform-nvim
-      {
-          plugin = conform-nvim;
-          type = "lua";
-          config = builtins.readFile ./lua/conform-nvim.lua;
-      }
+      # -- null-ls is back, no longer need conform.nvim and nvim-lint
+      # # conform-nvim
+      # {
+      #     plugin = conform-nvim;
+      #     type = "lua";
+      #     config = builtins.readFile ./lua/conform-nvim.lua;
+      # }
 
-      # nvim-lint
-      {
-          plugin = nvim-lint;
-          type = "lua";
-          config = builtins.readFile ./lua/nvim-lint.lua;
-      }
+      # # nvim-lint
+      # {
+      #     plugin = nvim-lint;
+      #     type = "lua";
+      #     config = builtins.readFile ./lua/nvim-lint.lua;
+      # }
 
       # vimtex
       {
@@ -335,6 +343,8 @@ in
       # Formatters
       codespell                                                                 # general (fix common misspellings)
       nodePackages_latest.prettier                                              # webdev
+      stylelint                                                                 # css
+      rustywind                                                                 # tailwind
       stylua                                                                    # lua
       shfmt                                                                     # sh
       nixpkgs-fmt                                                               # nix
@@ -344,6 +354,7 @@ in
       # Linters
       luajitPackages.luacheck                                                   # lua
       statix                                                                    # nix
+      deadnix                                                                   # nix
       shellcheck                                                                # sh
       # python311Packages.flake8                                                  # python
       write-good                                                                # english prose

@@ -155,10 +155,7 @@ local lsp = {
 			"<cmd>Telescope diagnostics<cr>",
 			"Workspace Diagnostics",
 		},
-		f = {
-			"<cmd>lua require('conform').format({ async=true, })<cr>",
-			"Format",
-		},
+		f = { "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", "Format" },
 		i = { "<cmd>LspInfo<cr>", "Info" },
 		l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
 		r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },

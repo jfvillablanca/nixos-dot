@@ -27,7 +27,6 @@ null_ls.setup({
 	debug = false,
 	sources = {
 		-- webdev --
-		-- require("typescript.extensions.null-ls.code-actions"),
 		formatting.prettier.with({
 			extra_args = function(params)
 				local tab_width = "4"
@@ -56,9 +55,13 @@ null_ls.setup({
 				"handlebars",
 			},
 		}),
+		formatting.stylelint,
+		formatting.rustywind,
+		code_actions.eslint,
 
 		-- lua --
 		formatting.stylua,
+		diagnostics.luacheck,
 
 		-- sh --
 		formatting.shfmt,
@@ -67,15 +70,40 @@ null_ls.setup({
 		-- nix --
 		formatting.nixpkgs_fmt,
 		diagnostics.statix,
+		diagnostics.deadnix,
 		code_actions.statix,
 
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
+		-- formatting.leptosfmt,
 
 		-- python --
-		formatting.black,               -- Include python310Packages.black to flake.nix packages
-		diagnostics.flake8,             -- Include python310Packages.flake8 to flake.nix packages
+		formatting.isort,
+		formatting.black,
+		diagnostics.pylint,
+		diagnostics.mypy,
 
-		code_actions.refactoring,
+		-- haskell --
+		formatting.fourmolu,
+
+		-- c --
+		formatting.clang_format,
+		diagnostics.clang_check,
+
+		-- go --
+		formatting.gofumpt,
+
+		-- sql --
+		formatting.sql_formatter,
+
+		-- github actions --
+		diagnostics.actionlint,
+
+		-- markdown --
+		diagnostics.write_good,
+
+		-- all filetypes --
+		diagnostics.codespell,
+        formatting.trim_whitespace,
 	},
 })
