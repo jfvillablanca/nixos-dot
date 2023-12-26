@@ -331,8 +331,8 @@ in
           if not status_ok then
               return
           end
-        '';
-        # '' + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
+        '' + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
+        #  + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
       }
     ];
 
