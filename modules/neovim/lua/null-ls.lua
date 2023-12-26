@@ -75,7 +75,11 @@ null_ls.setup({
 
 		-- rust --
 		formatting.rustfmt.with({ tab_spaces = 4 }),
-		-- formatting.leptosfmt,
+		formatting.leptosfmt.with({
+			condition = function(utils)
+				return utils.root_has_file({ "leptosfmt.toml" })
+			end,
+		}),
 
 		-- python --
 		formatting.isort,
