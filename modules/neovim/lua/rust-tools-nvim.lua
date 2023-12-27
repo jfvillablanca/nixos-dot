@@ -1,3 +1,8 @@
+local status_ok, handlers = pcall(require, "lsp.handlers")
+if not status_ok then
+    return
+end
+
 local status_ok, rust_tools = pcall(require, "rust-tools")
 if not status_ok then
     return
@@ -165,15 +170,24 @@ rust_tools.setup({
     server = {
         -- standalone file support
         -- setting it to false may improve startup time
-        standalone = true,
-    }, -- rust-analyzer options
+        standalone = false,
+        settings = {
+            ["rust-analyzer"] = {
+                check = {
+                    command = "clippy",
+                },
+            },
+        },
+        on_attach = handlers.on_attach,
+        capabilities = handlers.capabilities,
+    },
 
     -- debugging stuff
-    dap = {
-        adapter = {
-            type = "executable",
-            command = "lldb-vscode",
-            name = "rt_lldb",
-        },
-    },
+    -- dap = {
+    --     adapter = {
+    --         type = "executable",
+    --         command = "lldb-vscode",
+    --         name = "rt_lldb",
+    --     },
+    -- },
 })

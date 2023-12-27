@@ -121,6 +121,7 @@ in
       # Haskell
       haskell-tools-nvim
 
+      # Rust
       # # crates.nvim
       # {
       #   plugin = crates-nvim;
@@ -128,12 +129,12 @@ in
       #   config = builtins.readFile ./lua/crates.nvim.lua;
       # }
 
-      # # rust-tools-nvim
-      # # {
-      # #   plugin = rust-tools-nvim;
-      # #   type = "lua";
-      # #   config = builtins.readFile ./lua/rust-tools-nvim.lua;
-      # # }
+      # rust-tools-nvim
+      {
+        plugin = rust-tools-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/rust-tools-nvim.lua;
+      }
 
       # # refactoring
       # {
