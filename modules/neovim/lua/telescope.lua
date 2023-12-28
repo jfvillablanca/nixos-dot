@@ -10,7 +10,15 @@ telescope.setup({
 		prompt_prefix = " ",
 		selection_caret = " ",
 		path_display = { "smart" },
-		vimgrep_arguments = "rg --no-ignore -g!.gitignore",
+		vimgrep_arguments = {
+			"rg",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case",
+		},
 		mappings = {
 			i = {
 				["<C-n>"] = actions.cycle_history_next,
