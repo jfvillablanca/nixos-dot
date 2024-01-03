@@ -197,25 +197,17 @@ wk.register(lsp, {
 })
 
 -- wk.register({
--- 	h = {
--- 		name = "rust-tools and crates.nvim",
 
--- 		a = { '<cmd>lua require("crates").toggle()<cr>', "Toggle crates.nvim" },
--- 		r = { '<cmd>lua require("crates").reload()<cr>', "Reload crates.nvim" },
+wk.register({
+	h = {
+		name = "rust-tools and crates.nvim",
 
--- 		d = { '<cmd>lua require("crates").show_dependencies_popup()<cr>', "Show dependencies" },
--- 		f = { '<cmd>lua require("crates").show_features_popup()<cr>', "Show features" },
--- 		v = { '<cmd>lua require("crates").show_versions_popup()<cr>', "Show versions" },
 
--- 		n = { '<cmd>lua require("crates").upgrade_crate()<cr>', "Upgrade create" },
--- 		A = { '<cmd>lua require("crates").upgrade_all_crates()<cr>', "Upgrade all crates" },
 
--- 		H = { '<cmd>lua require("crates").open_homepage()<cr>', "Open homepage" },
--- 		R = { '<cmd>lua require("crates").open_repository()<cr>', "Open repository" },
--- 		D = { '<cmd>lua require("crates").open_documentation()<cr>', "Open documentation" },
--- 		C = { '<cmd>lua require("crates").open_crates_io()<cr>', "Open Crates.io" },
 
--- 		-- k = { '<cmd>lua require("rust-tools").hover_actions.hover_actions()<cr>', "Hover actions"},
--- 		-- b = { '<cmd>lua require("rust-tools").code_action_group.code_action_group()<cr>', "Code action group"},
--- 	},
--- }, opts)
+		k = { '<cmd>RustHoverActions<cr>', "Hover actions"},
+		b = { '<cmd>RustCodeAction<cr>', "Code action group"},
+		e = { '<cmd>RustMoveItemUp<cr>', "Move Item Up"},
+		n = { '<cmd>RustMoveItemDown<cr>', "Move Item Down"},
+	},
+}, opts)
