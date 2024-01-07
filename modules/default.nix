@@ -20,6 +20,7 @@ let
     (_: import ./firefox { inherit pkgs; })
     ./wezterm
     ./lf
+    ./atuin
   ];
 
   x11Modules = [
