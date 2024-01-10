@@ -44,8 +44,8 @@
     {
       nixosConfigurations = {
         ${hosts.virt} = lib.nixosSystem {
-          # NOTE: Will probably be broken once I start messing 
-          # with global system settings for laptop 
+          # NOTE: Will probably be broken once I start messing
+          # with global system settings for laptop
           inherit system;
           modules = [
             ({ config, ... }: import ./systems/virt/configuration.nix {
@@ -54,13 +54,15 @@
             })
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${user}.imports = [
-                ({ config, ... }: import ./home.nix {
-                  inherit config pkgs lib isWayland user;
-                })
-              ];
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${user}.imports = [
+                  ({ config, ... }: import ./home.nix {
+                    inherit config pkgs lib isWayland user;
+                  })
+                ];
+              };
             }
           ];
         };
@@ -80,13 +82,15 @@
             })
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${user}.imports = [
-                ({ config, ... }: import ./home.nix {
-                  inherit config pkgs lib isWayland user;
-                })
-              ];
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${user}.imports = [
+                  ({ config, ... }: import ./home.nix {
+                    inherit config pkgs lib isWayland user;
+                  })
+                ];
+              };
             }
           ];
         };
