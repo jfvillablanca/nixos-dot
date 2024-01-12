@@ -29,12 +29,15 @@ in
         (map builtins.readFile luaConfig);
 
     plugins = with pkgs.vimPlugins; [
-      # # nvim-tree
-      # {
-      #   plugin = nvim-tree-lua;
-      #   type = "lua";
-      #   config = builtins.readFile ./lua/nvim-tree.lua;
-      # }
+      # nvim-tree
+      {
+        plugin = nvim-tree-lua;
+        type = "lua";
+        config = ''
+          require("nvim-tree").setup()
+        '';
+        # config = builtins.readFile ./lua/nvim-tree.lua;
+      }
 
       # lualine
       {
@@ -232,11 +235,11 @@ in
       # #     config = builtins.readFile ./lua/zk-nvim.lua;
       # # }
 
-      # {
-      #   plugin = markdown-preview-nvim;
-      #   type = "lua";
-      #   config = builtins.readFile ./lua/markdownpreview.lua;
-      # }
+      {
+        plugin = markdown-preview-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/markdownpreview.lua;
+      }
 
       # # zen mode
       # {
