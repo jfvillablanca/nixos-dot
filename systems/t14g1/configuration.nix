@@ -10,6 +10,7 @@
       ./extras.nix
       "${projectRoot}/modules/kmonad/nixos-modules.nix"
       ../../modules/steam
+      ../system-modules/doas.nix
     ];
 
   # Bootloader.
@@ -45,9 +46,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
-  # Doas
-  security.doas.enable = true;
 
   # Enable window manager
   services = {

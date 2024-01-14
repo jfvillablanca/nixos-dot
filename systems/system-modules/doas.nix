@@ -1,0 +1,4 @@
+{ ... }:
+{
+  security.doas.enable = true;
+}

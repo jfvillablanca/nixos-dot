@@ -9,6 +9,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # ./modules/kmonad-module.nix
+      ../system-modules/doas.nix
     ];
 
     # services.kmonad = {
@@ -51,9 +52,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
-  # Doas
-  security.doas.enable = true;
 
   # Spice VDA
   services.spice-vdagentd.enable = true;
