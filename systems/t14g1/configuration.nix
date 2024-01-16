@@ -12,6 +12,7 @@
       ../../modules/steam
       ../system-modules/doas.nix
       ../system-modules/internationalization.nix
+      ../system-modules/virtual-fs.nix
     ];
 
   # Bootloader.
@@ -62,9 +63,6 @@
     xkbVariant = "";
     # xkbOptions = "compose:ralt";
   };
-
-  # Virtual filesystem support
-  services.gvfs.enable = true;
 
   # Touchpad
   services.xserver = {
