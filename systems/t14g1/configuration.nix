@@ -14,6 +14,7 @@
       ../system-modules/internationalization.nix
       ../system-modules/virtual-fs.nix
       ../system-modules/networkmanager.nix
+      ../system-modules/nixos-config.nix
     ];
 
   # Bootloader.
@@ -167,17 +168,6 @@
     systemPackages = with pkgs; [
       wget
     ];
-  };
-  # NixOs Configuration
-  nix = {
-    settings.auto-optimise-store = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 5d";
-    };
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
   };
 
   # Some programs need SUID wrappers, can be configured further or are

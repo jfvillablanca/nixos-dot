@@ -12,6 +12,7 @@
       ../system-modules/doas.nix
       ../system-modules/internationalization.nix
       ../system-modules/networkmanager.nix
+      ../system-modules/nixos-config.nix
     ];
 
     # services.kmonad = {
@@ -102,17 +103,6 @@
     systemPackages = with pkgs; [
       wget
     ];
-  };
-  # NixOs Configuration
-  nix = {
-    settings.auto-optimise-store = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
