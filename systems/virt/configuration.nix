@@ -13,6 +13,7 @@
       ../system-modules/internationalization.nix
       ../system-modules/networkmanager.nix
       ../system-modules/nixos-config.nix
+      ../system-modules/spice-vda.nix
     ];
 
     # services.kmonad = {
@@ -36,9 +37,6 @@
 
   # Set your time zone.
   time.timeZone = "Asia/Manila";
-
-  # Spice VDA
-  services.spice-vdagentd.enable = true;
 
   # Enable window manager
   services = {
