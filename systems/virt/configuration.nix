@@ -14,6 +14,7 @@
       ../system-modules/networkmanager.nix
       ../system-modules/nixos-config.nix
       ../system-modules/spice-vda.nix
+      ../system-modules/timezone.nix
     ];
 
     # services.kmonad = {

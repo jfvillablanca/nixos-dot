@@ -15,6 +15,7 @@
       ../system-modules/virtual-fs.nix
       ../system-modules/networkmanager.nix
       ../system-modules/nixos-config.nix
+      ../system-modules/timezone.nix
     ];
 
   # Bootloader.
