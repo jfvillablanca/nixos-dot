@@ -15,6 +15,7 @@
       ../system-modules/nixos-config.nix
       ../system-modules/spice-vda.nix
       ../system-modules/timezone.nix
+      ../system-modules/fonts.nix
     ];
 
     # services.kmonad = {
@@ -67,21 +68,6 @@
 
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
-
-  # Fonts
-  fonts.fonts = with pkgs; [
-    source-code-pro
-    font-awesome
-    corefonts
-    jetbrains-mono
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "IBMPlexMono"
-        "JetBrainsMono"
-      ];
-    })
-  ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {

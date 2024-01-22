@@ -16,6 +16,7 @@
       ../system-modules/networkmanager.nix
       ../system-modules/nixos-config.nix
       ../system-modules/timezone.nix
+      ../system-modules/fonts.nix
     ];
 
   # Bootloader.
@@ -122,19 +123,6 @@
     };
   };
 
-  # Fonts
-  fonts.packages = with pkgs; [
-    source-code-pro
-    font-awesome
-    corefonts
-    jetbrains-mono
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "JetBrainsMono"
-      ];
-    })
-  ];
 
   virtualisation.docker.enable = true;
 
