@@ -64,7 +64,9 @@ null_ls.setup({
 		diagnostics.write_good,
 
 		-- all filetypes --
-		diagnostics.codespell,
+		diagnostics.codespell.with({
+			args = { "-L", "crate" },
+		}),
 		formatting.trim_whitespace,
 	},
 })
