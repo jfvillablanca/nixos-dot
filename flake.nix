@@ -27,7 +27,6 @@
         virt = "virt";
         t14g1 = "t14g1";
       };
-      projectRoot = builtins.toString ./.;
 
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -76,8 +75,7 @@
                 config
                 pkgs
                 isWayland
-                user
-                projectRoot;
+                user;
               hostName = hosts.t14g1;
             })
             home-manager.nixosModules.home-manager

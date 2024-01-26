@@ -1,14 +1,11 @@
-# TODO: 
-# - Organize placement of kmonad module
-
-{ config, pkgs, isWayland, user, projectRoot, hostName, ... }:
+{ config, pkgs, isWayland, user, hostName, ... }:
 {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./extras.nix
-      "${projectRoot}/modules/kmonad/nixos-modules.nix"
+      ../system-modules/kmonad
       ../../modules/steam
       ../system-modules/doas.nix
       ../system-modules/internationalization.nix
@@ -76,35 +73,6 @@
     };
   };
 
-  services.kmonad = {
-    enable = true;
-    package = import "${projectRoot}/modules/kmonad/kmonad-pkg.nix" { inherit pkgs; };
-    extraArgs = [ "--log-level" "debug" ];
-    keyboards = {
-      "laptop" = {
-        defcfg = {
-          enable = true;
-          compose.key = null;
-          fallthrough = false;
-          allowCommands = false;
-        };
-
-        device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-        config = builtins.readFile "${projectRoot}/modules/kmonad/kbd/thinkpad-t14.kbd";
-      };
-      "keychron-k2" = {
-        defcfg = {
-          enable = true;
-          compose.key = null;
-          fallthrough = false;
-          allowCommands = false;
-        };
-
-        device = "/dev/input/by-id/usb-Keychron_Keychron_K2-event-kbd";
-        config = builtins.readFile "${projectRoot}/modules/kmonad/kbd/keychron-k2.kbd";
-      };
-    };
-  };
 
   # Polkit (need enabled for sway)
   security.polkit.enable = true;

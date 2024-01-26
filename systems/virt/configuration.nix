@@ -8,7 +8,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # ./modules/kmonad-module.nix
+      ../system-modules/kmonad
       ../system-modules/doas.nix
       ../system-modules/internationalization.nix
       ../system-modules/networkmanager.nix
@@ -18,11 +18,6 @@
       ../system-modules/fonts.nix
     ];
 
-    # services.kmonad = {
-    #     enable = true;
-    #     package = import ./modules/kmonad.nix;
-    #     # configfiles = [];
-    # };
 
 
   # Bootloader.
