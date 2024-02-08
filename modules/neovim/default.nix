@@ -174,6 +174,8 @@ in
         type = "lua";
         config = builtins.readFile ./lua/gitsigns.lua;
       }
+      # vim-fugitive
+      vim-fugitive
 
       # comment-nvim
       {
