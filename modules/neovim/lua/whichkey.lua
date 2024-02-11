@@ -106,6 +106,16 @@ local gitsigns = {
 			"<cmd>Gitsigns undo_stage_hunk<cr>",
 			"Undo Stage Hunk",
 		},
+		c = {
+			name = "Conflicts",
+			q = { "<cmd>GitConflictListQf<cr>", "Get all conflicts to quickfix" },
+			o = { "<cmd>GitConflictChooseOurs<cr>", "Select current changes" },
+			t = { "<cmd>GitConflictChooseTheirs<cr>", "Select incoming changes" },
+			b = { "<cmd>GitConflictChooseBoth<cr>", "Select both changes" },
+			["0"] = { "<cmd>GitConflictChooseNone<cr>", "Select none of the changes" },
+		},
+		["]x"] = { "<cmd>GitConflictNextConflict<cr>", "Jump to the next conflict" },
+		["[x"] = { "<cmd>GitConflictPrevConflict<cr>", "Jump to the prev conflict" },
 	},
 }
 

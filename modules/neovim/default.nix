@@ -176,6 +176,13 @@ in
       }
       # vim-fugitive
       vim-fugitive
+      # git-conflict-nvim
+      {
+        plugin = git-conflict-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/git-conflict-nvim.lua;
+      }
+
 
       # comment-nvim
       {
