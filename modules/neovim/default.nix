@@ -183,6 +183,12 @@ in
         config = builtins.readFile ./lua/git-conflict-nvim.lua;
       }
 
+      # octo-nvim
+      {
+        plugin = octo-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/octo-nvim.lua;
+      }
 
       # comment-nvim
       {
