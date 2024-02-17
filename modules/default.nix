@@ -21,6 +21,7 @@ let
     ./wezterm
     ./lf
     ./atuin
+    ./gh
   ];
 
   x11Modules = [
