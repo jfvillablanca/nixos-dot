@@ -1,0 +1,9 @@
+[*.{nix,lua}]
+charset = utf-8
+indent_style = space
+
+[*.nix]
+indent_size = 2
+
+[*.lua]
+indent_size = 4
