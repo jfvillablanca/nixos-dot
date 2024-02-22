@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   # Fonts
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     source-code-pro
     font-awesome
     corefonts
