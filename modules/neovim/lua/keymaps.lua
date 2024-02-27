@@ -25,10 +25,17 @@ keymap("n", "n", "nzzzv", { desc = "Next search instance" })
 keymap("n", "N", "Nzzzv", { desc = "Prev search instance" })
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-A-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-A-Down>", ":resize +2<CR>", opts)
+keymap("n", "<C-A-Up>", ":resize -2<CR>", opts)
+keymap("n", "<C-A-Right>", ":vertical resize +2<CR>", opts)
+
+-- [Better window navigation]
+
+keymap("n", "<C-Left>", "<C-w>h", opts)
+keymap("n", "<C-Down>", "<C-w>j", opts)
+keymap("n", "<C-Up>", "<C-w>k", opts)
+keymap("n", "<C-Right>", "<C-w>l", opts)
 
 -- Navigate buffers
 keymap("n", "<S-Right>", ":bnext<CR>", opts)
@@ -85,13 +92,6 @@ keymap("x", "<S-Up>", ":move '<-2<CR>gv-gv", opts)
 -- [Navigate buffers]
 -- keymap("n", "<S-l>", ":bnext<CR>", opts)
 -- keymap("n", "<S-h>", ":bprevious<CR>", opts)
-
--- [Better window navigation]
-
--- keymap("n", "<C-h>", "<C-w>h", opts)
--- keymap("n", "<C-j>", "<C-w>j", opts)
--- keymap("n", "<C-k>", "<C-w>k", opts)
--- keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- [Remap for dealing with word wrap]
 -- keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
