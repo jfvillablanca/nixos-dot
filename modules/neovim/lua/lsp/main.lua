@@ -9,7 +9,7 @@ local servers = {
     "cssls",
     "html",
     "jsonls",
-    "tsserver",
+    -- "tsserver",         -- managed by pmizio/typescript-tools.nvim
     "tailwindcss",
     "prismals",
     "nil_ls",

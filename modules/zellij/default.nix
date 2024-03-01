@@ -1,13 +1,13 @@
 { ... }:
 {
-    xdg.configFile."zellij" = {
-        source = ./configs;
-        recursive = true;
-    };
+  xdg.configFile."zellij" = {
+    source = ./configs;
+    recursive = true;
+  };
 
-    programs = {
-        zellij = {
-            enable = true;
-        };
+  programs = {
+    zellij = {
+      enable = true;
     };
+  };
 }

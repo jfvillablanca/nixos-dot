@@ -121,6 +121,13 @@ in
       # LSP
       nvim-lspconfig
 
+      # Typescript
+      {
+        plugin = typescript-tools-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/typescript-tools-nvim.lua;
+      }
+
       # Haskell
       haskell-tools-nvim
 
