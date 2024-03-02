@@ -10,6 +10,7 @@ let
     ./zellij
     ./eza
     ./zsh
+    ./fish
     (_: import ./bash { inherit isWayland; })
     ./gitui
     ./git

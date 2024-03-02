@@ -3,7 +3,7 @@
   programs.tmux = {
     enable = true;
     mouse = true;
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.fish}/bin/fish";
     terminal = "tmux-256color";
     keyMode = "vi";
     escapeTime = 0;
