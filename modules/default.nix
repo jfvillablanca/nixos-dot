@@ -23,6 +23,7 @@ let
     ./lf
     ./atuin
     ./gh
+    ./btop
   ];
 
   x11Modules = [
