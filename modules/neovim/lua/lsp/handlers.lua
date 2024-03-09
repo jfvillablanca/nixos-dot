@@ -38,7 +38,7 @@ M.setup = function()
 			prefix = "",
 		},
 		virtual_text = {
-			prefix = "",
+			prefix = "",
 		},
 	}
 
