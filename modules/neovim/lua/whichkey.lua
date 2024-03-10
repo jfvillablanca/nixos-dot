@@ -95,17 +95,22 @@ local nvimtree = {
 local git = {
 	g = {
 		name = "Git",
-		n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
-		e = { "<cmd>Gitsigns prev_hunk<cr>", "Prev Hunk" },
-		l = { "<cmd>Gitsigns blame_line<cr>", "Blame" },
-		p = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
-		r = { "<cmd>Gitsigns reset_hunk<cr>", "Reset Hunk" },
-		R = { "<cmd>Gitsigns reset_buffer<cr>", "Reset Buffer" },
-		s = { "<cmd>Gitsigns stage_hunk<cr>", "Stage Hunk" },
-		u = {
-			"<cmd>Gitsigns undo_stage_hunk<cr>",
-			"Undo Stage Hunk",
-		},
+        s = {
+            name = "Gitsigns",
+            n = { "<cmd>Gitsigns next_hunk<cr>", "Next Hunk" },
+            e = { "<cmd>Gitsigns prev_hunk<cr>", "Prev Hunk" },
+            l = { "<cmd>Gitsigns blame_line<cr>", "Blame" },
+            p = { "<cmd>Gitsigns preview_hunk<cr>", "Preview Hunk" },
+            r = { "<cmd>Gitsigns reset_hunk<cr>", "Reset Hunk" },
+            R = { "<cmd>Gitsigns reset_buffer<cr>", "Reset Buffer" },
+            s = { "<cmd>Gitsigns stage_hunk<cr>", "Stage Hunk" },
+            u = {
+                "<cmd>Gitsigns undo_stage_hunk<cr>",
+                "Undo Stage Hunk",
+            },
+        },
+		t = { "<cmd>diffget //2<cr>", "Diffget from target branch" },
+		n = { "<cmd>diffget //3<cr>", "Diffget from merge branch" },
 	},
 }
 
