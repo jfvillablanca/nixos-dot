@@ -15,6 +15,7 @@
       ../system-modules/timezone.nix
       ../system-modules/laptop-power-management.nix
       ../system-modules/fonts.nix
+      ../system-modules/pipewire.nix
     ];
 
   # Bootloader.
