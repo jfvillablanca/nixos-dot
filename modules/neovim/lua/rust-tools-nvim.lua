@@ -1,10 +1,10 @@
-local status_ok, handlers = pcall(require, "lsp.handlers")
-if not status_ok then
+local status_ok_handlers, handlers = pcall(require, "lsp.handlers")
+if not status_ok_handlers then
     return
 end
 
-local status_ok, rust_tools = pcall(require, "rust-tools")
-if not status_ok then
+local status_ok_rust, rust_tools = pcall(require, "rust-tools")
+if not status_ok_rust then
     return
 end
 
