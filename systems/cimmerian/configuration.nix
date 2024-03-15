@@ -1,21 +1,21 @@
-{ config, pkgs, isWayland, user, hostName, ... }:
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, user, ... }:
+
 {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./extras.nix
       ../system-modules/kmonad
-      ../../modules/steam
-      ../system-modules/doas.nix
       ../system-modules/internationalization.nix
       ../system-modules/virtual-fs.nix
       ../system-modules/networkmanager.nix
       ../system-modules/nixos-config.nix
       ../system-modules/timezone.nix
-      ../system-modules/laptop-power-management.nix
       ../system-modules/fonts.nix
-      ../system-modules/pipewire.nix
     ];
 
   # Bootloader.
@@ -23,31 +23,22 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  networking.hostName = hostName; # Define your hostname.
+  networking.hostName = "cimmerian"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable window manager
   services = {
     xserver = {
       enable = true;
       displayManager = {
-        gdm = {
-          enable = isWayland;
-          wayland = isWayland;
-        };
-        lightdm.enable = !isWayland;
+        lightdm.enable = true;
       };
       windowManager = {
-        xmonad = {
-          enable = false;
-          enableContribAndExtras = false;
-        };
         i3 = {
-          enable = !isWayland;
+          enable = true;
         };
       };
     };
@@ -62,28 +53,7 @@
     };
   };
 
-  # Touchpad
-  services.xserver = {
-    libinput = {
-      enable = true;
-      mouse = {
-        tapping = true;
-      };
-      touchpad = {
-        naturalScrolling = true;
-        tapping = true;
-      };
-    };
-  };
-
-
-  # Polkit (need enabled for sway)
-  security.polkit.enable = true;
-
-
-
-  virtualisation.docker.enable = true;
-
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
@@ -95,7 +65,7 @@
       "sound"
       "audio"
       "video"
-      "docker"
+      # "docker"
     ];
   };
 
@@ -105,12 +75,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
-    # Disable DPMS and prevent screen from blanking 
+    # Disable DPMS and prevent screen from blanking
     extraInit = ''
       xset s off -dpms
     '';
     systemPackages = with pkgs; [
-      wget
+      vim
+      git
     ];
   };
 
@@ -140,4 +111,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
+
 }
