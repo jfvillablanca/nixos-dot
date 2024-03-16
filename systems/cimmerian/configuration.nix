@@ -16,6 +16,7 @@
       ../system-modules/nixos-config.nix
       ../system-modules/timezone.nix
       ../system-modules/fonts.nix
+      ../system-modules/pipewire.nix
     ];
 
   # Bootloader.
