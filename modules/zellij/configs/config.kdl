@@ -178,6 +178,7 @@ keybinds clear-defaults=true {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
+        bind "Alt z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
