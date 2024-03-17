@@ -70,11 +70,9 @@
     };
   };
 
-  programs = {
-  };
+  programs = { };
 
-  services = {
-  };
+  services = { };
 
   xsession = {
     enable = !isWayland;

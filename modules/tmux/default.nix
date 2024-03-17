@@ -98,7 +98,7 @@
     ];
     extraConfig = ''
       # True Color (after a million tries, this is the override that works)
-      set -ag terminal-overrides ",$TERM:RGB" 
+      set -ag terminal-overrides ",$TERM:RGB"
       set-option -ga terminal-features ",alacritty:usstyle"
 
       # Set base index of windows to 1
@@ -107,7 +107,7 @@
       set-option -wg pane-base-index 1
       set-option -g  renumber-windows on
 
-      # Open panes in current directory (similar to Zellij) 
+      # Open panes in current directory (similar to Zellij)
       bind '"' split-window -v -c "#{pane_current_path}"
       bind  %  split-window -h -c "#{pane_current_path}"
 
