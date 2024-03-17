@@ -112,7 +112,6 @@
         hostName = hosts.t14g1;
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-          ./modules/steam
         ];
         homeModules = [];
       };
