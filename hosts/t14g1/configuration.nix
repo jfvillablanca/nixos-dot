@@ -2,16 +2,16 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../system/kmonad
-    ../../system/doas.nix
-    ../../system/internationalization.nix
-    ../../system/virtual-fs.nix
-    ../../system/networkmanager.nix
-    ../../system/nixos-config.nix
-    ../../system/timezone.nix
-    ../../system/laptop-power-management.nix
-    ../../system/fonts.nix
-    ../../system/pipewire.nix
+    ../../systems/kmonad
+    ../../systems/doas.nix
+    ../../systems/internationalization.nix
+    ../../systems/virtual-fs.nix
+    ../../systems/networkmanager.nix
+    ../../systems/nixos-config.nix
+    ../../systems/timezone.nix
+    ../../systems/laptop-power-management.nix
+    ../../systems/fonts.nix
+    ../../systems/pipewire.nix
   ];
 
   # Bootloader.

@@ -5,14 +5,14 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../system/kmonad
-    ../../system/doas.nix
-    ../../system/internationalization.nix
-    ../../system/networkmanager.nix
-    ../../system/nixos-config.nix
-    ../../system/spice-vda.nix
-    ../../system/timezone.nix
-    ../../system/fonts.nix
+    ../../systems/kmonad
+    ../../systems/doas.nix
+    ../../systems/internationalization.nix
+    ../../systems/networkmanager.nix
+    ../../systems/nixos-config.nix
+    ../../systems/spice-vda.nix
+    ../../systems/timezone.nix
+    ../../systems/fonts.nix
   ];
 
   # Bootloader.
