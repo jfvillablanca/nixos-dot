@@ -8,7 +8,6 @@
       extraOptions = [
         "--group-directories-first"
       ];
-      enableAliases = true;
     };
   };
 }
