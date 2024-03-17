@@ -365,25 +365,18 @@ in
       nodePackages_latest.prettier                                              # webdev
       stylelint                                                                 # css
       rustywind                                                                 # tailwind
-      stylua                                                                    # lua
       shfmt                                                                     # sh
-      nixpkgs-fmt                                                               # nix
       # rustfmt                                                                   # rust
       # python311Packages.black                                                   # python
 
       # Linters
-      luajitPackages.luacheck                                                   # lua
-      statix                                                                    # nix
-      deadnix                                                                   # nix
       shellcheck                                                                # sh
       # python311Packages.flake8                                                  # python
       write-good                                                                # english prose
 
       # Language Servers
       nodePackages_latest.bash-language-server                                  # sh
-      nil                                                                       # nix
       # gopls                                                                     # go
-      sumneko-lua-language-server                                               # lua
       # rust-analyzer                                                             # rust
       # haskellPackages.haskell-language-server                                   # haskell
       # python311Packages.python-lsp-server                                       # python

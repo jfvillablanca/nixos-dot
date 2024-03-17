@@ -118,5 +118,17 @@
           ];
         };
       };
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          stylua
+          selene
+          sumneko-lua-language-server
+
+          alejandra
+          statix
+          deadnix
+          nil
+        ];
+      };
     };
 }
