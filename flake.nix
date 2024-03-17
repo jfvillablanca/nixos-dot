@@ -26,6 +26,7 @@
       hosts = {
         virt = "virt";
         t14g1 = "t14g1";
+        cimmerian = "cimmerian";
       };
 
       system = "x86_64-linux";
@@ -77,6 +78,30 @@
                 isWayland
                 user;
               hostName = hosts.t14g1;
+            })
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${user}.imports = [
+                  ({ config, ... }: import ./home.nix {
+                    inherit config pkgs lib isWayland user;
+                  })
+                ];
+              };
+            }
+          ];
+        };
+
+        ${hosts.cimmerian} = lib.nixosSystem {
+          inherit system;
+          modules = [
+            ({ config, ... }: import ./systems/cimmerian/configuration.nix {
+              inherit
+                config
+                pkgs
+                user;
             })
             home-manager.nixosModules.home-manager
             {
