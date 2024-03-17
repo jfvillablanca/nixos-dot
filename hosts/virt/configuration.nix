@@ -1,30 +1,25 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, user, ... }:
-
-{
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../system-modules/kmonad
-      ../system-modules/internationalization.nix
-      ../system-modules/virtual-fs.nix
-      ../system-modules/networkmanager.nix
-      ../system-modules/nixos-config.nix
-      ../system-modules/timezone.nix
-      ../system-modules/fonts.nix
-      ../system-modules/pipewire.nix
-    ];
+{pkgs, ...}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../system/kmonad
+    ../../system/doas.nix
+    ../../system/internationalization.nix
+    ../../system/networkmanager.nix
+    ../../system/nixos-config.nix
+    ../../system/spice-vda.nix
+    ../../system/timezone.nix
+    ../../system/fonts.nix
+  ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/vda";
+  boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "cimmerian"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -55,21 +50,8 @@
     };
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
-    isNormalUser = true;
-    description = "jmfv";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "uinput"
-      "input"
-      "sound"
-      "audio"
-      "video"
-      # "docker"
-    ];
-  };
+  # Polkit (need enabled for sway)
+  security.polkit.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -77,13 +59,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
-    # Disable DPMS and prevent screen from blanking
-    extraInit = ''
-      xset s off -dpms
-    '';
     systemPackages = with pkgs; [
-      vim
-      git
+      wget
     ];
   };
 
@@ -113,5 +90,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }

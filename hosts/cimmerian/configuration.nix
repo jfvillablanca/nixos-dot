@@ -1,28 +1,25 @@
-{ config, pkgs, user, hostName, ... }:
-{
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./extras.nix
-      ../system-modules/kmonad
-      ../system-modules/doas.nix
-      ../system-modules/internationalization.nix
-      ../system-modules/virtual-fs.nix
-      ../system-modules/networkmanager.nix
-      ../system-modules/nixos-config.nix
-      ../system-modules/timezone.nix
-      ../system-modules/laptop-power-management.nix
-      ../system-modules/fonts.nix
-      ../system-modules/pipewire.nix
-    ];
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+{pkgs, ...}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../systems/kmonad
+    ../../systems/internationalization.nix
+    ../../systems/virtual-fs.nix
+    ../../systems/networkmanager.nix
+    ../../systems/nixos-config.nix
+    ../../systems/timezone.nix
+    ../../systems/fonts.nix
+    ../../systems/pipewire.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  networking.hostName = hostName; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -53,43 +50,6 @@
     };
   };
 
-  # Touchpad
-  services.xserver = {
-    libinput = {
-      enable = true;
-      mouse = {
-        tapping = true;
-      };
-      touchpad = {
-        naturalScrolling = true;
-        tapping = true;
-      };
-    };
-  };
-
-
-  # Polkit (need enabled for sway)
-  security.polkit.enable = true;
-
-
-
-  virtualisation.docker.enable = true;
-
-  users.users.${user} = {
-    isNormalUser = true;
-    description = "jmfv";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-      "uinput"
-      "input"
-      "sound"
-      "audio"
-      "video"
-      "docker"
-    ];
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -101,7 +61,8 @@
       xset s off -dpms
     '';
     systemPackages = with pkgs; [
-      wget
+      vim
+      git
     ];
   };
 

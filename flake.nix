@@ -44,96 +44,86 @@
     };
 
     inherit (nixpkgs) lib;
+
+    mkSystem = {
+      pkgs,
+      system,
+      user,
+      hostName,
+      systemModules,
+      homeModules,
+    }:
+      lib.nixosSystem {
+        inherit system;
+        modules =
+          [
+            {
+              networking.hostName = hostName;
+              users.users.${user} = {
+                isNormalUser = true;
+                description = user;
+                extraGroups = [
+                  "networkmanager"
+                  "wheel"
+                  "uinput"
+                  "input"
+                  "sound"
+                  "audio"
+                  "video"
+                  "docker"
+                ];
+              };
+            }
+
+            ./hosts/${hostName}/configuration.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${user}.imports =
+                  [
+                    ({config, ...}:
+                      import ./home.nix {
+                        inherit config pkgs lib user;
+                      })
+                    ({config, ...}: import ./modules/neovim {inherit config pkgs;})
+                    ./modules/shared.nix
+                    ./modules/x11.nix
+                  ]
+                  ++ homeModules;
+              };
+            }
+          ]
+          ++ systemModules;
+      };
   in {
     nixosConfigurations = {
-      ${hosts.virt} = lib.nixosSystem {
-        # NOTE: Will probably be broken once I start messing
-        # with global system settings for laptop
-        inherit system;
-        modules = [
-          ({config, ...}:
-            import ./systems/virt/configuration.nix {
-              inherit config pkgs user;
-              hostName = hosts.virt;
-            })
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user}.imports = [
-                ({config, ...}:
-                  import ./home.nix {
-                    inherit config pkgs lib user;
-                  })
-              ];
-            };
-          }
-        ];
+      ${hosts.virt} = mkSystem {
+        inherit pkgs system user;
+        hostName = hosts.virt;
+        systemModules = [];
+        homeModules = [];
       };
 
-      ${hosts.t14g1} = lib.nixosSystem {
-        inherit system;
-        modules = [
+      ${hosts.t14g1} = mkSystem {
+        inherit pkgs system user;
+        hostName = hosts.t14g1;
+        systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-          ({config, ...}:
-            import ./systems/t14g1/configuration.nix {
-              inherit
-                config
-                pkgs
-                user
-                ;
-              hostName = hosts.t14g1;
-            })
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user}.imports = [
-                ({config, ...}:
-                  import ./home.nix {
-                    inherit config pkgs lib user;
-                  })
-                ({config, ...}: import ./modules/neovim {inherit config pkgs;})
-                ./modules/shared.nix
-                ./modules/x11.nix
-              ];
-            };
-          }
           ./modules/steam
         ];
+        homeModules = [];
       };
 
-      ${hosts.cimmerian} = lib.nixosSystem {
-        inherit system;
-        modules = [
-          ({config, ...}:
-            import ./systems/cimmerian/configuration.nix {
-              inherit
-                config
-                pkgs
-                user
-                ;
-            })
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user}.imports = [
-                ({config, ...}:
-                  import ./home.nix {
-                    inherit config pkgs lib user;
-                  })
-                ({config, ...}: import ./modules/neovim {inherit config pkgs;})
-                ./modules/shared.nix
-                ./modules/x11.nix
-              ];
-            };
-          }
+      ${hosts.cimmerian} = mkSystem {
+        inherit pkgs system user;
+        hostName = hosts.cimmerian;
+        systemModules = [
           ./modules/steam
         ];
+        homeModules = [];
       };
     };
     devShells.${system}.default = pkgs.mkShell {

@@ -1,32 +1,24 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  config,
-  pkgs,
-  user,
-  hostName,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../system-modules/kmonad
-    ../system-modules/doas.nix
-    ../system-modules/internationalization.nix
-    ../system-modules/networkmanager.nix
-    ../system-modules/nixos-config.nix
-    ../system-modules/spice-vda.nix
-    ../system-modules/timezone.nix
-    ../system-modules/fonts.nix
+    ../../system/kmonad
+    ../../system/doas.nix
+    ../../system/internationalization.nix
+    ../../system/virtual-fs.nix
+    ../../system/networkmanager.nix
+    ../../system/nixos-config.nix
+    ../../system/timezone.nix
+    ../../system/laptop-power-management.nix
+    ../../system/fonts.nix
+    ../../system/pipewire.nix
   ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  networking.hostName = hostName; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -57,15 +49,39 @@
     };
   };
 
+  # Touchpad
+  services.xserver = {
+    libinput = {
+      enable = true;
+      mouse = {
+        tapping = true;
+      };
+      touchpad = {
+        naturalScrolling = true;
+        tapping = true;
+      };
+    };
+  };
+
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
-    isNormalUser = true;
-    description = "jmfv";
-    extraGroups = ["networkmanager" "wheel" "input" "uinput"];
-  };
+  # services.nextdns = {
+  #   enable = true;
+  # };
+
+  # services.resolved = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     DNS=45.90.28.0#1273dc.dns.nextdns.io
+  #     DNS=2a07:a8c0::#1273dc.dns.nextdns.io
+  #     DNS=45.90.30.0#1273dc.dns.nextdns.io
+  #     DNS=2a07:a8c1::#1273dc.dns.nextdns.io
+  #     DNSOverTLS=yes
+  #   '';
+  # };
+
+  virtualisation.docker.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -73,8 +89,30 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
+    # Disable DPMS and prevent screen from blanking
+    extraInit = ''
+      xset s off -dpms
+    '';
     systemPackages = with pkgs; [
       wget
+    ];
+  };
+
+  # Screen Brightness
+  programs.light.enable = true;
+  services.actkbd = {
+    enable = true;
+    bindings = [
+      {
+        keys = [224];
+        events = ["key"];
+        command = "/run/current-system/sw/bin/light -U 10";
+      }
+      {
+        keys = [225];
+        events = ["key"];
+        command = "/run/current-system/sw/bin/light -A 10";
+      }
     ];
   };
 
