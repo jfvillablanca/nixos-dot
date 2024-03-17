@@ -39,7 +39,6 @@
       };
 
       inherit (nixpkgs) lib;
-      isWayland = false;
     in
     {
       nixosConfigurations = {
@@ -49,7 +48,7 @@
           inherit system;
           modules = [
             ({ config, ... }: import ./systems/virt/configuration.nix {
-              inherit config pkgs isWayland user;
+              inherit config pkgs user;
               hostName = hosts.virt;
             })
             home-manager.nixosModules.home-manager
@@ -59,7 +58,7 @@
                 useUserPackages = true;
                 users.${user}.imports = [
                   ({ config, ... }: import ./home.nix {
-                    inherit config pkgs lib isWayland user;
+                    inherit config pkgs lib user;
                   })
                 ];
               };
@@ -75,7 +74,6 @@
               inherit
                 config
                 pkgs
-                isWayland
                 user;
               hostName = hosts.t14g1;
             })
@@ -86,11 +84,15 @@
                 useUserPackages = true;
                 users.${user}.imports = [
                   ({ config, ... }: import ./home.nix {
-                    inherit config pkgs lib isWayland user;
+                    inherit config pkgs lib user;
                   })
+                  ({ config, ... }: import ./modules/neovim { inherit config pkgs; })
+                  ./modules/shared.nix
+                  ./modules/x11.nix
                 ];
               };
             }
+            ./modules/steam
           ];
         };
 
@@ -110,11 +112,15 @@
                 useUserPackages = true;
                 users.${user}.imports = [
                   ({ config, ... }: import ./home.nix {
-                    inherit config pkgs lib isWayland user;
+                    inherit config pkgs lib user;
                   })
+                  ({ config, ... }: import ./modules/neovim { inherit config pkgs; })
+                  ./modules/shared.nix
+                  ./modules/x11.nix
                 ];
               };
             }
+            ./modules/steam
           ];
         };
       };

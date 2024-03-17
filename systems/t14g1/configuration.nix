@@ -1,4 +1,4 @@
-{ config, pkgs, isWayland, user, hostName, ... }:
+{ config, pkgs, user, hostName, ... }:
 {
   imports =
     [
@@ -6,7 +6,6 @@
       ./hardware-configuration.nix
       ./extras.nix
       ../system-modules/kmonad
-      ../../modules/steam
       ../system-modules/doas.nix
       ../system-modules/internationalization.nix
       ../system-modules/virtual-fs.nix
@@ -35,19 +34,11 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm = {
-          enable = isWayland;
-          wayland = isWayland;
-        };
-        lightdm.enable = !isWayland;
+        lightdm.enable = true;
       };
       windowManager = {
-        xmonad = {
-          enable = false;
-          enableContribAndExtras = false;
-        };
         i3 = {
-          enable = !isWayland;
+          enable = true;
         };
       };
     };

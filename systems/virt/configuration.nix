@@ -1,24 +1,25 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, isWayland, user, hostName, ... }:
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../system-modules/kmonad
-      ../system-modules/doas.nix
-      ../system-modules/internationalization.nix
-      ../system-modules/networkmanager.nix
-      ../system-modules/nixos-config.nix
-      ../system-modules/spice-vda.nix
-      ../system-modules/timezone.nix
-      ../system-modules/fonts.nix
-    ];
-
-
+  config,
+  pkgs,
+  user,
+  hostName,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../system-modules/kmonad
+    ../system-modules/doas.nix
+    ../system-modules/internationalization.nix
+    ../system-modules/networkmanager.nix
+    ../system-modules/nixos-config.nix
+    ../system-modules/spice-vda.nix
+    ../system-modules/timezone.nix
+    ../system-modules/fonts.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -37,19 +38,11 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm = {
-          enable = isWayland;
-          wayland = isWayland;
-        };
-        lightdm.enable = !isWayland;
+        lightdm.enable = true;
       };
       windowManager = {
-        xmonad = {
-          enable = false;
-          enableContribAndExtras = false;
-        };
         i3 = {
-          enable = !isWayland;
+          enable = true;
         };
       };
     };
@@ -71,7 +64,7 @@
   users.users.${user} = {
     isNormalUser = true;
     description = "jmfv";
-    extraGroups = [ "networkmanager" "wheel" "input" "uinput" ];
+    extraGroups = ["networkmanager" "wheel" "input" "uinput"];
   };
 
   # Allow unfree packages
