@@ -14,24 +14,21 @@ null_ls.setup({
 		formatting.prettier,
 		formatting.stylelint,
 		formatting.rustywind,
-		code_actions.eslint,
 
 		-- lua --
 		formatting.stylua,
-		diagnostics.luacheck,
+		diagnostics.selene,
 
 		-- sh --
 		formatting.shfmt,
-		diagnostics.shellcheck,
 
 		-- nix --
-		formatting.nixpkgs_fmt,
+		formatting.alejandra,
 		diagnostics.statix,
 		diagnostics.deadnix,
 		code_actions.statix,
 
 		-- rust --
-		formatting.rustfmt.with({ tab_spaces = 4 }),
 		formatting.leptosfmt.with({
 			condition = function(utils)
 				return utils.root_has_file({ "leptosfmt.toml" })
@@ -45,11 +42,9 @@ null_ls.setup({
 		diagnostics.mypy,
 
 		-- haskell --
-		formatting.fourmolu,
 
 		-- c --
 		formatting.clang_format,
-		diagnostics.clang_check,
 
 		-- go --
 		formatting.gofumpt,
@@ -67,6 +62,5 @@ null_ls.setup({
 		diagnostics.codespell.with({
 			args = { "-L", "crate" },
 		}),
-		formatting.trim_whitespace,
 	},
 })
