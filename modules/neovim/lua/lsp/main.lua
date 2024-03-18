@@ -7,6 +7,7 @@ local servers = {
     "bashls",
     "ccls",
     "cssls",
+    "eslint",
     "html",
     "jsonls",
     -- "tsserver",         -- managed by pmizio/typescript-tools.nvim
