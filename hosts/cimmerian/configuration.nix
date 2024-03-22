@@ -5,6 +5,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./hardware-configuration-overrides.nix
     ../../systems/kmonad
     ../../systems/internationalization.nix
     ../../systems/virtual-fs.nix
