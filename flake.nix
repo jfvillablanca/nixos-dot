@@ -11,10 +11,6 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # neovim-nightly-overlay = {
-    #   url = "github:neovim/neovim?dir=contrib";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
