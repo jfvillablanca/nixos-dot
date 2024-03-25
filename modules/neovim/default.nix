@@ -1,15 +1,16 @@
-{ config, pkgs, ... }:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   luaConfig = [
     ./lua/options.lua
     ./lua/keymaps.lua
     ./lua/autocommands.lua
-    ./lua/cmp.lua                                   # requires luasnip
+    ./lua/cmp.lua # requires luasnip
     ./lua/lsp/main.lua
   ];
-in
-{
-
+in {
   xdg.configFile."nvim/lua/lsp" = {
     source = ./lua/lsp;
     recursive = true;
@@ -26,7 +27,7 @@ in
 
     extraLuaConfig =
       builtins.concatStringsSep "\n"
-        (map builtins.readFile luaConfig);
+      (map builtins.readFile luaConfig);
 
     plugins = with pkgs.vimPlugins; [
       # nvim-tree
@@ -210,7 +211,7 @@ in
       }
 
       # trouble-nvim
-      nvim-web-devicons                     # optional requirement for trouble-nvim
+      nvim-web-devicons # optional requirement for trouble-nvim
       {
         plugin = trouble-nvim;
         type = "lua";
@@ -346,12 +347,15 @@ in
       {
         plugin = kanagawa-nvim;
         type = "lua";
-        config = builtins.readFile ./lua/colorschemes/rosepine.lua + ''
-          local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "rose-pine")
-          if not status_ok then
-              return
-          end
-        '' + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
+        config =
+          builtins.readFile ./lua/colorschemes/rosepine.lua
+          + ''
+            local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "rose-pine")
+            if not status_ok then
+                return
+            end
+          ''
+          + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
         #  + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
       }
     ];
@@ -361,34 +365,34 @@ in
       gcc
 
       # Formatters
-      codespell                                                                 # general (fix common misspellings)
-      nodePackages_latest.prettier                                              # webdev
-      stylelint                                                                 # css
-      rustywind                                                                 # tailwind
-      shfmt                                                                     # sh
       # rustfmt                                                                   # rust
+      codespell # general (fix common misspellings)
+      # nodePackages_latest.prettier                                              # webdev
+      # stylelint                                                                 # css
+      # rustywind                                                                 # tailwind
+      shfmt # sh
       # python311Packages.black                                                   # python
 
       # Linters
-      shellcheck                                                                # sh
+      shellcheck # sh
       # python311Packages.flake8                                                  # python
-      write-good                                                                # english prose
+      write-good # english prose
 
       # Language Servers
-      nodePackages_latest.bash-language-server                                  # sh
+      nodePackages_latest.bash-language-server # sh
       # gopls                                                                     # go
       # rust-analyzer                                                             # rust
       # haskellPackages.haskell-language-server                                   # haskell
       # python311Packages.python-lsp-server                                       # python
 
-      nodePackages_latest."@tailwindcss/language-server"                        # tailwind
-      nodePackages_latest."@prisma/language-server"                             # prisma
-      nodePackages_latest.typescript-language-server                            # js-related grammars
-      nodePackages_latest.vscode-langservers-extracted                          # html, css, json, eslint
-      nodePackages_latest.volar                                                 # vue
-      emmet-ls                                                                  # html snippets
+      nodePackages_latest."@tailwindcss/language-server" # tailwind
+      nodePackages_latest."@prisma/language-server" # prisma
+      nodePackages_latest.typescript-language-server # js-related grammars
+      nodePackages_latest.vscode-langservers-extracted # html, css, json, eslint
+      nodePackages_latest.volar # vue
+      emmet-ls # html snippets
 
-      texlab                                                                    # LaTeX
+      texlab # LaTeX
     ];
   };
 }
