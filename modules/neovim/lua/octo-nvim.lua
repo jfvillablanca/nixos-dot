@@ -5,7 +5,7 @@ end
 
 octo.setup({
     -- use local files on right side of reviews
-    use_local_fs = false,
+    use_local_fs = true,
     -- shows a list of builtin actions when no action is provided
     enable_builtin = false,
     -- order to try remotes
