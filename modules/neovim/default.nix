@@ -238,6 +238,13 @@ in {
         config = builtins.readFile ./lua/flash-nvim.lua;
       }
 
+      # noice.nvim
+      {
+        plugin = noice-nvim;
+        type = "lua";
+        config = builtins.readFile ./lua/noice.lua;
+      }
+
       # # wilder
       # {
       #   plugin = wilder-nvim;
