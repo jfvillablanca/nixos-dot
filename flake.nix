@@ -86,7 +86,6 @@
                       })
                     ({config, ...}: import ./modules/neovim {inherit config pkgs;})
                     ./modules/shared.nix
-                    ./modules/x11.nix
                   ]
                   ++ homeModules;
               };
@@ -109,7 +108,9 @@
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
-        homeModules = [];
+        homeModules = [
+          ./modules/x11.nix
+        ];
       };
 
       ${hosts.cimmerian} = mkSystem {
@@ -118,7 +119,9 @@
         systemModules = [
           ./modules/steam
         ];
-        homeModules = [];
+        homeModules = [
+          ./modules/x11.nix
+        ];
       };
     };
     devShells.${system}.default = pkgs.mkShell {
