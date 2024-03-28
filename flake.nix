@@ -135,6 +135,7 @@
         deadnix
         nil
       ];
+      formatter = pkgs.alejandra;
     };
   };
 }
