@@ -3,7 +3,6 @@
     ./wallpapers
     ./alacritty
     ./starship
-    ./direnv
     ./zoxide
     ./zellij
     ./bash

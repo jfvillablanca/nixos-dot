@@ -5,6 +5,7 @@
 }: {
   myHomeModules = {
     eza.enable = true;
+    direnv.enable = true;
   };
 
   home = {
