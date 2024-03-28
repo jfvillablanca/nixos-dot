@@ -4,6 +4,7 @@
   ...
 }: {
   myHomeModules = {
+    alacritty.enable = false;
     bat = {
       enable = true;
       theme = "everblush";

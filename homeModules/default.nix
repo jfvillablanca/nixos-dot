@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./alacritty
     ./btop
     ./starship
     ./direnv

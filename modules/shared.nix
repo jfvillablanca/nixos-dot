@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./wallpapers
-    ./alacritty
     ./bash
     ./fish
     ./git

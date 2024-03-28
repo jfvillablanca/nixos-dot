@@ -4,6 +4,7 @@
   ...
 }: {
   myHomeModules = {
+    alacritty.enable = false;
     bat.enable = false;
     btop.enable = true;
     flameshot.enable = true;
