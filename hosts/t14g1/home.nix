@@ -3,6 +3,10 @@
   user,
   ...
 }: {
+  myHomeModules = {
+    eza.enable = true;
+  };
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";

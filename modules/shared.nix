@@ -6,7 +6,6 @@
     ./direnv
     ./zoxide
     ./zellij
-    ./eza
     ./bash
     ./zsh
     ./fish

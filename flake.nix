@@ -83,6 +83,7 @@
                 useUserPackages = true;
                 users.${user}.imports =
                   [
+                    ./homeModules
                     ./hosts/${hostName}/home.nix
                     ({config, ...}: import ./modules/neovim {inherit config pkgs;})
                     ./modules/shared.nix
