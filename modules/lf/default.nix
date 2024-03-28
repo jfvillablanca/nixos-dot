@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{...}: {
   xdg.configFile."lf/icons".source = ./icons;
 
   programs.lf = {
@@ -19,11 +15,10 @@
     };
 
     keybindings = {
-
       c = "mkdir";
       "." = "set hidden!";
       ee = "editor-open";
+    };
   };
-
   # ...
 }
