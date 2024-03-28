@@ -5,6 +5,7 @@
 }: {
   myHomeModules = {
     bat.enable = true;
+    btop.enable = true;
     flameshot.enable = true;
     gitui.enable = true;
     eza.enable = true;
@@ -27,8 +28,6 @@
       manix # Nix document searcher
       nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
-      htop # System monitor with explicit processes
-      gotop # System monitor but cool graphics
       ripgrep # Grep alternative
       fd # Find
       killall # Kill processes

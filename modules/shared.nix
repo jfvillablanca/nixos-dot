@@ -12,6 +12,5 @@
     ./lf
     ./atuin
     ./gh
-    ./btop
   ];
 }
