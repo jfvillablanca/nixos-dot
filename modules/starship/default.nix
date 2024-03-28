@@ -163,6 +163,10 @@
             symbol = " ";
           };
 
+          golang = {
+            symbol = "󰟓 ";
+          };
+
           nix_shell = {
             disabled = false;
             # impure_msg = "[impure shell](bold autumnred)";
