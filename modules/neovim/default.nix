@@ -385,6 +385,7 @@ in {
       shellcheck # sh
       # python311Packages.flake8                                                  # python
       write-good # english prose
+      nodePackages_latest.eslint
 
       # Language Servers
       nodePackages_latest.bash-language-server # sh
