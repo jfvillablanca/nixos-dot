@@ -7,5 +7,6 @@
     ./eza
     ./zsh
     ./gitui
+    ./bat
   ];
 }

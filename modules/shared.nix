@@ -5,7 +5,6 @@
     ./bash
     ./fish
     ./git
-    ./bat
     ./flameshot
     ./fzf
     ./tmux

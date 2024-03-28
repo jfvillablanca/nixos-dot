@@ -4,6 +4,7 @@
   ...
 }: {
   myHomeModules = {
+    bat.enable = false;
     gitui.enable = false;
     eza.enable = true;
     direnv.enable = true;

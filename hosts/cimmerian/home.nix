@@ -4,6 +4,10 @@
   ...
 }: {
   myHomeModules = {
+    bat = {
+      enable = true;
+      theme = "everblush";
+    };
     gitui.enable = true;
     eza.enable = true;
     direnv.enable = true;
