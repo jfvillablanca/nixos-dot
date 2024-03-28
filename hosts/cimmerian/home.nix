@@ -4,6 +4,7 @@
   ...
 }: {
   myHomeModules = {
+    gitui.enable = true;
     eza.enable = true;
     direnv.enable = true;
     zoxide.enable = true;

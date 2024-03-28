@@ -6,5 +6,6 @@
     ./zellij
     ./eza
     ./zsh
+    ./gitui
   ];
 }

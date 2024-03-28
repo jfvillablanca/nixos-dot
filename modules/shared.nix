@@ -4,7 +4,6 @@
     ./alacritty
     ./bash
     ./fish
-    ./gitui
     ./git
     ./bat
     ./flameshot
