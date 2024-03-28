@@ -1,12 +1,11 @@
-_:
-{
+_: {
   services = {
     picom = {
       enable = true;
       activeOpacity = 0.98;
       inactiveOpacity = 0.90;
       backend = "glx";
-      vSync = true;             # had to enable due to some screen tearing
+      vSync = true; # had to enable due to some screen tearing
       opacityRules = [
         "100:class_g='firefox' && focused"
         "90:class_g='firefox' && !focused"
@@ -40,7 +39,7 @@ _:
 
         # WINTYPES
         wintypes = {
-          normal = { blur-background = true; };
+          normal = {blur-background = true;};
           tooltip = {
             fade = false;
             shadow = true;
@@ -48,8 +47,8 @@ _:
             focus = true;
             full-shadow = false;
           };
-          dock = { shadow = false; };
-          dnd = { shadow = false; };
+          dock = {shadow = false;};
+          dnd = {shadow = false;};
           popup_menu = {
             opacity = 1.0;
             fade = false;
