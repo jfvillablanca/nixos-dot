@@ -11,5 +11,6 @@
     ./gitui
     ./bat
     ./flameshot
+    ./wezterm
   ];
 }

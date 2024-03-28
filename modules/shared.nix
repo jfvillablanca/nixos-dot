@@ -7,7 +7,6 @@
     ./fzf
     ./tmux
     ./firefox
-    ./wezterm
     ./lf
     ./atuin
     ./gh

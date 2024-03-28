@@ -5,6 +5,8 @@
 }: {
   myHomeModules = {
     alacritty.enable = false;
+    wezterm.enable = true;
+
     bat.enable = true;
     btop.enable = true;
     flameshot.enable = true;
