@@ -190,7 +190,7 @@ local lsp = {
 wk.setup(setup)
 wk.register(general, opts)
 wk.register(nvimtree, opts)
-wk.register(gitsigns, opts)
+wk.register(git, opts)
 wk.register(telescope, opts)
 wk.register(treesj, opts)
 wk.register(lsp, {
