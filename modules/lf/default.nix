@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-
 {
+  pkgs,
+  config,
+  ...
+}: {
   xdg.configFile."lf/icons".source = ./icons;
 
   programs.lf = {
@@ -8,11 +10,11 @@
     commands = {
       editor-open = ''$$EDITOR $f'';
       mkdir = ''
-      ''${{
-        printf "Directory Name: "
-        read DIR
-        mkdir $DIR
-      }}
+        ''${{
+          printf "Directory Name: "
+          read DIR
+          mkdir $DIR
+        }}
       '';
     };
 
