@@ -210,9 +210,9 @@ wk.register({
 
 
 
-		k = { '<cmd>RustHoverActions<cr>', "Hover actions"},
-		b = { '<cmd>RustCodeAction<cr>', "Code action group"},
-		e = { '<cmd>RustMoveItemUp<cr>', "Move Item Up"},
-		n = { '<cmd>RustMoveItemDown<cr>', "Move Item Down"},
+		k = { "<cmd>RustHoverActions<cr>", "Hover actions" },
+		b = { "<cmd>RustCodeAction<cr>", "Code action group" },
+		e = { "<cmd>RustMoveItemUp<cr>", "Move Item Up" },
+		n = { "<cmd>RustMoveItemDown<cr>", "Move Item Down" },
 	},
 }, opts)
