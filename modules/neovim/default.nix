@@ -373,7 +373,6 @@ in {
       gcc
 
       # Formatters
-      # rustfmt                                                                   # rust
       codespell # general (fix common misspellings)
       # nodePackages_latest.prettier                                              # webdev
       # stylelint                                                                 # css
