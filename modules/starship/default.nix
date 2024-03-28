@@ -126,7 +126,7 @@
           directory = {
             style = "crystalblue";
             read_only = " ";
-            truncation_length = 1;
+            truncation_length = 2;
             truncate_to_repo = false;
           };
 
