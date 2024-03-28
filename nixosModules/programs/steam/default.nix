@@ -4,9 +4,9 @@
   config,
   ...
 }: let
-  cfg = config.nixosModules.steam;
+  cfg = config.myNixosModules.steam;
 in {
-  options.nixosModules.steam = {
+  options.myNixosModules.steam = {
     enable =
       lib.mkEnableOption "enables steam"
       // {

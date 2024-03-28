@@ -12,7 +12,7 @@
     ../../systems/pipewire.nix
   ];
 
-  nixosModules = {
+  myNixosModules = {
     steam.enable = true;
   };
 
