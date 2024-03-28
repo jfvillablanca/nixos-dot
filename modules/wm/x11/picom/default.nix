@@ -2,7 +2,7 @@ _: {
   services = {
     picom = {
       enable = true;
-      activeOpacity = 0.98;
+      activeOpacity = 1.00;
       inactiveOpacity = 0.90;
       backend = "glx";
       vSync = true; # had to enable due to some screen tearing
