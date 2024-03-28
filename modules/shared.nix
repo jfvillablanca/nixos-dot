@@ -3,7 +3,6 @@
     ./wallpapers
     ./alacritty
     ./bash
-    ./zsh
     ./fish
     ./gitui
     ./git

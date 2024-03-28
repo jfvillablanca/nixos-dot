@@ -9,6 +9,7 @@
     zoxide.enable = true;
     starship.enable = true;
     zellij.enable = true;
+    zsh.enable = false;
   };
 
   home = {

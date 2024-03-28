@@ -5,5 +5,6 @@
     ./zoxide
     ./zellij
     ./eza
+    ./zsh
   ];
 }
