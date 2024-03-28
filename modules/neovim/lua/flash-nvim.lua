@@ -172,7 +172,7 @@ flash.setup({
 				-- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
 			end,
 			-- hide after jump when not using jump labels
-			autohide = false,
+			autohide = true,
 			-- show jump labels
 			jump_labels = false,
 			-- set to `false` to use the current line only
