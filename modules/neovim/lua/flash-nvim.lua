@@ -190,8 +190,8 @@ flash.setup({
 			-- `left` and `right` are always left and right.
 			char_actions = function(motion)
 				return {
-					[";"] = "next", -- set to `right` to always go right
-					[","] = "prev", -- set to `left` to always go left
+					[";"] = "right", -- set to `right` to always go right
+					[","] = "left", -- set to `left` to always go left
 					-- clever-f style
 					[motion:lower()] = "next",
 					[motion:upper()] = "prev",
