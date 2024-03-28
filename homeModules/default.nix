@@ -8,5 +8,6 @@
     ./zsh
     ./gitui
     ./bat
+    ./flameshot
   ];
 }

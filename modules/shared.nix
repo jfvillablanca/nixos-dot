@@ -5,7 +5,6 @@
     ./bash
     ./fish
     ./git
-    ./flameshot
     ./fzf
     ./tmux
     ./firefox

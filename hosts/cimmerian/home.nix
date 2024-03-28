@@ -8,6 +8,7 @@
       enable = true;
       theme = "everblush";
     };
+    flameshot.enable = true;
     gitui.enable = true;
     eza.enable = true;
     direnv.enable = true;

@@ -5,6 +5,7 @@
 }: {
   myHomeModules = {
     bat.enable = false;
+    flameshot.enable = true;
     gitui.enable = false;
     eza.enable = true;
     direnv.enable = true;
