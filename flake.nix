@@ -71,6 +71,7 @@
               };
             }
 
+            ./nixosModules
             ./hosts/${hostName}/configuration.nix
 
             home-manager.nixosModules.home-manager
@@ -116,9 +117,7 @@
       ${hosts.cimmerian} = mkSystem {
         inherit pkgs system user;
         hostName = hosts.cimmerian;
-        systemModules = [
-          ./modules/steam
-        ];
+        systemModules = [];
         homeModules = [
           ./modules/x11.nix
         ];

@@ -12,6 +12,10 @@
     ../../systems/pipewire.nix
   ];
 
+  nixosModules = {
+    steam.enable = true;
+  };
+
   # Bootloader.
   boot.loader = {
     systemd-boot.enable = true;
@@ -48,6 +52,21 @@
       # options = "compose:ralt";
     };
   };
+
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_session = {
+  #       command = ''
+  #         ${pkgs.greetd.tuigreet}/bin/tuigreet \
+  #           --time \
+  #           --asterisks \
+  #           --user-menu \
+  #           --cmd Hyprland
+  #       '';
+  #     };
+  #   };
+  # };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

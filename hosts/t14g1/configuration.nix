@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../systems/kmonad
     ../../systems/doas.nix
@@ -13,6 +12,10 @@
     ../../systems/fonts.nix
     ../../systems/pipewire.nix
   ];
+
+  nixosModules = {
+    steam.enable = false;
+  };
 
   # Bootloader.
   boot.loader = {
