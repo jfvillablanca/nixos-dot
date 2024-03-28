@@ -3,6 +3,7 @@
     ./starship
     ./direnv
     ./zoxide
+    ./zellij
     ./eza
   ];
 }

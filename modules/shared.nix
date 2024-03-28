@@ -2,7 +2,6 @@
   imports = [
     ./wallpapers
     ./alacritty
-    ./zellij
     ./bash
     ./zsh
     ./fish

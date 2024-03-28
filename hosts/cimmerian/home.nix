@@ -8,6 +8,7 @@
     direnv.enable = true;
     zoxide.enable = true;
     starship.enable = true;
+    zellij.enable = true;
   };
 
   home = {
