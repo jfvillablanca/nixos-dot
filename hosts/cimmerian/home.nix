@@ -1,11 +1,8 @@
-{ config, pkgs, lib, user, ... }:
 {
-  # TODO: 
-  # - xrandr autodetect?
-  # - configure i3 layout default
-  # Move colorschemes/themes to separate module and import instead of prop drill
-
-
+  pkgs,
+  user,
+  ...
+}: {
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
@@ -16,6 +13,7 @@
       imv # Image viewer
       tldr # Lazy man's help/man page
       manix # Nix document searcher
+      nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
       htop # System monitor with explicit processes
       gotop # System monitor but cool graphics
@@ -30,6 +28,8 @@
 
       # Browser
       # (if !isWayland then firefox else firefox-wayland)
+      # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
+      google-chrome
 
       # Misc
       neofetch # System lookup
@@ -69,11 +69,19 @@
     };
   };
 
-  programs = { };
+  programs = {};
 
-  services = { };
+  services = {};
 
   xdg = {
     enable = true;
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+      config = {
+        common.default = ["gtk"];
+        hyprland.default = ["gtk" "hyprland"];
+      };
+    };
   };
 }

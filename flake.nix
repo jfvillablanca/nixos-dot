@@ -22,7 +22,7 @@
     neovim-nightly-overlay,
     nixos-hardware,
     ...
-  }: let
+  } @ inputs: let
     user = "jmfv";
     hosts = {
       virt = "virt";
@@ -51,6 +51,7 @@
     }:
       lib.nixosSystem {
         inherit system;
+        specialArgs = {inherit inputs;};
         modules =
           [
             {
@@ -77,14 +78,12 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
+                extraSpecialArgs = {inherit inputs user;};
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${user}.imports =
                   [
-                    ({config, ...}:
-                      import ./home.nix {
-                        inherit config pkgs lib user;
-                      })
+                    ./hosts/${hostName}/home.nix
                     ({config, ...}: import ./modules/neovim {inherit config pkgs;})
                     ./modules/shared.nix
                   ]
