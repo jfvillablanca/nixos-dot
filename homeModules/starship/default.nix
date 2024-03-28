@@ -1,12 +1,24 @@
-{ lib, ... }:
 {
-  programs = {
-    starship = {
-      enable = true;
-      enableZshIntegration = true;
-      enableBashIntegration = true;
-      settings =
-        {
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.myHomeModules.starship;
+in {
+  options.myHomeModules.starship = {
+    enable =
+      lib.mkEnableOption "enables starship"
+      // {
+        default = true;
+      };
+  };
+  config = lib.mkIf cfg.enable {
+    programs = {
+      starship = {
+        enable = true;
+        enableZshIntegration = true;
+        enableBashIntegration = true;
+        settings = {
           format = lib.concatStrings [
             # "$username"
             # "$hostname"
@@ -199,6 +211,7 @@
             vicmd_symbol = "[❮](green)";
           };
         };
+      };
     };
   };
 }

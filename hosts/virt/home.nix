@@ -7,6 +7,7 @@
     eza.enable = true;
     direnv.enable = true;
     zoxide.enable = true;
+    starship.enable = true;
   };
 
   home = {
