@@ -6,6 +6,7 @@
   myHomeModules = {
     eza.enable = true;
     direnv.enable = true;
+    zoxide.enable = true;
   };
 
   home = {

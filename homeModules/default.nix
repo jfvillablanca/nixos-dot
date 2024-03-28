@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./direnv
+    ./zoxide
     ./eza
   ];
 }
