@@ -6,7 +6,7 @@
   xdg.configFile."lf/icons".source = ./icons;
 
   programs.lf = {
-    enable = true;
+    enable = false;
     commands = {
       editor-open = ''$$EDITOR $f'';
       mkdir = ''
