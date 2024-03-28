@@ -102,6 +102,7 @@ in {
       nvim-cmp
       cmp-buffer
       cmp-path
+      cmp-cmdline
       cmp_luasnip
       cmp-nvim-lsp
       cmp-nvim-lua
