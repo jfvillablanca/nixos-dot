@@ -8,6 +8,7 @@
   term = "wezterm";
 in {
   xsession = {
+    enable = true;
     windowManager = {
       i3 = {
         enable = true;
