@@ -5,7 +5,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../systems/kmonad
+    ../../nixosModules/system/kmonad
     ../../systems/doas.nix
     ../../systems/internationalization.nix
     ../../systems/networkmanager.nix

@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./hardware-configuration-overrides.nix
-    ../../systems/kmonad
+    ../../nixosModules/system/kmonad
     ../../systems/internationalization.nix
     ../../systems/virtual-fs.nix
     ../../systems/networkmanager.nix
