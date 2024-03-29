@@ -10,6 +10,7 @@
   myHomeModules = {
     git.enable = true;
     gh.enable = false;
+    neovim.enable = true;
 
     alacritty.enable = false;
     wezterm.enable = true;

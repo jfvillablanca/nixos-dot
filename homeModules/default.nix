@@ -21,5 +21,6 @@
     ./firefox
     ./wezterm
     ./lf
+    ./neovim
   ];
 }

@@ -78,14 +78,13 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
-                extraSpecialArgs = {inherit inputs user;};
+                extraSpecialArgs = {inherit inputs pkgs user;};
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${user}.imports =
                   [
                     ./homeModules
                     ./hosts/${hostName}/home.nix
-                    ({config, ...}: import ./modules/neovim {inherit config pkgs;})
                     ./modules/shared.nix
                   ]
                   ++ homeModules;
