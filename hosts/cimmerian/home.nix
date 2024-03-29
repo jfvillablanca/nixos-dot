@@ -28,6 +28,8 @@
     starship.enable = true;
     zellij.enable = true;
     zsh.enable = false;
+
+    firefox.enable = true;
   };
 
   home = {

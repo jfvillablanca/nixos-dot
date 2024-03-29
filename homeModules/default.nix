@@ -17,6 +17,7 @@
     ./flameshot
     ./fzf
     ./tmux
+    ./firefox
     ./wezterm
     ./lf
   ];

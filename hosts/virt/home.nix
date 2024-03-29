@@ -25,6 +25,8 @@
     starship.enable = true;
     zellij.enable = false;
     zsh.enable = false;
+
+    firefox.enable = false;
   };
 
   home = {

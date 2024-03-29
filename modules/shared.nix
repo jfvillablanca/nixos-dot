@@ -2,6 +2,5 @@
   imports = [
     ./wallpapers
     ./bash
-    ./firefox
   ];
 }
