@@ -3,6 +3,10 @@
   user,
   ...
 }: {
+  imports = [
+    ../../homeModules/system/xdg.nix
+  ];
+
   myHomeModules = {
     git.enable = true;
     gh.enable = true;
@@ -98,16 +102,4 @@
   programs = {};
 
   services = {};
-
-  xdg = {
-    enable = true;
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [xdg-desktop-portal-gtk];
-      config = {
-        common.default = ["gtk"];
-        hyprland.default = ["gtk" "hyprland"];
-      };
-    };
-  };
 }
