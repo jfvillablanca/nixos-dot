@@ -9,7 +9,7 @@
     ../../nixosModules/system/nix
     ../../systems/spice-vda.nix
     ../../nixosModules/system/timezone
-    ../../systems/fonts.nix
+    ../../nixosModules/system/fonts
   ];
 
   # Bootloader.

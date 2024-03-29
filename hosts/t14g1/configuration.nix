@@ -10,7 +10,7 @@
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
     ../../nixosModules/system/laptop-power-management
-    ../../systems/fonts.nix
+    ../../nixosModules/system/fonts
     ../../systems/pipewire.nix
   ];
 

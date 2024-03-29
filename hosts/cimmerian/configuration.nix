@@ -9,7 +9,7 @@
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
-    ../../systems/fonts.nix
+    ../../nixosModules/system/fonts
     ../../systems/pipewire.nix
   ];
 
