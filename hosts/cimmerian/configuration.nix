@@ -5,7 +5,7 @@
 
     ../../nixosModules/system/kmonad
     ../../nixosModules/system/internationalization
-    ../../systems/virtual-fs.nix
+    ../../nixosModules/system/virtual-fs
     ../../nixosModules/system/network-manager
     ../../systems/nixos-config.nix
     ../../systems/timezone.nix
