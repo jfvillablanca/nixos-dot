@@ -10,7 +10,7 @@
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
     ../../nixosModules/system/fonts
-    ../../systems/pipewire.nix
+    ../../nixosModules/system/sound
   ];
 
   myNixosModules = {

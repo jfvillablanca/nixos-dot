@@ -11,7 +11,7 @@
     ../../nixosModules/system/timezone
     ../../nixosModules/system/laptop-power-management
     ../../nixosModules/system/fonts
-    ../../systems/pipewire.nix
+    ../../nixosModules/system/sound
   ];
 
   myNixosModules = {
