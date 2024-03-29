@@ -7,7 +7,7 @@
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
-    ../../systems/spice-vda.nix
+    ../../nixosModules/system/spice-vda
     ../../nixosModules/system/timezone
     ../../nixosModules/system/fonts
   ];
