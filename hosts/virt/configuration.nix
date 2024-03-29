@@ -8,7 +8,7 @@
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../systems/spice-vda.nix
-    ../../systems/timezone.nix
+    ../../nixosModules/system/timezone
     ../../systems/fonts.nix
   ];
 
