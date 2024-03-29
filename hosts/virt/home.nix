@@ -12,6 +12,7 @@
     bat.enable = false;
     tmux.enable = true;
     btop.enable = true;
+    fish.enable = true;
     flameshot.enable = true;
     fzf.enable = true;
     gitui.enable = false;

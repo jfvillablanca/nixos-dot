@@ -8,6 +8,7 @@
     ./zellij
     ./eza
     ./zsh
+    ./fish
     ./git
     ./gitui
     ./bat
