@@ -14,7 +14,6 @@
     bat.enable = false;
     tmux.enable = true;
     btop.enable = true;
-    fish.enable = true;
     flameshot.enable = true;
     fzf.enable = true;
     gitui.enable = false;
@@ -24,6 +23,9 @@
     zoxide.enable = true;
     starship.enable = true;
     zellij.enable = false;
+
+    bash.enable = true;
+    fish.enable = true;
     zsh.enable = false;
 
     firefox.enable = false;

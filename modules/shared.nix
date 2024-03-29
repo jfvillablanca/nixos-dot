@@ -1,6 +1,5 @@
 {...}: {
   imports = [
     ./wallpapers
-    ./bash
   ];
 }

@@ -8,6 +8,7 @@
     ./zoxide
     ./zellij
     ./eza
+    ./bash
     ./zsh
     ./fish
     ./gh
