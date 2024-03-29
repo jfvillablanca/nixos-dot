@@ -4,6 +4,5 @@
     ./bash
     ./firefox
     ./lf
-    ./atuin
   ];
 }

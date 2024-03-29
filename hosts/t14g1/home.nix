@@ -10,6 +10,7 @@
     alacritty.enable = false;
     wezterm.enable = true;
 
+    atuin.enable = false;
     bat.enable = true;
     tmux.enable = true;
     btop.enable = true;
