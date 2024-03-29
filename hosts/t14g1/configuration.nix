@@ -9,7 +9,7 @@
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
-    ../../systems/laptop-power-management.nix
+    ../../nixosModules/system/laptop-power-management
     ../../systems/fonts.nix
     ../../systems/pipewire.nix
   ];

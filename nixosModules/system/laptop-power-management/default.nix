@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # Power Management Daemon
   services.tlp = {
     enable = true;
@@ -14,5 +13,4 @@
       TLP_PERSISTENT_DEFAULT = 1;
     };
   };
-
 }
