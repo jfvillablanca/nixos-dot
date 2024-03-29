@@ -6,7 +6,7 @@
     ../../nixosModules/system/kmonad
     ../../nixosModules/system/internationalization
     ../../systems/virtual-fs.nix
-    ../../systems/networkmanager.nix
+    ../../nixosModules/system/network-manager
     ../../systems/nixos-config.nix
     ../../systems/timezone.nix
     ../../systems/fonts.nix
@@ -23,12 +23,6 @@
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot/efi";
   };
-
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable window manager
   services = {
@@ -97,12 +91,6 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
