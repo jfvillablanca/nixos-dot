@@ -1,8 +1,9 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+
     ../../nixosModules/system/kmonad
-    ../../systems/doas.nix
+    ../../nixosModules/system/doas
     ../../systems/internationalization.nix
     ../../systems/virtual-fs.nix
     ../../systems/networkmanager.nix
