@@ -4,7 +4,6 @@
     ./bash
     ./fish
     ./git
-    ./fzf
     ./tmux
     ./firefox
     ./lf

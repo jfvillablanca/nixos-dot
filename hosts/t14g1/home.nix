@@ -10,6 +10,7 @@
     bat.enable = true;
     btop.enable = true;
     flameshot.enable = true;
+    fzf.enable = true;
     gitui.enable = true;
     eza.enable = true;
     direnv.enable = true;
