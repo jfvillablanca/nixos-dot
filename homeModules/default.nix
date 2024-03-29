@@ -18,5 +18,6 @@
     ./fzf
     ./tmux
     ./wezterm
+    ./lf
   ];
 }

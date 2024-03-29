@@ -3,6 +3,5 @@
     ./wallpapers
     ./bash
     ./firefox
-    ./lf
   ];
 }
