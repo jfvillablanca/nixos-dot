@@ -13,6 +13,7 @@
       enable = true;
       theme = "everblush";
     };
+    tmux.enable = true;
     btop.enable = true;
     flameshot.enable = true;
     fzf.enable = true;

@@ -3,7 +3,6 @@
     ./wallpapers
     ./bash
     ./fish
-    ./tmux
     ./firefox
     ./lf
     ./atuin

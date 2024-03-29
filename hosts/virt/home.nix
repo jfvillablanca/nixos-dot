@@ -10,6 +10,7 @@
     wezterm.enable = true;
 
     bat.enable = false;
+    tmux.enable = true;
     btop.enable = true;
     flameshot.enable = true;
     fzf.enable = true;

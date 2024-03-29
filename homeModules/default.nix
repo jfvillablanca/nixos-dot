@@ -13,6 +13,7 @@
     ./bat
     ./flameshot
     ./fzf
+    ./tmux
     ./wezterm
   ];
 }
