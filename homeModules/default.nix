@@ -9,6 +9,7 @@
     ./eza
     ./zsh
     ./fish
+    ./gh
     ./git
     ./gitui
     ./bat

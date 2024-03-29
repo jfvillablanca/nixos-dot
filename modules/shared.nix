@@ -5,6 +5,5 @@
     ./firefox
     ./lf
     ./atuin
-    ./gh
   ];
 }

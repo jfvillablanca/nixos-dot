@@ -5,6 +5,7 @@
 }: {
   myHomeModules = {
     git.enable = true;
+    gh.enable = true;
 
     alacritty.enable = false;
     wezterm.enable = true;
