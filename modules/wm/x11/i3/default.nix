@@ -1,9 +1,12 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   mod = "Mod4";
   term = "wezterm";
-in
-{
+in {
   xsession = {
     windowManager = {
       i3 = {
@@ -53,7 +56,7 @@ in
           };
           floating = {
             border = 7;
-            criteria = [ ];
+            criteria = [];
             modifier = mod;
             titlebar = true;
           };
@@ -67,15 +70,13 @@ in
             #         size = 13.0;
             #     };
             # }
-
           ];
           keybindings = lib.mkOptionDefault {
             "${mod}+Enter" = "exec ${term}";
             "${mod}+Shift+q" = "kill";
             "${mod}+Shift+r" = "restart";
             "${mod}+Shift+c" = "reload";
-            "${mod}+Shift+e" =
-              "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+            "${mod}+Shift+e" = "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
             "${mod}+Shift+l" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/i3lock";
 
             "${mod}+Left" = "focus left";
@@ -135,7 +136,7 @@ in
           };
           menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
           fonts = {
-            names = [ "JetBrainsMono Nerd Font" ];
+            names = ["JetBrainsMono Nerd Font"];
             style = "SemiBold";
             size = 11.0;
           };
