@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
-  # NixOs Configuration
+{pkgs, ...}: {
   nix = {
     settings = {
       auto-optimise-store = true;

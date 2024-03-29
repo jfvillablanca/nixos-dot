@@ -7,8 +7,8 @@
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/virtual-fs
     ../../nixosModules/system/network-manager
-    ../../systems/nixos-config.nix
     ../../systems/timezone.nix
+    ../../nixosModules/system/nix
     ../../systems/fonts.nix
     ../../systems/pipewire.nix
   ];

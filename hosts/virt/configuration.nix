@@ -6,7 +6,7 @@
     ../../nixosModules/system/doas
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/network-manager
-    ../../systems/nixos-config.nix
+    ../../nixosModules/system/nix
     ../../systems/spice-vda.nix
     ../../systems/timezone.nix
     ../../systems/fonts.nix
