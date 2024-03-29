@@ -3,7 +3,6 @@
     ./wallpapers
     ./bash
     ./fish
-    ./git
     ./tmux
     ./firefox
     ./lf

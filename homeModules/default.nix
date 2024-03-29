@@ -8,6 +8,7 @@
     ./zellij
     ./eza
     ./zsh
+    ./git
     ./gitui
     ./bat
     ./flameshot
