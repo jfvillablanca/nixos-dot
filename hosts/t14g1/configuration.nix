@@ -4,7 +4,7 @@
 
     ../../nixosModules/system/kmonad
     ../../nixosModules/system/doas
-    ../../systems/internationalization.nix
+    ../../nixosModules/system/internationalization
     ../../systems/virtual-fs.nix
     ../../systems/networkmanager.nix
     ../../systems/nixos-config.nix
