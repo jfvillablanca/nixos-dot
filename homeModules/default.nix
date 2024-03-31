@@ -24,5 +24,6 @@
     ./neovim
 
     ./picom
+    ./rofi
   ];
 }
