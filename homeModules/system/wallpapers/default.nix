@@ -1,6 +1,6 @@
-{ ... }: {
+{...}: {
   xdg.configFile.".wallpapers" = {
-    source = ../../.wallpapers;
+    source = ./.;
     recursive = true;
   };
 }

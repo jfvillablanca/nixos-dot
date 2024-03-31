@@ -85,7 +85,6 @@
                   [
                     ./homeModules
                     ./hosts/${hostName}/home.nix
-                    ./modules/shared.nix
                   ]
                   ++ homeModules;
               };

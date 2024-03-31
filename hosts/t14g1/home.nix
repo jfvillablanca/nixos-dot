@@ -5,6 +5,8 @@
 }: {
   imports = [
     ../../homeModules/system/xdg.nix
+
+    ../../homeModules/system/wallpapers
   ];
 
   myHomeModules = {
