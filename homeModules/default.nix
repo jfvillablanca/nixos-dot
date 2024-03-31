@@ -22,5 +22,7 @@
     ./wezterm
     ./lf
     ./neovim
+
+    ./picom
   ];
 }
