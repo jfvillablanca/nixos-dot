@@ -108,18 +108,14 @@
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
-        homeModules = [
-          ./modules/x11.nix
-        ];
+        homeModules = [];
       };
 
       ${hosts.cimmerian} = mkSystem {
         inherit pkgs system user;
         hostName = hosts.cimmerian;
         systemModules = [];
-        homeModules = [
-          ./modules/x11.nix
-        ];
+        homeModules = [];
       };
     };
     devShells.${system}.default = pkgs.mkShell {
