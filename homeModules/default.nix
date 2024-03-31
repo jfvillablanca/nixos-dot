@@ -23,6 +23,7 @@
     ./lf
     ./neovim
 
+    ./window-manager
     ./i3
     ./autorandr
     ./picom
