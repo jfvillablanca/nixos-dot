@@ -23,6 +23,7 @@
     ./lf
     ./neovim
 
+    ./autorandr
     ./picom
     ./rofi
   ];
