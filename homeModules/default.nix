@@ -23,6 +23,7 @@
     ./lf
     ./neovim
 
+    ./i3
     ./autorandr
     ./picom
     ./polybar
