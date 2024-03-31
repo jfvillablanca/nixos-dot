@@ -25,6 +25,7 @@
 
     ./autorandr
     ./picom
+    ./polybar
     ./rofi
   ];
 }
