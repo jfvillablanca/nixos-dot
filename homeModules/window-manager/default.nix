@@ -7,6 +7,7 @@
 
   wmType = lib.types.enum [
     "i3"
+    "hyprland"
   ];
 in {
   options.myHomeModules.window-manager = {
@@ -28,6 +29,11 @@ in {
         picom.enable = true;
         polybar.enable = true;
         rofi.enable = true;
+      };
+    })
+    (lib.mkIf (cfg.enable && cfg.wm == "hyprland") {
+      myHomeModules = {
+        hyprland.enable = true;
       };
     })
   ];

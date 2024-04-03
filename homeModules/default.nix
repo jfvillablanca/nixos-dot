@@ -29,5 +29,7 @@
     ./picom
     ./polybar
     ./rofi
+
+    ./hyprland
   ];
 }

@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./hardware-configuration-overrides.nix
@@ -29,7 +33,7 @@
     xserver = {
       enable = true;
       displayManager = {
-        lightdm.enable = true;
+        gdm.enable = true;
         session = [
           {
             manage = "window";
@@ -51,6 +55,9 @@
       variant = "";
       # options = "compose:ralt";
     };
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
   # Allow unfree packages

@@ -19,7 +19,7 @@
     gh.enable = true;
     neovim.enable = true;
 
-    alacritty.enable = false;
+    alacritty.enable = true;
     wezterm.enable = true;
 
     atuin.enable = false;
