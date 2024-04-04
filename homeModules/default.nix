@@ -31,6 +31,7 @@
     ./rofi
 
     ./hyprland
+    ./wofi
     ./eww
   ];
 }
