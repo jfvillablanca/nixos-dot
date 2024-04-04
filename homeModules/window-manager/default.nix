@@ -42,6 +42,10 @@ in {
         wofi.enable = true;
         eww.enable = true;
       };
+
+      home.packages = with pkgs; [
+        wl-clipboard
+      ];
     })
   ];
 }

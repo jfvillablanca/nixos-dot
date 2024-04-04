@@ -33,12 +33,6 @@ in {
       };
   };
   config = lib.mkIf cfg.enable {
-    # Wayland-specific packages
-    home.packages = with pkgs; [
-      wl-clipboard
-    ];
-
-    # Hyprland config
     wayland.windowManager.hyprland = {
       enable = true;
 
