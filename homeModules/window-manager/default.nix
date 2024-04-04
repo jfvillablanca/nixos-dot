@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -30,6 +31,10 @@ in {
         polybar.enable = true;
         rofi.enable = true;
       };
+
+      home.packages = with pkgs; [
+        simplescreenrecorder
+      ];
     })
     (lib.mkIf (cfg.enable && cfg.wm == "hyprland") {
       myHomeModules = {

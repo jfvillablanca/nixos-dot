@@ -80,7 +80,6 @@
       pamixer # PipeWire CLI tool
       barrier # KVM Switchmy custom node shell env
       vlc # Video player
-      simplescreenrecorder # Screen recorder
       gnome.file-roller # File archiving
       gnome.eog # GUI image viewer
       onboard # On-screen keyboard
