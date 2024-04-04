@@ -20,6 +20,16 @@
       ]
     )
     10);
+
+  defaultTerminal = lib.getExe pkgs.alacritty;
+
+  hyprlandStartup = pkgs.writeShellApplication {
+    name = "hyprland-startup";
+    text = ''
+      ${lib.getExe pkgs.eww} open bar &
+      ${defaultTerminal}
+    '';
+  };
 in {
   imports = [
     inputs.hyprland.homeManagerModules.default
@@ -39,10 +49,10 @@ in {
       settings = {
         "$mainMod" = "SUPER";
         "$fileManager" = "thunar";
-        "$terminal" = "alacritty";
+        "$terminal" = "${defaultTerminal}";
         "$menu" = "wofi --show drun";
 
-        "exec-once" = "alacritty & firefox";
+        "exec-once" = lib.getExe hyprlandStartup;
 
         monitor = [
           "HDMI-A-1, 1920x1080, 0x0, 1"
