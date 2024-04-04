@@ -34,15 +34,6 @@
     };
   };
 
-  # Configure keymap in X11
-  services.xserver = {
-    xkb = {
-      layout = "us";
-      variant = "";
-      # options = "compose:ralt";
-    };
-  };
-
   # Polkit (need enabled for sway)
   security.polkit.enable = true;
 
