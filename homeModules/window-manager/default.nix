@@ -34,6 +34,7 @@ in {
     (lib.mkIf (cfg.enable && cfg.wm == "hyprland") {
       myHomeModules = {
         hyprland.enable = true;
+        eww.enable = true;
       };
     })
   ];
