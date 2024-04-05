@@ -56,7 +56,6 @@
       fd # Find
       killall # Kill processes
       ncdu # NCurses Disk Usage
-      imagemagick # Edit, compose, convert bmp
       unzip # Zip utility
       zip # Zip utility
 

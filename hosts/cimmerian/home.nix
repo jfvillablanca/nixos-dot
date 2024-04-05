@@ -52,7 +52,6 @@
     stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal
-      xplr # TUI file explorer
       imv # Image viewer
       tldr # Lazy man's help/man page
       manix # Nix document searcher
@@ -62,10 +61,8 @@
       fd # Find
       killall # Kill processes
       ncdu # NCurses Disk Usage
-      imagemagick # Edit, compose, convert bmp
       unzip # Zip utility
       zip # Zip utility
-      lazydocker # Docker and Docker compose management utility
 
       # Browser
       # (if !isWayland then firefox else firefox-wayland)
