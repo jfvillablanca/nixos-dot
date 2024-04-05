@@ -22,6 +22,8 @@ in {
             color_scheme = 'Rosé Pine (Gogh)',
 
             enable_tab_bar = false,
+
+            enable_wayland = false,
           }
         '';
       };
