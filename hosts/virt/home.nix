@@ -8,6 +8,11 @@
   ];
 
   myHomeModules = {
+    window-manager = {
+      enable = true;
+      wm = "i3";
+    };
+
     git.enable = true;
     gh.enable = false;
     neovim.enable = true;
