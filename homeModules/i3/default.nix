@@ -32,11 +32,23 @@ in {
             startup = [
               {
                 command = ''
-                  xrandr \
-                      --output HDMI-1 --primary \
-                          --mode 1920x1080 --pos 0x0    --rotate normal \
-                      --output DP-1 \
-                          --mode 1920x1080 --pos 1920x0 --rotate normal
+                  xrandr ${
+                    lib.strings.concatStringsSep " " (map (
+                        m: let
+                          resolution = "--mode ${toString m.width}x${toString m.height} --rate ${toString m.refreshRate}";
+                          position = "--pos ${toString m.x}x${toString m.y} --rotate normal";
+                        in "--output ${m.name} ${
+                          if m.isPrimary
+                          then "--primary"
+                          else ""
+                        } ${
+                          if m.enabled
+                          then "${resolution} ${position}"
+                          else "--off"
+                        }"
+                      )
+                      config.myHomeModules.window-manager.monitors)
+                  }
                 '';
                 notification = false;
                 always = true;
