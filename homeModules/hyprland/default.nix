@@ -54,6 +54,10 @@ in {
 
         "exec-once" = lib.getExe hyprlandStartup;
 
+        general = {
+          layout = "master";
+        };
+
         monitor =
           map (
             m: let
