@@ -149,6 +149,7 @@ in {
             defaultWorkspace = "workspace 1";
             workspaceAutoBackAndForth = false;
           };
+          # FIXME: use config.myHomeModules.window-manager.monitors
           extraConfig = ''
             workspace 1  output HDMI-1
             workspace 2  output HDMI-1
@@ -174,6 +175,28 @@ in {
 
             mouse_warping none
           '';
+
+          # workspace 1  output eDP-1
+          # workspace 2  output eDP-1
+          # workspace 3  output eDP-1
+          # workspace 4  output eDP-1
+          # workspace 5  output eDP-1
+          # workspace 6  output eDP-1
+          # workspace 7  output eDP-1
+          # workspace 8  output eDP-1
+          # workspace 9  output eDP-1
+          # workspace 10 output eDP-1
+
+          # workspace 11 output HDMI-1
+          # workspace 12 output HDMI-1
+          # workspace 13 output HDMI-1
+          # workspace 14 output HDMI-1
+          # workspace 15 output HDMI-1
+          # workspace 16 output HDMI-1
+          # workspace 17 output HDMI-1
+          # workspace 18 output HDMI-1
+          # workspace 19 output HDMI-1
+          # workspace 20 output HDMI-1
         };
       };
     };
