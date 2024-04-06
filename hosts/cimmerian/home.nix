@@ -12,7 +12,26 @@
   myHomeModules = {
     window-manager = {
       enable = true;
-      wm = "i3";
+      wm = "hyprland";
+      monitors = [
+        {
+          # name = "HDMI-1";
+          # For Hyprland, `hyperctl monitors` lists it as "HDMI-A-1"
+          name = "HDMI-A-1";
+          isPrimary = true;
+          width = 1920;
+          height = 1080;
+          x = 0;
+          y = 0;
+        }
+        {
+          name = "DP-1";
+          width = 1920;
+          height = 1080;
+          x = 1920;
+          y = 0;
+        }
+      ];
     };
 
     git.enable = true;
