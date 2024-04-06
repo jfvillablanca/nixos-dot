@@ -54,10 +54,18 @@ in {
 
         "exec-once" = lib.getExe hyprlandStartup;
 
-        monitor = [
-          "HDMI-A-1, 1920x1080, 0x0, 1"
-          "DP-1, 1920x1080, 1920x0, 1"
-        ];
+        monitor =
+          map (
+            m: let
+              resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+              position = "${toString m.x}x${toString m.y}";
+            in "${m.name},${
+              if m.enabled
+              then "${resolution},${position},1"
+              else "disable"
+            }"
+          )
+          config.myHomeModules.window-manager.monitors;
 
         decoration = {
           shadow_offset = "0 5";
