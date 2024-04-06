@@ -21,7 +21,7 @@
     )
     10);
 
-  defaultTerminal = lib.getExe pkgs.alacritty;
+  defaultTerminal = lib.getExe pkgs.wezterm;
 
   hyprlandStartup = pkgs.writeShellApplication {
     name = "hyprland-startup";
