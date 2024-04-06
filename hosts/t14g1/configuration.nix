@@ -31,16 +31,9 @@
       enable = true;
       displayManager = {
         lightdm.enable = true;
-        session = [
-          {
-            manage = "window";
-            name = "home-xsession";
-            start = ''
-              ${pkgs.runtimeShell} $HOME/.xsession &
-              waitPID=$!
-            '';
-          }
-        ];
+      };
+      windowManager = {
+        i3.enable = true;
       };
     };
   };

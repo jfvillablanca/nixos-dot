@@ -27,9 +27,7 @@
         lightdm.enable = true;
       };
       windowManager = {
-        i3 = {
-          enable = true;
-        };
+        i3.enable = true;
       };
     };
   };
