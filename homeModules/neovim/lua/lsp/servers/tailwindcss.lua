@@ -66,10 +66,7 @@ local config = {
 		"tailwind.config.js",
 		"tailwind.config.ts",
 		"postcss.config.js",
-		"postcss.config.ts",
-		"package.json",
-		"node_modules",
-		".git"
+		"postcss.config.ts"
 	),
 	settings = {
 		tailwindCSS = {
