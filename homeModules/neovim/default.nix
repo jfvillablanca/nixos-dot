@@ -51,6 +51,16 @@ in {
           # config = builtins.readFile ./lua/nvim-tree.lua;
         }
 
+        # oil-nvim
+        {
+          plugin = oil-nvim;
+          type = "lua";
+          config = ''
+            require("oil").setup()
+          '';
+          # config = builtins.readFile ./lua/nvim-tree.lua;
+        }
+
         # lualine
         {
           plugin = lualine-nvim;
