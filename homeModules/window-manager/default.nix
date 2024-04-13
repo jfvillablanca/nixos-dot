@@ -80,6 +80,7 @@ in {
         hyprland.enable = true;
         wofi.enable = true;
         eww.enable = true;
+        waybar.enable = true;
       };
 
       home.packages = with pkgs; [

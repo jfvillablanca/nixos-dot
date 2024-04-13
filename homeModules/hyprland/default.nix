@@ -26,7 +26,7 @@
   hyprlandStartup = pkgs.writeShellApplication {
     name = "hyprland-startup";
     text = ''
-      ${lib.getExe pkgs.eww} open bar &
+      ${lib.getExe pkgs.waybar} &
       ${defaultTerminal}
     '';
   };
