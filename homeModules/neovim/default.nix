@@ -394,7 +394,6 @@ in {
         gcc
 
         # Formatters
-        codespell # general (fix common misspellings)
         # nodePackages_latest.prettier                                              # webdev
         # stylelint                                                                 # css
         # rustywind                                                                 # tailwind

@@ -57,10 +57,5 @@ null_ls.setup({
 
 		-- markdown --
 		diagnostics.write_good,
-
-		-- all filetypes --
-		diagnostics.codespell.with({
-			args = { "-L", "crate" },
-		}),
 	},
 })
