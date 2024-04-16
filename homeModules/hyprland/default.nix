@@ -58,10 +58,6 @@ in {
 
         "exec-once" = lib.getExe hyprlandStartup;
 
-        general = {
-          layout = "master";
-        };
-
         monitor =
           map (
             m: let
@@ -75,10 +71,46 @@ in {
           )
           config.myHomeModules.window-manager.monitors;
 
+        general = {
+          layout = "master";
+          no_cursor_warps = true;
+          resize_on_border = true;
+
+          gaps_in = 4;
+          gaps_out = 8;
+          border_size = 2;
+          "col.active_border" = "0xff${config.colorScheme.palette.base0E}";
+          "col.inactive_border" = "0xff${config.colorScheme.palette.base0D}";
+        };
+
+        group = {
+          "col.border_active" = "0xff${config.colorScheme.palette.base0E}";
+          "col.border_inactive" = "0xff${config.colorScheme.palette.base0D}";
+          "col.border_locked_active" = "0xff${config.colorScheme.palette.base08}";
+          "col.border_locked_inactive" = "0xff${config.colorScheme.palette.base09}";
+          groupbar = {
+            height = 3;
+            render_titles = false;
+            "col.active" = "0xbb${config.colorScheme.palette.base0E}";
+            "col.inactive" = "0xbb${config.colorScheme.palette.base0D}";
+            "col.locked_active" = "0xbb${config.colorScheme.palette.base08}";
+            "col.locked_inactive" = "0xbb${config.colorScheme.palette.base09}";
+          };
+        };
+
         decoration = {
           shadow_offset = "0 5";
           "col.shadow" = "rgba(00000099)";
+
+          rounding = 5;
+          active_opacity = 1.0;
+          inactive_opacity = 0.9;
         };
+
+        misc = {
+          disable_splash_rendering = true;
+        };
+
         animations = {
           enabled = true;
           animation = [
@@ -95,6 +127,8 @@ in {
 
         windowrulev2 = [
           "suppressevent maximize, class:.*"
+          "bordercolor rgb(${config.colorScheme.palette.base08}) rgb(${config.colorScheme.palette.base0B}),fullscreen:1"
+          "bordersize 4,fullscreen:1"
         ];
 
         bind =
