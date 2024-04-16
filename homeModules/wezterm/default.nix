@@ -24,6 +24,8 @@ in {
             enable_tab_bar = false,
 
             enable_wayland = false,
+
+            window_close_confirmation = 'NeverPrompt',
           }
         '';
       };
