@@ -52,6 +52,7 @@
     fzf.enable = true;
     gitui.enable = true;
     lf.enable = false;
+    yazi.enable = true;
     eza.enable = true;
     direnv.enable = true;
     zoxide.enable = true;

@@ -22,6 +22,7 @@
     ./wezterm
     ./lf
     ./neovim
+    ./yazi
 
     ./window-manager
     ./i3
