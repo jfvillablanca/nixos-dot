@@ -34,13 +34,6 @@
     nixos-hardware,
     ...
   } @ inputs: let
-    user = "jmfv";
-    hosts = {
-      virt = "virt";
-      t14g1 = "t14g1";
-      cimmerian = "cimmerian";
-    };
-
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -61,7 +54,7 @@
     }:
       lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs user;};
         modules =
           [
             {
@@ -102,23 +95,25 @@
       };
   in {
     nixosConfigurations = {
-      ${hosts.virt} = mkSystem {
-        inherit pkgs system user;
-        hostName = hosts.virt;
+      virt = mkSystem {
+        inherit pkgs system;
+        user = "jmfv";
+        hostName = "virt";
         systemModules = [];
       };
 
-      ${hosts.t14g1} = mkSystem {
-        inherit pkgs system user;
-        hostName = hosts.t14g1;
+      t14g1 = mkSystem {
+        inherit pkgs system;
+        user = "jmfv";
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
       };
 
-      ${hosts.cimmerian} = mkSystem {
-        inherit pkgs system user;
-        hostName = hosts.cimmerian;
+      cimmerian = mkSystem {
+        inherit pkgs system;
+        user = "jmfv";
+        hostName = "cimmerian";
         systemModules = [];
       };
     };
