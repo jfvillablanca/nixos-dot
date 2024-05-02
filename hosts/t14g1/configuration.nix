@@ -30,7 +30,7 @@
     xserver = {
       enable = true;
       displayManager = {
-        lightdm.enable = true;
+        gdm.enable = true;
       };
       windowManager = {
         i3.enable = true;
