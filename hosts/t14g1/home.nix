@@ -117,7 +117,7 @@
       sierra-gtk-theme
     ];
     sessionVariables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "wezterm";
       EDITOR = "nvim";
       VISUAL = "nvim";
       GIT_EDITOR = "nvim";
