@@ -58,7 +58,6 @@
       user,
       hostName,
       systemModules,
-      homeModules,
     }:
       lib.nixosSystem {
         inherit system;
@@ -92,12 +91,10 @@
                 extraSpecialArgs = {inherit inputs pkgs user;};
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.${user}.imports =
-                  [
-                    ./homeModules
-                    ./hosts/${hostName}/home.nix
-                  ]
-                  ++ homeModules;
+                users.${user}.imports = [
+                  ./homeModules
+                  ./hosts/${hostName}/home.nix
+                ];
               };
             }
           ]
@@ -109,7 +106,6 @@
         inherit pkgs system user;
         hostName = hosts.virt;
         systemModules = [];
-        homeModules = [];
       };
 
       ${hosts.t14g1} = mkSystem {
@@ -118,14 +114,12 @@
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
-        homeModules = [];
       };
 
       ${hosts.cimmerian} = mkSystem {
         inherit pkgs system user;
         hostName = hosts.cimmerian;
         systemModules = [];
-        homeModules = [];
       };
     };
     devShells.${system}.default = pkgs.mkShell {
