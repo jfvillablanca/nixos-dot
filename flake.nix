@@ -24,7 +24,6 @@
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs = {
@@ -105,6 +104,7 @@
       t14g1 = mkSystem {
         inherit pkgs system;
         user = "jmfv";
+        hostName = "t14g1";
         systemModules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
         ];
