@@ -273,11 +273,11 @@ in {
         }
 
         # noice.nvim
-        {
-          plugin = noice-nvim;
-          type = "lua";
-          config = builtins.readFile ./lua/noice.lua;
-        }
+        # {
+        #   plugin = noice-nvim;
+        #   type = "lua";
+        #   config = builtins.readFile ./lua/noice.lua;
+        # }
 
         # # wilder
         # {
