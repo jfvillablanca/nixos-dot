@@ -84,6 +84,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${user}.imports = [
+                  inputs.nix-colors.homeManagerModules.default
                   ./homeModules
                   ./hosts/${hostName}/home.nix
                 ];
