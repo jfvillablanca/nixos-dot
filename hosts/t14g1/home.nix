@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   user,
   ...
@@ -9,10 +10,12 @@
     ../../homeModules/system/wallpapers
   ];
 
+  colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-hard;
+
   myHomeModules = {
     window-manager = {
       enable = true;
-      wm = "i3";
+      wm = "hyprland";
       monitors = [
         {
           name = "eDP-1";
