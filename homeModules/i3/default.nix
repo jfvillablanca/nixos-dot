@@ -104,16 +104,27 @@ in {
               "${mod}+Shift+j" = "resize shrink width 10 px";
               "${mod}+Shift+k" = "resize grow width 10 px";
 
-              "${mod}+1" = "workspace 1;  workspace 11";
-              "${mod}+2" = "workspace 2;  workspace 12";
-              "${mod}+3" = "workspace 3;  workspace 13";
-              "${mod}+4" = "workspace 4;  workspace 14";
-              "${mod}+5" = "workspace 5;  workspace 15";
-              "${mod}+6" = "workspace 6;  workspace 16";
-              "${mod}+7" = "workspace 7;  workspace 17";
-              "${mod}+8" = "workspace 8;  workspace 18";
-              "${mod}+9" = "workspace 9;  workspace 19";
-              "${mod}+0" = "workspace 10; workspace 20";
+              # "${mod}+1" = "workspace 1;  workspace 11";
+              # "${mod}+2" = "workspace 2;  workspace 12";
+              # "${mod}+3" = "workspace 3;  workspace 13";
+              # "${mod}+4" = "workspace 4;  workspace 14";
+              # "${mod}+5" = "workspace 5;  workspace 15";
+              # "${mod}+6" = "workspace 6;  workspace 16";
+              # "${mod}+7" = "workspace 7;  workspace 17";
+              # "${mod}+8" = "workspace 8;  workspace 18";
+              # "${mod}+9" = "workspace 9;  workspace 19";
+              # "${mod}+0" = "workspace 10; workspace 20";
+
+              "${mod}+1" = "workspace 1; ";
+              "${mod}+2" = "workspace 2; ";
+              "${mod}+3" = "workspace 3; ";
+              "${mod}+4" = "workspace 4; ";
+              "${mod}+5" = "workspace 5; ";
+              "${mod}+6" = "workspace 6; ";
+              "${mod}+7" = "workspace 7; ";
+              "${mod}+8" = "workspace 8; ";
+              "${mod}+9" = "workspace 9; ";
+              "${mod}+0" = "workspace 10;";
 
               "${mod}+Shift+1" = "move container to workspace 1";
               "${mod}+Shift+2" = "move container to workspace 2";
@@ -151,27 +162,16 @@ in {
           };
           # FIXME: use config.myHomeModules.window-manager.monitors
           extraConfig = ''
-            workspace 1  output HDMI-1
-            workspace 2  output HDMI-1
-            workspace 3  output HDMI-1
-            workspace 4  output HDMI-1
-            workspace 5  output HDMI-1
-            workspace 6  output HDMI-1
-            workspace 7  output HDMI-1
-            workspace 8  output HDMI-1
-            workspace 9  output HDMI-1
-            workspace 10 output HDMI-1
-
-            workspace 11 output DP-1
-            workspace 12 output DP-1
-            workspace 13 output DP-1
-            workspace 14 output DP-1
-            workspace 15 output DP-1
-            workspace 16 output DP-1
-            workspace 17 output DP-1
-            workspace 18 output DP-1
-            workspace 19 output DP-1
-            workspace 20 output DP-1
+            workspace 1  output eDP-1
+            workspace 2  output eDP-1
+            workspace 3  output eDP-1
+            workspace 4  output eDP-1
+            workspace 5  output eDP-1
+            workspace 6  output eDP-1
+            workspace 7  output eDP-1
+            workspace 8  output eDP-1
+            workspace 9  output eDP-1
+            workspace 10 output eDP-1
 
             mouse_warping none
           '';
@@ -197,6 +197,28 @@ in {
           # workspace 18 output HDMI-1
           # workspace 19 output HDMI-1
           # workspace 20 output HDMI-1
+
+          # workspace 1  output HDMI-1
+          # workspace 2  output HDMI-1
+          # workspace 3  output HDMI-1
+          # workspace 4  output HDMI-1
+          # workspace 5  output HDMI-1
+          # workspace 6  output HDMI-1
+          # workspace 7  output HDMI-1
+          # workspace 8  output HDMI-1
+          # workspace 9  output HDMI-1
+          # workspace 10 output HDMI-1
+
+          # workspace 11 output DP-1
+          # workspace 12 output DP-1
+          # workspace 13 output DP-1
+          # workspace 14 output DP-1
+          # workspace 15 output DP-1
+          # workspace 16 output DP-1
+          # workspace 17 output DP-1
+          # workspace 18 output DP-1
+          # workspace 19 output DP-1
+          # workspace 20 output DP-1
         };
       };
     };
