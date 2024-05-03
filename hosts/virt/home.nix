@@ -27,7 +27,6 @@
     flameshot.enable = true;
     fzf.enable = true;
     gitui.enable = false;
-    lf.enable = false;
     eza.enable = true;
     direnv.enable = true;
     zoxide.enable = true;

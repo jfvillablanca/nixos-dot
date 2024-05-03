@@ -20,7 +20,6 @@
     ./tmux
     ./firefox
     ./wezterm
-    ./lf
     ./neovim
     ./yazi
 
