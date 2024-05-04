@@ -54,7 +54,7 @@ in {
         "$mainMod" = "SUPER";
         "$fileManager" = "thunar";
         "$terminal" = "${defaultTerminal}";
-        "$menu" = "wofi --show drun";
+        "$menu" = "${lib.getExe pkgs.wofi} --show drun";
 
         "exec-once" = lib.getExe hyprlandStartup;
 
