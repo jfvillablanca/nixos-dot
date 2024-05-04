@@ -138,7 +138,7 @@ in {
 
             # compositor commands
             "$mainMod SHIFT, Q, killactive"
-            "$mainMod, F, fullscreen"
+            "$mainMod, F, fullscreen, 1"
             "$mainMod, W, togglegroup"
             "$mainMod SHIFT, N, changegroupactive, f"
             "$mainMod SHIFT, P, changegroupactive, b"
