@@ -30,6 +30,10 @@ in {
 
             # Modules Left
             "modules-left" = [
+              "custom/nixos"
+              "memory"
+              "cpu"
+              "disk"
             ];
 
             # Modules Center
@@ -40,16 +44,47 @@ in {
             # Modules Right
             "modules-right" = [
               "pulseaudio"
+              "battery"
               "network"
-              "group/hardware"
               "tray"
-              "custom/exit"
               "clock"
             ];
 
             ###############################
             ########### MODULES ###########
             ###############################
+
+            "custom/nixos" = {
+              "format" = " ";
+              "tooltip" = false;
+            };
+
+            # Memory
+            "memory" = {
+              "interval" = 1;
+              "format" = "󰍛 {percentage}%";
+              "states" = {
+                "warning" = 80;
+                "critical" = 90;
+              };
+            };
+
+            # CPU
+            "cpu" = {
+              "interval" = 1;
+              "format" = "󰻠 {usage}%";
+              "states" = {
+                "warning" = 80;
+                "critical" = 90;
+              };
+            };
+            # Disk
+            "disk" = {
+              "interval" = 30;
+              "format" = "󰨣 {used}";
+              "path" = "/";
+              "on-click" = "${lib.getExe pkgs.wezterm} -e btop";
+            };
 
             # Workspaces
             "hyprland/workspaces" = {
@@ -67,73 +102,11 @@ in {
               };
             };
 
-            # System tray
-            "tray" = {
-              "spacing" = 10;
-            };
-
-            # Clock
-            "clock" = {
-              "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-              "format-alt" = "{:%Y-%m-%d}";
-            };
-
-            # CPU
-            "cpu" = {
-              "format" = "/ C {usage}% ";
-              "on-click" = "${lib.getExe pkgs.wezterm} -e btop";
-            };
-
-            # Memory
-            "memory" = {
-              "format" = "/ M {}% ";
-              "on-click" = "${lib.getExe pkgs.wezterm} -e btop";
-            };
-
-            # Harddisc space used
-            "disk" = {
-              "interval" = 30;
-              "format" = "D {percentage_used}% ";
-              "path" = "/";
-              "on-click" = "${lib.getExe pkgs.wezterm} -e btop";
-            };
-
-            # Group Hardware
-            "group/hardware" = {
-              "orientation" = "inherit";
-              "drawer" = {
-                "transition-duration" = 300;
-                "children-class" = "not-memory";
-                "transition-left-to-right" = false;
-              };
-              "modules" = [
-                "disk"
-                "cpu"
-                "memory"
-              ];
-            };
-
-            # Network
-            "network" = {
-              "format" = "{ifname}";
-              "format-wifi" = "   {signalStrength}%";
-              "format-ethernet" = "  {ipaddr}";
-              "format-disconnected" = "Not connected"; #An empty format will hide the module.
-              "tooltip-format" = " {ifname} via {gwaddri}";
-              "tooltip-format-wifi" = "   {essid} ({signalStrength}%)";
-              "tooltip-format-ethernet" = "  {ifname} ({ipaddr}/{cidr})";
-              "tooltip-format-disconnected" = "Disconnected";
-              "max-length" = 50;
-              "on-click" = "hyprctl dispatch exec [floating] ${lib.getExe pkgs.wezterm} -- -e nmtui connect";
-            };
-
             # Pulseaudio
             "pulseaudio" = {
-              # "scroll-step"= 1; // %, can be a float
+              "scroll-step" = 1;
               "format" = "{icon} {volume}%";
-              "format-bluetooth" = "{volume}% {icon} {format_source}";
-              "format-bluetooth-muted" = " {icon} {format_source}";
-              "format-muted" = " {format_source}";
+              "format-muted" = "󰖁 Muted";
               "format-source" = "{volume}% ";
               "format-source-muted" = "";
               "format-icons" = {
@@ -143,140 +116,91 @@ in {
                 "phone" = "";
                 "portable" = "";
                 "car" = "";
-                "default" = ["" " " " "];
+                "default" = ["󰕿" "󰖀" "󰕾"];
               };
               "on-click" = "hyprctl dispatch exec [floating] ${lib.getExe pkgs.pavucontrol}";
+              "tooltip" = false;
             };
 
-            # Other
-            "user" = {
-              "format" = "{user}";
-              "interval" = 60;
-              "icon" = false;
+            "battery" = {
+              "interval" = 10;
+              "states" = {
+                "warning" = 20;
+                "critical" = 10;
+              };
+              "format" = "{icon} {capacity}%";
+              "format-icons" = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+              "format-full" = "{icon} {capacity}%";
+              "format-charging" = "󰂄 {capacity}%";
+              "tooltip" = false;
+            };
+
+            # Network
+            "network" = {
+              "format" = "{icon}  {signalStrength}%";
+              "format-icons" = ["󰤟" "󰤢" "󰤥" "󰤨"];
+              "format-ethernet" = "  {ipaddr}";
+              "format-disconnected" = "󰤭";
+              "tooltip-format" = " {ifname} via {gwaddri}";
+              "tooltip-format-wifi" = "󰤨  {essid} ({signalStrength}%)";
+              "tooltip-format-ethernet" = "  {ifname} ({ipaddr}/{cidr})";
+              "tooltip-format-disconnected" = "Disconnected";
+              "max-length" = 50;
+              "on-click" = "hyprctl dispatch exec [floating] ${lib.getExe pkgs.wezterm} -- -e nmtui connect";
+            };
+
+            # System tray
+            "tray" = {
+              "spacing" = 10;
+            };
+
+            # Clock
+            "clock" = {
+              "interval" = 1;
+              "format" = "{:%I:%M %p  %A %b %d}";
+              "tooltip" = true;
+              "tooltip-format" = "{=%A; %d %B %Y}\n<tt>{calendar}</tt>";
             };
           };
         };
 
-        # TODO: Rework the CSS here lmao
-        style = ''
-          @define-color backgroundlight #${config.colorScheme.palette.base06};
-          @define-color backgrounddark #${config.colorScheme.palette.base06};
-          @define-color workspacesbackground1 #${config.colorScheme.palette.base06};
-          @define-color workspacesbackground2 #${config.colorScheme.palette.base03};
-          @define-color bordercolor #${config.colorScheme.palette.base06};
-          @define-color textcolor1 #${config.colorScheme.palette.base00};
-          @define-color textcolor2 #${config.colorScheme.palette.base00};
-          @define-color textcolor3 #${config.colorScheme.palette.base06};
-          @define-color iconcolor #${config.colorScheme.palette.base06};
+        style = let
+          borderRadiusWaybar = "15px";
+          borderRadiusTooltip = "10px";
+          my = "2px";
+          mx = "5px";
+          pt = "2px";
+          pb = "0px";
+          pl = "8px";
+          pr = "8px";
+          text-lg = "24px";
+          text-sm = "14px";
 
+          backgroundlight = "#${config.colorScheme.palette.base04}";
+          backgrounddark = "#${config.colorScheme.palette.base00}";
+          workspacesbackground = "#${config.colorScheme.palette.base03}";
+          textcolordark = "#${config.colorScheme.palette.base00}";
+          textcolor1 = "#${config.colorScheme.palette.base05}";
+          textcolor2 = "#${config.colorScheme.palette.base06}";
+          textcolor3 = "#${config.colorScheme.palette.base07}";
+          iconcolor = "#${config.colorScheme.palette.base0D}";
+
+          chargingcolor = "#${config.colorScheme.palette.base0C}"; # cyan
+          warningcolor = "#${config.colorScheme.palette.base0A}"; # yellow
+          errorcolor = "#${config.colorScheme.palette.base08}"; # red
+        in ''
           /* -----------------------------------------------------
            * General
            * ----------------------------------------------------- */
 
           * {
-              font-family: "Fira Sans Semibold", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+              font-family: "JetBrainsMono";
               border: none;
               border-radius: 0px;
           }
 
           window#waybar {
-              background-color: rgba(0,0,0,0.2);
-              border-bottom: 0px solid #ffffff;
-              /* color: #FFFFFF; */
-              transition-property: background-color;
-              transition-duration: .5s;
-          }
-
-          /* -----------------------------------------------------
-           * Workspaces
-           * ----------------------------------------------------- */
-
-          #workspaces {
-              margin: 5px 1px 6px 1px;
-              padding: 0px 1px;
-              border-radius: 15px;
-              border: 0px;
-              font-weight: bold;
-              font-style: normal;
-              font-size: 16px;
-              color: @textcolor1;
-          }
-
-          #workspaces button {
-              padding: 0px 5px;
-              margin: 4px 3px;
-              border-radius: 15px;
-              border: 0px;
-              color: @textcolor3;
-              transition: all 0.3s ease-in-out;
-          }
-
-          #workspaces button.active {
-              color: @textcolor1;
-              background: @workspacesbackground2;
-              border-radius: 15px;
-              min-width: 40px;
-              transition: all 0.3s ease-in-out;
-          }
-
-          #workspaces button:hover {
-              color: @textcolor1;
-              background: @workspacesbackground2;
-              border-radius: 15px;
-          }
-
-          /* -----------------------------------------------------
-           * Tooltips
-           * ----------------------------------------------------- */
-
-          tooltip {
-              border-radius: 10px;
-              background-color: @backgroundlight;
-              opacity:0.8;
-              padding:20px;
-              margin:0px;
-          }
-
-          tooltip label {
-              color: @textcolor2;
-          }
-
-          /* -----------------------------------------------------
-           * Window
-           * ----------------------------------------------------- */
-
-          #window {
-              background: @backgroundlight;
-              margin: 10px 15px 10px 0px;
-              padding: 2px 10px 0px 10px;
-              border-radius: 12px;
-              color:@textcolor2;
-              font-size:16px;
-              font-weight:normal;
-          }
-
-          window#waybar.empty #window {
-              background-color:transparent;
-          }
-
-          /* -----------------------------------------------------
-           * Taskbar
-           * ----------------------------------------------------- */
-
-          #taskbar {
-              background: @backgroundlight;
-              margin: 6px 15px 6px 0px;
-              padding:0px;
-              border-radius: 15px;
-              font-weight: normal;
-              font-style: normal;
-              border: 3px solid @backgroundlight;
-          }
-
-          #taskbar button {
-              margin:0;
-              border-radius: 15px;
-              padding: 0px 5px 0px 5px;
+            background: transparent;
           }
 
           /* -----------------------------------------------------
@@ -295,37 +219,73 @@ in {
            * Custom Modules
            * ----------------------------------------------------- */
 
-          #custom-appmenu {
-              background-color: @backgrounddark;
-              font-size: 16px;
-              color: @textcolor1;
-              border-radius: 15px;
-              padding: 2px 10px 0px 10px;
-              margin: 10px 15px 10px 10px;
+          #custom-nixos {
+              background-color: ${backgrounddark};
+              font-size: ${text-lg};
+              color: ${iconcolor};
+              border-radius: ${borderRadiusWaybar};
+              padding-left: 10px;
+              padding-right: 5px;
+              margin: ${my} ${mx};
           }
 
           /* -----------------------------------------------------
-           * Hardware Group
+           * Memory, CPU, Disk
            * ----------------------------------------------------- */
 
-           #disk,#memory,#cpu {
-              margin:0px;
-              padding:0px;
-              font-size:16px;
-              color:@iconcolor;
+          #memory, #cpu, #disk {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
+          }
+
+          #memory.warning, #cpu.warning {
+              color: ${warningcolor};
+          }
+
+          #memory.critical, #cpu.critical {
+              color: ${errorcolor};
           }
 
           /* -----------------------------------------------------
-           * Clock
+           * Workspaces
            * ----------------------------------------------------- */
 
-          #clock {
-              background-color: @backgrounddark;
-              font-size: 16px;
-              color: @textcolor1;
-              border-radius: 15px;
-              padding: 2px 10px 0px 10px;
-              margin: 10px 15px 10px 0px;
+          #workspaces {
+              margin: 5px 1px 5px 1px;
+              padding: 0;
+              border-radius: ${borderRadiusWaybar};
+              border: 0px;
+              font-weight: bold;
+              font-style: normal;
+              font-size: ${text-sm};
+              color: ${textcolor1};
+          }
+
+          #workspaces button {
+              padding: 0px 5px;
+              margin: 4px 3px;
+              border-radius: ${borderRadiusWaybar};
+              border: 0px;
+              color: ${textcolor3};
+              transition: all 0.3s ease-in-out;
+          }
+
+          #workspaces button.active {
+              color: ${textcolor1};
+              background: ${workspacesbackground};
+              border-radius: ${borderRadiusWaybar};
+              min-width: 40px;
+              transition: all 0.3s ease-in-out;
+          }
+
+          #workspaces button:hover {
+              color: ${textcolor1};
+              background: ${workspacesbackground};
+              border-radius: ${borderRadiusWaybar};
           }
 
           /* -----------------------------------------------------
@@ -333,17 +293,68 @@ in {
            * ----------------------------------------------------- */
 
           #pulseaudio {
-              background-color: @backgroundlight;
-              font-size: 16px;
-              color: @textcolor2;
-              border-radius: 15px;
-              padding: 2px 10px 0px 10px;
-              margin: 10px 15px 10px 0px;
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
           }
 
           #pulseaudio.muted {
-              background-color: @backgrounddark;
-              color: @textcolor1;
+              background-color: ${backgrounddark};
+              color: ${textcolor1};
+          }
+
+          /* -----------------------------------------------------
+           * Battery
+           * ----------------------------------------------------- */
+
+          #battery {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
+          }
+
+          #battery.charging, #battery.plugged {
+            color: ${chargingcolor};
+          }
+
+          @keyframes blink-warning {
+              to {
+                  background-color: ${warningcolor};
+                  color: ${textcolordark};
+              }
+          }
+
+          #battery.warning:not(.charging) {
+              background-color: ${textcolordark};
+              color: ${warningcolor};
+              animation-name: blink-warning;
+              animation-duration: 2.0s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              animation-direction: alternate;
+          }
+
+          @keyframes blink-critical {
+              to {
+                  background-color: ${errorcolor};
+                  color: ${textcolor3};
+              }
+          }
+
+          #battery.critical:not(.charging) {
+              background-color: ${textcolor3};
+              color: ${errorcolor};
+              animation-name: blink-critical;
+              animation-duration: 0.5s;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              animation-direction: alternate;
           }
 
           /* -----------------------------------------------------
@@ -351,22 +362,22 @@ in {
            * ----------------------------------------------------- */
 
           #network {
-              background-color: @backgroundlight;
-              font-size: 16px;
-              color: @textcolor2;
-              border-radius: 15px;
-              padding: 2px 10px 0px 10px;
-              margin: 10px 15px 10px 0px;
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
           }
 
           #network.ethernet {
-              background-color: @backgroundlight;
-              color: @textcolor2;
+              background-color: ${backgrounddark};
+              color: ${textcolor2};
           }
 
           #network.wifi {
-              background-color: @backgroundlight;
-              color: @textcolor2;
+              background-color: ${backgrounddark};
+              color: ${textcolor2};
           }
 
           /* -----------------------------------------------------
@@ -374,7 +385,7 @@ in {
            * ----------------------------------------------------- */
 
           #tray {
-              background-color: #2980b9;
+              margin: 0 10px;
           }
 
           #tray > .passive {
@@ -383,27 +394,36 @@ in {
 
           #tray > .needs-attention {
               -gtk-icon-effect: highlight;
-              background-color: #eb4d4b;
+              background-color: ${errorcolor};
           }
 
           /* -----------------------------------------------------
-           * Other
+           * Clock
            * ----------------------------------------------------- */
 
-          label:focus {
-              background-color: #000000;
+          #clock {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor1};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
           }
 
-          #backlight {
-              background-color: #90b1b1;
+          /* -----------------------------------------------------
+           * Tooltips
+           * ----------------------------------------------------- */
+
+          tooltip {
+              border-radius: ${borderRadiusTooltip};
+              background-color: ${backgroundlight};
+              opacity:0.8;
+              padding:20px;
+              margin:0px;
           }
 
-          #network {
-              background-color: #2980b9;
-          }
-
-          #network.disconnected {
-              background-color: #f53c3c;
+          tooltip label {
+              color: ${textcolordark};
           }
         '';
       };
