@@ -90,6 +90,8 @@ in {
             "browser.shell.checkDefaultBrowser" = false;
             "browser.startup.homepage_override.mstone" = "ignore";
             "browser.tabs.crashReporting.sendReport" = false;
+            # disable "titlebar-buttonbox"
+            "browser.tabs.inTitlebar" = 0;
             "browser.urlbar.groupLabels.enabled" = false;
             "browser.urlbar.quicksuggest.enabled" = false;
             "browser.urlbar.speculativeConnect.enabled" = false;
