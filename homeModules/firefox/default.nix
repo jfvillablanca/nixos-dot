@@ -167,6 +167,7 @@ in {
           };
           search = {
             default = "DuckDuckGo";
+            force = true;
           };
           userChrome = builtins.readFile ./overrides/userChrome.css;
           userContent = builtins.readFile ./overrides/userContent.css;
