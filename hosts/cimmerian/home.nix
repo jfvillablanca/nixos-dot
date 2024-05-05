@@ -1,9 +1,13 @@
 {
+  inputs,
   pkgs,
   user,
   ...
 }: {
   imports = [
+    inputs.nix-colors.homeManagerModules.default
+    inputs.walker.homeManagerModules.walker
+
     ../../homeModules/system/xdg.nix
 
     ../../homeModules/system/wallpapers
