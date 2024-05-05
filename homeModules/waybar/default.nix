@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.myHomeModules.waybar;
+  inherit (config.colorScheme) palette;
 in {
   options.myHomeModules.waybar = {
     enable =
@@ -176,18 +177,18 @@ in {
           text-lg = "24px";
           text-sm = "14px";
 
-          backgroundlight = "#${config.colorScheme.palette.base04}";
-          backgrounddark = "#${config.colorScheme.palette.base00}";
-          workspacesbackground = "#${config.colorScheme.palette.base03}";
-          textcolordark = "#${config.colorScheme.palette.base00}";
-          textcolor1 = "#${config.colorScheme.palette.base05}";
-          textcolor2 = "#${config.colorScheme.palette.base06}";
-          textcolor3 = "#${config.colorScheme.palette.base07}";
-          iconcolor = "#${config.colorScheme.palette.base0D}";
+          backgroundlight = "#${palette.base04}";
+          backgrounddark = "#${palette.base00}";
+          workspacesbackground = "#${palette.base03}";
+          textcolordark = "#${palette.base00}";
+          textcolor1 = "#${palette.base05}";
+          textcolor2 = "#${palette.base06}";
+          textcolor3 = "#${palette.base07}";
+          iconcolor = "#${palette.base0D}";
 
-          chargingcolor = "#${config.colorScheme.palette.base0C}"; # cyan
-          warningcolor = "#${config.colorScheme.palette.base0A}"; # yellow
-          errorcolor = "#${config.colorScheme.palette.base08}"; # red
+          chargingcolor = "#${palette.base0C}"; # cyan
+          warningcolor = "#${palette.base0A}"; # yellow
+          errorcolor = "#${palette.base08}"; # red
         in ''
           /* -----------------------------------------------------
            * General
