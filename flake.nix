@@ -31,6 +31,7 @@
     home-manager,
     neovim-nightly-overlay,
     nixos-hardware,
+    nix-colors,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -84,7 +85,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.${user}.imports = [
-                  inputs.nix-colors.homeManagerModules.default
+                  nix-colors.homeManagerModules.default
                   ./homeModules
                   ./hosts/${hostName}/home.nix
                 ];
