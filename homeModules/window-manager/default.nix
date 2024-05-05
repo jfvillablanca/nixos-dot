@@ -79,6 +79,7 @@ in {
       myHomeModules = {
         hyprland.enable = true;
         wofi.enable = true;
+        walker.enable = true;
         eww.enable = true;
         waybar.enable = true;
       };

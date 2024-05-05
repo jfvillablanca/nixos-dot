@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    walker.url = "github:abenz1267/walker";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,6 +33,7 @@
     neovim-nightly-overlay,
     nixos-hardware,
     nix-colors,
+    walker,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -86,6 +88,8 @@
                 useUserPackages = true;
                 users.${user}.imports = [
                   nix-colors.homeManagerModules.default
+                  walker.homeManagerModules.walker
+
                   ./homeModules
                   ./hosts/${hostName}/home.nix
                 ];

@@ -32,6 +32,7 @@
 
     ./hyprland
     ./wofi
+    ./walker
     ./eww
     ./waybar
   ];
