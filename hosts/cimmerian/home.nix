@@ -108,13 +108,6 @@
       lxappearance # theming and fonts for gtk applications
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
-
-      # Themes and Icons
-      catppuccin-gtk
-      catppuccin-papirus-folders
-      nordic
-      rose-pine-gtk-theme
-      sierra-gtk-theme
     ];
     sessionVariables = {
       TERMINAL = "alacritty";
