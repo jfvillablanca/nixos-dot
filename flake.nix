@@ -31,7 +31,6 @@
     nixpkgs,
     home-manager,
     neovim-nightly-overlay,
-    nixos-hardware,
     nix-colors,
     walker,
     ...
@@ -52,51 +51,48 @@
       system,
       user,
       hostName,
-      systemModules,
     }:
       lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs user;};
-        modules =
-          [
-            {
-              networking.hostName = hostName;
-              users.users.${user} = {
-                isNormalUser = true;
-                description = user;
-                extraGroups = [
-                  "networkmanager"
-                  "wheel"
-                  "uinput"
-                  "input"
-                  "sound"
-                  "audio"
-                  "video"
-                  "docker"
-                ];
-              };
-            }
+        specialArgs = {inherit inputs user system;};
+        modules = [
+          {
+            networking.hostName = hostName;
+            users.users.${user} = {
+              isNormalUser = true;
+              description = user;
+              extraGroups = [
+                "networkmanager"
+                "wheel"
+                "uinput"
+                "input"
+                "sound"
+                "audio"
+                "video"
+                "docker"
+              ];
+            };
+          }
 
-            ./nixosModules
-            ./hosts/${hostName}/configuration.nix
+          ./nixosModules
+          ./hosts/${hostName}/configuration.nix
 
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                extraSpecialArgs = {inherit inputs pkgs user;};
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.${user}.imports = [
-                  nix-colors.homeManagerModules.default
-                  walker.homeManagerModules.walker
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              extraSpecialArgs = {inherit inputs pkgs user;};
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${user}.imports = [
+                nix-colors.homeManagerModules.default
+                walker.homeManagerModules.walker
 
-                  ./homeModules
-                  ./hosts/${hostName}/home.nix
-                ];
-              };
-            }
-          ]
-          ++ systemModules;
+                ./homeModules
+                ./hosts/${hostName}/home.nix
+              ];
+            };
+          }
+        ];
       };
   in {
     nixosConfigurations = {
@@ -104,23 +100,18 @@
         inherit pkgs system;
         user = "jmfv";
         hostName = "virt";
-        systemModules = [];
       };
 
       t14g1 = mkSystem {
         inherit pkgs system;
         user = "jmfv";
         hostName = "t14g1";
-        systemModules = [
-          nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-        ];
       };
 
       cimmerian = mkSystem {
         inherit pkgs system;
         user = "jmfv";
         hostName = "cimmerian";
-        systemModules = [];
       };
     };
     devShells.${system}.default = pkgs.mkShell {
