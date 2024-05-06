@@ -9,9 +9,12 @@
     inputs.walker.homeManagerModules.walker
 
     ../../homeModules/system/xdg.nix
+    ../../homeModules/system/gtk.nix
 
     ../../homeModules/system/wallpapers
   ];
+
+  colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
 
   myHomeModules = {
     window-manager = {
