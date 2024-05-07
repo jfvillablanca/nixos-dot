@@ -85,7 +85,10 @@ in {
       };
 
       home.packages = with pkgs; [
+        kooha
         wl-clipboard
+        waypaper
+        swww
       ];
     })
   ];
