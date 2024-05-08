@@ -119,6 +119,7 @@
         statix
         deadnix
         nil
+        nixd
       ];
       formatter = pkgs.alejandra;
     };
