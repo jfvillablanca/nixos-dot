@@ -1,6 +1,11 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  user,
+  ...
+}: {
   nix = {
     settings = {
+      trusted-users = ["root" "${user}"];
       auto-optimise-store = true;
       substituters = [
         "https://hyprland.cachix.org"
