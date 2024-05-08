@@ -13,7 +13,6 @@ null_ls.setup({
 		-- webdev --
 		formatting.prettier,
 		formatting.stylelint,
-		formatting.rustywind,
 
 		-- lua --
 		formatting.stylua,
