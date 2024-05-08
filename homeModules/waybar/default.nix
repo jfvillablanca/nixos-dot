@@ -44,7 +44,7 @@ in {
 
             # Modules Right
             "modules-right" = [
-              "pulseaudio"
+              "group/group-audio"
               "battery"
               "network"
               "tray"
@@ -104,25 +104,44 @@ in {
             };
 
             # Pulseaudio
+            "group/group-audio" = {
+              "orientation" = "horizontal";
+              "drawer" = {
+                "transition-duration" = 500;
+                "children-class" = "";
+                "transition-left-to-right" = false;
+              };
+              "modules" = [
+                "pulseaudio"
+                "pulseaudio/slider"
+              ];
+            };
+
             "pulseaudio" = {
-              "scroll-step" = 1;
+              "scroll-step" = 2;
               "format" = "{icon} {volume}%";
-              "format-muted" = "󰖁 Muted";
-              "format-source" = "{volume}% ";
+              "format-muted" = "󰝟";
+              "format-source" = "";
               "format-source-muted" = "";
               "format-icons" = {
-                "headphone" = "";
-                "hands-free" = "";
-                "headset" = "";
+                "speaker" = "󰕾";
+                "hdmi" = "󰓃";
+                "headphone" = "󰋋";
+                "hands-free" = "?";
+                "headset" = "󰋎";
                 "phone" = "";
                 "portable" = "";
                 "car" = "";
-                "default" = ["󰕿" "󰖀" "󰕾"];
+                "default" = "󰕾";
               };
-              "on-click" = "hyprctl dispatch exec [floating] ${lib.getExe pkgs.pavucontrol}";
-              "tooltip" = false;
+              "on-click-right" = "hyprctl dispatch exec [floating] ${lib.getExe pkgs.pavucontrol}";
             };
 
+            "pulseaudio/slider" = {
+              "orientation" = "horizontal";
+            };
+
+            # Battery
             "battery" = {
               "interval" = 10;
               "states" = {
@@ -189,6 +208,8 @@ in {
           chargingcolor = "#${palette.base0C}"; # cyan
           warningcolor = "#${palette.base0A}"; # yellow
           errorcolor = "#${palette.base08}"; # red
+          sliderhighlight = "#${palette.base0B}"; # green
+          slidertrough = "#${palette.base0E}"; # purple
         in ''
           /* -----------------------------------------------------
            * General
@@ -293,7 +314,7 @@ in {
            * Pulseaudio
            * ----------------------------------------------------- */
 
-          #pulseaudio {
+          #group-audio {
               background-color: ${backgrounddark};
               font-size: ${text-sm};
               color: ${textcolor2};
@@ -305,6 +326,31 @@ in {
           #pulseaudio.muted {
               background-color: ${backgrounddark};
               color: ${textcolor1};
+          }
+
+          slider {
+              min-height: 0px;
+              min-width: 0px;
+              opacity: 0;
+              background-image: none;
+              border: none;
+              box-shadow: none;
+          }
+
+          trough {
+              min-height: 10px;
+              min-width: 80px;
+              border-radius: 5px;
+              background-color: ${slidertrough};
+          }
+
+          highlight {
+              min-width: 10px;
+              border-radius: 5px;
+          }
+
+          #pulseaudio-slider highlight {
+              background-color: ${sliderhighlight};
           }
 
           /* -----------------------------------------------------
