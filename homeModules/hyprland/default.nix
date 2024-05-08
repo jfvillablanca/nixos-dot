@@ -178,6 +178,7 @@ in {
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
           ", PRINT, exec, grimblast copy area"
+          "SHIFT, PRINT, exec, grimblast save area ${config.xdg.userDirs.pictures}/Screenshot-$(date +%F_%T).png\n"
         ];
 
         bindm = [
