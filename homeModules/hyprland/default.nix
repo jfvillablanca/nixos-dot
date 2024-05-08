@@ -7,7 +7,6 @@
 }: let
   cfg = config.myHomeModules.hyprland;
 
-  # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
   workspaces = builtins.concatLists (builtins.genList (
       x: let
         ws = let
@@ -135,21 +134,24 @@ in {
           [
             "$mainMod, Return, exec, $terminal"
             "$mainMod, D, exec, $menu"
-
             # compositor commands
             "$mainMod SHIFT, Q, killactive"
             "$mainMod, F, fullscreen, 1"
             "$mainMod, W, togglegroup"
-            "$mainMod SHIFT, N, changegroupactive, f"
-            "$mainMod SHIFT, P, changegroupactive, b"
             "$mainMod, Y, togglesplit,"
             "$mainMod SHIFT, F, togglefloating,"
 
-            # move focus
             "$mainMod, left, movefocus, l"
             "$mainMod, right, movefocus, r"
             "$mainMod, up, movefocus, u"
             "$mainMod, down, movefocus, d"
+
+            "$mainMod ALT, left, changegroupactive, b"
+            "$mainMod ALT, right, changegroupactive, f"
+            "$mainMod SHIFT, left, movewindoworgroup, l"
+            "$mainMod SHIFT, right, movewindoworgroup, r"
+            "$mainMod SHIFT, up, movewindoworgroup, u"
+            "$mainMod SHIFT, down, movewindoworgroup, d"
 
             # special workspace
             # "$mainMod, S, togglespecialworkspace, magic"
