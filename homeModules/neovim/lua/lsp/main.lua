@@ -14,6 +14,7 @@ local servers = {
     "tailwindcss",
     "prismals",
     "nil_ls",
+    "nixd",
     "lua_ls",
     "gopls",
     -- "rust_analyzer",
