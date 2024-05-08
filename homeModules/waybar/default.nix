@@ -44,8 +44,8 @@ in {
 
             # Modules Right
             "modules-right" = [
-              "group/group-audio"
               "battery"
+              "group/group-audio"
               "network"
               "tray"
               "clock"
@@ -103,6 +103,20 @@ in {
               };
             };
 
+            # Battery
+            "battery" = {
+              "interval" = 10;
+              "states" = {
+                "warning" = 20;
+                "critical" = 10;
+              };
+              "format" = "{icon} {capacity}%";
+              "format-icons" = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
+              "format-full" = "{icon} {capacity}%";
+              "format-charging" = "󰂄 {capacity}%";
+              "tooltip" = false;
+            };
+
             # Pulseaudio
             "group/group-audio" = {
               "orientation" = "horizontal";
@@ -139,20 +153,6 @@ in {
 
             "pulseaudio/slider" = {
               "orientation" = "horizontal";
-            };
-
-            # Battery
-            "battery" = {
-              "interval" = 10;
-              "states" = {
-                "warning" = 20;
-                "critical" = 10;
-              };
-              "format" = "{icon} {capacity}%";
-              "format-icons" = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
-              "format-full" = "{icon} {capacity}%";
-              "format-charging" = "󰂄 {capacity}%";
-              "tooltip" = false;
             };
 
             # Network
@@ -311,49 +311,6 @@ in {
           }
 
           /* -----------------------------------------------------
-           * Pulseaudio
-           * ----------------------------------------------------- */
-
-          #group-audio {
-              background-color: ${backgrounddark};
-              font-size: ${text-sm};
-              color: ${textcolor2};
-              border-radius: ${borderRadiusWaybar};
-              padding: ${pt} ${pr} ${pb} ${pl};
-              margin: ${my} ${mx};
-          }
-
-          #pulseaudio.muted {
-              background-color: ${backgrounddark};
-              color: ${textcolor1};
-          }
-
-          slider {
-              min-height: 0px;
-              min-width: 0px;
-              opacity: 0;
-              background-image: none;
-              border: none;
-              box-shadow: none;
-          }
-
-          trough {
-              min-height: 10px;
-              min-width: 80px;
-              border-radius: 5px;
-              background-color: ${slidertrough};
-          }
-
-          highlight {
-              min-width: 10px;
-              border-radius: 5px;
-          }
-
-          #pulseaudio-slider highlight {
-              background-color: ${sliderhighlight};
-          }
-
-          /* -----------------------------------------------------
            * Battery
            * ----------------------------------------------------- */
 
@@ -402,6 +359,49 @@ in {
               animation-timing-function: linear;
               animation-iteration-count: infinite;
               animation-direction: alternate;
+          }
+
+          /* -----------------------------------------------------
+           * Pulseaudio
+           * ----------------------------------------------------- */
+
+          #group-audio {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
+          }
+
+          #pulseaudio.muted {
+              background-color: ${backgrounddark};
+              color: ${textcolor1};
+          }
+
+          slider {
+              min-height: 0px;
+              min-width: 0px;
+              opacity: 0;
+              background-image: none;
+              border: none;
+              box-shadow: none;
+          }
+
+          trough {
+              min-height: 10px;
+              min-width: 80px;
+              border-radius: 5px;
+              background-color: ${slidertrough};
+          }
+
+          highlight {
+              min-width: 10px;
+              border-radius: 5px;
+          }
+
+          #pulseaudio-slider highlight {
+              background-color: ${sliderhighlight};
           }
 
           /* -----------------------------------------------------
