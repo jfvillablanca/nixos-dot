@@ -49,6 +49,7 @@ in {
               "network"
               "tray"
               "clock"
+              "custom/swaync"
             ];
 
             ###############################
@@ -180,6 +181,30 @@ in {
               "format" = "{:%I:%M %p  %A %b %d}";
               "tooltip" = true;
               "tooltip-format" = "{=%A; %d %B %Y}\n<tt>{calendar}</tt>";
+            };
+
+            # SwayNC
+            "custom/swaync" = {
+              tooltip = false;
+              format = "{icon}";
+              format-icons = let
+                notif = "#${palette.base08}"; # red
+              in {
+                notification = "<span foreground='${notif}'><sup></sup></span>";
+                none = "";
+                dnd-notification = "<span foreground='${notif}'><sup></sup></span>";
+                dnd-none = "";
+                inhibited-notification = "<span foreground='${notif}'><sup></sup></span>";
+                inhibited-none = "";
+                dnd-inhibited-notification = "<span foreground='${notif}'><sup></sup></span>";
+                dnd-inhibited-none = "";
+              };
+              return-type = "json";
+              exec-if = "which swaync-client";
+              exec = "swaync-client -swb";
+              on-click = "swaync-client -t -sw";
+              on-click-right = "swaync-client -d -sw";
+              escape = true;
             };
           };
         };
@@ -450,6 +475,19 @@ in {
            * ----------------------------------------------------- */
 
           #clock {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor1};
+              border-radius: ${borderRadiusWaybar};
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
+          }
+
+          /* -----------------------------------------------------
+           * SwayNC
+           * ----------------------------------------------------- */
+
+          #custom-swaync {
               background-color: ${backgrounddark};
               font-size: ${text-sm};
               color: ${textcolor1};
