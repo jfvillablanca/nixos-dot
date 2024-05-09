@@ -35,5 +35,6 @@
     ./walker
     ./eww
     ./waybar
+    ./swaync
   ];
 }

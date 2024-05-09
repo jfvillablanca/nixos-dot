@@ -82,6 +82,7 @@ in {
         walker.enable = true;
         eww.enable = true;
         waybar.enable = true;
+        swaync.enable = true;
       };
 
       home.packages = with pkgs; [
