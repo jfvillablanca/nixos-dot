@@ -185,6 +185,7 @@ in {
         };
 
         style = let
+          font = "JetBrainsMono";
           borderRadiusWaybar = "15px";
           borderRadiusTooltip = "10px";
           my = "2px";
@@ -216,7 +217,7 @@ in {
            * ----------------------------------------------------- */
 
           * {
-              font-family: "JetBrainsMono";
+              font-family: ${font};
               border: none;
               border-radius: 0px;
           }
