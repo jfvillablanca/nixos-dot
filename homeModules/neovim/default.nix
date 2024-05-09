@@ -209,7 +209,11 @@ in {
           config = builtins.readFile ./lua/treesitter.lua;
         }
         nvim-treesitter-textobjects
-        nvim-treesitter-context
+        {
+          plugin = nvim-treesitter-context;
+          type = "lua";
+          config = builtins.readFile ./lua/treesitter-context.lua;
+        }
 
         # gitsigns
         {
