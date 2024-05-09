@@ -1,10 +1,12 @@
 {
+  inputs,
   lib,
   config,
   ...
 }: let
   cfg = config.myHomeModules.swaync;
   inherit (config.colorScheme) palette;
+  inherit (inputs.nix-colors.lib.conversions) hexToRGBString;
 in {
   options.myHomeModules.swaync = {
     enable =
@@ -72,7 +74,7 @@ in {
         style = let
           foreground = "#${palette.base04}"; # +
           background = "#${palette.base01}"; # ---
-          backgroundAlpha = "#${palette.base01}AA"; # ---
+          backgroundAlpha = "rgba(${hexToRGBString "," palette.base01},0.75)"; # ---
           accent = "#${palette.base0E}"; # purple
           current-line = "#${palette.base03}"; # -
           comment = "#${palette.base0D}"; # blue
@@ -360,7 +362,7 @@ in {
           }
           .widget-mpris-subtitle {
             font-size: 1.1rem;
-          };
+          }
         '';
       };
     };
