@@ -59,6 +59,7 @@ in {
 
             "custom/nixos" = {
               "format" = " ";
+              "on-click" = "${lib.getExe pkgs.wofi} --show drun";
               "tooltip" = false;
             };
 
