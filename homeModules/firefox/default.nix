@@ -1,5 +1,6 @@
 {
-  pkgs,
+  # pkgs,
+  pkgs-stable,
   lib,
   config,
   ...
@@ -48,7 +49,8 @@ in {
 
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-devedition;
+      # package = pkgs.firefox-devedition;
+      package = pkgs-stable.firefox-devedition;
       profiles = {
         "${profile}" = {
           isDefault = true;
