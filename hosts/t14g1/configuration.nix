@@ -49,16 +49,14 @@
   };
 
   # Touchpad
-  services.xserver = {
-    libinput = {
-      enable = true;
-      mouse = {
-        tapping = true;
-      };
-      touchpad = {
-        naturalScrolling = true;
-        tapping = true;
-      };
+  services.libinput = {
+    enable = true;
+    mouse = {
+      tapping = true;
+    };
+    touchpad = {
+      naturalScrolling = true;
+      tapping = true;
     };
   };
 
