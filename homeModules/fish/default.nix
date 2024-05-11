@@ -19,24 +19,6 @@ in {
         shellInit = ''
           fish_vi_key_bindings
         '';
-        functions = {
-          # subtly rewritten to match fish's syntax
-          vf = ''
-            set fname (fd                                 \
-                    --type f                              \
-                    --hidden                              \
-                    --exclude node_modules                \
-                    --exclude .git                        \
-                    | fzf                                 \
-                    --multi                               \
-                    --preview='bat                        \
-                              --color=always              \
-                              --theme=catppuccin-mocha    \
-                              --style=numbers {}          \
-            ') || return
-            nvim $fname
-          '';
-        };
         shellAliases = {
           ".." = "cd ..";
 

@@ -112,6 +112,15 @@
       # GUI
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
+
+      (
+        lib.mkIf (
+          config.myHomeModules.neovim.enable
+          && config.myHomeModules.fd.enable
+          && config.myHomeModules.ripgrep.enable
+        )
+        (import ../../customPkgs {inherit pkgs;}).vf
+      )
     ];
     sessionVariables = {
       TERMINAL = "alacritty";

@@ -21,27 +21,9 @@ in {
         syntaxHighlighting.enable = true;
         initExtra = ''
           export PATH="$PATH:$HOME/.npm-global/bin"         # (temporary) for non-declarative npm global installs
-          function nvim_fzf() {
-              local fname
-              fname=$(fd                                    \
-                      --type f                              \
-                      --hidden                              \
-                      --exclude node_modules                \
-                      --exclude .git                        \
-                      | fzf                                 \
-                      --multi                               \
-                      --preview='bat                        \
-                                --color=always              \
-                                --theme=catppuccin-mocha    \
-                                --style=numbers {}          \
-              ') || return
-              nvim "$fname"
-          }
         '';
         shellAliases = {
           ".." = "cd ..";
-
-          "vf" = "nvim_fzf";
 
           # Trashy
           "restore" = "trash list | fzf --multi | awk '{$1=$1;print}' | rev | cut -d ' ' -f1 | rev | xargs trash restore --match=exact --force";
