@@ -401,7 +401,6 @@ in {
               end
             ''
             + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
-          #  + builtins.readFile ./lua/colorschemes/setbgtotransparent.lua;
         }
       ];
 
