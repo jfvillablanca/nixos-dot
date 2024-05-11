@@ -411,7 +411,7 @@ in {
               background-color: ${textcolordark};
               color: ${warningcolor};
               animation-name: blink-warning;
-              animation-duration: 2.0s;
+              animation-duration: 1.0s;
               animation-timing-function: linear;
               animation-iteration-count: infinite;
               animation-direction: alternate;
@@ -428,7 +428,7 @@ in {
               background-color: ${textcolor3};
               color: ${errorcolor};
               animation-name: blink-critical;
-              animation-duration: 0.5s;
+              animation-duration: 0.3s;
               animation-timing-function: linear;
               animation-iteration-count: infinite;
               animation-direction: alternate;
