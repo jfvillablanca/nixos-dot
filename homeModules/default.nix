@@ -16,6 +16,7 @@
     ./gitui
     ./bat
     ./flameshot
+    ./fd
     ./fzf
     ./tmux
     ./firefox

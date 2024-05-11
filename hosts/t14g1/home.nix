@@ -53,6 +53,7 @@
     tmux.enable = true;
     btop.enable = true;
     flameshot.enable = true;
+    fd.enable = true;
     fzf.enable = true;
     gitui.enable = true;
     yazi.enable = true;
@@ -80,7 +81,6 @@
       nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
       ripgrep # Grep alternative
-      fd # Find
       killall # Kill processes
       ncdu # NCurses Disk Usage
       unzip # Zip utility
