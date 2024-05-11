@@ -89,6 +89,14 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user}.imports = [
+                {
+                  home = {
+                    username = "${user}";
+                    homeDirectory = "/home/${user}";
+                    # Don't touch me :)
+                    stateVersion = "22.11";
+                  };
+                }
                 ./homeModules
                 ./hosts/${hostName}/home.nix
               ];

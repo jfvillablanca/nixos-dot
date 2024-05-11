@@ -3,7 +3,6 @@
   inputs,
   lib,
   pkgs,
-  user,
   ...
 }: {
   imports = [
@@ -74,9 +73,6 @@
   };
 
   home = {
-    username = "${user}";
-    homeDirectory = "/home/${user}";
-    stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal
       tldr # Lazy man's help/man page
