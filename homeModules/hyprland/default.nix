@@ -128,6 +128,8 @@ in {
           "suppressevent maximize, class:.*"
           "bordercolor rgb(${config.colorScheme.palette.base08}) rgb(${config.colorScheme.palette.base0B}),fullscreen:1"
           "bordersize 4,fullscreen:1"
+
+          "opacity 0.95 0.7,class:^(org.wezfurlong.wezterm)$"
         ];
 
         bind =
