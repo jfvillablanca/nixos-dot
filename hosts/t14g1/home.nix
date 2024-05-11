@@ -80,7 +80,6 @@
     packages = with pkgs; [
       # Terminal
       tldr # Lazy man's help/man page
-      manix # Nix document searcher
       nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
       killall # Kill processes
