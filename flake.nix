@@ -70,6 +70,9 @@
                 "docker"
               ];
             };
+
+            # Don't touch me :)
+            system.stateVersion = "22.11";
           }
 
           ./nixosModules
