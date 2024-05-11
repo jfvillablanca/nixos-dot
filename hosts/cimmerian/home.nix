@@ -57,6 +57,7 @@
     btop.enable = true;
     flameshot.enable = true;
     fd.enable = true;
+    ripgrep.enable = true;
     fzf.enable = true;
     gitui.enable = true;
     yazi.enable = true;
@@ -83,7 +84,6 @@
       manix # Nix document searcher
       nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
-      ripgrep # Grep alternative
       killall # Kill processes
       ncdu # NCurses Disk Usage
       unzip # Zip utility

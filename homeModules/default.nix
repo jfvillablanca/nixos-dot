@@ -20,6 +20,7 @@
     ./fzf
     ./tmux
     ./firefox
+    ./ripgrep
     ./wezterm
     ./neovim
     ./yazi
