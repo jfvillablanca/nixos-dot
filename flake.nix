@@ -30,6 +30,7 @@
 
   outputs = {
     nixpkgs,
+    nixpkgs-stable,
     home-manager,
     neovim-nightly-overlay,
     ...
@@ -42,18 +43,20 @@
         neovim-nightly-overlay.overlay
       ];
     };
+    pkgs-stable = import nixpkgs-stable {inherit system;};
 
     inherit (nixpkgs) lib;
 
     mkSystem = {
       pkgs,
+      pkgs-stable,
       system,
       user,
       hostName,
     }:
       lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs user system;};
+        specialArgs = {inherit inputs pkgs-stable user system;};
         modules = [
           {
             networking.hostName = hostName;
@@ -82,7 +85,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager = {
-              extraSpecialArgs = {inherit inputs pkgs user;};
+              extraSpecialArgs = {inherit inputs pkgs pkgs-stable user;};
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user}.imports = [
@@ -96,19 +99,19 @@
   in {
     nixosConfigurations = {
       virt = mkSystem {
-        inherit pkgs system;
+        inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "virt";
       };
 
       t14g1 = mkSystem {
-        inherit pkgs system;
+        inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "t14g1";
       };
 
       cimmerian = mkSystem {
-        inherit pkgs system;
+        inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "cimmerian";
       };
