@@ -11,7 +11,6 @@
     ./lua/keymaps.lua
     ./lua/autocommands.lua
     ./lua/cmp.lua # requires luasnip
-    ./lua/lsp/main.lua
   ];
 in {
   options.myHomeModules.neovim = {
@@ -142,7 +141,12 @@ in {
         }
 
         # LSP
-        nvim-lspconfig
+        # nvim-lspconfig
+        {
+          plugin = nvim-lspconfig;
+          type = "lua";
+          config = builtins.readFile ./lua/lsp/main.lua;
+        }
 
         # Typescript
         {
