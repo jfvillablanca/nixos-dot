@@ -387,18 +387,27 @@ in {
         # Colorschemes
         gruvbox
         tokyonight-nvim
-        rose-pine
         catppuccin-nvim
+
+        {
+          plugin = rose-pine;
+          type = "lua";
+          config = builtins.readFile ./lua/colorschemes/rosepine.lua;
+        }
+
         {
           plugin = kanagawa-nvim;
           type = "lua";
+          config = builtins.readFile ./lua/colorschemes/kanagawa.lua;
+        }
+
+        {
+          plugin = base16-nvim;
+          type = "lua";
           config =
-            builtins.readFile ./lua/colorschemes/rosepine.lua
-            + ''
-              local status_ok, _ = pcall(vim.cmd, "colorscheme " .. "rose-pine")
-              if not status_ok then
-                  return
-              end
+            ''
+              -- set colorscheme after options
+              vim.cmd('colorscheme base16-${config.colorScheme.slug}')
             ''
             + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
         }

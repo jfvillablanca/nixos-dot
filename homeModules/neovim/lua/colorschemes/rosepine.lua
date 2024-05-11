@@ -38,6 +38,3 @@ require('rose-pine').setup({
 		ColorColumn = { bg = 'rose' }
 	}
 })
-
--- set colorscheme after options
-vim.cmd('colorscheme rose-pine')
