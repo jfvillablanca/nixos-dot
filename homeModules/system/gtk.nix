@@ -25,7 +25,7 @@ in {
       name = "adw-gtk3";
       package = pkgs.adw-gtk3;
     };
-
+  };
 
   # NOTE: based off of this helpful comment
   # https://github.com/nix-community/home-manager/issues/5240#issuecomment-2068191397
