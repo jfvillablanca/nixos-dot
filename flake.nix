@@ -128,7 +128,7 @@
       packages = with pkgs; [
         stylua
         selene
-        sumneko-lua-language-server
+        lua-language-server
 
         alejandra
         statix
