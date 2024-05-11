@@ -44,6 +44,7 @@ in {
 
             # Modules Right
             "modules-right" = [
+              "privacy"
               "battery"
               "group/group-audio"
               "network"
@@ -102,6 +103,25 @@ in {
               "persistent-workspaces" = {
                 "*" = 5;
               };
+            };
+
+            # Privacy
+            "privacy" = {
+              "icon-spacing" = 0;
+              "icon-size" = 14;
+              "transition-duration" = 250;
+              "modules" = [
+                {
+                  "type" = "screenshare";
+                  "tooltip" = true;
+                  "tooltip-icon-size" = 20;
+                }
+                {
+                  "type" = "audio-in";
+                  "tooltip" = true;
+                  "tooltip-icon-size" = 20;
+                }
+              ];
             };
 
             # Battery
@@ -334,6 +354,33 @@ in {
               color: ${textcolor1};
               background: ${workspacesbackground};
               border-radius: ${borderRadiusWaybar};
+          }
+
+
+          /* -----------------------------------------------------
+           * Privacy
+           * ----------------------------------------------------- */
+
+          #privacy {
+              background-color: ${backgrounddark};
+              font-size: ${text-sm};
+              color: ${textcolor2};
+              border-radius: ${borderRadiusWaybar};
+              /*
+                NOTE: workaround to remove module if nothing is recording
+                https://github.com/Alexays/Waybar/issues/2974
+              */
+              padding: 0px;
+          }
+
+          #privacy-item.screenshare,
+          #privacy-item.audio-in {
+              padding: ${pt} ${pr} ${pb} ${pl};
+              margin: ${my} ${mx};
+          }
+
+          #privacy-item.screenshare {
+              color: ${errorcolor};
           }
 
           /* -----------------------------------------------------
