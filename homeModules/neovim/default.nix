@@ -438,7 +438,7 @@ in {
         # python311Packages.python-lsp-server                                       # python
 
         nodePackages_latest."@tailwindcss/language-server" # tailwind
-        nodePackages_latest."@prisma/language-server" # prisma
+        # nodePackages_latest."@prisma/language-server" # prisma
         nodePackages_latest.typescript-language-server # js-related grammars
         nodePackages_latest.vscode-langservers-extracted # html, css, json, eslint
         # nodePackages_latest.volar # vue
