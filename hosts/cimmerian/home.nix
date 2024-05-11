@@ -78,7 +78,6 @@
     stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal
-      imv # Image viewer
       tldr # Lazy man's help/man page
       manix # Nix document searcher
       nixpkgs-review # For reviewing PRs to nixpkgs repository
@@ -91,7 +90,6 @@
       zip # Zip utility
 
       # Browser
-      # (if !isWayland then firefox else firefox-wayland)
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
       google-chrome
 
@@ -112,7 +110,6 @@
       zathura # PDF Viewer
 
       # GUI
-      lxappearance # theming and fonts for gtk applications
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
     ];

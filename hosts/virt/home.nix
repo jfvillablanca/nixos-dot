@@ -46,7 +46,6 @@
     stateVersion = "22.11";
     packages = with pkgs; [
       # Terminal
-      imv # Image viewer
       tldr # Lazy man's help/man page
       manix # Nix document searcher
       nixpkgs-review # For reviewing PRs to nixpkgs repository
