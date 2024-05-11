@@ -33,6 +33,8 @@ in {
             enable_wayland = false,
 
             window_close_confirmation = 'NeverPrompt',
+
+            warn_about_missing_glyphs = false,
           }
         '';
       };
