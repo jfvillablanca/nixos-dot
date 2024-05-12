@@ -75,20 +75,32 @@
   };
 
   # Enable window manager
-  services = {
-    xserver = {
-      enable = true;
-      displayManager = {
-        gdm.enable = true;
-      };
-      windowManager = {
-        i3.enable = true;
-      };
+  # services = {
+  #   xserver = {
+  #     enable = true;
+  #     displayManager = {
+  #       gdm.enable = true;
+  #     };
+  #     windowManager = {
+  #       i3.enable = true;
+  #     };
+  #   };
+  # };
+
+  services.xserver = {
+    enable = true;
+    desktopManager = {
+      xterm.enable = false;
+      xfce.enable = true;
+    };
+    displayManager = {
+      gdm.enable = true;
+      defaultSession = "xfce";
     };
   };
 
   programs.hyprland = {
-    enable = true;
+    enable = false;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
