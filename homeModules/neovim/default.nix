@@ -28,7 +28,7 @@ in {
 
     programs.neovim = {
       enable = true;
-      package = pkgs.neovim-nightly;
+      # package = pkgs.neovim-nightly;
       defaultEditor = true;
       vimAlias = true;
       withNodeJs = true;
