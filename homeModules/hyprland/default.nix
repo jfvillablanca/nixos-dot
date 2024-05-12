@@ -57,18 +57,18 @@ in {
 
         "exec-once" = lib.getExe hyprlandStartup;
 
-        monitor =
-          map (
-            m: let
-              resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-              position = "${toString m.x}x${toString m.y}";
-            in "${m.name},${
-              if m.enabled
-              then "${resolution},${position},1"
-              else "disable"
-            }"
-          )
-          config.myHomeModules.window-manager.monitors;
+        # monitor =
+        #   map (
+        #     m: let
+        #       resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+        #       position = "${toString m.x}x${toString m.y}";
+        #     in "${m.name},${
+        #       if m.enabled
+        #       then "${resolution},${position},1"
+        #       else "disable"
+        #     }"
+        #   )
+        #   config.myHomeModules.window-manager.monitors;
 
         general = {
           layout = "master";

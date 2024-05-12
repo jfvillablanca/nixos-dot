@@ -18,6 +18,14 @@
     };
     nix-colors.url = "github:misterio77/nix-colors";
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+    };
+
     # Hyprland
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -58,6 +66,8 @@
         inherit system;
         specialArgs = {inherit inputs pkgs-stable user system;};
         modules = [
+          inputs.disko.nixosModules.default
+          inputs.impermanence.nixosModules.impermanence
           {
             networking.hostName = hostName;
             users.users.${user} = {

@@ -1,12 +1,32 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ../../homeModules/system/xdg.nix
+
+    inputs.nix-colors.homeManagerModules.default
+    inputs.walker.homeManagerModules.walker
+    inputs.impermanence.nixosModules.home-manager.impermanence
   ];
+
+  colorScheme = inputs.nix-colors.colorSchemes.gruvbox-material-dark-medium;
 
   myHomeModules = {
     window-manager = {
       enable = true;
-      wm = "i3";
+      wm = "hyprland";
+      monitors = [
+        {
+          name = "Virtual-1";
+          isPrimary = true;
+          width = 1411;
+          height = 856;
+          x = 0;
+          y = 0;
+        }
+      ];
     };
 
     git.enable = true;
@@ -42,7 +62,6 @@
     packages = with pkgs; [
       # Terminal
       tldr # Lazy man's help/man page
-      nixpkgs-review # For reviewing PRs to nixpkgs repository
       trashy # Trash in cli
       killall # Kill processes
       ncdu # NCurses Disk Usage
@@ -58,11 +77,32 @@
       onboard # On-screen keyboard
     ];
     sessionVariables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "wezterm";
       EDITOR = "nvim";
       VISUAL = "nvim";
       GIT_EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
+    };
+
+    persistence."/persist/home/jmfv" = {
+      directories = [
+        "dev"
+        "nixos-dot"
+        "Downloads"
+        "Documents"
+        "Pictures"
+        "Videos"
+        # ".gnupg"
+        # ".ssh"
+        # ".nixops"
+        # ".local/share/keyrings"
+        # ".local/share/direnv"
+        # {
+        #   directory = ".local/share/Steam";
+        #   method = "symlink";
+        # }
+      ];
+      allowOther = true;
     };
   };
 
