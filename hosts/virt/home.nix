@@ -77,6 +77,9 @@
       pamixer # PipeWire CLI tool
       onboard # On-screen keyboard
 
+      # still using xfce at the moment
+      xclip
+
       (
         lib.mkIf (
           config.myHomeModules.neovim.enable
