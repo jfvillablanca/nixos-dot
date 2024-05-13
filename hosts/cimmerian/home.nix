@@ -112,6 +112,7 @@
       (
         lib.mkIf (
           config.myHomeModules.neovim.enable
+          && config.myHomeModules.bat.enable
           && config.myHomeModules.fd.enable
           && config.myHomeModules.ripgrep.enable
         )
