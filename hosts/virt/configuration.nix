@@ -88,16 +88,18 @@
   #   };
   # };
 
-  services.xserver = {
-    enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      xfce.enable = true;
+  services = {
+    xserver = {
+      enable = true;
+      desktopManager = {
+        xterm.enable = false;
+        xfce.enable = true;
+      };
+      displayManager = {
+        gdm.enable = true;
+      };
     };
-    displayManager = {
-      gdm.enable = true;
-      defaultSession = "xfce";
-    };
+    displayManager.defaultSession = "xfce";
   };
 
   programs.hyprland = {
