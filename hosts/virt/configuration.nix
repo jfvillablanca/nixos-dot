@@ -62,8 +62,9 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /persist/home 0777 root root -" # /persist/home created, owned by root
-    "d /persist/home/${user} 0770 ${user} users -" # /persist/home/jmfv created, owned by user
+    "d /persist/system 0777 root root -"
+    "d /persist/home 0777 root root -"
+    "d /persist/home/${user} 0770 ${user} users -"
   ];
 
   programs.fuse.userAllowOther = true;
