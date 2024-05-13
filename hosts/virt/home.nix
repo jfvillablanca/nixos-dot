@@ -30,14 +30,14 @@
     };
 
     git.enable = true;
-    gh.enable = false;
+    gh.enable = true;
     neovim.enable = true;
 
     alacritty.enable = false;
     wezterm.enable = true;
 
     atuin.enable = false;
-    bat.enable = false;
+    bat.enable = true;
     tmux.enable = true;
     btop.enable = true;
     flameshot.enable = true;
