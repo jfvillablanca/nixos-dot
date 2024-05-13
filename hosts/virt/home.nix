@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   ...
@@ -75,6 +76,16 @@
       pavucontrol # Volume control UI
       pamixer # PipeWire CLI tool
       onboard # On-screen keyboard
+
+      (
+        lib.mkIf (
+          config.myHomeModules.neovim.enable
+          && config.myHomeModules.bat.enable
+          && config.myHomeModules.fd.enable
+          && config.myHomeModules.ripgrep.enable
+        )
+        (import ../../customPkgs {inherit pkgs;}).vf
+      )
     ];
     sessionVariables = {
       TERMINAL = "wezterm";
