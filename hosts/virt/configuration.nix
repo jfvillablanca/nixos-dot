@@ -76,6 +76,17 @@
     "d /persist/home/${user} 0770 ${user} users -"
   ];
 
+  systemd.services."set-persisted-home-ownership" = {
+    description = "Set ownership of /persist/home to user";
+    after = ["network.target"]; # Adjust dependencies as needed
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.coreutils}/bin/chown -R ${user}:users /persist/home/${user}";
+      RemainAfterExit = true;
+    };
+  };
+
   programs.fuse.userAllowOther = true;
 
   users.users.${user} = {
