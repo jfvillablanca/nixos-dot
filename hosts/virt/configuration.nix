@@ -62,8 +62,17 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /persist/system 0777 root root -"
-    "d /persist/home 0777 root root -"
+    "d /persist/system 0755 root root -"
+    "d /persist/system/var 0755 root root -"
+    "d /persist/system/var/log 0755 root root -"
+    "d /persist/system/var/lib 0755 root root -"
+    "d /persist/system/var/lib/nixos 0755 root root -"
+    "d /persist/system/var/lib/systemd 0755 root root -"
+    "d /persist/system/var/lib/systemd/coredump 0755 root root -"
+    "d /persist/system/etc 0755 root root -"
+    "d /persist/system/etc/NetworkManager 0755 root root -"
+    "d /persist/system/etc/NetworkManager/system-connections 0755 root root -"
+    "d /persist/home 0755 root root -"
     "d /persist/home/${user} 0770 ${user} users -"
   ];
 
