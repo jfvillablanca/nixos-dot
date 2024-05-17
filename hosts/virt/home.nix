@@ -45,7 +45,7 @@
     fd.enable = true;
     ripgrep.enable = true;
     fzf.enable = true;
-    gitui.enable = false;
+    gitui.enable = true;
     eza.enable = true;
     direnv.enable = true;
     zoxide.enable = true;
