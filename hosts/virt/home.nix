@@ -110,7 +110,7 @@
         ".ssh"
         # ".nixops"
         # ".local/share/keyrings"
-        # ".local/share/direnv"
+        ".local/share/direnv"
         # {
         #   directory = ".local/share/Steam";
         #   method = "symlink";
