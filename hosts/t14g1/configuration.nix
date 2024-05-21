@@ -1,6 +1,8 @@
 {
   inputs,
   pkgs,
+  lib,
+  user,
   ...
 }: {
   imports = [
@@ -50,6 +52,52 @@
     btrfs subvolume create /btrfs_tmp/root
     umount /btrfs_tmp
   '';
+
+  fileSystems."/persist".neededForBoot = true;
+  environment.persistence."/persist/system" = {
+    hideMounts = true;
+    directories = [
+      "/var/log"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/etc/NetworkManager/system-connections"
+    ];
+    files = [
+      "/etc/machine-id"
+      # { file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+    ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /persist/system 0755 root root -"
+    "d /persist/system/var 0755 root root -"
+    "d /persist/system/var/log 0755 root root -"
+    "d /persist/system/var/lib 0755 root root -"
+    "d /persist/system/var/lib/nixos 0755 root root -"
+    "d /persist/system/var/lib/systemd 0755 root root -"
+    "d /persist/system/var/lib/systemd/coredump 0755 root root -"
+    "d /persist/system/etc 0755 root root -"
+    "d /persist/system/etc/NetworkManager 0755 root root -"
+    "d /persist/system/etc/NetworkManager/system-connections 0755 root root -"
+    "d /persist/home 0755 root root -"
+    "d /persist/home/${user} 0770 ${user} users -"
+  ];
+
+  systemd.services."set-persisted-home-ownership" = {
+    description = "Set ownership of /persist/home to user";
+    after = ["network.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.coreutils}/bin/chown -R ${user}:users /persist/home/${user}";
+      RemainAfterExit = true;
+    };
+  };
+
+  users.users.${user} = {
+    isNormalUser = true;
+    initialPassword = "12345";
+    extraGroups = ["wheel"];
   };
 
   # Enable window manager
@@ -65,9 +113,13 @@
     };
   };
 
-  programs.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  programs = {
+    fuse.userAllowOther = true;
+
+    hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    };
   };
 
   # Touchpad
