@@ -6,8 +6,10 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
+
+    ./hardware-configuration.nix
+    ./disko.nix
 
     ../../nixosModules/system/kmonad
     ../../nixosModules/system/doas
