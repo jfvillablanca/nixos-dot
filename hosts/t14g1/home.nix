@@ -3,11 +3,13 @@
   inputs,
   lib,
   pkgs,
+  user,
   ...
 }: {
   imports = [
     inputs.nix-colors.homeManagerModules.default
     inputs.walker.homeManagerModules.walker
+    inputs.impermanence.nixosModules.home-manager.impermanence
 
     ../../homeModules/system/xdg.nix
     ../../homeModules/system/gtk.nix
@@ -70,6 +72,27 @@
     zsh.enable = false;
 
     firefox.enable = true;
+  };
+
+  persistence."/persist/home/${user}" = {
+    directories = [
+      "dev"
+      "nixos-dot"
+      "Downloads"
+      "Documents"
+      "Pictures"
+      "Videos"
+      # ".gnupg"
+      ".ssh"
+      # ".nixops"
+      # ".local/share/keyrings"
+      ".local/share/direnv"
+      # {
+      #   directory = ".local/share/Steam";
+      #   method = "symlink";
+      # }
+    ];
+    allowOther = true;
   };
 
   home = {
