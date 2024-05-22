@@ -34,7 +34,7 @@
 
     ./hyprland
     ./wofi
-    ./walker
+    # ./walker
     ./eww
     ./waybar
     ./swaync

@@ -6,7 +6,7 @@
 }: {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    inputs.walker.homeManagerModules.walker
+    # inputs.walker.homeManagerModules.walker
 
     ../../homeModules/system/xdg.nix
     ../../homeModules/system/gtk.nix

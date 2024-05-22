@@ -8,7 +8,7 @@
 }: {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    inputs.walker.homeManagerModules.walker
+    # inputs.walker.homeManagerModules.walker
     inputs.impermanence.nixosModules.home-manager.impermanence
 
     ../../homeModules/system/xdg.nix
