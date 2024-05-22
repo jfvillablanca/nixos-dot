@@ -74,27 +74,6 @@
     firefox.enable = true;
   };
 
-  persistence."/persist/home/${user}" = {
-    directories = [
-      "dev"
-      "nixos-dot"
-      "Downloads"
-      "Documents"
-      "Pictures"
-      "Videos"
-      # ".gnupg"
-      ".ssh"
-      # ".nixops"
-      # ".local/share/keyrings"
-      ".local/share/direnv"
-      # {
-      #   directory = ".local/share/Steam";
-      #   method = "symlink";
-      # }
-    ];
-    allowOther = true;
-  };
-
   home = {
     packages = with pkgs; [
       # Terminal
@@ -148,6 +127,28 @@
       GIT_EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
     };
+
+    persistence."/persist/home/${user}" = {
+      directories = [
+        "dev"
+        "nixos-dot"
+        "Downloads"
+        "Documents"
+        "Pictures"
+        "Videos"
+        # ".gnupg"
+        ".ssh"
+        # ".nixops"
+        # ".local/share/keyrings"
+        ".local/share/direnv"
+        # {
+        #   directory = ".local/share/Steam";
+        #   method = "symlink";
+        # }
+      ];
+      allowOther = true;
+    };
+
   };
 
   programs = {};
