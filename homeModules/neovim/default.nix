@@ -28,9 +28,7 @@ in {
 
     programs.neovim = {
       enable = true;
-      # disable temporarily when bootstrapping
-      # a reinstall of NixOS due to system-dependent issues
-      # package = pkgs.neovim-nightly;
+      package = pkgs.neovim-nightly;
       defaultEditor = true;
       vimAlias = true;
       withNodeJs = true;

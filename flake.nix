@@ -9,10 +9,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # neovim-nightly-overlay = {
-    #   url = "github:nix-community/neovim-nightly-overlay";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
@@ -40,16 +40,16 @@
     nixpkgs,
     nixpkgs-stable,
     home-manager,
-    # neovim-nightly-overlay,
+    neovim-nightly-overlay,
     ...
   } @ inputs: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
-      # overlays = [
-      #   neovim-nightly-overlay.overlay
-      # ];
+      overlays = [
+        neovim-nightly-overlay.overlay
+      ];
     };
     pkgs-stable = import nixpkgs-stable {inherit system;};
 
