@@ -49,10 +49,7 @@
     wezterm.enable = true;
 
     atuin.enable = false;
-    bat = {
-      enable = true;
-      theme = "everblush";
-    };
+    bat.enable = true;
     tmux.enable = true;
     btop.enable = true;
     flameshot.enable = true;
