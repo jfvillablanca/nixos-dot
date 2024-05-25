@@ -29,6 +29,8 @@
 
     nix-colors.url = "github:misterio77/nix-colors";
 
+    stylix.url = "github:danth/stylix";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +44,7 @@
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
+
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -80,6 +83,7 @@
         modules = [
           inputs.disko.nixosModules.default
           inputs.impermanence.nixosModules.impermanence
+          inputs.stylix.nixosModules.stylix
           {
             networking.hostName = hostName;
             users.users.${user} = {
