@@ -42,7 +42,8 @@
 
     # Hyprland
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      # NOTE: Tracking issue: https://github.com/hyprwm/Hyprland/issues/5891
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     };
 
     hyprland-contrib = {
