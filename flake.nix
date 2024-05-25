@@ -111,7 +111,7 @@
           home-manager.nixosModules.home-manager
           {
             home-manager = {
-              extraSpecialArgs = {inherit inputs pkgs pkgs-stable user;};
+              extraSpecialArgs = {inherit inputs pkgs pkgs-stable user system;};
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user}.imports = [
