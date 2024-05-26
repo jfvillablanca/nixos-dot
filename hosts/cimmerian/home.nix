@@ -70,6 +70,12 @@
     firefox.enable = true;
   };
 
+  stylix = {
+    targets = {
+      waybar.enable = false;
+    };
+  };
+
   home = {
     packages = with pkgs; [
       # Terminal
