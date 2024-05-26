@@ -146,6 +146,16 @@
         # ".nixops"
         # ".local/share/keyrings"
         ".local/share/direnv"
+        ".local/share/fish"
+        ".local/share/zoxide"
+        ".local/state/nvim"
+        ".tmux/resurrect"
+        ".mozilla/firefox"
+
+        # the idiot apps that use the .config directory
+        # to store state
+        ".config/google-chrome"
+        ".config/discord"
         # {
         #   directory = ".local/share/Steam";
         #   method = "symlink";
@@ -153,7 +163,6 @@
       ];
       allowOther = true;
     };
-
   };
 
   programs = {};
