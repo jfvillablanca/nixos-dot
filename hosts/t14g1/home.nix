@@ -13,8 +13,6 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
 
     ../../homeModules/system/xdg.nix
-    ../../homeModules/system/gtk.nix
-
     ../../homeModules/system/wallpapers
   ];
 
