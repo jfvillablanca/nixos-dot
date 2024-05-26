@@ -70,9 +70,12 @@ in {
           )
           config.myHomeModules.window-manager.monitors;
 
+        cursor = {
+          no_warps = true;
+        };
+
         general = {
           layout = "master";
-          no_cursor_warps = true;
           resize_on_border = true;
 
           gaps_in = 4;
