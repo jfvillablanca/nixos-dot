@@ -1,8 +1,10 @@
 {
-  # pkgs,
+  inputs,
+  pkgs,
   pkgs-stable,
   lib,
   config,
+  system,
   ...
 }: let
   cfg = config.myHomeModules.firefox;
@@ -119,6 +121,7 @@ in {
             "extensions.shield-recipe-client.api_url" = "";
             "extensions.shield-recipe-client.enabled" = false;
             "extensions.webservice.discoverURL" = "";
+            "extensions.autoDisableScopes" = 0;
             "media.autoplay.default" = 0;
             "media.autoplay.enabled" = true;
             "media.eme.enabled" = false;
@@ -216,6 +219,17 @@ in {
 
           userChrome = builtins.readFile ./overrides/userChrome.css;
           userContent = builtins.readFile ./overrides/userContent.css;
+          extensions = with inputs.firefox-addons.packages.${system}; [
+            bitwarden
+            ublock-origin
+            decentraleyes
+            sponsorblock
+            darkreader
+            tridactyl
+            react-devtools
+            reduxdevtools
+            facebook-container
+          ];
         };
       };
     };
