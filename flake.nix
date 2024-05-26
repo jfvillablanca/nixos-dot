@@ -64,7 +64,7 @@
       inherit system;
       config.allowUnfree = true;
       overlays = [
-        neovim-nightly-overlay.overlay
+        neovim-nightly-overlay.overlays.default
       ];
     };
     pkgs-stable = import nixpkgs-stable {inherit system;};
