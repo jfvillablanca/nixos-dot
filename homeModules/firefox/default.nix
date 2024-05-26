@@ -194,6 +194,26 @@ in {
 
             force = true;
           };
+
+          containers = {
+            Personal = {
+              color = "blue";
+              icon = "tree";
+              id = 1;
+            };
+            Work-1 = {
+              color = "orange";
+              icon = "briefcase";
+              id = 2;
+            };
+            Work-2 = {
+              color = "purple";
+              icon = "briefcase";
+              id = 3;
+            };
+          };
+          containersForce = true;
+
           userChrome = builtins.readFile ./overrides/userChrome.css;
           userContent = builtins.readFile ./overrides/userContent.css;
         };
