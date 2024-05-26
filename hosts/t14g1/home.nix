@@ -4,6 +4,7 @@
   lib,
   pkgs,
   user,
+  base16Scheme,
   ...
 }: {
   imports = [
@@ -17,7 +18,7 @@
     ../../homeModules/system/wallpapers
   ];
 
-  colorScheme = inputs.nix-colors.colorSchemes.gruvbox-dark-hard;
+  colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
     window-manager = {

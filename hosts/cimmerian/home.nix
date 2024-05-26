@@ -2,6 +2,7 @@
   config,
   inputs,
   pkgs,
+  base16Scheme,
   ...
 }: {
   imports = [
@@ -14,7 +15,7 @@
     ../../homeModules/system/wallpapers
   ];
 
-  colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
+  colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
     window-manager = {

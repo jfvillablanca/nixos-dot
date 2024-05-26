@@ -77,10 +77,13 @@
       system,
       user,
       hostName,
+      base16Scheme,
     }:
       lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs pkgs-stable user system;};
+        specialArgs = {
+          inherit inputs pkgs-stable user system base16Scheme;
+        };
         modules = [
           inputs.disko.nixosModules.default
           inputs.impermanence.nixosModules.impermanence
@@ -112,7 +115,9 @@
           home-manager.nixosModules.home-manager
           {
             home-manager = {
-              extraSpecialArgs = {inherit inputs pkgs pkgs-stable user system;};
+              extraSpecialArgs = {
+                inherit inputs pkgs pkgs-stable user system base16Scheme;
+              };
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user}.imports = [
@@ -137,18 +142,21 @@
         inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "virt";
+        base16Scheme = "gruvbox-material-dark-medium";
       };
 
       t14g1 = mkSystem {
         inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "t14g1";
+        base16Scheme = "gruvbox-dark-hard";
       };
 
       cimmerian = mkSystem {
         inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "cimmerian";
+        base16Scheme = "catppuccin-mocha";
       };
     };
     devShells.${system}.default = pkgs.mkShell {
