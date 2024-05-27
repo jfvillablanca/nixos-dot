@@ -16,16 +16,14 @@ in {
     programs = {
       wofi = {
         enable = true;
-        style = ''
-          * {
-            font-family: JetBrainsMono Nerd Font 13
-          }
-          window {
-              background-color: #7c818c;
-          }
-        '';
         settings = {
+          width = "50%";
+          height = "40%";
           location = "center";
+          hide_scroll = true;
+          insensitive = true;
+          prompt = "";
+          no_actions = true;
         };
       };
     };
