@@ -43,7 +43,11 @@
     # Hyprland
     hyprland = {
       # NOTE: Tracking issue: https://github.com/hyprwm/Hyprland/issues/5891
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      # XWayland clipboard issue: https://github.com/hyprwm/Hyprland/issues/6132#issuecomment-2127283895
+      type = "git";
+      url = "https://github.com/hyprwm/Hyprland";
+      submodules = true;
+      rev = "4cdddcfe466cb21db81af0ac39e51cc15f574da9";
     };
 
     hyprland-contrib = {
