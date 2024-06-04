@@ -84,73 +84,68 @@ in {
               titlebar = true;
             };
             bars = [];
-            keybindings = lib.mkOptionDefault {
-              "${mod}+Enter" = "exec ${term}";
-              "${mod}+Shift+q" = "kill";
-              "${mod}+Shift+r" = "restart";
-              "${mod}+Shift+c" = "reload";
-              "${mod}+Shift+e" = "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
-              "${mod}+Shift+l" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/i3lock";
+            keybindings = let
+              generateWorkspaceKeybindings = monitors: let
+                numMonitors = builtins.length monitors;
+                # for example: on three-monitor config, this assigns the monitor workspaces to a single mod+num and generates:
+                #   "${mod}+1" = "workspace 1;  workspace 11;  workspace 21";
+                #   "${mod}+2" = "workspace 2;  workspace 12;  workspace 22";
+                #    ... and so on
+                generateWorkspaceString = workspace: lib.concatStringsSep ";  " (map (n: "workspace ${toString (workspace + n * 10)}") (lib.lists.range 0 (numMonitors - 1)));
+                # this one is independent from the number of monitors and is for the `move container to workspace` keybinds:
+                #    "${mod}+Shift+1" = "move container to workspace 1";
+                #    "${mod}+Shift+2" = "move container to workspace 2";
+                #    ... and so on
+                generateMoveContainerString = workspace: "move container to workspace ${toString workspace}";
+              in
+                builtins.listToAttrs (lib.concatMap (i: [
+                  {
+                    name = "${mod}+${toString i}";
+                    value = generateWorkspaceString i;
+                  }
+                  {
+                    name = "${mod}+Shift+${toString i}";
+                    value = generateMoveContainerString i;
+                  }
+                ]) (lib.lists.range 1 5));
+            in
+              lib.mkOptionDefault (
+                generateWorkspaceKeybindings config.myHomeModules.window-manager.monitors
+                // {
+                  "${mod}+Enter" = "exec ${term}";
+                  "${mod}+Shift+q" = "kill";
+                  "${mod}+Shift+r" = "restart";
+                  "${mod}+Shift+c" = "reload";
+                  "${mod}+Shift+e" = "exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'";
+                  "${mod}+Shift+l" = "exec ${pkgs.bash}/bin/bash ${config.xdg.configHome}/i3-scripts/i3lock";
 
-              "${mod}+Left" = "focus left";
-              "${mod}+Down" = "focus down";
-              "${mod}+Up" = "focus up";
-              "${mod}+Right" = "focus right";
+                  "${mod}+Left" = "focus left";
+                  "${mod}+Down" = "focus down";
+                  "${mod}+Up" = "focus up";
+                  "${mod}+Right" = "focus right";
 
-              "${mod}+Shift+Left" = "move left";
-              "${mod}+Shift+Right" = "move right";
-              "${mod}+Shift+Down" = "move down";
-              "${mod}+Shift+Up" = "move up";
-              "${mod}+Shift+j" = "resize shrink width 10 px";
-              "${mod}+Shift+k" = "resize grow width 10 px";
+                  "${mod}+Shift+Left" = "move left";
+                  "${mod}+Shift+Right" = "move right";
+                  "${mod}+Shift+Down" = "move down";
+                  "${mod}+Shift+Up" = "move up";
+                  "${mod}+Shift+j" = "resize shrink width 10 px";
+                  "${mod}+Shift+k" = "resize grow width 10 px";
 
-              # "${mod}+1" = "workspace 1;  workspace 11";
-              # "${mod}+2" = "workspace 2;  workspace 12";
-              # "${mod}+3" = "workspace 3;  workspace 13";
-              # "${mod}+4" = "workspace 4;  workspace 14";
-              # "${mod}+5" = "workspace 5;  workspace 15";
-              # "${mod}+6" = "workspace 6;  workspace 16";
-              # "${mod}+7" = "workspace 7;  workspace 17";
-              # "${mod}+8" = "workspace 8;  workspace 18";
-              # "${mod}+9" = "workspace 9;  workspace 19";
-              # "${mod}+0" = "workspace 10; workspace 20";
+                  "${mod}+f" = "fullscreen toggle";
+                  "${mod}+h" = "split h";
+                  "${mod}+v" = "split v";
 
-              "${mod}+1" = "workspace 1; ";
-              "${mod}+2" = "workspace 2; ";
-              "${mod}+3" = "workspace 3; ";
-              "${mod}+4" = "workspace 4; ";
-              "${mod}+5" = "workspace 5; ";
-              "${mod}+6" = "workspace 6; ";
-              "${mod}+7" = "workspace 7; ";
-              "${mod}+8" = "workspace 8; ";
-              "${mod}+9" = "workspace 9; ";
-              "${mod}+0" = "workspace 10;";
+                  "${mod}+s" = "layout stacking";
+                  "${mod}+w" = "layout tabbed";
+                  "${mod}+e" = "layout toggle split";
 
-              "${mod}+Shift+1" = "move container to workspace 1";
-              "${mod}+Shift+2" = "move container to workspace 2";
-              "${mod}+Shift+3" = "move container to workspace 3";
-              "${mod}+Shift+4" = "move container to workspace 4";
-              "${mod}+Shift+5" = "move container to workspace 5";
-              "${mod}+Shift+6" = "move container to workspace 6";
-              "${mod}+Shift+7" = "move container to workspace 7";
-              "${mod}+Shift+8" = "move container to workspace 8";
-              "${mod}+Shift+9" = "move container to workspace 9";
-              "${mod}+Shift+0" = "move container to workspace 10";
+                  "${mod}+Shift+space" = "floating toggle";
+                  "${mod}+space" = "focus mode_toggle";
 
-              "${mod}+f" = "fullscreen toggle";
-              "${mod}+h" = "split h";
-              "${mod}+v" = "split v";
-
-              "${mod}+s" = "layout stacking";
-              "${mod}+w" = "layout tabbed";
-              "${mod}+e" = "layout toggle split";
-
-              "${mod}+Shift+space" = "floating toggle";
-              "${mod}+space" = "focus mode_toggle";
-
-              "${mod}+Print" = "exec flameshot full";
-              "Print" = "exec flameshot gui";
-            };
+                  "${mod}+Print" = "exec flameshot full";
+                  "Print" = "exec flameshot gui";
+                }
+              );
             menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
             fonts = {
               names = ["JetBrainsMono Nerd Font"];
