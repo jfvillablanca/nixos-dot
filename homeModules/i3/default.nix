@@ -155,65 +155,29 @@ in {
             defaultWorkspace = "workspace 1";
             workspaceAutoBackAndForth = false;
           };
-          # FIXME: use config.myHomeModules.window-manager.monitors
-          extraConfig = ''
-            workspace 1  output eDP-1
-            workspace 2  output eDP-1
-            workspace 3  output eDP-1
-            workspace 4  output eDP-1
-            workspace 5  output eDP-1
-            workspace 6  output eDP-1
-            workspace 7  output eDP-1
-            workspace 8  output eDP-1
-            workspace 9  output eDP-1
-            workspace 10 output eDP-1
+          extraConfig = let
+            indexOf = elem: list: let
+              indexOfRecursive = elem: list: idx:
+                if lib.length list == 0
+                then -1
+                else if lib.head list == elem
+                then idx
+                else indexOfRecursive elem (lib.tail list) (idx + 1);
+            in
+              indexOfRecursive elem list 0;
 
+            generateMonitorAssignmentConfig = monitors: let
+              monitorNames = map (monitor: monitor.name) monitors;
+              generateWorkspaceOutput = monitor: let
+                monitorIndex = indexOf monitor monitorNames;
+              in
+                lib.concatStringsSep "\n" (map (i: "workspace ${toString (i + (monitorIndex * 10))} output ${monitor}") (lib.lists.range 1 5));
+            in
+              lib.concatStringsSep "\n" (map generateWorkspaceOutput monitorNames);
+          in ''
+            ${generateMonitorAssignmentConfig config.myHomeModules.window-manager.monitors}
             mouse_warping none
           '';
-
-          # workspace 1  output eDP-1
-          # workspace 2  output eDP-1
-          # workspace 3  output eDP-1
-          # workspace 4  output eDP-1
-          # workspace 5  output eDP-1
-          # workspace 6  output eDP-1
-          # workspace 7  output eDP-1
-          # workspace 8  output eDP-1
-          # workspace 9  output eDP-1
-          # workspace 10 output eDP-1
-
-          # workspace 11 output HDMI-1
-          # workspace 12 output HDMI-1
-          # workspace 13 output HDMI-1
-          # workspace 14 output HDMI-1
-          # workspace 15 output HDMI-1
-          # workspace 16 output HDMI-1
-          # workspace 17 output HDMI-1
-          # workspace 18 output HDMI-1
-          # workspace 19 output HDMI-1
-          # workspace 20 output HDMI-1
-
-          # workspace 1  output HDMI-1
-          # workspace 2  output HDMI-1
-          # workspace 3  output HDMI-1
-          # workspace 4  output HDMI-1
-          # workspace 5  output HDMI-1
-          # workspace 6  output HDMI-1
-          # workspace 7  output HDMI-1
-          # workspace 8  output HDMI-1
-          # workspace 9  output HDMI-1
-          # workspace 10 output HDMI-1
-
-          # workspace 11 output DP-1
-          # workspace 12 output DP-1
-          # workspace 13 output DP-1
-          # workspace 14 output DP-1
-          # workspace 15 output DP-1
-          # workspace 16 output DP-1
-          # workspace 17 output DP-1
-          # workspace 18 output DP-1
-          # workspace 19 output DP-1
-          # workspace 20 output DP-1
         };
       };
     };
