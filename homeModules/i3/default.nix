@@ -147,11 +147,6 @@ in {
                 }
               );
             menu = "exec ${pkgs.rofi}/bin/rofi -show drun";
-            fonts = {
-              names = ["JetBrainsMono Nerd Font"];
-              style = "SemiBold";
-              size = 11.0;
-            };
             defaultWorkspace = "workspace 1";
             workspaceAutoBackAndForth = false;
           };

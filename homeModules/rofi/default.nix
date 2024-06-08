@@ -16,7 +16,6 @@ in {
     programs = {
       rofi = {
         enable = true;
-        font = "JetBrainsMono Nerd Font 13";
         location = "center";
       };
     };
