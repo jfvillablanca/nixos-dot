@@ -25,10 +25,6 @@ in {
           config = {
             modifier = mod;
             terminal = term;
-            gaps = {
-              outer = 0;
-              inner = 10;
-            };
             startup = [
               {
                 command = ''
