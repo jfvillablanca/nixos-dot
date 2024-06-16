@@ -22,6 +22,7 @@
     ../../nixosModules/system/laptop-power-management
     ../../nixosModules/system/fonts
     ../../nixosModules/system/sound
+    ../../nixosModules/system/bluetooth
   ];
 
   stylix = {
