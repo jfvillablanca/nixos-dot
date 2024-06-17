@@ -183,7 +183,14 @@
   #   '';
   # };
 
-  virtualisation.docker.enable = false;
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+  users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

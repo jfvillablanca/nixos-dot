@@ -105,7 +105,6 @@
                 "sound"
                 "audio"
                 "video"
-                "docker"
               ];
             };
 
