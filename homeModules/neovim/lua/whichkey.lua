@@ -200,19 +200,3 @@ wk.register(lsp, {
 	noremap = true,
 	nowait = true,
 })
-
--- wk.register({
-
-wk.register({
-	h = {
-		name = "rust-tools and crates.nvim",
-
-
-
-
-		k = { "<cmd>RustHoverActions<cr>", "Hover actions" },
-		b = { "<cmd>RustCodeAction<cr>", "Code action group" },
-		e = { "<cmd>RustMoveItemUp<cr>", "Move Item Up" },
-		n = { "<cmd>RustMoveItemDown<cr>", "Move Item Down" },
-	},
-}, opts)
