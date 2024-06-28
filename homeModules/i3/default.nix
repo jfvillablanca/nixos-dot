@@ -32,7 +32,7 @@ in {
                     lib.strings.concatStringsSep " " (map (
                         m: let
                           resolution = "--mode ${toString m.width}x${toString m.height} --rate ${toString m.refreshRate}";
-                          position = "--pos ${toString m.x}x${toString m.y} --rotate normal";
+                          position = "--pos ${toString m.x}x${toString m.y} --rotate ${m.rotate}";
                         in "--output ${m.name} ${
                           if m.isPrimary
                           then "--primary"

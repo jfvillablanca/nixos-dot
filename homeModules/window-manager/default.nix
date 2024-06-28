@@ -57,6 +57,10 @@ in {
             type = lib.types.bool;
             default = true;
           };
+          rotate = lib.mkOption {
+            type = lib.types.str;
+            default = "normal";
+          };
         };
       });
     };
