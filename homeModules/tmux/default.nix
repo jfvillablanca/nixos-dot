@@ -33,8 +33,6 @@ in {
             set -g @prefix_highlight_fg 'white' # default is 'colour231'
             set -g @prefix_highlight_bg 'red'  # default is 'colour04'
 
-            # palette: kanagawa
-            set-option -g status-style bg=#2A2A37
             set-option -g status-position top
           '';
         }
