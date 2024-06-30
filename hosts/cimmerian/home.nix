@@ -65,7 +65,7 @@
 
     bash.enable = true;
     fish.enable = true;
-    zsh.enable = false;
+    zsh.enable = true;
 
     firefox.enable = true;
   };
