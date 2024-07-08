@@ -50,22 +50,22 @@ in {
                 always = true;
               }
               {
-                command = "--no-startup-id picom";
+                command = "picom";
                 notification = false;
                 always = true;
               }
               {
-                command = "--no-startup-id feh --bg-fill ${config.xdg.configHome}/.wallpapers/desertsunset.jpg";
+                command = "feh --bg-fill ${config.xdg.configHome}/.wallpapers/desertsunset.jpg";
                 notification = false;
                 always = true;
               }
               {
-                command = "--no-startup-id polybar-msg cmd quit; polybar &";
+                command = "polybar-msg cmd quit; polybar &";
                 notification = false;
                 always = true;
               }
               {
-                command = "--no-startup-id i3-msg 'workspace 1; exec ${term}'";
+                command = "i3-msg 'workspace 1; exec ${term}'";
               }
             ];
             window = {
