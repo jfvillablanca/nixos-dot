@@ -1,6 +1,8 @@
 local present, trouble = pcall(require, "trouble")
 if not present then
-  return
+    return
 end
 
-trouble.setup()
+trouble.setup({
+    auto_refresh = false,
+})
