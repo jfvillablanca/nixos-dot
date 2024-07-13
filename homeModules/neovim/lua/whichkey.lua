@@ -172,17 +172,16 @@ local lsp = {
 	},
 	["<leader>m"] = {
 		name = "Trouble",
-		x = { "<cmd>TroubleToggle<cr>", "Toggle" },
-		w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
-		d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
-		l = { "<cmd>TroubleToggle loclist<cr>", "Loclist" },
-		q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
+		x = { "<cmd>Trouble<cr>", "Toggle" },
+		d = { "<cmd>Trouble diagnostics<cr>", "Diagnostics" },
+		l = { "<cmd>Trouble loclist<cr>", "Loclist" },
+		q = { "<cmd>Trouble quickfix<cr>", "Quickfix" },
 	},
 	g = {
 		d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "LSP Definition" },
 		D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "LSP Declaration" },
 		I = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "LSP Implementation" },
-		r = { "<cmd>TroubleToggle lsp_references<cr>", "LSP References" },
+		r = { "<cmd>Trouble lsp_references<cr>", "LSP References" },
 	},
 	["K"] = { "<cmd>lua vim.lsp.buf.hover()<CR>", "LSP Hover" },
 }
