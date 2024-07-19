@@ -154,8 +154,8 @@ local lsp = {
 		a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
 		d = {
 			"<cmd>Telescope diagnostics bufnr=0<cr>",
-			"Document Diagnostics",
-		},
+            "Document Diagnostics",
+        },
 		w = {
 			"<cmd>Telescope diagnostics<cr>",
 			"Workspace Diagnostics",
