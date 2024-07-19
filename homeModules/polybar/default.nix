@@ -57,12 +57,16 @@ in {
             font-4 = "JetBrainsMono Nerd Font:style=Regular:size=13;2";
             modules-left = "xworkspaces";
             modules-center = "xwindow";
-            modules-right = "filesystem network-speed memory cpu battery pipewire date powermenu";
+            modules-right = "filesystem network-speed memory cpu battery pipewire date powermenu tray";
             cursor-click = "pointer";
             cursor-scroll = "ns-resize";
             enable-ipc = true;
+          };
 
-            tray-position = "right";
+          "module/tray" = {
+            type = "internal/tray";
+            tray-size = "50%";
+            tray-spacing = "8px";
           };
 
           "module/xworkspaces" = {
