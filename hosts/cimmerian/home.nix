@@ -29,12 +29,13 @@
           height = 1080;
           x = 0;
           y = 0;
+          rotate = "left";
         }
         {
           name = "DP-1";
           width = 1920;
           height = 1080;
-          x = 1920;
+          x = 1080;
           y = 0;
         }
       ];
