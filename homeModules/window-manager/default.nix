@@ -64,6 +64,10 @@ in {
         };
       });
     };
+    statusBarMonitor = lib.mkOption {
+      type = lib.types.str;
+      description = "which monitor to place the status bar";
+    };
   };
   config = lib.mkMerge [
     (lib.mkIf (cfg.enable && cfg.wm == "i3") {
@@ -71,7 +75,10 @@ in {
         i3.enable = true;
         autorandr.enable = true;
         picom.enable = true;
-        polybar.enable = true;
+        polybar = {
+          enable = true;
+          monitor = cfg.statusBarMonitor;
+        };
         rofi.enable = true;
       };
 

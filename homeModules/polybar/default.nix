@@ -24,6 +24,9 @@ in {
       // {
         default = false;
       };
+    monitor = lib.mkOption {
+      type = lib.types.str;
+    };
   };
   config = lib.mkIf cfg.enable {
     xdg.configFile."polybar/sound.sh" = {
@@ -36,6 +39,7 @@ in {
         script = "polybar bar &";
         config = {
           "bar/top" = {
+            inherit (cfg) monitor;
             top = true;
             width = "100%";
             height = "24pt";
