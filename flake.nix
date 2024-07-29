@@ -159,7 +159,7 @@
         inherit pkgs pkgs-stable system;
         user = "jmfv";
         hostName = "cimmerian";
-        base16Scheme = "catppuccin-mocha";
+        base16Scheme = "rose-pine-moon";
       };
     };
     devShells.${system}.default = pkgs.mkShell {
