@@ -55,6 +55,6 @@ null_ls.setup({
 		diagnostics.actionlint,
 
 		-- markdown --
-		diagnostics.write_good,
+		-- diagnostics.write_good,
 	},
 })
