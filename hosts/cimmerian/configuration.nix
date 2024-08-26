@@ -19,6 +19,7 @@
   ];
 
   stylix = {
+    enable = true;
     image = ../../homeModules/system/wallpapers/samuraidoge.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
