@@ -18,6 +18,10 @@ in {
         enable = true;
         extraConfig = ''
           return {
+            -- NOTE: workaround due to text rendering as color blocks
+            -- https://github.com/wez/wezterm/issues/5990
+            front_end = "WebGpu",
+
             enable_tab_bar = false,
 
             enable_wayland = false,
