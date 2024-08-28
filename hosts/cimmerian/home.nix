@@ -103,8 +103,8 @@
       pamixer # PipeWire CLI tool
       barrier # KVM Switchmy custom node shell env
       vlc # Video player
-      gnome.file-roller # File archiving
-      gnome.eog # GUI image viewer
+      file-roller # File archiving
+      eog # GUI image viewer
       onboard # On-screen keyboard
       zathura # PDF Viewer
 
