@@ -2,6 +2,7 @@
   inputs,
   pkgs,
   base16Scheme,
+  system,
   ...
 }: {
   imports = [
@@ -88,10 +89,14 @@
     extraInit = ''
       xset s off -dpms
     '';
-    systemPackages = with pkgs; [
-      vim
-      git
-    ];
+    systemPackages = with pkgs;
+      [
+        vim
+        git
+      ]
+      ++ [
+        inputs.zen-browser.packages.${system}.default
+      ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
