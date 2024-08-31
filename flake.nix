@@ -177,5 +177,14 @@
       ];
       formatter = pkgs.alejandra;
     };
+    templates = {
+      basic = {
+        path = ./templates/basic;
+        description = "A basic flake with devenv.";
+      };
+    in {
+      inherit basic;
+      default = basic;
+    };
   };
 }
