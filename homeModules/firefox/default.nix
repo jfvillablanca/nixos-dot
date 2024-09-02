@@ -217,8 +217,12 @@ in {
           };
           containersForce = true;
 
-          userChrome = builtins.readFile ./overrides/userChrome.css;
-          userContent = builtins.readFile ./overrides/userContent.css;
+          # NOTE: disabling custom userChrome due to some breaking
+          # change with recent versions of firefox that causes the searchbar
+          # dropdown to be way up top.
+          # Might actually ditch the custom CSS altogether (in the future)
+          # userChrome = builtins.readFile ./overrides/userChrome.css;
+          # userContent = builtins.readFile ./overrides/userContent.css;
           extensions = with inputs.firefox-addons.packages.${system}; [
             bitwarden
             ublock-origin
