@@ -177,7 +177,7 @@
       ];
       formatter = pkgs.alejandra;
     };
-    templates = {
+    templates = let
       basic = {
         path = ./templates/basic;
         description = "A basic flake with devenv.";
