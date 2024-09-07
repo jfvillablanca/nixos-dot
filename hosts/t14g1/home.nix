@@ -124,6 +124,7 @@
         )
         (import ../../customPkgs {inherit pkgs;}).vf
       )
+      (import ../../customPkgs {inherit pkgs;}).use
     ];
     sessionVariables = {
       TERMINAL = "wezterm";
