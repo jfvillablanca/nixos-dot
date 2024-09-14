@@ -10,27 +10,6 @@
   cfg = config.myHomeModules.firefox;
 
   profile = "dev-edition-default";
-  mozillaPath = ".mozilla/firefox/${profile}/chrome";
-  addtlCss = [
-    ./overrides/cleaner_extensions_menu.css
-    ./overrides/hide_list-all-tabs_button.css
-    ./overrides/no_search_engines_in_url_bar.css
-
-    # ./overrides/popout_bookmarks_bar_on_hover.css
-    # ./overrides/transparent_bookmarks_bar.css
-
-    ./overrides/icons_in_main_menu.css
-    ./overrides/privacy_blur_email_in_main_menu.css
-    ./overrides/privacy_blur_email_in_sync_menu.css
-
-    ./overrides/themes/acrylic_micaforeveryone.css
-  ];
-  cssFiles = builtins.listToAttrs (builtins.map
-    (path: {
-      name = mozillaPath + "/" + builtins.baseNameOf path;
-      value = {source = path;};
-    })
-    addtlCss);
 in {
   options.myHomeModules.firefox = {
     enable =
@@ -40,15 +19,6 @@ in {
       };
   };
   config = lib.mkIf cfg.enable {
-    home.file =
-      {
-        "${mozillaPath}/image" = {
-          source = ./overrides/image;
-          recursive = true;
-        };
-      }
-      // cssFiles;
-
     programs.firefox = {
       enable = true;
       # package = pkgs.firefox-devedition;
@@ -217,12 +187,6 @@ in {
           };
           containersForce = true;
 
-          # NOTE: disabling custom userChrome due to some breaking
-          # change with recent versions of firefox that causes the searchbar
-          # dropdown to be way up top.
-          # Might actually ditch the custom CSS altogether (in the future)
-          # userChrome = builtins.readFile ./overrides/userChrome.css;
-          # userContent = builtins.readFile ./overrides/userContent.css;
           extensions = with inputs.firefox-addons.packages.${system}; [
             bitwarden
             ublock-origin
