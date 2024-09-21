@@ -113,10 +113,6 @@ in {
           ];
         };
 
-        master = {
-          new_is_master = false;
-        };
-
         windowrulev2 = [
           "suppressevent maximize, class:.*"
           "bordersize 4,fullscreen:1"
