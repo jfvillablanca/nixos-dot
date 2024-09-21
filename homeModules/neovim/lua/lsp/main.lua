@@ -18,6 +18,7 @@ local servers = {
     "lua_ls",
     "gopls",
     -- "rust_analyzer",
+    "purescriptls",
     -- "hls",
     "pylsp",
     "emmet_ls",
