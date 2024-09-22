@@ -62,6 +62,7 @@ keymap("v", "<S-Up>", "mz:m-2<cr>`zgv", opts)
 
 -- Black hole register (overwrite highlighted text)
 keymap("v", "p", '"_dP', opts)
+keymap("n", "cp", '"_ciw<C-R>"<ESC>', opts)
 
 -- Visual Block --
 -- Move text up and down
