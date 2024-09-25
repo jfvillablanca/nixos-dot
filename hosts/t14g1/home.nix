@@ -144,6 +144,7 @@
         "Videos"
         # ".gnupg"
         ".ssh"
+        ".config/gh"
         # ".nixops"
         # ".local/share/keyrings"
         ".local/share/direnv"
