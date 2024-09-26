@@ -193,6 +193,13 @@
   };
   users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      X11Forwarding = true;
+    };
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
