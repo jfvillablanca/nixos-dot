@@ -174,6 +174,10 @@ in {
             symbol = " ";
           };
 
+          purescript = {
+            symbol = " ";
+          };
+
           golang = {
             symbol = "󰟓 ";
           };
