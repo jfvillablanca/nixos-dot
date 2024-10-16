@@ -63,6 +63,7 @@
     zoxide.enable = true;
     starship.enable = true;
     zellij.enable = true;
+    pet.enable = true;
 
     bash.enable = true;
     fish.enable = true;

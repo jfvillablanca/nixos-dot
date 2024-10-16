@@ -24,6 +24,7 @@
     ./wezterm
     ./neovim
     ./yazi
+    ./pet
 
     ./window-manager
     ./i3
