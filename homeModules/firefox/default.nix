@@ -163,6 +163,48 @@ in {
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = ["@np"];
               };
+              "Pursuit" = {
+                urls = [
+                  {
+                    template = "https://pursuit.purescript.org/search";
+                    params = [
+                      {
+                        name = "q";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                definedAliases = ["@pp"];
+              };
+              "Rust Std" = {
+                urls = [
+                  {
+                    template = "https://doc.rust-lang.org/std/";
+                    params = [
+                      {
+                        name = "search";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                definedAliases = ["@rs"];
+              };
+              "Hoogle" = {
+                urls = [
+                  {
+                    template = "https://hoogle.haskell.org/";
+                    params = [
+                      {
+                        name = "hoogle";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                definedAliases = ["@ho"];
+              };
             };
 
             force = true;
