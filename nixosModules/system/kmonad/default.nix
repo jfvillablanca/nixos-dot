@@ -1,11 +1,7 @@
-{ pkgs, ... }:
-{
-  imports = [ ./module.nix ];
-
+{pkgs, ...}: {
   services.kmonad = {
     enable = true;
-    package = import ./kmonad-pkg.nix { inherit pkgs; };
-    extraArgs = [ "--log-level" "debug" ];
+    extraArgs = ["--log-level" "debug"];
     keyboards = {
       "laptop" = {
         defcfg = {
