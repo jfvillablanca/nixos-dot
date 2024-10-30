@@ -1,6 +1,7 @@
 {
   pkgs,
   user,
+  inputs,
   ...
 }: {
   nix = {
@@ -22,6 +23,6 @@
       dates = "weekly";
       options = "--delete-older-than 5d";
     };
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
   };
 }
