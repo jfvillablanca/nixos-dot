@@ -54,10 +54,15 @@ in {
         {
           plugin = oil-nvim;
           type = "lua";
-          config = ''
-            require("oil").setup()
-          '';
-          # config = builtins.readFile ./lua/nvim-tree.lua;
+          config =
+            /*
+            lua
+            */
+            ''
+              require("oil").setup({
+                skip_confirm_for_simple_edits = true,
+              })
+            '';
         }
 
         # lualine
