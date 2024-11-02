@@ -23,6 +23,7 @@
       dates = "weekly";
       options = "--delete-older-than 5d";
     };
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     package = pkgs.nixVersions.stable;
   };
 }
