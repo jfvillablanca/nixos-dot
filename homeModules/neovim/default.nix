@@ -393,6 +393,8 @@ in {
           '';
         }
 
+        cellular-automaton-nvim
+
         # Colorschemes
         gruvbox
         tokyonight-nvim

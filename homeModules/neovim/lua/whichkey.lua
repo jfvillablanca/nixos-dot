@@ -116,4 +116,10 @@ wk.add({
     { "gr", "<cmd>Trouble lsp_references<cr>", desc = "LSP References", nowait = true, remap = false },
 }, opts)
 
+wk.add({
+    { "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", nowait = true, remap = false },
+    { "<leader>fmg", "<cmd>CellularAutomaton game_of_life<CR>", nowait = true, remap = false },
+    { "<leader>fms", "<cmd>CellularAutomaton scramble<CR>", nowait = true, remap = false },
+}, opts)
+
 wk.setup(setup)
