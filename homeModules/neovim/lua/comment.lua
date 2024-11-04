@@ -3,6 +3,10 @@ if not comment_status_ok then
 	return
 end
 
+require('ts_context_commentstring').setup {
+  enable_autocmd = false,
+}
+
 local context_status_ok, ts_context = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
 if not context_status_ok then
 	return
