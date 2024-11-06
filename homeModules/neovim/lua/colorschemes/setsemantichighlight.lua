@@ -14,6 +14,9 @@ local function set_semantic_highlights()
 		["@lsp.type.method"] = "@method",
 		["@lsp.type.macro"] = "@macro",
 		["@lsp.type.decorator"] = "@function",
+        -- HACK: just to let base16-nvim have some sane highlighting to
+        -- haskell language server codelens support
+		["LspCodeLens"] = "DiagnosticHint",
 	}
 
 	for newgroup, oldgroup in pairs(links) do
