@@ -33,6 +33,7 @@ local options = {
 	linebreak = true, -- companion to wrap, don't split words
 	scrolloff = 8, -- minimal number of screen lines to keep above and below the cursor
 	sidescrolloff = 8, -- minimal number of screen columns either side of cursor if wrap is `false`
+    colorcolumn = "80",
 	whichwrap = "bs<>[]hl", -- which "horizontal" keys are allowed to travel to prev/next line
 	foldmethod = "expr", -- set fold to follow treesitter rules
 	foldexpr = "nvim_treesitter#foldexpr()", -- set fold to follow treesitter rules
