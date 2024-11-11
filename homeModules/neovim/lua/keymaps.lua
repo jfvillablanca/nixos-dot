@@ -69,6 +69,9 @@ keymap("n", "cp", '"_ciw<C-R>"<ESC>', opts)
 keymap("x", "<S-Down>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<S-Up>", ":move '<-2<CR>gv-gv", opts)
 
+-- Terminal --
+keymap("t", "<ESC>", "<C-\\><C-n>", opts)
+
 -- ( just in case I need to use a qwerty keyboard 🤮 )
 
 -- [Move text up and down]
