@@ -57,6 +57,11 @@ in {
           command = "just --fmt --unstable";
           tag = ["just"];
         }
+        {
+          description = "List all file and directory sizes in long format";
+          command = "eza --total-size --long --all";
+          tag = ["ls"];
+        }
       ];
     };
   };
