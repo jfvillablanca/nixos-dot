@@ -159,6 +159,13 @@
         hostName = "cimmerian";
         base16Scheme = "rose-pine-moon";
       };
+
+      sartre = mkSystem {
+        inherit pkgs pkgs-stable system;
+        user = "jmfv";
+        hostName = "sartre";
+        base16Scheme = "rose-pine-moon";
+      };
     };
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
