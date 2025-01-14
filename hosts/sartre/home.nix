@@ -3,13 +3,12 @@
   inputs,
   lib,
   pkgs,
-  user,
   base16Scheme,
   ...
 }: {
   imports = [
     inputs.nix-colors.homeManagerModules.default
-    inputs.impermanence.nixosModules.home-manager.impermanence
+    # inputs.impermanence.nixosModules.home-manager.impermanence
 
     ../../homeModules/system/xdg.nix
     ../../homeModules/system/wallpapers
@@ -116,33 +115,6 @@
       VISUAL = "nvim";
       GIT_EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
-    };
-
-    persistence."/persist/home/${user}" = {
-      directories = [
-        "dev"
-        "nixos-dot"
-        "Downloads"
-        "Documents"
-        "Pictures"
-        "Videos"
-        # ".gnupg"
-        ".ssh"
-        ".config/gh"
-        # ".nixops"
-        # ".local/share/keyrings"
-        ".local/share/direnv"
-        ".local/share/fish"
-        ".local/share/zoxide"
-        ".local/state/nvim"
-        ".tmux/resurrect"
-        ".mozilla/firefox"
-
-        # the idiot apps that use the .config directory
-        # to store state
-        ".config/google-chrome"
-      ];
-      allowOther = true;
     };
   };
 
