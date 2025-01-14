@@ -2,6 +2,7 @@
   inputs,
   pkgs,
   base16Scheme,
+  user,
   system,
   ...
 }: {
@@ -50,6 +51,14 @@
   myNixosModules = {
     steam.enable = true;
   };
+
+  virtualisation.virtualbox = {
+    host = {
+      enable = true;
+      enableExtensionPack = true;
+    };
+  };
+  users.extraGroups.vboxusers.members = [ "${user}" ];
 
   # Bootloader.
   boot.loader = {
