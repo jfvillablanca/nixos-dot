@@ -18,7 +18,7 @@
 
   myHomeModules = {
     window-manager = {
-      enable = true;
+      enable = false;
       wm = "hyprland";
       monitors = [
         {
