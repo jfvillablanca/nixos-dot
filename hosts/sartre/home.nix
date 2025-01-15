@@ -36,14 +36,14 @@
     gh.enable = true;
     neovim.enable = true;
 
-    alacritty.enable = false;
+    alacritty.enable = true;
     wezterm.enable = true;
 
     atuin.enable = false;
     bat.enable = true;
     tmux.enable = true;
     btop.enable = true;
-    flameshot.enable = true;
+    flameshot.enable = false;
     fd.enable = true;
     ripgrep.enable = true;
     fzf.enable = true;
@@ -78,6 +78,7 @@
       unzip # Zip utility
       zip # Zip utility
       lazydocker # Docker and Docker compose management utility
+      wl-clipboard
 
       # Browser
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
@@ -95,8 +96,8 @@
       zathura # PDF Viewer
 
       # GUI
-      xfce.thunar # Xfce file manager
-      xfce.thunar-volman # Removable media Thunar extension
+      # xfce.thunar # Xfce file manager
+      # xfce.thunar-volman # Removable media Thunar extension
 
       (
         lib.mkIf (

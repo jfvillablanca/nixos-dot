@@ -60,31 +60,38 @@
 
   # Enable window manager
   services = {
-    xserver = {
-      enable = true;
-      displayManager = {
-        gdm.enable = true;
-      };
-      desktopManager.gnome.enable = true;
+    xserver.enable = true;
+    displayManager = {
+      sddm.enable = true;
     };
+    desktopManager.plasma6.enable = true;
   };
 
-  environment.gnome.excludePackages = with pkgs; [
-    atomix # puzzle game
-    cheese # webcam tool
-    epiphany # web browser
-    evince # document viewer
-    geary # email reader
-    gedit # text editor
-    gnome-characters
-    gnome-music
-    gnome-photos
-    gnome-terminal
-    gnome-tour
-    hitori # sudoku game
-    iagno # go game
-    tali # poker game
-    totem # video player
+  programs = {
+    nix-ld.enable = true;
+  };
+
+  # environment.gnome.excludePackages = with pkgs; [
+  #   atomix # puzzle game
+  #   cheese # webcam tool
+  #   epiphany # web browser
+  #   evince # document viewer
+  #   geary # email reader
+  #   gedit # text editor
+  #   gnome-characters
+  #   gnome-music
+  #   gnome-photos
+  #   gnome-terminal
+  #   gnome-tour
+  #   hitori # sudoku game
+  #   iagno # go game
+  #   tali # poker game
+  #   totem # video player
+  # ];
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    plasma-browser-integration
+    oxygen
   ];
 
   virtualisation.virtualbox = {
@@ -107,4 +114,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  home-manager.backupFileExtension = "backup";
 }
