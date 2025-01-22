@@ -62,6 +62,11 @@ in {
           command = "eza --total-size --long --all";
           tag = ["ls"];
         }
+        {
+          description = "Get current public IP address";
+          command = "host myip.opendns.com resolver1.opendns.com";
+          tag = ["network"];
+        }
       ];
     };
   };
