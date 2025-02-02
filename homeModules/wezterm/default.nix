@@ -37,7 +37,7 @@ in {
               -- front_end = "WebGpu",
               front_end = "${cfg.frontEnd}",
 
-              enable_tab_bar = true,
+              enable_tab_bar = false,
 
               enable_wayland = true,
 
