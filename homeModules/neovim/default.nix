@@ -453,7 +453,7 @@ in {
         nodePackages_latest.typescript-language-server # js-related grammars
         nodePackages_latest.vscode-langservers-extracted # html, css, json, eslint
         # nodePackages_latest.volar # vue
-        emmet-ls # html snippets
+        # emmet-ls # html snippets
 
         texlab # LaTeX
       ];
