@@ -133,7 +133,13 @@
     };
   };
 
-  programs = {};
+  programs = {
+    # NOTE: 
+    # seems to be enabled by default for stateVersion < 23.05
+    # causes an infinite loop error upon evaluation thus this is manually disabled
+    # https://home-manager-options.extranix.com/?query=swaylock&release=release-24.05
+    swaylock.enable = false;
+  };
 
   services = {};
 }
