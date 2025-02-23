@@ -26,6 +26,7 @@
     ./yazi
     ./pet
     ./kitty
+    ./zathura
 
     ./window-manager
     ./i3
