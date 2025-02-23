@@ -25,6 +25,7 @@
     ./neovim
     ./yazi
     ./pet
+    ./kitty
 
     ./window-manager
     ./i3
