@@ -167,6 +167,66 @@
         base16Scheme = "rose-pine-moon";
       };
     };
+    homeConfigurations = {
+      "jmfv" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        extraSpecialArgs = rec {
+          inherit inputs pkgs pkgs-stable system;
+          user = "jmfv";
+          base16Scheme = "rose-pine-moon";
+        };
+        modules = [
+            {
+              home = {
+                # username = "${user}";
+                # homeDirectory = "/home/${user}";
+                username = "jmfv";
+                homeDirectory = "/home/jmfv";
+                # Don't touch me :)
+                stateVersion = "22.11";
+              };
+              programs.home-manager.enable = true;
+            }
+            inputs.stylix.homeManagerModules.stylix
+
+            # fonts
+            {
+              fonts.fontconfig.enable = true;
+              home.packages = with pkgs; [
+                source-code-pro
+                font-awesome
+                corefonts
+                jetbrains-mono
+                (nerdfonts.override {
+                  fonts = [
+                    "FiraCode"
+                    "JetBrainsMono"
+                  ];
+                })
+              ];
+            }
+            ./homeModules
+            ./hosts/sartre/home.nix
+        ];
+
+        # useGlobalPkgs = true;
+        # useUserPackages = true;
+        # users.${user}.imports = [
+        #   {
+        #     home = {
+        #       username = "${user}";
+        #       homeDirectory = "/home/${user}";
+        #       # Don't touch me :)
+        #       stateVersion = "22.11";
+        #     };
+        #   }
+        #   ./homeModules
+        #   ./hosts/${hostName}/home.nix
+        # ];
+      };
+    };
+
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
         stylua
