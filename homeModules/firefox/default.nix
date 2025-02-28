@@ -227,7 +227,7 @@ in {
           };
           containersForce = true;
 
-          extensions = with inputs.firefox-addons.packages.${system}; [
+          extensions.packages = with inputs.firefox-addons.packages.${system}; [
             bitwarden
             ublock-origin
             decentraleyes
