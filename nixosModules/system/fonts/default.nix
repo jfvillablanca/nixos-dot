@@ -4,11 +4,7 @@
     font-awesome
     corefonts
     jetbrains-mono
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "JetBrainsMono"
-      ];
-    })
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
   ];
 }
