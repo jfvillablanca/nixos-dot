@@ -14,6 +14,8 @@ in {
       kitty = {
         enable = true;
         settings = {
+          window_padding_width = 5;
+
           cursor_trail = 1;
           cursor_trail_decay = "0.05 0.2";
           cursor_shape = "block";
