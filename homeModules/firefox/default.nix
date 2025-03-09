@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  pkgs-stable,
   lib,
   config,
   system,
@@ -20,7 +21,8 @@ in {
   config = lib.mkIf cfg.enable {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-devedition;
+      # package = pkgs.firefox-devedition;
+      package = pkgs-stable.firefox-devedition;
       profiles = {
         "${profile}" = {
           isDefault = true;
