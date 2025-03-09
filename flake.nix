@@ -119,7 +119,7 @@
               extraSpecialArgs = {
                 inherit inputs pkgs pkgs-stable user system base16Scheme;
               };
-              useGlobalPkgs = true;
+              useGlobalPkgs = false;
               useUserPackages = true;
               users.${user}.imports = [
                 {
