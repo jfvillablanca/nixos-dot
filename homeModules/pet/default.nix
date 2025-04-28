@@ -67,6 +67,11 @@ in {
           command = "host myip.opendns.com resolver1.opendns.com";
           tag = ["network"];
         }
+        {
+          description = "Live updates on the commit graph";
+          command = "find .git/HEAD .git/refs/heads/ -type f | entr sh -c 'clear; git log'";
+          tag = ["git" "entr"];
+        }
       ];
     };
   };

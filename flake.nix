@@ -6,6 +6,8 @@
 
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
 
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
@@ -90,6 +92,7 @@
           inputs.disko.nixosModules.default
           inputs.impermanence.nixosModules.impermanence
           inputs.stylix.nixosModules.stylix
+          inputs.nixos-wsl.nixosModules.default
           {
             networking.hostName = hostName;
             users.users.${user} = {
@@ -119,7 +122,7 @@
               extraSpecialArgs = {
                 inherit inputs pkgs pkgs-stable user system base16Scheme;
               };
-              useGlobalPkgs = true;
+              useGlobalPkgs = false;
               useUserPackages = true;
               users.${user}.imports = [
                 {
@@ -237,7 +240,7 @@
         statix
         deadnix
         nil
-        # nixd
+        nixd
       ];
       formatter = pkgs.alejandra;
     };

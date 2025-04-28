@@ -14,14 +14,13 @@ local servers = {
     "tailwindcss",
     "prismals",
     "nil_ls",
-    -- "nixd",
+    "nixd",
     "lua_ls",
     "gopls",
     -- "rust_analyzer",
     "purescriptls",
     -- "hls",
     "pylsp",
-    "emmet_ls",
     -- "volar",            -- uses local node_modules installation Typescript (there is no global Typescript installation in this machine)
     "texlab"
 }
