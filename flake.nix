@@ -180,37 +180,33 @@
           base16Scheme = "rose-pine-moon";
         };
         modules = [
-            {
-              home = {
-                # username = "${user}";
-                # homeDirectory = "/home/${user}";
-                username = "jmfv";
-                homeDirectory = "/home/jmfv";
-                # Don't touch me :)
-                stateVersion = "22.11";
-              };
-              programs.home-manager.enable = true;
-            }
-            inputs.stylix.homeManagerModules.stylix
+          {
+            home = {
+              # username = "${user}";
+              # homeDirectory = "/home/${user}";
+              username = "jmfv";
+              homeDirectory = "/home/jmfv";
+              # Don't touch me :)
+              stateVersion = "22.11";
+            };
+            programs.home-manager.enable = true;
+          }
+          inputs.stylix.homeManagerModules.stylix
 
-            # fonts
-            {
-              fonts.fontconfig.enable = true;
-              home.packages = with pkgs; [
-                source-code-pro
-                font-awesome
-                corefonts
-                jetbrains-mono
-                (nerdfonts.override {
-                  fonts = [
-                    "FiraCode"
-                    "JetBrainsMono"
-                  ];
-                })
-              ];
-            }
-            ./homeModules
-            ./hosts/sartre/home.nix
+          # fonts
+          {
+            fonts.fontconfig.enable = true;
+            home.packages = with pkgs; [
+              source-code-pro
+              font-awesome
+              corefonts
+              jetbrains-mono
+              nerd-fonts.fira-code
+              nerd-fonts.jetbrains-mono
+            ];
+          }
+          ./homeModules
+          ./hosts/sartre/home.nix
         ];
 
         # useGlobalPkgs = true;
