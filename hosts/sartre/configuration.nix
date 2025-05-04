@@ -55,6 +55,10 @@
     steam.enable = false;
   };
 
+  wsl = {
+    enable = true;
+    defaultUser = user;
+  };
 
   # Enable window manager
   services = {
@@ -73,4 +77,10 @@
   nixpkgs.config.allowUnfree = true;
 
   home-manager.backupFileExtension = "backup";
+
+  users.users.${user} = {
+    # HACK:
+    # first user of NixOS-WSL is "nixos" which currently uses UID 1000
+    uid = lib.mkForce 1001;
+  };
 }
