@@ -10,8 +10,8 @@
     inputs.nix-colors.homeManagerModules.default
     # inputs.impermanence.nixosModules.home-manager.impermanence
 
-    ../../homeModules/system/xdg.nix
-    ../../homeModules/system/wallpapers
+    # ../../homeModules/system/xdg.nix
+    # ../../homeModules/system/wallpapers
   ];
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};

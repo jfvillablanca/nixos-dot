@@ -7,17 +7,17 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
+    # ./hardware-configuration.nix
     # ./disko.nix
 
     ../../nixosModules/system/internationalization
-    ../../nixosModules/system/virtual-fs
-    ../../nixosModules/system/network-manager
+    # ../../nixosModules/system/virtual-fs
+    # ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
     ../../nixosModules/system/fonts
-    ../../nixosModules/system/sound
-    ../../nixosModules/system/bluetooth
+    # ../../nixosModules/system/sound
+    # ../../nixosModules/system/bluetooth
   ];
 
   stylix = {
