@@ -107,7 +107,7 @@ in {
 
           add_newline = false;
 
-          palette = "kanagawa";
+          palette = lib.mkForce "kanagawa";
 
           palettes.kanagawa = {
             oldwhite = "#c8c093";
