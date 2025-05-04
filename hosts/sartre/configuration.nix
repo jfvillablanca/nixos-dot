@@ -47,7 +47,7 @@
       };
     };
     targets = {
-      gnome.enable = true;
+      gnome.enable = false;
     };
   };
 
@@ -55,62 +55,18 @@
     steam.enable = false;
   };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable window manager
   services = {
-    xserver.enable = true;
+    xserver.enable = false;
     displayManager = {
-      sddm.enable = true;
+      sddm.enable = false;
     };
-    desktopManager.plasma6.enable = true;
+    desktopManager.plasma6.enable = false;
   };
 
   programs = {
     nix-ld.enable = true;
-  };
-
-  # environment.gnome.excludePackages = with pkgs; [
-  #   atomix # puzzle game
-  #   cheese # webcam tool
-  #   epiphany # web browser
-  #   evince # document viewer
-  #   geary # email reader
-  #   gedit # text editor
-  #   gnome-characters
-  #   gnome-music
-  #   gnome-photos
-  #   gnome-terminal
-  #   gnome-tour
-  #   hitori # sudoku game
-  #   iagno # go game
-  #   tali # poker game
-  #   totem # video player
-  # ];
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration
-    oxygen
-  ];
-
-  virtualisation.virtualbox = {
-    guest = {
-      enable = true;
-      dragAndDrop = true;
-      clipboard = true;
-    };
-  };
-
-  # Polkit (need enabled for sway)
-  security.polkit.enable = true;
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      X11Forwarding = true;
-    };
   };
 
   # Allow unfree packages

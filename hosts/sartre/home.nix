@@ -59,7 +59,7 @@
     fish.enable = true;
     zsh.enable = true;
 
-    firefox.enable = true;
+    firefox.enable = false;
   };
 
   stylix = {
@@ -88,12 +88,12 @@
       neofetch # System lookup
 
       # Utils
-      pavucontrol # Volume control UI
-      pamixer # PipeWire CLI tool
-      file-roller # File archiving
-      eog # GUI image viewer
-      onboard # On-screen keyboard
-      zathura # PDF Viewer
+      # pavucontrol # Volume control UI
+      # pamixer # PipeWire CLI tool
+      # file-roller # File archiving
+      # eog # GUI image viewer
+      # onboard # On-screen keyboard
+      # zathura # PDF Viewer
 
       # GUI
       # xfce.thunar # Xfce file manager
