@@ -48,6 +48,8 @@ wk.add({
    {"<leader>w",  "<cmd>w!<CR>", desc = "Save" },
    {"<leader>q",  "<cmd>q!<CR>", desc = "Quit" },
    {"<leader>c",  "<cmd>bd!<CR>", desc = "Close Buffer" },
+   -- https://stackoverflow.com/questions/1444322/how-can-i-close-a-buffer-without-closing-the-window#comment107676238_19620009
+   {"<leader>d",  "<cmd>bp|bd#<CR>", desc = "Close buffer on this split and open prev buffer" },
    {"<leader>T",  "<cmd>set foldmethod=expr<cr>", desc = "Treesitter foldmethod" },
 }, opts)
 
