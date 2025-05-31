@@ -55,6 +55,12 @@
     steam.enable = false;
   };
 
+  virtualisation = {
+    docker = {
+      enable = true;
+    };
+  };
+
   wsl = {
     enable = true;
     defaultUser = user;
