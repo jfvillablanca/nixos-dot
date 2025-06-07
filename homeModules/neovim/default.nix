@@ -183,11 +183,11 @@ in {
         #   config = builtins.readFile ./lua/crates.nvim.lua;
         # }
 
-        # rust-tools-nvim
+        # rustaceanvim
         {
-          plugin = rust-tools-nvim;
-          type = "lua";
-          config = builtins.readFile ./lua/rust-tools-nvim.lua;
+          plugin = rustaceanvim;
+          # type = "lua";
+          # config =
         }
 
         # # refactoring

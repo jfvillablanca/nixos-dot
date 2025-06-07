@@ -17,7 +17,7 @@ local servers = {
     "nixd",
     "lua_ls",
     "gopls",
-    -- "rust_analyzer",
+    -- "rust_analyzer",    -- managed by mrcjkb/rustaceanvim
     "purescriptls",
     -- "hls",
     "pylsp",
