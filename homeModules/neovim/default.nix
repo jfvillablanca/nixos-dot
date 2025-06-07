@@ -197,6 +197,13 @@ in {
         #   config = builtins.readFile ./lua/refactoring.lua;
         # }
 
+        # nvim-dap
+        {
+          plugin = nvim-dap;
+          # type = "lua";
+          # config =
+        }
+
         # null-ls
         {
           plugin = none-ls-nvim;
@@ -441,10 +448,11 @@ in {
         write-good # english prose
         nodePackages_latest.eslint
 
+        vscode-extensions.vadimcn.vscode-lldb.adapter                               # rust
+
         # Language Servers
         nodePackages_latest.bash-language-server # sh
         # gopls                                                                     # go
-        # rust-analyzer                                                             # rust
         # haskellPackages.haskell-language-server                                   # haskell
         # python311Packages.python-lsp-server                                       # python
 
