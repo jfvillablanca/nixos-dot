@@ -98,7 +98,7 @@ wk.add({
 wk.add({
     { "<leader>l", group = "LSP", nowait = true, remap = false },
     { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols", nowait = true, remap = false },
-    { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action", nowait = true, remap = false },
+    { "<leader>la", "<cmd>lua vim.lsp.buf.code_action({ context = { only = { 'source', 'refactor', 'quickfix' } } })<cr>", desc = "Code Action", nowait = true, remap = false },
     { "<leader>ld", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document Diagnostics", nowait = true, remap = false },
     { "<leader>lf", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", desc = "Format", nowait = true, remap = false },
     { "<leader>lh", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<cr>", desc = "Toggle inlay hints", nowait = true, remap = false },
