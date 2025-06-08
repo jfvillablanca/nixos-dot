@@ -120,6 +120,19 @@ wk.add({
 }, opts)
 
 wk.add({
+    { "<leader>b", group = "Debugger", nowait = true, remap = false },
+    { "<leader>bb", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "Toggle breakpoint", nowait = true, remap = false },
+    { "<leader>bc", "<cmd>lua require'dap'.continue()<cr>", desc = "Continue", nowait = true, remap = false },
+    { "<leader>bo", "<cmd>lua require'dap'.repl.open()<cr>", desc = "Inspect", nowait = true, remap = false },
+    { "<leader>bk", "<cmd>lua require'dap'.terminate()<cr>", desc = "Terminate", nowait = true, remap = false },
+
+    { "<leader>bso", "<cmd>lua require'dap'.step_over()<cr>", desc = "Step over", nowait = true, remap = false },
+    { "<leader>bsi", "<cmd>lua require'dap'.step_into()<cr>", desc = "Step into", nowait = true, remap = false },
+    { "<leader>bsu", "<cmd>lua require'dap'.step_out()<cr>", desc = "Step out", nowait = true, remap = false },
+    { "<leader>bl", "<cmd>lua require'dap'.run_last()<cr>", desc = "Step out", nowait = true, remap = false },
+}, opts)
+
+wk.add({
     { "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>", nowait = true, remap = false },
     { "<leader>fmg", "<cmd>CellularAutomaton game_of_life<CR>", nowait = true, remap = false },
     { "<leader>fms", "<cmd>CellularAutomaton scramble<CR>", nowait = true, remap = false },
