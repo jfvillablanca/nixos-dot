@@ -10,7 +10,7 @@ local servers = {
     "eslint",
     "html",
     "jsonls",
-    -- "tsserver",         -- managed by pmizio/typescript-tools.nvim
+    -- "tsserver",         -- managed by yioneko/nvim-vtsls
     "tailwindcss",
     "prismals",
     "nil_ls",
