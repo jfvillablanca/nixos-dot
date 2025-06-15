@@ -19,7 +19,7 @@ in {
         autosuggestion.enable = true;
         enableCompletion = true;
         syntaxHighlighting.enable = true;
-        initExtra = ''
+        initContent = ''
           export PATH="$PATH:$HOME/.npm-global/bin"         # (temporary) for non-declarative npm global installs
         '';
         shellAliases = {
