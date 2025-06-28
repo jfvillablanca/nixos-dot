@@ -141,7 +141,7 @@ in {
             "webgl.vendor-string-override" = " ";
           };
           search = {
-            default = "DuckDuckGo";
+            default = "ddg";
 
             engines = {
               "Nix Packages" = {
