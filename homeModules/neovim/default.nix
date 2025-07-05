@@ -165,7 +165,22 @@ in {
               -- require("lspconfig.configs").vtsls = require("vtsls").lspconfig
               require("lspconfig").vtsls.setup({
                 settings = {
+                  vtsls = {
+                    -- Automatically use workspace version of TypeScript lib on startup
+                    autoUseWorkspaceTsdk = true,
+                    experimental = {
+                      -- maxInlayHintLength = 40,
+                      completion = {
+                        -- Execute fuzzy match of completion items on server side. Enable this
+                        -- will help filter out useless completion items from tsserver
+                        enableServerSideFuzzyMatch = true,
+                      },
+                    },
+                  },
                   typescript = {
+                    tsserver = {
+                      pluginPaths = { "./node_modules" },
+                    },
                     inlayHints = {
                       parameterNames = { enabled = "literals" },
                       parameterTypes = { enabled = true },
