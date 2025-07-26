@@ -110,6 +110,7 @@ in {
             "network.predictor.enabled" = false;
             "network.prefetch-next" = false;
             "network.trr.mode" = 5;
+            "privacy.resistFingerprinting" = true;
             "privacy.donottrackheader.enabled" = true;
             "privacy.donottrackheader.value" = 1;
             "privacy.query_stripping" = true;
