@@ -145,6 +145,9 @@ in {
           '';
         }
 
+        # AI
+        copilot-vim
+
         # LSP
         # nvim-lspconfig
         {
