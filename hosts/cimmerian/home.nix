@@ -112,6 +112,7 @@
       # GUI
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
+      protonvpn-gui
 
       (
         lib.mkIf (
