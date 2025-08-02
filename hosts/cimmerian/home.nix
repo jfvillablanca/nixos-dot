@@ -59,6 +59,7 @@
     gitui.enable = true;
     yazi.enable = true;
     eza.enable = true;
+    spotify-player.enable = true;
     direnv.enable = true;
     zoxide.enable = true;
     starship.enable = true;
