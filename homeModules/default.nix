@@ -21,6 +21,7 @@
     ./tmux
     ./firefox
     ./ripgrep
+    ./spotify-player
     ./wezterm
     ./neovim
     ./yazi
