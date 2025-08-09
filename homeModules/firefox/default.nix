@@ -1,7 +1,7 @@
 {
   inputs,
   pkgs,
-  pkgs-stable,
+  pkgs-stable-24-05,
   lib,
   config,
   system,
@@ -22,7 +22,7 @@ in {
     programs.firefox = {
       enable = true;
       # package = pkgs.firefox-devedition;
-      package = pkgs-stable.firefox-devedition;
+      package = pkgs-stable-24-05.firefox-devedition;
       profiles = {
         "${profile}" = {
           isDefault = true;
