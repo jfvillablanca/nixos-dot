@@ -213,7 +213,7 @@ in {
         }
 
         # Haskell
-        haskell-tools-nvim
+        # haskell-tools-nvim
 
         # Go
         {
