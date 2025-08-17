@@ -70,6 +70,10 @@
       overlays = [
         neovim-nightly-overlay.overlays.default
         # inputs.copyparty.overlays.default
+
+        # NOTE: Authentication Issue
+        # https://github.com/aome510/spotify-player/issues/802#issuecomment-3191659178
+        (import ./homeModules/spotify-player/overlay.nix)
       ];
     };
     pkgs-stable-24-05 = import nixpkgs-stable-24-05 {inherit system;};
