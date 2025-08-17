@@ -72,6 +72,11 @@ in {
           command = "find .git/HEAD .git/refs/heads/ -type f | entr sh -c 'clear; git log'";
           tag = ["git" "entr"];
         }
+        {
+          description = "Find ignored and hidden directories";
+          command = "fd --type dir --hidden --no-ignore \"path/to/dir\"";
+          tag = ["fd" "find"];
+        }
       ];
     };
   };
