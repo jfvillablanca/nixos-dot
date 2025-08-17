@@ -10,7 +10,7 @@
     ./hardware-configuration.nix
     ./hardware-configuration-overrides.nix
 
-    ../../nixosModules/system/kmonad
+    # ../../nixosModules/system/kmonad
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/virtual-fs
     ../../nixosModules/system/network-manager
