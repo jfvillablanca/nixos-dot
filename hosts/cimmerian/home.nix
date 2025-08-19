@@ -65,7 +65,7 @@
     direnv.enable = true;
     zoxide.enable = true;
     starship.enable = true;
-    zellij.enable = true;
+    zellij.enable = false;
     pet.enable = true;
 
     bash.enable = true;
