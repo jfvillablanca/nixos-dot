@@ -49,6 +49,7 @@
 
     alacritty.enable = true;
     wezterm.enable = true;
+    kitty.enable = true;
 
     atuin.enable = false;
     bat.enable = true;
