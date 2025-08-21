@@ -74,6 +74,7 @@
     zsh.enable = true;
 
     firefox.enable = true;
+    zathura.enable = true;
   };
 
   stylix = {
@@ -111,7 +112,6 @@
       file-roller # File archiving
       eog # GUI image viewer
       onboard # On-screen keyboard
-      zathura # PDF Viewer
 
       # GUI
       xfce.thunar # Xfce file manager
