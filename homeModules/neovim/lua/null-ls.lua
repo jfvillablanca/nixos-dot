@@ -11,7 +11,7 @@ null_ls.setup({
 	debug = false,
 	sources = {
 		-- webdev --
-		formatting.prettier,
+		-- formatting.prettier,
 		formatting.stylelint,
 
 		-- lua --
