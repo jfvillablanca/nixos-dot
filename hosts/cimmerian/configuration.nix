@@ -88,6 +88,7 @@
         i3.enable = true;
       };
     };
+    openssh.enable = true;
   };
 
   programs = {
