@@ -37,8 +37,8 @@ null_ls.setup({
 		-- python --
 		formatting.isort,
 		formatting.black,
-		diagnostics.pylint,
-		diagnostics.mypy,
+		-- diagnostics.pylint,
+		-- diagnostics.mypy,
 
 		-- haskell --
 
