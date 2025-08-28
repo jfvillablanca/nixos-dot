@@ -161,6 +161,28 @@ in {
               vim.g.copilot_no_tab_map = true
             '';
         }
+        {
+          plugin = codecompanion-nvim;
+          type = "lua";
+          config =
+            /*
+            lua
+            */
+            ''
+              require("codecompanion").setup({
+                -- extensions = {
+                --   mcphub = {
+                --     callback = "mcphub.extensions.codecompanion",
+                --     opts = {
+                --       make_vars = true,
+                --       make_slash_commands = true,
+                --       show_result_in_chat = true
+                --     }
+                --   }
+                -- }
+              })
+            '';
+        }
 
         # LSP
         # nvim-lspconfig
