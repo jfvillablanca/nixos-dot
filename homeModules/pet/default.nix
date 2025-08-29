@@ -77,6 +77,11 @@ in {
           command = "fd --type dir --hidden --no-ignore \"path/to/dir\"";
           tag = ["fd" "find"];
         }
+        {
+          description = "Find file extensions in the git repo";
+          command = "git ls-files | grep '\.' | sed 's/.*\.//' | sort | uniq";
+          tag = ["git"];
+        }
       ];
     };
   };
