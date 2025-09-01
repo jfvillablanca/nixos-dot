@@ -133,11 +133,11 @@
 
   # Enable window manager
   services = {
+    displayManager = {
+      gdm.enable = true;
+    };
     xserver = {
       enable = true;
-      displayManager = {
-        gdm.enable = true;
-      };
       windowManager = {
         i3.enable = true;
       };
