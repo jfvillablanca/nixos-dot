@@ -12,6 +12,8 @@
       url = "github:NixOS/nixos-hardware/master";
     };
 
+    # copyparty.url = "github:9001/copyparty";
+
     # walker.url = "github:abenz1267/walker";
 
     home-manager = {
@@ -98,6 +100,7 @@
           inputs.impermanence.nixosModules.impermanence
           inputs.stylix.nixosModules.stylix
           inputs.nixos-wsl.nixosModules.default
+          # inputs.copyparty.nixosModules.default
           {
             networking.hostName = hostName;
             users.users.${user} = {
@@ -166,7 +169,7 @@
         inherit pkgs pkgs-stable-24-05 system;
         user = "jmfv";
         hostName = "cimmerian";
-        base16Scheme = "rose-pine-moon";
+        base16Scheme = "spaceduck";
       };
 
       sartre = mkSystem {
