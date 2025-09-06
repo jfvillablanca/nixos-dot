@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-stable-25-05,
   config,
   lib,
   ...
@@ -28,7 +29,7 @@ in {
 
     programs.neovim = {
       enable = true;
-      package = pkgs.neovim;
+      package = pkgs-stable-25-05.neovim;
       defaultEditor = true;
       vimAlias = true;
       withNodeJs = true;
