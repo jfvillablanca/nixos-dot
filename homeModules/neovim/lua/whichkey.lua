@@ -41,7 +41,7 @@ local setup = {
 }
 
 local opts = {
-	mode = { "n" }, -- NORMAL mode
+	mode = { "n", "v" }, -- NORMAL mode
 }
 
 wk.add({
