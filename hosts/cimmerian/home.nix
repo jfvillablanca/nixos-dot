@@ -44,6 +44,7 @@
     };
 
     git.enable = true;
+    delta.enable = true;
     gh.enable = true;
     neovim.enable = true;
 

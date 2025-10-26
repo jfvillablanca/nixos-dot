@@ -5,6 +5,7 @@
     ./btop
     ./starship
     ./direnv
+    ./delta
     ./zoxide
     ./zellij
     ./eza
