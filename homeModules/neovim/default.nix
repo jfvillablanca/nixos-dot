@@ -29,7 +29,7 @@ in {
 
     programs.neovim = {
       enable = true;
-      package = pkgs-stable-25-05.neovim;
+      package = pkgs.neovim;
       defaultEditor = true;
       vimAlias = true;
       withNodeJs = true;
