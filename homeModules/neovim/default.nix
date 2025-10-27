@@ -203,7 +203,7 @@ in {
             */
             ''
               -- require("lspconfig.configs").vtsls = require("vtsls").lspconfig
-              require("lspconfig").vtsls.setup({
+              vim.lsp.config('vtsls', {
                 settings = {
                   vtsls = {
                     -- Automatically use workspace version of TypeScript lib on startup
@@ -232,6 +232,8 @@ in {
                   },
                 }
               })
+              vim.lsp.enable('vtsls')
+
             '';
         }
 
