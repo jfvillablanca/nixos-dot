@@ -30,7 +30,6 @@ in {
           TYPE_COPY = "Ctrl+C";
           TYPE_DRAWER = "D";
           TYPE_EXIT = "Ctrl+Q";
-          TYPE_IMAGEUPLOADER = "Return";
           TYPE_MARKER = "M";
           TYPE_MOVESELECTION = "Ctrl+M";
           TYPE_MOVE_DOWN = "Down";
@@ -49,7 +48,6 @@ in {
           TYPE_RESIZE_UP = "Shift+Up";
           TYPE_SAVE = "Ctrl+S";
           TYPE_SELECTION = "S";
-          TYPE_SELECTIONINDICATOR = "";
           TYPE_SELECT_ALL = "Ctrl+A";
           TYPE_TEXT = "T";
           TYPE_TOGGLE_PANEL = "Space";
