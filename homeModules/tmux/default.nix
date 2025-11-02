@@ -109,6 +109,8 @@ in {
         }
       ];
       extraConfig = ''
+        set-option -g focus-events on
+
         # True Color (after a million tries, this is the override that works)
         set -ag terminal-overrides ",$TERM:RGB"
         set-option -ga terminal-features ",alacritty:usstyle"
