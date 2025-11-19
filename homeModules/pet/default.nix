@@ -82,6 +82,11 @@ in {
           command = "git ls-files | grep '\.' | sed 's/.*\.//' | sort | uniq";
           tag = ["git"];
         }
+        {
+          description = "Find stray gc roots";
+          command = "nix-store --gc --print-roots | egrep -v '^(/nix/var|/run/\w+-system|\{memory)'";
+          tag = ["nix"];
+        }
       ];
     };
   };
