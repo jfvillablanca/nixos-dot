@@ -112,7 +112,7 @@ wk.add({
     { "<leader>ml", "<cmd>Trouble loclist<cr>", desc = "Loclist", nowait = true, remap = false },
     { "<leader>mq", "<cmd>Trouble quickfix<cr>", desc = "Quickfix", nowait = true, remap = false },
     { "<leader>mx", "<cmd>Trouble<cr>", desc = "Toggle", nowait = true, remap = false },
-    { "K", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "LSP Hover", nowait = true, remap = false },
+    { "K", "<cmd>lua vim.lsp.buf.hover({ border = 'single' })<CR>", desc = "LSP Hover", nowait = true, remap = false },
     { "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "LSP Declaration", nowait = true, remap = false },
     { "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", desc = "LSP Implementation", nowait = true, remap = false },
     { "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "LSP Definition", nowait = true, remap = false },
