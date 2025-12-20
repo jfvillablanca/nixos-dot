@@ -68,7 +68,7 @@
       enableExtensionPack = true;
     };
   };
-  users.extraGroups.vboxusers.members = [ "${user}" ];
+  users.extraGroups.vboxusers.members = ["${user}"];
 
   # Bootloader.
   boot.loader = {
