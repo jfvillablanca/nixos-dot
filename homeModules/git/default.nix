@@ -20,7 +20,7 @@ in {
           init.defaultBranch = "main";
           user = {
             name = "jfvillablanca";
-            email = "31008330+jfvillablanca@users.noreply.github.com";
+            email = "jannmarcvillablanca@careerteam.com";
           };
           color.ui = "auto";
           rerere.enabled = true;

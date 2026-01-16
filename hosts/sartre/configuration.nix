@@ -25,6 +25,7 @@
     # NOTE: unfortunately, stylix.image is non-optional
     # https://github.com/danth/stylix/issues/200
     image = ../../homeModules/system/wallpapers/samuraidoge.png;
+    # image = null;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
     cursor = {
@@ -66,6 +67,19 @@
     defaultUser = user;
   };
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      X11Forwarding = true;
+    };
+    listenAddresses = [
+      {
+        # port = 22;
+        addr = "0.0.0.0";
+      }
+    ];
+  };
+
   # Enable window manager
   services = {
     xserver.enable = false;
@@ -88,5 +102,21 @@
     # HACK:
     # first user of NixOS-WSL is "nixos" which currently uses UID 1000
     uid = lib.mkForce 1001;
+  };
+
+  systemd.services = {
+    symlink-wayland-socket = {
+      description = "Symlink Wayland socket to XDG_RUNTIME_DIR";
+      after = ["basic.target"];
+      wantedBy = ["default.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = [
+          "${pkgs.coreutils}/bin/ln -sf /mnt/wslg/runtime-dir/wayland-0 $XDG_RUNTIME_DIR"
+          "${pkgs.coreutils}/bin/ln -sf /mnt/wslg/runtime-dir/wayland-0.lock $XDG_RUNTIME_DIR"
+        ];
+        RemainAfterExit = true;
+      };
+    };
   };
 }

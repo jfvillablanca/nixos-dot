@@ -2,7 +2,7 @@
 {
   time.timeZone = "Asia/Manila";
   services.chrony = {
-    enable = true;
+    enable = false;
     servers = [ "time.cloudflare.com" ];
   };
 }

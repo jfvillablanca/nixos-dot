@@ -38,6 +38,7 @@
 
     alacritty.enable = true;
     wezterm.enable = true;
+    kitty.enable = true;
 
     atuin.enable = false;
     bat.enable = true;
@@ -53,7 +54,7 @@
     direnv.enable = true;
     zoxide.enable = true;
     starship.enable = true;
-    zellij.enable = true;
+    zellij.enable = false;
 
     bash.enable = true;
     fish.enable = true;
@@ -79,6 +80,7 @@
       zip # Zip utility
       lazydocker # Docker and Docker compose management utility
       wl-clipboard
+      git-filter-repo
 
       # Browser
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
@@ -117,9 +119,44 @@
       GIT_EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
     };
+
+    shellAliases = {
+      nixgl = "nix run github:nix-community/nixGL#nixGLIntel --";
+    };
   };
 
-  programs = {};
+  programs = {
+    swaylock.enable = false;
+  };
 
-  services = {};
+  services = {
+    podman = {
+      enable = true;
+    };
+  };
+
+  # NOTE:
+  # https://github.com/microsoft/WSL/issues/11261#issue-2172860400
+  # ln -s /mnt/wslg/runtime-dir/wayland-0* /run/user/1001/
+  systemd.user.services = {
+    symlink-wayland-socket = {
+      Unit = {
+        Description = "Symlink Wayland socket to XDG_RUNTIME_DIR";
+        # After = ["default.target"];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = [
+          "/usr/bin/ln -s /mnt/wslg/runtime-dir/wayland-0 $XDG_RUNTIME_DIR"
+          "/usr/bin/ln -s /mnt/wslg/runtime-dir/wayland-0.lock $XDG_RUNTIME_DIR"
+          # "/usr/bin/ln -s /mnt/wslg/runtime-dir/wayland-0 %t"
+          # "/usr/bin/ln -s /mnt/wslg/runtime-dir/wayland-0.lock %t"
+        ];
+        RemainAfterExit = true;
+      };
+      Install = {
+        WantedBy = ["default.target"];
+      };
+    };
+  };
 }

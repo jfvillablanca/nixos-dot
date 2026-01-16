@@ -258,11 +258,11 @@ in {
         # }
 
         # rustaceanvim
-        {
-          plugin = rustaceanvim;
-          # type = "lua";
-          # config =
-        }
+        # {
+        #   plugin = rustaceanvim;
+        #   # type = "lua";
+        #   # config =
+        # }
 
         # # refactoring
         # {
@@ -547,7 +547,7 @@ in {
         write-good # english prose
         nodePackages_latest.eslint
 
-        vscode-extensions.vadimcn.vscode-lldb.adapter                               # rust
+        vscode-extensions.vadimcn.vscode-lldb.adapter # rust
 
         # Language Servers
         nodePackages_latest.bash-language-server # sh
