@@ -89,11 +89,13 @@
       # Terminal
       tldr # Lazy man's help/man page
       nixpkgs-review # For reviewing PRs to nixpkgs repository
+      cachix # Nix binary cache hosting
       trashy # Trash in cli
       killall # Kill processes
       ncdu # NCurses Disk Usage
       unzip # Zip utility
       zip # Zip utility
+      devenv
 
       # Browser
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
@@ -103,12 +105,10 @@
       neofetch # System lookup
       musescore # Music notation and composition
       discord # Communications
-      torrential # BitTorrent client
 
       # Utils
       pavucontrol # Volume control UI
       pamixer # PipeWire CLI tool
-      barrier # KVM Switchmy custom node shell env
       vlc # Video player
       file-roller # File archiving
       eog # GUI image viewer
@@ -141,7 +141,7 @@
   };
 
   programs = {
-    # NOTE: 
+    # NOTE:
     # seems to be enabled by default for stateVersion < 23.05
     # causes an infinite loop error upon evaluation thus this is manually disabled
     # https://home-manager-options.extranix.com/?query=swaylock&release=release-24.05
