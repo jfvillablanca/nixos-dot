@@ -2,6 +2,8 @@
   description = "jmfv's NixOS config";
 
   inputs = {
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixpkgs-stable-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -59,6 +61,7 @@
   };
 
   outputs = {
+    nixpkgs-master,
     nixpkgs,
     nixpkgs-stable-24-05,
     nixpkgs-stable-25-05,
@@ -78,6 +81,10 @@
         (import ./homeModules/spotify-player/overlay.nix)
       ];
     };
+    pkgs-master = import nixpkgs-master {
+      inherit system;
+      config.allowUnfree = true;
+    };
     pkgs-stable-24-05 = import nixpkgs-stable-24-05 {inherit system;};
     pkgs-stable-25-05 = import nixpkgs {
       inherit system;
@@ -90,6 +97,7 @@
     inherit (nixpkgs) lib;
 
     mkSystem = {
+      pkgs-master,
       pkgs,
       pkgs-stable-24-05,
       pkgs-stable-25-05,
@@ -101,7 +109,7 @@
       lib.nixosSystem {
         inherit system;
         specialArgs = {
-          inherit inputs pkgs-stable-24-05 pkgs-stable-25-05 user system base16Scheme;
+          inherit inputs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 user system base16Scheme;
         };
         modules = [
           inputs.disko.nixosModules.default
@@ -136,7 +144,7 @@
           {
             home-manager = {
               extraSpecialArgs = {
-                inherit inputs pkgs pkgs-stable-24-05 pkgs-stable-25-05 user system base16Scheme;
+                inherit inputs pkgs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 user system base16Scheme;
               };
               useGlobalPkgs = false;
               useUserPackages = true;
@@ -159,28 +167,28 @@
   in {
     nixosConfigurations = {
       virt = mkSystem {
-        inherit pkgs pkgs-stable-24-05 pkgs-stable-25-05 system;
+        inherit pkgs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 system;
         user = "jmfv";
         hostName = "virt";
         base16Scheme = "gruvbox-material-dark-medium";
       };
 
       t14g1 = mkSystem {
-        inherit pkgs pkgs-stable-24-05 pkgs-stable-25-05 system;
+        inherit pkgs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 system;
         user = "jmfv";
         hostName = "t14g1";
         base16Scheme = "gruvbox-dark-hard";
       };
 
       cimmerian = mkSystem {
-        inherit pkgs pkgs-stable-24-05 pkgs-stable-25-05 system;
+        inherit pkgs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 system;
         user = "jmfv";
         hostName = "cimmerian";
         base16Scheme = "spaceduck";
       };
 
       sartre = mkSystem {
-        inherit pkgs pkgs-stable-24-05 pkgs-stable-25-05 system;
+        inherit pkgs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05 system;
         user = "jmfv";
         hostName = "sartre";
         base16Scheme = "rose-pine-moon";
