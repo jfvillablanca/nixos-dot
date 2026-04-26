@@ -8,6 +8,17 @@
 
   mod = "Mod4";
   term = "wezterm";
+
+  launch_polybar =
+    /*
+    bash
+    */
+    ''
+      polybar-msg cmd quit; \
+      for m in $(polybar --list-monitors | cut -d":" -f1); do \
+          MONITOR=$m polybar --reload example & \
+      done \
+    '';
 in {
   options.myHomeModules.i3 = {
     enable =
@@ -54,13 +65,15 @@ in {
                 notification = false;
                 always = true;
               }
+              # {
+              #   command = "${launch_polybar}";
+              #   notification = false;
+              #   always = true;
+              # }
               {
-                command = "feh --bg-fill ${config.xdg.configHome}/.wallpapers/desertsunset.jpg";
-                notification = false;
-                always = true;
-              }
-              {
-                command = "polybar-msg cmd quit; polybar &";
+                command = ''
+                  if [ -x "$(command -v blueman-applet)" ]; then blueman-applet & fi
+                '';
                 notification = false;
                 always = true;
               }
@@ -79,7 +92,12 @@ in {
               modifier = mod;
               titlebar = true;
             };
-            bars = [];
+            bars = [
+              # {
+              #   position = "top";
+              #   command = "${pkgs.i3}/bin/i3bar --transparency";
+              # }
+            ];
             keybindings = let
               generateWorkspaceKeybindings = monitors: let
                 numMonitors = builtins.length monitors;
