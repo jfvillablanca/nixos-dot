@@ -14,8 +14,6 @@
       url = "github:NixOS/nixos-hardware/master";
     };
 
-    # copyparty.url = "github:9001/copyparty";
-
     # walker.url = "github:abenz1267/walker";
 
     home-manager = {
@@ -74,7 +72,6 @@
       config.allowUnfree = true;
       overlays = [
         neovim-nightly-overlay.overlays.default
-        # inputs.copyparty.overlays.default
 
         # NOTE: Authentication Issue
         # https://github.com/aome510/spotify-player/issues/802#issuecomment-3191659178
@@ -111,7 +108,6 @@
           inputs.impermanence.nixosModules.impermanence
           inputs.stylix.nixosModules.stylix
           inputs.nixos-wsl.nixosModules.default
-          # inputs.copyparty.nixosModules.default
           {
             networking.hostName = hostName;
             users.users.${user} = {
