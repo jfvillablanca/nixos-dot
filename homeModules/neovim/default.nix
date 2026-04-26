@@ -185,6 +185,20 @@ in {
             '';
         }
 
+        {
+          plugin = CopilotChat-nvim;
+          type = "lua";
+          config =
+            /*
+            lua
+            */
+            ''
+              require("CopilotChat").setup {
+                -- See Configuration section for options
+              }
+            '';
+        }
+
         # LSP
         # nvim-lspconfig
         {
@@ -228,12 +242,24 @@ in {
                       propertyDeclarationTypes = { enabled = true },
                       functionLikeReturnTypes = { enabled = true },
                       enumMemberValues = { enabled = true },
-                    }
+                    },
+                    -- preferences = {
+                    --   importModuleSpecifier = "non-relative",
+                    -- },
                   },
                 }
               })
               vim.lsp.enable('vtsls')
 
+              -- vim.lsp.commands["editor.action.showReferences"] = function(command, ctx)
+              --   local locations = command.arguments[3]
+              --   local client = vim.lsp.get_client_by_id(ctx.client_id)
+              --   if locations and #locations > 0 then
+              --     local items = vim.lsp.util.locations_to_items(locations, client.offset_encoding)
+              --     vim.fn.setloclist(0, {}, " ", { title = "References", items = items, context = ctx })
+              --     vim.api.nvim_command("lopen")
+              --   end
+              -- end
             '';
         }
 
@@ -268,11 +294,11 @@ in {
         }
 
         # # refactoring
-        # {
-        #   plugin = refactoring-nvim;
-        #   type = "lua";
-        #   config = builtins.readFile ./lua/refactoring.lua;
-        # }
+        {
+          plugin = refactoring-nvim;
+          type = "lua";
+          config = builtins.readFile ./lua/refactoring.lua;
+        }
 
         # Debugger
         # nvim-dap
@@ -290,6 +316,16 @@ in {
                   type = "executable",
                   command = "codelldb",
                 },
+
+                ["pwa-node"] = {
+                  type = "server",
+                  host = "localhost",
+                  port = "''${port}",
+                  executable = {
+                    command = "${lib.getExe pkgs.vscode-js-debug}",
+                    args = { "''${port}" },
+                  }
+                }
               }
               dap.configurations.rust = {
                 {
@@ -303,8 +339,67 @@ in {
                   stopOnEntry = false,
                 },
               }
+
+              for _, language in ipairs({ "typescript", "javascript" }) do
+                dap.configurations[language] = {
+                  {
+                    type = "pwa-node",
+                    request = "launch",
+                    name = "Launch file",
+                    program = "''${file}",
+                    cwd = "''${workspaceFolder}",
+                  },
+                  {
+                    type = "pwa-node",
+                    request = "attach",
+                    name = "Attach",
+                    processId = require'dap.utils'.pick_process,
+                    cwd = "''${workspaceFolder}",
+                  }
+                }
+              end
             '';
         }
+
+        # javascript debug adapter
+        # {
+        #   plugin = nvim-dap-vscode-js;
+        #   type = "lua";
+        #   config =
+        #     /*
+        #     lua
+        #     */
+        #     ''
+        #       require("dap-vscode-js").setup({
+        #         -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+        #         debugger_path = "${lib.getExe pkgs.vscode-js-debug}", -- Path to vscode-js-debug installation.
+        #         -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+        #         adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+        #         -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
+        #         -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
+        #         -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+        #       })
+
+        #       for _, language in ipairs({ "typescript", "javascript" }) do
+        #         require("dap").configurations[language] = {
+        #           {
+        #             type = "pwa-node",
+        #             request = "launch",
+        #             name = "Launch file",
+        #             program = "''${file}",
+        #             cwd = "''${workspaceFolder}",
+        #           },
+        #           {
+        #             type = "pwa-node",
+        #             request = "attach",
+        #             name = "Attach",
+        #             processId = require'dap.utils'.pick_process,
+        #             cwd = "''${workspaceFolder}",
+        #           }
+        #         }
+        #       end
+        #     '';
+        # }
 
         # null-ls
         {
@@ -551,6 +646,7 @@ in {
         nodePackages_latest.eslint
 
         vscode-extensions.vadimcn.vscode-lldb.adapter                               # rust
+        vscode-js-debug                                                    # js,ts
 
         # Language Servers
         nodePackages_latest.bash-language-server # sh
