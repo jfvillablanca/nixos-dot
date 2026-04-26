@@ -18,6 +18,7 @@
     ../../nixosModules/system/timezone
     ../../nixosModules/system/fonts
     ../../nixosModules/system/sound
+    ../../nixosModules/system/bluetooth
   ];
 
   stylix = {
