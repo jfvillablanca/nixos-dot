@@ -16,6 +16,9 @@
       url = "github:NixOS/nixos-hardware/master";
     };
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
+
     # walker.url = "github:abenz1267/walker";
 
     home-manager = {
