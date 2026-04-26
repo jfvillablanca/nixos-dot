@@ -2,6 +2,7 @@
   config,
   inputs,
   pkgs,
+  pkgs-master,
   base16Scheme,
   ...
 }: {
@@ -130,7 +131,9 @@
         (import ../../customPkgs {inherit pkgs;}).vf
       )
       (import ../../customPkgs {inherit pkgs;}).use
-    ];
+    ] ++ (with pkgs-master; [
+        claude-code
+    ]);
     sessionVariables = {
       TERMINAL = "wezterm";
       EDITOR = "nvim";
