@@ -7,22 +7,12 @@
   ...
 }: {
   imports = [
-    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
-
     ./hardware-configuration.nix
     ./disko.nix
 
-    ../../nixosModules/system/kmonad
-    inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
-    ../../nixosModules/system/virtual-fs
-    ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/timezone
-    ../../nixosModules/system/laptop-power-management
-    ../../nixosModules/system/fonts
-    ../../nixosModules/system/sound
-    ../../nixosModules/system/bluetooth
   ];
 
   stylix = {
@@ -58,7 +48,22 @@
     steam.enable = false;
   };
 
-  # Use the systemd-boot EFI boot loader.
+  ##### Windows VM with GPU passthrough #####
+  # boot = {
+  #   # # Probably not needed, but just in case.
+  #   # kernelParams = [ "amd_iommu=on" ];
+  #   initrd.kernelModules = [
+  #       "vfio_pci"
+  #       "vfio"
+  #       "vfio_iommu_type1"
+  #   ];
+  #   extraModprobeConfig = ''
+  #       softdep drm pre: vfio-pci
+  #       options vfio-pci ids=10de:1d01,10de:0fb8 <-- You need to replace these device IDs with your own
+  #   '';
+  # };
+  ##### ------------------------------- #####
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
@@ -146,89 +151,8 @@
 
   programs = {
     fuse.userAllowOther = true;
-
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    };
-  };
-
-  # Touchpad
-  services.libinput = {
-    enable = true;
-    mouse = {
-      tapping = true;
-    };
-    touchpad = {
-      naturalScrolling = true;
-      tapping = true;
-    };
-  };
-
-  # Polkit (need enabled for sway)
-  security.polkit.enable = true;
-
-  # services.nextdns = {
-  #   enable = true;
-  # };
-
-  # services.resolved = {
-  #   enable = true;
-  #   extraConfig = ''
-  #     DNS=45.90.28.0#1273dc.dns.nextdns.io
-  #     DNS=2a07:a8c0::#1273dc.dns.nextdns.io
-  #     DNS=45.90.30.0#1273dc.dns.nextdns.io
-  #     DNS=2a07:a8c1::#1273dc.dns.nextdns.io
-  #     DNSOverTLS=yes
-  #   '';
-  # };
-
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
-  users.extraGroups.docker.members = ["username-with-access-to-socket"];
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      X11Forwarding = true;
-    };
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment = {
-    # Disable DPMS and prevent screen from blanking
-    extraInit = ''
-      xset s off -dpms
-    '';
-    systemPackages = with pkgs; [
-      wget
-    ];
-  };
-
-  # Screen Brightness
-  programs.light.enable = true;
-  services.actkbd = {
-    enable = true;
-    bindings = [
-      {
-        keys = [224];
-        events = ["key"];
-        command = "/run/current-system/sw/bin/light -U 10";
-      }
-      {
-        keys = [225];
-        events = ["key"];
-        command = "/run/current-system/sw/bin/light -A 10";
-      }
-    ];
-  };
 }

@@ -10,7 +10,7 @@
     # ./hardware-configuration.nix
     # ./disko.nix
 
-    ../../nixosModules/system/internationalization
+    inputs.self.nixosModules.internationalization
     # ../../nixosModules/system/virtual-fs
     # ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix

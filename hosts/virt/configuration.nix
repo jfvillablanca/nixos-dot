@@ -8,7 +8,7 @@
 
     ../../nixosModules/system/kmonad
     inputs.self.nixosModules.doas
-    ../../nixosModules/system/internationalization
+    inputs.self.nixosModules.internationalization
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/spice-vda
