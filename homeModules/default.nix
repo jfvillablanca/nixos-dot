@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./gitui
     ./bat
     ./flameshot
     ./fd

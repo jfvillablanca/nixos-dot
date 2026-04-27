@@ -1,4 +1,6 @@
 {
+  flake.homeModules.gitui =
+{
   lib,
   config,
   ...
@@ -19,4 +21,6 @@ in {
       };
     };
   };
+}
+  ;
 }
