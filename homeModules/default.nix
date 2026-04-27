@@ -3,7 +3,6 @@
     ./zellij
     ./spotify-player
     ./neovim
-    ./yazi
     ./pet
     ./kitty
     ./zathura

@@ -1,4 +1,6 @@
 {
+  flake.homeModules.yazi =
+{
   lib,
   config,
   ...
@@ -22,4 +24,6 @@ in {
       };
     };
   };
+}
+  ;
 }
