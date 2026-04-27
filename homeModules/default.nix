@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./gh
     ./git
     ./gitui
     ./bat

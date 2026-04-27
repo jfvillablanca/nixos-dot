@@ -1,4 +1,6 @@
 {
+  flake.homeModules.gh =
+{
   lib,
   config,
   ...
@@ -25,4 +27,6 @@ in {
       };
     };
   };
+}
+  ;
 }
