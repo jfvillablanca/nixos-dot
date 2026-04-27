@@ -1,4 +1,6 @@
 {
+  flake.homeModules.swaync =
+{
   inputs,
   lib,
   config,
@@ -367,4 +369,6 @@ in {
       };
     };
   };
+}
+  ;
 }

@@ -8,6 +8,5 @@
 
     # ./walker
     ./eww
-    ./swaync
   ];
 }
