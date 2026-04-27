@@ -13,7 +13,7 @@
     ./disko.nix
 
     ../../nixosModules/system/kmonad
-    ../../nixosModules/system/doas
+    inputs.self.nixosModules.doas
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/virtual-fs
     ../../nixosModules/system/network-manager

@@ -1,9 +1,13 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
 
     ../../nixosModules/system/kmonad
-    ../../nixosModules/system/doas
+    inputs.self.nixosModules.doas
     ../../nixosModules/system/internationalization
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
