@@ -19,7 +19,7 @@
     inputs.self.nixosModules.network-manager
     inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
-    ../../nixosModules/system/laptop-power-management
+    inputs.self.nixosModules.laptop-power-management
     inputs.self.nixosModules.fonts
     inputs.self.nixosModules.sound
     inputs.self.nixosModules.bluetooth

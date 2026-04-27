@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.laptop-power-management =
 {...}: {
   # Power Management Daemon
   services.tlp = {
@@ -13,4 +15,6 @@
       TLP_PERSISTENT_DEFAULT = 1;
     };
   };
+}
+  ;
 }
