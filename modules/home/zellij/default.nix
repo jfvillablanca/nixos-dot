@@ -1,4 +1,6 @@
 {
+  flake.homeModules.zellij =
+{
   lib,
   config,
   ...
@@ -24,4 +26,6 @@ in {
       };
     };
   };
+}
+  ;
 }

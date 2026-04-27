@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./zellij
     ./spotify-player
     ./neovim
 
