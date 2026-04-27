@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./fd
     ./fzf
     ./tmux
     ./firefox

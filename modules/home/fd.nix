@@ -1,4 +1,6 @@
 {
+  flake.homeModules.fd =
+{
   lib,
   config,
   ...
@@ -17,4 +19,6 @@ in {
       enable = true;
     };
   };
+}
+  ;
 }
