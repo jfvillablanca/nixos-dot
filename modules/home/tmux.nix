@@ -1,4 +1,6 @@
 {
+  flake.homeModules.tmux =
+{
   pkgs,
   lib,
   config,
@@ -135,4 +137,6 @@ in {
       tmuxinator.enable = true;
     };
   };
+}
+  ;
 }

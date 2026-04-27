@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./tmux
     ./firefox
     ./ripgrep
     ./spotify-player
