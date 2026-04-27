@@ -8,7 +8,6 @@
     ./delta
     ./zoxide
     ./zellij
-    ./eza
     ./bash
     ./zsh
     ./fish
