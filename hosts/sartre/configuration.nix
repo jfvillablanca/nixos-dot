@@ -17,7 +17,7 @@
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts
     # inputs.self.nixosModules.sound
-    # ../../nixosModules/system/bluetooth
+    # inputs.self.nixosModules.bluetooth
   ];
 
   stylix = {

@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.bluetooth =
 {pkgs-stable-24-05, ...}: {
   hardware.bluetooth = {
     enable = true;
@@ -15,4 +17,6 @@
   };
   # NOTE: exec-once 'blueman-applet' in your respective window manager
   services.blueman.enable = true;
+}
+  ;
 }
