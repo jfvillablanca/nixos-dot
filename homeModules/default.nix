@@ -5,7 +5,6 @@
     ./neovim
 
     ./polybar
-    ./rofi
 
     ./hyprland
     ./wofi
