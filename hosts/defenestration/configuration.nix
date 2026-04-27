@@ -11,7 +11,7 @@
     ./disko.nix
 
     inputs.self.nixosModules.internationalization
-    ../../nixosModules/system/nix
+    inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
   ];
 

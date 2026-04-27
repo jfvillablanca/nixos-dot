@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.nix =
+{
   pkgs,
   user,
   inputs,
@@ -26,4 +28,6 @@
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     package = pkgs.nixVersions.stable;
   };
+}
+  ;
 }

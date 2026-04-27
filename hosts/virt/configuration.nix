@@ -10,7 +10,7 @@
     inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
     inputs.self.nixosModules.network-manager
-    ../../nixosModules/system/nix
+    inputs.self.nixosModules.nix
     ../../nixosModules/system/spice-vda
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts

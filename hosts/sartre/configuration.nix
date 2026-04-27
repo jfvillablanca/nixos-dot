@@ -13,7 +13,7 @@
     inputs.self.nixosModules.internationalization
     # ../../nixosModules/system/virtual-fs
     # inputs.self.nixosModules.network-manager
-    ../../nixosModules/system/nix
+    inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts
     # ../../nixosModules/system/sound
