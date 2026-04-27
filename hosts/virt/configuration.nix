@@ -13,7 +13,7 @@
     ../../nixosModules/system/nix
     ../../nixosModules/system/spice-vda
     inputs.self.nixosModules.timezone
-    ../../nixosModules/system/fonts
+    inputs.self.nixosModules.fonts
   ];
 
   # Bootloader.

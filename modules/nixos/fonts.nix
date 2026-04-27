@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.fonts =
 {pkgs, ...}: {
   fonts.packages = with pkgs; [
     source-code-pro
@@ -7,4 +9,6 @@
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
   ];
+}
+  ;
 }
