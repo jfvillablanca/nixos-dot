@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./flameshot
     ./fd
     ./fzf
     ./tmux

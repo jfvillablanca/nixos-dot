@@ -1,4 +1,6 @@
 {
+  flake.homeModules.flameshot =
+{
   lib,
   config,
   ...
@@ -56,4 +58,6 @@ in {
       };
     };
   };
+}
+  ;
 }
