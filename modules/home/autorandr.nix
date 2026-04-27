@@ -1,4 +1,6 @@
 {
+  flake.homeModules.autorandr =
+{
   lib,
   config,
   ...
@@ -20,4 +22,6 @@ in {
       enable = true;
     };
   };
+}
+  ;
 }
