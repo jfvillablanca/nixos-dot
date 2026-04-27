@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./atuin
     ./btop
     ./starship
     ./direnv
