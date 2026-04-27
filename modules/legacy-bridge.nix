@@ -1,10 +1,10 @@
 # Phase-1 dendritic bridge.
 #
 # Re-implements the original `mkSystem` factory inside a flake-parts module so
-# the existing `./nixosModules` and `./hosts/<name>` layout keeps producing
-# functionally identical systems (NVD-equivalent). Modules are ported into the
-# dendritic tree one at a time; this bridge shrinks as that happens and is
-# deleted in the final cleanup phase.
+# the existing `./hosts/<name>` layout keeps producing functionally identical
+# systems (NVD-equivalent). Modules are ported into the dendritic tree one at
+# a time; this bridge shrinks as that happens and is deleted in the final
+# cleanup phase.
 {
   inputs,
   self,
@@ -81,7 +81,6 @@
           system.stateVersion = "22.11";
         }
 
-        (self + /nixosModules)
         (self + /hosts/${hostName}/configuration.nix)
 
         inputs.home-manager.nixosModules.home-manager

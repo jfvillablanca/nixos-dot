@@ -23,6 +23,7 @@
     inputs.self.nixosModules.fonts
     inputs.self.nixosModules.sound
     inputs.self.nixosModules.bluetooth
+    inputs.self.nixosModules.steam
   ];
 
   stylix = {

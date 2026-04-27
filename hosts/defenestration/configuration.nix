@@ -13,6 +13,7 @@
     inputs.self.nixosModules.internationalization
     inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
+    inputs.self.nixosModules.steam
   ];
 
   stylix = {
