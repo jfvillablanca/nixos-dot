@@ -1,4 +1,6 @@
 {
+  flake.homeModules.pet =
+{
   lib,
   config,
   ...
@@ -90,4 +92,6 @@ in {
       ];
     };
   };
+}
+  ;
 }
