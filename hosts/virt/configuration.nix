@@ -11,7 +11,7 @@
     inputs.self.nixosModules.internationalization
     inputs.self.nixosModules.network-manager
     inputs.self.nixosModules.nix
-    ../../nixosModules/system/spice-vda
+    inputs.self.nixosModules.spice-vda
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts
   ];
