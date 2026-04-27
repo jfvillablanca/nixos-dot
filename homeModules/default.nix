@@ -8,7 +8,6 @@
 
     # ./walker
     ./eww
-    ./waybar
     ./swaync
   ];
 }

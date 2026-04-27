@@ -1,4 +1,6 @@
 {
+  flake.homeModules.waybar =
+{
   pkgs,
   lib,
   config,
@@ -566,4 +568,6 @@ in {
       };
     };
   };
+}
+  ;
 }
