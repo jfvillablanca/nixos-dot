@@ -1,4 +1,6 @@
 {
+  flake.homeModules.wofi =
+{
   lib,
   config,
   ...
@@ -28,4 +30,6 @@ in {
       };
     };
   };
+}
+  ;
 }

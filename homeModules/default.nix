@@ -6,7 +6,6 @@
 
     ./polybar
 
-    ./wofi
     # ./walker
     ./eww
     ./waybar
