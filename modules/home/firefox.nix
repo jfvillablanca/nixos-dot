@@ -1,4 +1,6 @@
 {
+  flake.homeModules.firefox =
+{
   inputs,
   pkgs,
   pkgs-stable-24-05,
@@ -245,4 +247,6 @@ in {
       };
     };
   };
+}
+  ;
 }

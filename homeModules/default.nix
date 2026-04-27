@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./firefox
     ./ripgrep
     ./spotify-player
     ./wezterm
