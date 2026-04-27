@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./delta
     ./zoxide
     ./zellij
     ./bash

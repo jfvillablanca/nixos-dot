@@ -1,4 +1,6 @@
 {
+  flake.homeModules.delta =
+{
   lib,
   config,
   ...
@@ -32,4 +34,6 @@ in {
       };
     };
   };
+}
+  ;
 }
