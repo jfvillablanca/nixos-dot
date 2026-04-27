@@ -28,7 +28,9 @@
     name = "hyprland-startup";
     text = ''
       ${lib.getExe pkgs.waybar} &
-      ${defaultTerminal}
+      ${defaultTerminal} start --always-new-process
+
+      if [ -x "$(command -v blueman-applet)" ]; then blueman-applet & fi
     '';
   };
 in {

@@ -29,15 +29,17 @@
           width = 1920;
           height = 1080;
           x = 0;
+          # x = 1920;
           y = 0;
         }
         # {
-        #   name = "HDMI-1";
+        #   # name = "HDMI-1";
         #   # For Hyprland, `hyperctl monitors` lists it as "HDMI-A-1"
-        #   # name = "HDMI-A-1";
+        #   name = "HDMI-A-1";
         #   width = 1920;
         #   height = 1080;
-        #   x = 1920;
+        #   # x = 1920;
+        #   x = 0;
         #   y = 0;
         # }
       ];
@@ -77,6 +79,7 @@
   stylix = {
     targets = {
       waybar.enable = false;
+      hyprpaper.enable = false;
     };
   };
 
@@ -91,6 +94,9 @@
       unzip # Zip utility
       zip # Zip utility
       lazydocker # Docker and Docker compose management utility
+      nix-init
+      libreoffice-qt
+      devenv
 
       # Browser
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
@@ -100,12 +106,10 @@
       neofetch # System lookup
       musescore # Music notation and composition
       discord # Communications
-      torrential # BitTorrent client
 
       # Utils
       pavucontrol # Volume control UI
       pamixer # PipeWire CLI tool
-      barrier # KVM Switchmy custom node shell env
       vlc # Video player
       file-roller # File archiving
       eog # GUI image viewer
@@ -115,6 +119,8 @@
       # GUI
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
+      zoom-us
+      vscode
 
       (
         lib.mkIf (
@@ -154,6 +160,7 @@
         ".local/state/nvim"
         ".tmux/resurrect"
         ".mozilla/firefox"
+        ".claude"
 
         # the idiot apps that use the .config directory
         # to store state
@@ -163,6 +170,9 @@
         #   directory = ".local/share/Steam";
         #   method = "symlink";
         # }
+      ];
+      files = [
+        ".claude.json"
       ];
       allowOther = true;
     };
