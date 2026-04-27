@@ -3,7 +3,6 @@
     ./zellij
     ./spotify-player
     ./neovim
-    ./kitty
     ./zathura
 
     ./window-manager

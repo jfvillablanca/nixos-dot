@@ -1,4 +1,6 @@
 {
+  flake.homeModules.kitty =
+{
   lib,
   config,
   ...
@@ -25,4 +27,6 @@ in {
       };
     };
   };
+}
+  ;
 }
