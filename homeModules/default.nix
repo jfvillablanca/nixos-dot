@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./zoxide
     ./zellij
     ./bash
     ./zsh
