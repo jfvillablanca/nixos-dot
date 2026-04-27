@@ -3,7 +3,6 @@
     ./zellij
     ./spotify-player
     ./neovim
-    ./zathura
 
     ./window-manager
     ./i3

@@ -1,4 +1,6 @@
 {
+  flake.homeModules.zathura =
+{
   lib,
   config,
   ...
@@ -19,4 +21,6 @@ in {
       };
     };
   };
+}
+  ;
 }
