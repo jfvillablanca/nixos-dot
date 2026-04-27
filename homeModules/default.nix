@@ -4,7 +4,6 @@
     ./spotify-player
     ./neovim
 
-    ./window-manager
     ./i3
     ./autorandr
     ./picom

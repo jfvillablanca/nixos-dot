@@ -1,4 +1,6 @@
 {
+  flake.homeModules.window-manager =
+{
   pkgs,
   lib,
   config,
@@ -104,4 +106,6 @@ in {
       ];
     })
   ];
+}
+  ;
 }
