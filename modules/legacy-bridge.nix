@@ -49,6 +49,13 @@
     user,
     hostName,
     base16Scheme,
+    # Where this host's legacy NixOS / home-manager entry files live.
+    # Defaults to the unported location; ported hosts override hostDir to
+    # `self + /modules/hosts/<name>` and pass the underscore-prefixed
+    # filenames so `import-tree` skips the entries.
+    hostDir ? self + /hosts/${hostName},
+    configFile ? "configuration.nix",
+    homeFile ? "home.nix",
   }:
     lib.nixosSystem {
       inherit system;
@@ -81,7 +88,7 @@
           system.stateVersion = "22.11";
         }
 
-        (self + /hosts/${hostName}/configuration.nix)
+        (hostDir + ("/" + configFile))
 
         inputs.home-manager.nixosModules.home-manager
         {
@@ -101,7 +108,7 @@
                     stateVersion = "22.11";
                   };
                 }
-                (self + /hosts/${hostName}/home.nix)
+                (hostDir + ("/" + homeFile))
               ]
               ++ ported-home-modules;
           };
@@ -132,6 +139,9 @@ in {
       user = "jmfv";
       hostName = "cimmerian";
       base16Scheme = "spaceduck";
+      hostDir = self + /modules/hosts/cimmerian;
+      configFile = "_configuration.nix";
+      homeFile = "_home.nix";
     };
 
     sartre = mkSystem {

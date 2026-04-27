@@ -7,8 +7,8 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
-    ./hardware-configuration-overrides.nix
+    ./_hardware-configuration.nix
+    ./_hardware-configuration-overrides.nix
 
     # inputs.self.nixosModules.kmonad
     inputs.self.nixosModules.internationalization
@@ -24,7 +24,7 @@
 
   stylix = {
     enable = true;
-    image = ../../homeModules/system/wallpapers/samuraidoge.png;
+    image = ../../../homeModules/system/wallpapers/samuraidoge.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
     cursor = {

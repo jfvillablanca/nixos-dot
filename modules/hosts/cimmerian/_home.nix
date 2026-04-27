@@ -10,8 +10,8 @@
     inputs.nix-colors.homeManagerModules.default
     # inputs.walker.homeManagerModules.walker
 
-    ../../homeModules/system/xdg.nix
-    ../../homeModules/system/wallpapers
+    ../../../homeModules/system/xdg.nix
+    ../../../homeModules/system/wallpapers
   ];
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
@@ -128,9 +128,9 @@
           && config.myHomeModules.fd.enable
           && config.myHomeModules.ripgrep.enable
         )
-        (import ../../customPkgs {inherit pkgs;}).vf
+        (import ../../../customPkgs {inherit pkgs;}).vf
       )
-      (import ../../customPkgs {inherit pkgs;}).use
+      (import ../../../customPkgs {inherit pkgs;}).use
     ] ++ (with pkgs-master; [
         claude-code
     ]);
