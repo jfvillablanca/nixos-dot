@@ -15,7 +15,7 @@
     ../../nixosModules/system/virtual-fs
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
-    ../../nixosModules/system/timezone
+    inputs.self.nixosModules.timezone
     ../../nixosModules/system/fonts
     ../../nixosModules/system/sound
     ../../nixosModules/system/bluetooth

@@ -12,7 +12,7 @@
 
     inputs.self.nixosModules.internationalization
     ../../nixosModules/system/nix
-    ../../nixosModules/system/timezone
+    inputs.self.nixosModules.timezone
   ];
 
   stylix = {

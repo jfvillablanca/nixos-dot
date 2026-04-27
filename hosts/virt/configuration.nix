@@ -12,7 +12,7 @@
     ../../nixosModules/system/network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/spice-vda
-    ../../nixosModules/system/timezone
+    inputs.self.nixosModules.timezone
     ../../nixosModules/system/fonts
   ];
 
