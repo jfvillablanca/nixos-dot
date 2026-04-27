@@ -29,15 +29,17 @@
           width = 1920;
           height = 1080;
           x = 0;
+          # x = 1920;
           y = 0;
         }
         # {
-        #   name = "HDMI-1";
+        #   # name = "HDMI-1";
         #   # For Hyprland, `hyperctl monitors` lists it as "HDMI-A-1"
-        #   # name = "HDMI-A-1";
+        #   name = "HDMI-A-1";
         #   width = 1920;
         #   height = 1080;
-        #   x = 1920;
+        #   # x = 1920;
+        #   x = 0;
         #   y = 0;
         # }
       ];
@@ -77,6 +79,7 @@
   stylix = {
     targets = {
       waybar.enable = false;
+      hyprpaper.enable = false;
     };
   };
 
@@ -157,6 +160,7 @@
         ".local/state/nvim"
         ".tmux/resurrect"
         ".mozilla/firefox"
+        ".claude"
 
         # the idiot apps that use the .config directory
         # to store state
@@ -166,6 +170,9 @@
         #   directory = ".local/share/Steam";
         #   method = "symlink";
         # }
+      ];
+      files = [
+        ".claude.json"
       ];
       allowOther = true;
     };
