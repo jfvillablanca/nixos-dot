@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./starship
     ./direnv
     ./delta
     ./zoxide

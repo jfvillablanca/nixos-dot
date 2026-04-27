@@ -1,4 +1,6 @@
 {
+  flake.homeModules.starship =
+{
   lib,
   config,
   ...
@@ -217,4 +219,6 @@ in {
       };
     };
   };
+}
+  ;
 }
