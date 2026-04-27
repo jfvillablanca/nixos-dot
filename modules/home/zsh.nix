@@ -1,4 +1,6 @@
 {
+  flake.homeModules.zsh =
+{
   lib,
   config,
   ...
@@ -36,4 +38,6 @@ in {
       };
     };
   };
+}
+  ;
 }
