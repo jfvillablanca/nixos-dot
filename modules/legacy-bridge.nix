@@ -8,8 +8,17 @@
 {
   inputs,
   self,
+  lib,
+  config,
   ...
 }: let
+  # Home-manager modules that have been ported into the dendritic tree.
+  # Each entry comes from a `modules/home/*.nix` file that sets
+  # `flake.homeModules.<name>`. They are appended to every home-manager
+  # imports list below so the legacy `./homeModules/default.nix`
+  # aggregator can be shrunk one entry at a time.
+  ported-home-modules = builtins.attrValues config.flake.homeModules;
+
   system = "x86_64-linux";
 
   pkgs = import inputs.nixpkgs {
@@ -85,24 +94,32 @@
             };
             useGlobalPkgs = false;
             useUserPackages = true;
-            users.${user}.imports = [
-              {
-                home = {
-                  username = "${user}";
-                  homeDirectory = "/home/${user}";
-                  # Don't touch me :)
-                  stateVersion = "22.11";
-                };
-              }
-              (self + /homeModules)
-              (self + /hosts/${hostName}/home.nix)
-            ];
+            users.${user}.imports =
+              [
+                {
+                  home = {
+                    username = "${user}";
+                    homeDirectory = "/home/${user}";
+                    # Don't touch me :)
+                    stateVersion = "22.11";
+                  };
+                }
+                (self + /homeModules)
+                (self + /hosts/${hostName}/home.nix)
+              ]
+              ++ ported-home-modules;
           };
         }
       ];
     };
 in {
-  flake.nixosConfigurations = {
+  options.flake.homeModules = lib.mkOption {
+    type = lib.types.lazyAttrsOf lib.types.unspecified;
+    default = {};
+    description = "Home-manager modules ported into the dendritic tree.";
+  };
+
+  config.flake.nixosConfigurations = {
     virt = mkSystem {
       user = "jmfv";
       hostName = "virt";
@@ -128,7 +145,7 @@ in {
     };
   };
 
-  flake.homeConfigurations = {
+  config.flake.homeConfigurations = {
     "jmfv" = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
 
@@ -137,35 +154,37 @@ in {
         user = "jmfv";
         base16Scheme = "rose-pine-moon";
       };
-      modules = [
-        {
-          home = {
-            # username = "${user}";
-            # homeDirectory = "/home/${user}";
-            username = "jmfv";
-            homeDirectory = "/home/jmfv";
-            # Don't touch me :)
-            stateVersion = "22.11";
-          };
-          programs.home-manager.enable = true;
-        }
-        inputs.stylix.homeManagerModules.stylix
+      modules =
+        [
+          {
+            home = {
+              # username = "${user}";
+              # homeDirectory = "/home/${user}";
+              username = "jmfv";
+              homeDirectory = "/home/jmfv";
+              # Don't touch me :)
+              stateVersion = "22.11";
+            };
+            programs.home-manager.enable = true;
+          }
+          inputs.stylix.homeManagerModules.stylix
 
-        # fonts
-        {
-          fonts.fontconfig.enable = true;
-          home.packages = with pkgs; [
-            source-code-pro
-            font-awesome
-            corefonts
-            jetbrains-mono
-            nerd-fonts.fira-code
-            nerd-fonts.jetbrains-mono
-          ];
-        }
-        (self + /homeModules)
-        (self + /hosts/sartre/home.nix)
-      ];
+          # fonts
+          {
+            fonts.fontconfig.enable = true;
+            home.packages = with pkgs; [
+              source-code-pro
+              font-awesome
+              corefonts
+              jetbrains-mono
+              nerd-fonts.fira-code
+              nerd-fonts.jetbrains-mono
+            ];
+          }
+          (self + /homeModules)
+          (self + /hosts/sartre/home.nix)
+        ]
+        ++ ported-home-modules;
 
       # useGlobalPkgs = true;
       # useUserPackages = true;
@@ -184,7 +203,7 @@ in {
     };
   };
 
-  flake.devShells.${system}.default = pkgs.mkShell {
+  config.flake.devShells.${system}.default = pkgs.mkShell {
     packages = with pkgs; [
       stylua
       selene
@@ -199,7 +218,7 @@ in {
     formatter = pkgs.alejandra;
   };
 
-  flake.templates = let
+  config.flake.templates = let
     basic = {
       path = self + /templates/basic;
       description = "A basic flake with devenv.";
