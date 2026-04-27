@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./zellij
-    ./fish
     ./gh
     ./git
     ./gitui
