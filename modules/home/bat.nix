@@ -1,4 +1,6 @@
 {
+  flake.homeModules.bat =
+{
   pkgs,
   lib,
   config,
@@ -19,4 +21,6 @@ in {
       # extraPackages = with pkgs.bat-extras; [];
     };
   };
+}
+  ;
 }
