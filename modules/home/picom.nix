@@ -1,4 +1,6 @@
 {
+  flake.homeModules.picom =
+{
   lib,
   config,
   ...
@@ -76,4 +78,6 @@ in {
       };
     };
   };
+}
+  ;
 }
