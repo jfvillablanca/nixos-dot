@@ -12,7 +12,7 @@
 
     # ../../nixosModules/system/kmonad
     inputs.self.nixosModules.internationalization
-    ../../nixosModules/system/virtual-fs
+    inputs.self.nixosModules.virtual-fs
     inputs.self.nixosModules.network-manager
     inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
