@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.sound =
 {...}: {
   security.rtkit.enable = true;
   services.pipewire = {
@@ -9,4 +11,6 @@
     # If you want to use JACK applications, uncomment this
     # jack.enable = true;
   };
+}
+  ;
 }

@@ -21,7 +21,7 @@
     inputs.self.nixosModules.timezone
     ../../nixosModules/system/laptop-power-management
     inputs.self.nixosModules.fonts
-    ../../nixosModules/system/sound
+    inputs.self.nixosModules.sound
     ../../nixosModules/system/bluetooth
   ];
 

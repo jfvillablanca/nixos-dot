@@ -17,7 +17,7 @@
     inputs.self.nixosModules.nix
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts
-    ../../nixosModules/system/sound
+    inputs.self.nixosModules.sound
     ../../nixosModules/system/bluetooth
   ];
 
