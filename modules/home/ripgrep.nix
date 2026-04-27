@@ -1,4 +1,6 @@
 {
+  flake.homeModules.ripgrep =
+{
   lib,
   config,
   ...
@@ -17,4 +19,6 @@ in {
       enable = true;
     };
   };
+}
+  ;
 }
