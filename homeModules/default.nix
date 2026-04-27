@@ -4,7 +4,6 @@
     ./spotify-player
     ./neovim
 
-    ./i3
     ./autorandr
     ./picom
     ./polybar

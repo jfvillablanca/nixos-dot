@@ -1,4 +1,6 @@
 {
+  flake.homeModules.i3 =
+{
   pkgs,
   lib,
   config,
@@ -244,4 +246,6 @@ in {
       feh.enable = true;
     };
   };
+}
+  ;
 }
