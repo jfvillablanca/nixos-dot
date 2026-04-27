@@ -1,4 +1,6 @@
 {
+  flake.homeModules.git =
+{
   lib,
   config,
   ...
@@ -31,4 +33,6 @@ in {
       };
     };
   };
+}
+  ;
 }
