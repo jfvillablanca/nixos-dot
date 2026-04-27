@@ -1,4 +1,6 @@
 {
+  flake.homeModules.fzf =
+{
   pkgs,
   lib,
   config,
@@ -36,4 +38,6 @@ in {
       ];
     };
   };
+}
+  ;
 }
