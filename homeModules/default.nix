@@ -7,6 +7,5 @@
     ./polybar
 
     # ./walker
-    ./eww
   ];
 }
