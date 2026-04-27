@@ -1,4 +1,6 @@
 {
+  flake.homeModules.btop =
+{
   lib,
   config,
   ...
@@ -224,4 +226,6 @@ in {
       };
     };
   };
+}
+  ;
 }
