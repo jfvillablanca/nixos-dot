@@ -1,4 +1,6 @@
 {
+  flake.homeModules.bash =
+{
   lib,
   config,
   ...
@@ -33,4 +35,6 @@ in {
       };
     };
   };
+}
+  ;
 }
