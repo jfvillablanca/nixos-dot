@@ -1,4 +1,6 @@
 {
+  flake.homeModules.direnv =
+{
   lib,
   config,
   ...
@@ -21,4 +23,6 @@ in {
       };
     };
   };
+}
+  ;
 }
