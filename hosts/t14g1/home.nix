@@ -91,6 +91,9 @@
       unzip # Zip utility
       zip # Zip utility
       lazydocker # Docker and Docker compose management utility
+      nix-init
+      libreoffice-qt
+      devenv
 
       # Browser
       # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
@@ -100,12 +103,10 @@
       neofetch # System lookup
       musescore # Music notation and composition
       discord # Communications
-      torrential # BitTorrent client
 
       # Utils
       pavucontrol # Volume control UI
       pamixer # PipeWire CLI tool
-      barrier # KVM Switchmy custom node shell env
       vlc # Video player
       file-roller # File archiving
       eog # GUI image viewer
@@ -115,6 +116,8 @@
       # GUI
       xfce.thunar # Xfce file manager
       xfce.thunar-volman # Removable media Thunar extension
+      zoom-us
+      vscode
 
       (
         lib.mkIf (
