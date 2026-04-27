@@ -6,7 +6,7 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../nixosModules/system/kmonad
+    inputs.self.nixosModules.kmonad
     inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
     inputs.self.nixosModules.network-manager

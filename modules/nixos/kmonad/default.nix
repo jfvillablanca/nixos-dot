@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.kmonad =
 {pkgs, ...}: {
   services.kmonad = {
     enable = true;
@@ -27,4 +29,6 @@
       };
     };
   };
+}
+  ;
 }

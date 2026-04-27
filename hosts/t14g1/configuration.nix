@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./disko.nix
 
-    ../../nixosModules/system/kmonad
+    inputs.self.nixosModules.kmonad
     inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
     inputs.self.nixosModules.virtual-fs
