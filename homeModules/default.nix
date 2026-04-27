@@ -4,7 +4,6 @@
     ./spotify-player
     ./neovim
 
-    ./polybar
 
     # ./walker
   ];

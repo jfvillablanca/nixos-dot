@@ -1,4 +1,6 @@
 {
+  flake.homeModules.polybar =
+{
   lib,
   config,
   ...
@@ -256,4 +258,6 @@ in {
       };
     };
   };
+}
+  ;
 }
