@@ -9,7 +9,7 @@
     ../../nixosModules/system/kmonad
     inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
-    ../../nixosModules/system/network-manager
+    inputs.self.nixosModules.network-manager
     ../../nixosModules/system/nix
     ../../nixosModules/system/spice-vda
     inputs.self.nixosModules.timezone

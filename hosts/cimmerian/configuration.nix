@@ -13,7 +13,7 @@
     # ../../nixosModules/system/kmonad
     inputs.self.nixosModules.internationalization
     ../../nixosModules/system/virtual-fs
-    ../../nixosModules/system/network-manager
+    inputs.self.nixosModules.network-manager
     ../../nixosModules/system/nix
     inputs.self.nixosModules.timezone
     inputs.self.nixosModules.fonts

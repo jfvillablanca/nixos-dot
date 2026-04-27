@@ -16,7 +16,7 @@
     inputs.self.nixosModules.doas
     inputs.self.nixosModules.internationalization
     ../../nixosModules/system/virtual-fs
-    ../../nixosModules/system/network-manager
+    inputs.self.nixosModules.network-manager
     ../../nixosModules/system/nix
     inputs.self.nixosModules.timezone
     ../../nixosModules/system/laptop-power-management

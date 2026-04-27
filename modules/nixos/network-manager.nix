@@ -1,3 +1,5 @@
+{
+  flake.nixosModules.network-manager =
 {...}: {
   # Enable networking
   networking.networkmanager.enable = true;
@@ -14,4 +16,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+}
+  ;
 }
