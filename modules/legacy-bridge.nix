@@ -29,7 +29,7 @@
 
       # NOTE: Authentication Issue
       # https://github.com/aome510/spotify-player/issues/802#issuecomment-3191659178
-      (import (self + /homeModules/spotify-player/overlay.nix))
+      (import (self + /modules/home/spotify-player/_overlay.nix))
     ];
   };
   pkgs-master = import inputs.nixpkgs-master {
