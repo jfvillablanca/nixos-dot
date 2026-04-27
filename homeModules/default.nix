@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./alacritty
     ./atuin
     ./btop
     ./starship
