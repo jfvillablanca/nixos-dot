@@ -1,4 +1,6 @@
 {
+  flake.homeModules.neovim =
+{
   pkgs,
   pkgs-stable-25-05,
   config,
@@ -665,4 +667,6 @@ in {
       ];
     };
   };
+}
+  ;
 }
