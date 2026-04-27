@@ -1,10 +1,10 @@
 # Phase-1 dendritic bridge.
 #
 # Re-implements the original `mkSystem` factory inside a flake-parts module so
-# the existing `./nixosModules`, `./homeModules`, and `./hosts/<name>` layout
-# keeps producing identical store paths. Modules are ported into the dendritic
-# tree one at a time; this bridge shrinks as that happens and is deleted in
-# the final cleanup phase.
+# the existing `./nixosModules` and `./hosts/<name>` layout keeps producing
+# functionally identical systems (NVD-equivalent). Modules are ported into the
+# dendritic tree one at a time; this bridge shrinks as that happens and is
+# deleted in the final cleanup phase.
 {
   inputs,
   self,
@@ -12,11 +12,9 @@
   config,
   ...
 }: let
-  # Home-manager modules that have been ported into the dendritic tree.
-  # Each entry comes from a `modules/home/*.nix` file that sets
-  # `flake.homeModules.<name>`. They are appended to every home-manager
-  # imports list below so the legacy `./homeModules/default.nix`
-  # aggregator can be shrunk one entry at a time.
+  # Home-manager modules in the dendritic tree, registered via
+  # `flake.homeModules.<name>` from `modules/home/...`. Appended to every
+  # home-manager imports list below.
   ported-home-modules = builtins.attrValues config.flake.homeModules;
 
   system = "x86_64-linux";
@@ -104,7 +102,6 @@
                     stateVersion = "22.11";
                   };
                 }
-                (self + /homeModules)
                 (self + /hosts/${hostName}/home.nix)
               ]
               ++ ported-home-modules;
@@ -181,7 +178,6 @@ in {
               nerd-fonts.jetbrains-mono
             ];
           }
-          (self + /homeModules)
           (self + /hosts/sartre/home.nix)
         ]
         ++ ported-home-modules;
