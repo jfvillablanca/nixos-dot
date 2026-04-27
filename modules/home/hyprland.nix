@@ -1,4 +1,6 @@
 {
+  flake.homeModules.hyprland =
+{
   inputs,
   pkgs,
   lib,
@@ -188,4 +190,6 @@ in {
       };
     };
   };
+}
+  ;
 }

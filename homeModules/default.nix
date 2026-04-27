@@ -6,7 +6,6 @@
 
     ./polybar
 
-    ./hyprland
     ./wofi
     # ./walker
     ./eww
