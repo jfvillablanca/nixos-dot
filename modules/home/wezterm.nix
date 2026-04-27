@@ -1,4 +1,6 @@
 {
+  flake.homeModules.wezterm =
+{
   lib,
   config,
   ...
@@ -49,4 +51,6 @@ in {
       };
     };
   };
+}
+  ;
 }

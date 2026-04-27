@@ -2,7 +2,6 @@
   imports = [
     ./zellij
     ./spotify-player
-    ./wezterm
     ./neovim
     ./yazi
     ./pet
