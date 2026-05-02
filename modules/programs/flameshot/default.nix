@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.flameshot = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.flameshot = {config, ...}: {
     config = {
       services.flameshot = {
         enable = true;

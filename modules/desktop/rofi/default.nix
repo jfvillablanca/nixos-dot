@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.rofi = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.rofi = _: {
     config = {
       programs = {
         rofi = {

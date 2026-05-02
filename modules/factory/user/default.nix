@@ -11,7 +11,7 @@
   };
 
   config.flake.factory.user = name: {
-    nixos = {...}: {
+    nixos = _: {
       users.users.${name} = {
         isNormalUser = true;
         description = name;
@@ -28,7 +28,7 @@
       };
     };
 
-    homeManager = {...}: {
+    homeManager = _: {
       home = {
         username = name;
         homeDirectory = "/home/${name}";

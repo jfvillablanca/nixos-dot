@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.starship = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.starship = {lib, ...}: {
     config = {
       programs = {
         starship = {

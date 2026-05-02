@@ -8,7 +8,6 @@
   base16Scheme = "spaceduck";
 in {
   flake.modules.nixos.cimmerian = {
-    config,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,

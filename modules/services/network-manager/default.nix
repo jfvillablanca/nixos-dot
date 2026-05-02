@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.network-manager = {...}: {
+  flake.modules.nixos.network-manager = _: {
     # Enable networking
     networking.networkmanager.enable = true;
     programs.nm-applet.enable = true;

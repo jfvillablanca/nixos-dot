@@ -1,7 +1,5 @@
 {
-  config,
   inputs,
-  lib,
   pkgs,
   user,
   base16Scheme,

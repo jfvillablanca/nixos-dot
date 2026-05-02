@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.atuin = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.atuin = _: {
     config = {
       programs.atuin = {
         enable = true;

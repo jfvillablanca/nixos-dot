@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.eww = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.eww = _: {
     config = {
       programs = {
         eww = {

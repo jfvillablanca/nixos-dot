@@ -3,8 +3,6 @@
     inputs,
     pkgs,
     pkgs-stable-24-05,
-    lib,
-    config,
     system,
     ...
   }: let

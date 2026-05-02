@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.wofi = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.wofi = _: {
     config = {
       programs = {
         wofi = {

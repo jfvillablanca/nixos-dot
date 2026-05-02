@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.delta = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.delta = _: {
     config = {
       programs = {
         delta = {

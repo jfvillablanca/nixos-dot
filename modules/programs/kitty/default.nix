@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.kitty = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.kitty = _: {
     config = {
       programs = {
         kitty = {

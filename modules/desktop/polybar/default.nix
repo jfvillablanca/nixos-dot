@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.polybar = {
-    lib,
-    config,
-    ...
-  }: let
+  flake.modules.homeManager.polybar = {config, ...}: let
     colors = {
       background = "#AA2A2A37"; # "#2A2A37"
       background-alt = "#BB363646"; # "#363646"

@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.eza = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.eza = _: {
     config = {
       programs = {
         eza = {

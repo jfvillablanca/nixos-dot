@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.picom = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.picom = _: {
     config = {
       services = {
         picom = {

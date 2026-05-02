@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.fish = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.fish = _: {
     config = {
       programs = {
         fish = {

@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.git = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.git = _: {
     config = {
       programs = {
         git = {

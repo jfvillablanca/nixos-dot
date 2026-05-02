@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.wallpapers = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.wallpapers = _: {
     config = {
       xdg.configFile.".wallpapers" = {
         source = ./.;

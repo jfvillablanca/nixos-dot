@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.gitui = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.gitui = _: {
     config = {
       programs = {
         gitui = {

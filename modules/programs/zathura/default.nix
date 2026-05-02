@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.zathura = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.zathura = _: {
     config = {
       programs = {
         zathura = {

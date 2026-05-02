@@ -1,7 +1,6 @@
 {
   flake.modules.homeManager.neovim = {
     pkgs,
-    pkgs-stable-25-05,
     config,
     lib,
     ...

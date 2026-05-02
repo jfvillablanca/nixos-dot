@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.zoxide = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.zoxide = _: {
     config = {
       programs = {
         zoxide = {

@@ -1,0 +1,7 @@
+# `nixos-generate-config` emits multiple `boot.*` keys at the same level
+# in `_hardware-configuration.nix`. The repeated_keys lint flags that
+# style; suppressing it tree-wide rather than fighting auto-generated
+# output.
+disabled = ["repeated_keys"]
+
+ignore = [".direnv"]

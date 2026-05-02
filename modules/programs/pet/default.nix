@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.pet = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.pet = _: {
     config = {
       programs.pet = {
         enable = true;

@@ -1,23 +1,27 @@
 # Dev shell + flake templates.
-{
-  self,
-  pkgs,
-  system,
-  ...
-}: {
-  flake.devShells.${system}.default = pkgs.mkShell {
-    packages = with pkgs; [
-      stylua
-      selene
-      lua-language-server
+{self, ...}: {
+  perSystem = {
+    config,
+    pkgs,
+    ...
+  }: {
+    devShells.default = pkgs.mkShell {
+      packages = with pkgs; [
+        stylua
+        selene
+        lua-language-server
 
-      alejandra
-      statix
-      deadnix
-      nil
-      nixd
-    ];
-    formatter = pkgs.alejandra;
+        alejandra
+        statix
+        deadnix
+        nil
+        nixd
+      ];
+
+      # Installs the cachix/git-hooks pre-commit hook on `nix develop`
+      # entry. Configured in modules/flake/pre-commit.nix.
+      shellHook = config.pre-commit.installationScript;
+    };
   };
 
   flake.templates = let

@@ -24,6 +24,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    git-hooks-nix = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # walker.url = "github:abenz1267/walker";
 
     home-manager = {

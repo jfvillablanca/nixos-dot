@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.autorandr = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.autorandr = _: {
     config = {
       programs.autorandr = {
         enable = true;

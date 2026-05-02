@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.kmonad = {pkgs, ...}: {
+  flake.modules.nixos.kmonad = _: {
     services.kmonad = {
       enable = true;
       extraArgs = ["--log-level" "debug"];

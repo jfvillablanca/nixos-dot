@@ -8,7 +8,6 @@
   base16Scheme = "rose-pine-moon";
 in {
   flake.modules.nixos.sartre = {
-    config,
     lib,
     pkgs,
     pkgs-master,

@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.fd = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.fd = _: {
     config = {
       programs.fd = {
         enable = true;

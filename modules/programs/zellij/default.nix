@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.zellij = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.zellij = _: {
     config = {
       xdg.configFile."zellij" = {
         source = ./configs;

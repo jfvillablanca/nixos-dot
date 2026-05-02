@@ -1,9 +1,5 @@
 {
-  flake.modules.homeManager.gh = {
-    lib,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.gh = _: {
     config = {
       programs = {
         gh = {

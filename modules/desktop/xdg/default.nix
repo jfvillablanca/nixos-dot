@@ -1,10 +1,5 @@
 {
-  flake.modules.homeManager.xdg = {
-    lib,
-    pkgs,
-    config,
-    ...
-  }: {
+  flake.modules.homeManager.xdg = {pkgs, ...}: {
     config = {
       xdg = {
         enable = true;

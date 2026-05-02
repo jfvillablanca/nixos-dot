@@ -1,13 +1,5 @@
 {
-  flake.modules.homeManager.swaync = {
-    inputs,
-    lib,
-    config,
-    ...
-  }: let
-    inherit (config.colorScheme) palette;
-    inherit (inputs.nix-colors.lib.conversions) hexToRGBString;
-  in {
+  flake.modules.homeManager.swaync = _: {
     config = {
       services = {
         swaync = {

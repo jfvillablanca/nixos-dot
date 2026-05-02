@@ -8,7 +8,6 @@
   base16Scheme = "gruvbox-material-dark-medium";
 in {
   flake.modules.nixos.virt = {
-    config,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,
