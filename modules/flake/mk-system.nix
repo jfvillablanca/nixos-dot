@@ -68,19 +68,17 @@
             };
             useGlobalPkgs = false;
             useUserPackages = true;
-            users.${user}.imports =
-              [
-                {
-                  home = {
-                    username = "${user}";
-                    homeDirectory = "/home/${user}";
-                    # Don't touch me :)
-                    stateVersion = "22.11";
-                  };
-                }
-                (hostDir + ("/" + homeFile))
-              ]
-              ++ builtins.attrValues config.flake.modules.homeManager;
+            users.${user}.imports = [
+              {
+                home = {
+                  username = "${user}";
+                  homeDirectory = "/home/${user}";
+                  # Don't touch me :)
+                  stateVersion = "22.11";
+                };
+              }
+              (hostDir + ("/" + homeFile))
+            ];
           };
         }
       ];

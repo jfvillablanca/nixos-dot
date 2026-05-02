@@ -47,8 +47,7 @@
             ];
           }
           (self + /modules/hosts/sartre/_home.nix)
-        ]
-        ++ builtins.attrValues config.flake.modules.homeManager;
+        ];
     };
   };
 }

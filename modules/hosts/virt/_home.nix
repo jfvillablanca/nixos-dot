@@ -1,5 +1,51 @@
-{pkgs, ...}: {
-  imports = [
+{
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = with inputs.self.modules.homeManager; [
+    alacritty
+    atuin
+    autorandr
+    bash
+    bat
+    btop
+    delta
+    direnv
+    eww
+    eza
+    fd
+    firefox
+    fish
+    flameshot
+    fzf
+    gh
+    git
+    gitui
+    hyprland
+    i3
+    kitty
+    neovim
+    pet
+    picom
+    polybar
+    ripgrep
+    rofi
+    spotify-player
+    starship
+    swaync
+    tmux
+    wallpapers
+    waybar
+    wezterm
+    window-manager
+    wofi
+    xdg
+    yazi
+    zathura
+    zellij
+    zoxide
+    zsh
   ];
 
   myHomeModules = {

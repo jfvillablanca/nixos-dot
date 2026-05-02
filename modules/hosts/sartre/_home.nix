@@ -6,11 +6,55 @@
   base16Scheme,
   ...
 }: {
-  imports = [
-    inputs.nix-colors.homeManagerModules.default
-    # inputs.impermanence.nixosModules.home-manager.impermanence
-
-  ];
+  imports =
+    [
+      inputs.nix-colors.homeManagerModules.default
+      # inputs.impermanence.nixosModules.home-manager.impermanence
+    ]
+    ++ (with inputs.self.modules.homeManager; [
+      alacritty
+      atuin
+      autorandr
+      bash
+      bat
+      btop
+      delta
+      direnv
+      eww
+      eza
+      fd
+      firefox
+      fish
+      flameshot
+      fzf
+      gh
+      git
+      gitui
+      hyprland
+      i3
+      kitty
+      neovim
+      pet
+      picom
+      polybar
+      ripgrep
+      rofi
+      spotify-player
+      starship
+      swaync
+      tmux
+      wallpapers
+      waybar
+      wezterm
+      window-manager
+      wofi
+      xdg
+      yazi
+      zathura
+      zellij
+      zoxide
+      zsh
+    ]);
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
