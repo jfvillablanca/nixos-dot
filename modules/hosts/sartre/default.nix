@@ -20,29 +20,16 @@ in {
       # ./_hardware-configuration.nix
       # ./_disko.nix
 
+      self.modules.nixos.jmfv
       self.modules.nixos.system-default
       self.modules.nixos.steam
     ];
 
     networking.hostName = "sartre";
 
-    users.users.${user} = {
-      isNormalUser = true;
-      description = user;
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "uinput"
-        "input"
-        "sound"
-        "audio"
-        "video"
-        "docker"
-      ];
-      # HACK:
-      # first user of NixOS-WSL is "nixos" which currently uses UID 1000
-      uid = lib.mkForce 1001;
-    };
+    # HACK:
+    # first user of NixOS-WSL is "nixos" which currently uses UID 1000
+    users.users.${user}.uid = lib.mkForce 1001;
 
     # Don't touch me :)
     system.stateVersion = "22.11";
@@ -119,15 +106,8 @@ in {
         system = "x86_64-linux";
       };
       users.${user}.imports = [
+        self.modules.homeManager.jmfv
         ./_home.nix
-        {
-          home = {
-            username = "${user}";
-            homeDirectory = "/home/${user}";
-            # Don't touch me :)
-            stateVersion = "22.11";
-          };
-        }
       ];
     };
   };

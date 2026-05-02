@@ -22,6 +22,7 @@ in {
       ./_hardware-configuration.nix
       ./_disko.nix
 
+      self.modules.nixos.jmfv
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
       self.modules.nixos.laptop-power-management
@@ -31,21 +32,7 @@ in {
 
     networking.hostName = "t14g1";
 
-    users.users.${user} = {
-      isNormalUser = true;
-      description = user;
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "uinput"
-        "input"
-        "sound"
-        "audio"
-        "video"
-        "docker"
-      ];
-      initialPassword = "12345";
-    };
+    users.users.${user}.initialPassword = "12345";
 
     # Don't touch me :)
     system.stateVersion = "22.11";
@@ -244,15 +231,8 @@ in {
         system = "x86_64-linux";
       };
       users.${user}.imports = [
+        self.modules.homeManager.jmfv
         ./_home.nix
-        {
-          home = {
-            username = "${user}";
-            homeDirectory = "/home/${user}";
-            # Don't touch me :)
-            stateVersion = "22.11";
-          };
-        }
       ];
     };
   };

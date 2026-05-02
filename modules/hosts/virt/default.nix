@@ -18,6 +18,7 @@ in {
     imports = [
       ./_hardware-configuration.nix
 
+      self.modules.nixos.jmfv
       self.modules.nixos.system-cli
       self.modules.nixos.kmonad
       self.modules.nixos.doas
@@ -25,21 +26,6 @@ in {
     ];
 
     networking.hostName = "virt";
-
-    users.users.${user} = {
-      isNormalUser = true;
-      description = user;
-      extraGroups = [
-        "networkmanager"
-        "wheel"
-        "uinput"
-        "input"
-        "sound"
-        "audio"
-        "video"
-        "docker"
-      ];
-    };
 
     # Don't touch me :)
     system.stateVersion = "22.11";
@@ -87,15 +73,8 @@ in {
         system = "x86_64-linux";
       };
       users.${user}.imports = [
+        self.modules.homeManager.jmfv
         ./_home.nix
-        {
-          home = {
-            username = "${user}";
-            homeDirectory = "/home/${user}";
-            # Don't touch me :)
-            stateVersion = "22.11";
-          };
-        }
       ];
     };
   };
