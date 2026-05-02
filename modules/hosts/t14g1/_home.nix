@@ -12,7 +12,6 @@
     # inputs.walker.homeManagerModules.walker
     inputs.impermanence.nixosModules.home-manager.impermanence
 
-    ../../../homeModules/system/wallpapers
   ];
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};

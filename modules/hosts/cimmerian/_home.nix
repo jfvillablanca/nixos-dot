@@ -10,7 +10,6 @@
     inputs.nix-colors.homeManagerModules.default
     # inputs.walker.homeManagerModules.walker
 
-    ../../../homeModules/system/wallpapers
   ];
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
