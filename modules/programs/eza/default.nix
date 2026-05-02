@@ -3,8 +3,7 @@
     lib,
     config,
     ...
-  }:
-  {
+  }: {
     config = {
       programs = {
         eza = {

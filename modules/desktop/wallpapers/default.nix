@@ -3,8 +3,7 @@
     lib,
     config,
     ...
-  }:
-  {
+  }: {
     config = {
       xdg.configFile.".wallpapers" = {
         source = ./.;

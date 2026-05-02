@@ -1,24 +1,21 @@
 {
-  flake.modules.homeManager.gh =
-{
-  lib,
-  config,
-  ...
-}:
-{
-  config = {
-    programs = {
-      gh = {
-        enable = true;
-        settings = {
-          git_protocol = "ssh";
+  flake.modules.homeManager.gh = {
+    lib,
+    config,
+    ...
+  }: {
+    config = {
+      programs = {
+        gh = {
+          enable = true;
+          settings = {
+            git_protocol = "ssh";
+          };
         };
-      };
-      gh-dash = {
-        enable = true;
+        gh-dash = {
+          enable = true;
+        };
       };
     };
   };
-}
-  ;
 }

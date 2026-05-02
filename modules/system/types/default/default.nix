@@ -4,13 +4,15 @@
 # directly.
 {self, ...}: {
   flake.modules.nixos.system-default = {
-    imports = [
-      self.modules.generic.systemConstants
-    ] ++ (with self.modules.nixos; [
-      nix
-      internationalization
-      timezone
-      fonts
-    ]);
+    imports =
+      [
+        self.modules.generic.systemConstants
+      ]
+      ++ (with self.modules.nixos; [
+        nix
+        internationalization
+        timezone
+        fonts
+      ]);
   };
 }

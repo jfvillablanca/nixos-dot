@@ -1,6 +1,6 @@
 local status_ok, indent_blankline = pcall(require, "ibl")
 if not status_ok then
-	return
+    return
 end
 
 local highlight = {
@@ -12,7 +12,7 @@ local highlight = {
     "RainbowViolet",
     "RainbowCyan",
 }
-local hooks = require "ibl.hooks"
+local hooks = require("ibl.hooks")
 -- create the highlight groups in the highlight setup hook, so they are reset
 -- every time the colorscheme changes
 hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
@@ -32,6 +32,6 @@ indent_blankline.setup({
     indent = { char = "┊" },
     scope = {
         highlight = highlight,
-        char = "▎"
+        char = "▎",
     },
 })

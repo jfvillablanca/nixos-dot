@@ -12,7 +12,7 @@ machine-local and not part of this record.
 
 - Same functional system after switch — NVD reports no version or
   selection changes vs. the pre-migration baseline. Bit-identical store
-  paths are *not* required (module reordering causes hash drift even
+  paths are _not_ required (module reordering causes hash drift even
   when content is unchanged).
 - One small, reviewable commit per module so any port is trivially
   revertable.
@@ -68,7 +68,7 @@ Multi-file modules (assets alongside default.nix):
 
 - Move the whole directory to `modules/home/<name>/`. Asset files
   (`.scss`, `.kdl`, etc.) are not `.nix` so import-tree ignores them.
-- For directories that contain helper `.nix` files which are *not*
+- For directories that contain helper `.nix` files which are _not_
   flake-parts modules (e.g. `homeModules/spotify-player/overlay.nix`),
   rename them with a leading underscore (`_overlay.nix`) so
   import-tree skips them; update any callers (the bridge in
@@ -112,50 +112,50 @@ status:
 
 - [x] **Stage A** — decouple from legacy aggregators
   - [x] Phase 1: dendritic root bootstrapped (`flake.nix` →
-    `flake-parts.lib.mkFlake` + `import-tree ./modules`).
+        `flake-parts.lib.mkFlake` + `import-tree ./modules`).
   - [x] Bridge wired with `flake.homeModules` accumulator, then every
-    home module ported into `modules/home/` and the legacy
-    `./homeModules/default.nix` aggregator removed.
+        home module ported into `modules/home/` and the legacy
+        `./homeModules/default.nix` aggregator removed.
   - [x] Every `nixosModules/` entry ported into `modules/nixos/`.
   - [x] Hosts moved to `modules/hosts/<name>/` with underscore-prefixed
-    legacy entry files; `(self + /homeModules)` and
-    `(self + /nixosModules)` references in the bridge dropped.
+        legacy entry files; `(self + /homeModules)` and
+        `(self + /nixosModules)` references in the bridge dropped.
   - [x] `homeModules/system/{xdg,wallpapers}` ported and the
-    `./homeModules` directory removed.
+        `./homeModules` directory removed.
   - [x] Bridge split into single-purpose `modules/flake/*` files.
 - [x] **Stage B** — full canonical dendritic restructure
   - [x] B1: `inputs.flake-parts.flakeModules.modules` imported in
-    `flake.nix`, enabling `flake.modules.<class>.<name>` namespace.
+        `flake.nix`, enabling `flake.modules.<class>.<name>` namespace.
   - [x] B2: every home module migrated to
-    `flake.modules.homeManager.<name>`; `home-modules-option.nix`
-    deleted (flake-parts already declares the option).
+        `flake.modules.homeManager.<name>`; `home-modules-option.nix`
+        deleted (flake-parts already declares the option).
   - [x] B3: every nixos module migrated to `flake.modules.nixos.<name>`;
-    host imports rewritten from `inputs.self.nixosModules.<x>` to
-    `inputs.self.modules.nixos.<x>`.
+        host imports rewritten from `inputs.self.nixosModules.<x>` to
+        `inputs.self.modules.nixos.<x>`.
   - [x] B4: features relocated into feature-colocated tree under
-    `modules/{programs,desktop,services,system}/<feature>/default.nix`;
-    docs/ARCHITECTURE.md added.
+        `modules/{programs,desktop,services,system}/<feature>/default.nix`;
+        docs/ARCHITECTURE.md added.
   - [x] B5: `options.myHomeModules.<x>.enable` + `lib.mkIf cfg.enable`
-    wraps dropped from every feature; hosts opt in by importing.
-    `window-manager` made data-only; `desktop/{i3-stack,hyprland-stack}`
-    meta-features take over the WM component bundling.
+        wraps dropped from every feature; hosts opt in by importing.
+        `window-manager` made data-only; `desktop/{i3-stack,hyprland-stack}`
+        meta-features take over the WM component bundling.
   - [x] B6: each host became a flake-parts module declaring both
-    `flake.modules.nixos.<host>` and `flake.nixosConfigurations.<host>`
-    via the new `self.lib.mkNixos` helper. `mk-system.nix` and
-    `home-configurations.nix` deleted; the standalone
-    `homeConfigurations.jmfv` output is gone.
+        `flake.modules.nixos.<host>` and `flake.nixosConfigurations.<host>`
+        via the new `self.lib.mkNixos` helper. `mk-system.nix` and
+        `home-configurations.nix` deleted; the standalone
+        `homeConfigurations.jmfv` output is gone.
   - [x] B7: `modules/system/types/{default,cli,desktop}` chain — hosts
-    adopt a tier instead of cherry-picking every feature.
+        adopt a tier instead of cherry-picking every feature.
   - [x] B8: Constants Aspect — `flake.modules.generic.systemConstants`
-    holds `user`; `modules/system/nix` reads it from `config`; `user`
-    dropped from `mkNixos` specialArgs.
+        holds `user`; `modules/system/nix` reads it from `config`; `user`
+        dropped from `mkNixos` specialArgs.
   - [x] B9: Factory Aspect — `flake.factory.user`; `modules/users/jmfv`
-    calls it; hosts import `self.modules.{nixos,homeManager}.jmfv`
-    instead of inlining `users.users.jmfv`.
+        calls it; hosts import `self.modules.{nixos,homeManager}.jmfv`
+        instead of inlining `users.users.jmfv`.
   - [x] B10: `customPkgs/` renamed to `packages/by-name/`; an overlay
-    in `modules/flake/{pkgs,lib}.nix` exposes `pkgs.vf` and `pkgs.use`.
+        in `modules/flake/{pkgs,lib}.nix` exposes `pkgs.vf` and `pkgs.use`.
   - [x] B11: docs polish — `docs/ARCHITECTURE.md` rewritten, this file
-    refreshed; obsolete `_configuration.nix` files removed.
+        refreshed; obsolete `_configuration.nix` files removed.
   - [x] B12: final NVD vs original baseline.
 
 ## Final state vs original baseline

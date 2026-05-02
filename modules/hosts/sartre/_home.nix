@@ -39,11 +39,6 @@
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
-
-
-
-
-
   };
 
   stylix = {
@@ -82,7 +77,7 @@
       # xfce.thunar # Xfce file manager
       # xfce.thunar-volman # Removable media Thunar extension
 
-              pkgs.vf
+      pkgs.vf
       pkgs.use
     ];
     sessionVariables = {

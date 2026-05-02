@@ -14,16 +14,16 @@ Plan-only document. Source: Doc-Steve dendritic-design-with-flake-parts wiki
 
 ## Namespace migration
 
-| concern | now (legacy / stage A) | end (canonical) |
-|---|---|---|
-| nixos modules | `flake.nixosModules.<name>` | `flake.modules.nixos.<name>` |
-| home-manager modules | `flake.homeModules.<name>` | `flake.modules.homeManager.<name>` |
-| host as feature | none — hosts live in mk-system.nix | `flake.modules.nixos.<host>` + `flake.nixosConfigurations.<host>` |
-| user as feature | inline in mk-system.nix | `flake.modules.{nixos,homeManager}.jmfv` |
-| feature opt-in | `myHomeModules.<name>.enable = true/false` | `imports = with self.modules.<class>; [ ... ];` |
-| inheritance | none | `system-types/`: default → essential → basic → CLI → desktop |
-| constants | specialArgs (`user`, `base16Scheme`, `pkgs-master`, ...) | `flake.modules.generic.systemConstants` (Constants Aspect) |
-| factories | none yet | `flake.factory.<name>` (Factory Aspect) for users, mounts, etc. |
+| concern              | now (legacy / stage A)                                   | end (canonical)                                                   |
+| -------------------- | -------------------------------------------------------- | ----------------------------------------------------------------- |
+| nixos modules        | `flake.nixosModules.<name>`                              | `flake.modules.nixos.<name>`                                      |
+| home-manager modules | `flake.homeModules.<name>`                               | `flake.modules.homeManager.<name>`                                |
+| host as feature      | none — hosts live in mk-system.nix                       | `flake.modules.nixos.<host>` + `flake.nixosConfigurations.<host>` |
+| user as feature      | inline in mk-system.nix                                  | `flake.modules.{nixos,homeManager}.jmfv`                          |
+| feature opt-in       | `myHomeModules.<name>.enable = true/false`               | `imports = with self.modules.<class>; [ ... ];`                   |
+| inheritance          | none                                                     | `system-types/`: default → essential → basic → CLI → desktop      |
+| constants            | specialArgs (`user`, `base16Scheme`, `pkgs-master`, ...) | `flake.modules.generic.systemConstants` (Constants Aspect)        |
+| factories            | none yet                                                 | `flake.factory.<name>` (Factory Aspect) for users, mounts, etc.   |
 
 `flake.modules.<class>.<name>` is enabled by importing
 `inputs.flake-parts.flakeModules.modules` from flake.nix.
@@ -101,14 +101,14 @@ which `flake.modules.<class>.<name>` it sets.
 
 Rules of thumb — when in doubt, prefer a directory:
 
-| feature shape | layout |
-|---|---|
-| single class, single file | `<feature>/default.nix` |
-| single class, helper assets (lua, kdl, scss, png, kbd) | `<feature>/{default.nix, <assets>}` |
-| single class, helper Nix not meant to be a flake-parts module (e.g. nixpkgs overlays, patches) | `<feature>/{default.nix, _<helper>.nix}` — `_` makes import-tree skip |
-| spans nixos + home-manager | `<feature>/default.nix` setting both `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>` (Multi-Context Aspect) |
-| spans nixos + home-manager AND large | `<feature>/{nixos.nix, home-manager.nix}` plus optional `default.nix` for cross-cutting; each file sets its own `flake.modules.<class>.<name>` |
-| host | `hosts/<name>/default.nix` (single file usually). Hardware/disko stay underscored siblings: `_hardware-configuration.nix`, `_disko.nix` |
+| feature shape                                                                                  | layout                                                                                                                                         |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| single class, single file                                                                      | `<feature>/default.nix`                                                                                                                        |
+| single class, helper assets (lua, kdl, scss, png, kbd)                                         | `<feature>/{default.nix, <assets>}`                                                                                                            |
+| single class, helper Nix not meant to be a flake-parts module (e.g. nixpkgs overlays, patches) | `<feature>/{default.nix, _<helper>.nix}` — `_` makes import-tree skip                                                                          |
+| spans nixos + home-manager                                                                     | `<feature>/default.nix` setting both `flake.modules.nixos.<name>` and `flake.modules.homeManager.<name>` (Multi-Context Aspect)                |
+| spans nixos + home-manager AND large                                                           | `<feature>/{nixos.nix, home-manager.nix}` plus optional `default.nix` for cross-cutting; each file sets its own `flake.modules.<class>.<name>` |
+| host                                                                                           | `hosts/<name>/default.nix` (single file usually). Hardware/disko stay underscored siblings: `_hardware-configuration.nix`, `_disko.nix`        |
 
 We will NOT collapse modules/programs/eza into `modules/programs/eza.nix`
 even though it could fit in one line — uniform `<feature>/default.nix`
@@ -149,9 +149,10 @@ each importing its sub-features. Hosts pick one.
 ## Phases (each ends with NVD gate)
 
 Each phase ends with `nix build .#nixosConfigurations.cimmerian...`
-+ NVD diff against baseline. We commit only when the closure delta is
-zero and there are no version/selection changes. (We continue accepting
-hash drift from module evaluation order, just like stage A.)
+
+- NVD diff against baseline. We commit only when the closure delta is
+  zero and there are no version/selection changes. (We continue accepting
+  hash drift from module evaluation order, just like stage A.)
 
 ### B1 — enable `flake.modules.<class>` namespace
 
@@ -163,7 +164,7 @@ hash drift from module evaluation order, just like stage A.)
 
 ### B2 — migrate home-manager namespace
 
-- Per modules/home/*.nix: rewrite
+- Per modules/home/\*.nix: rewrite
   `flake.homeModules.<name> = ...` as
   `flake.modules.homeManager.<name> = ...`.
 - Drop the explicit `options.flake.homeModules` declaration in
@@ -175,7 +176,7 @@ hash drift from module evaluation order, just like stage A.)
 
 ### B3 — migrate nixos namespace
 
-- Per modules/nixos/*.nix: rewrite to `flake.modules.nixos.<name>`.
+- Per modules/nixos/\*.nix: rewrite to `flake.modules.nixos.<name>`.
 - Per host's `_configuration.nix`: rewrite
   `inputs.self.nixosModules.<name>` to
   `inputs.self.modules.nixos.<name>`.
@@ -218,7 +219,7 @@ hash drift from module evaluation order, just like stage A.)
   `inputs.self.lib.mkNixos` helper).
 - `_home.nix` body folds into the host module via
   `home-manager.users.jmfv = { imports = [ self.modules.homeManager.jmfv
-  /* host-specific bits */ ]; }`.
+/* host-specific bits */ ]; }`.
 - Drop `modules/flake/mk-system.nix` once all four hosts are converted.
 - Drop `modules/flake/home-configurations.nix` and the
   `flake.homeConfigurations.jmfv` output — unused.
@@ -243,7 +244,7 @@ hash drift from module evaluation order, just like stage A.)
   - `monitors` (per-host)
   - `statusBarMonitor` (per-host)
 - Drop `user`, `base16Scheme` etc. from specialArgs in mkNixos helper.
-- pkgs-master / pkgs-stable-* still live in _module.args (not constants
+- pkgs-master / pkgs-stable-\* still live in \_module.args (not constants
   — they're values, not strings).
 - **Gate** after each constant migrated.
 

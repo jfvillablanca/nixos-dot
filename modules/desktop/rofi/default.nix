@@ -1,19 +1,16 @@
 {
-  flake.modules.homeManager.rofi =
-{
-  lib,
-  config,
-  ...
-}:
-{
-  config = {
-    programs = {
-      rofi = {
-        enable = true;
-        location = "center";
+  flake.modules.homeManager.rofi = {
+    lib,
+    config,
+    ...
+  }: {
+    config = {
+      programs = {
+        rofi = {
+          enable = true;
+          location = "center";
+        };
       };
     };
   };
-}
-  ;
 }

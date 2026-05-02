@@ -69,11 +69,6 @@
         # }
       ];
     };
-
-
-
-
-
   };
 
   stylix = {
@@ -120,7 +115,7 @@
       zoom-us
       vscode
 
-              pkgs.vf
+      pkgs.vf
       pkgs.use
     ];
     sessionVariables = {

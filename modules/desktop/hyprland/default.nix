@@ -1,189 +1,186 @@
 {
-  flake.modules.homeManager.hyprland =
-{
-  inputs,
-  pkgs,
-  lib,
-  config,
-  ...
-}: let
+  flake.modules.homeManager.hyprland = {
+    inputs,
+    pkgs,
+    lib,
+    config,
+    ...
+  }: let
+    workspaces = builtins.concatLists (builtins.genList (
+        x: let
+          ws = let
+            c = (x + 1) / 10;
+          in
+            builtins.toString (x + 1 - (c * 10));
+        in [
+          "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
+          "$mainMod SHIFT, ${ws}, movetoworkspacesilent, ${toString (x + 1)}"
+        ]
+      )
+      10);
 
-  workspaces = builtins.concatLists (builtins.genList (
-      x: let
-        ws = let
-          c = (x + 1) / 10;
-        in
-          builtins.toString (x + 1 - (c * 10));
-      in [
-        "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
-        "$mainMod SHIFT, ${ws}, movetoworkspacesilent, ${toString (x + 1)}"
-      ]
-    )
-    10);
+    defaultTerminal = lib.getExe pkgs.wezterm;
 
-  defaultTerminal = lib.getExe pkgs.wezterm;
+    hyprlandStartup = pkgs.writeShellApplication {
+      name = "hyprland-startup";
+      text = ''
+        ${lib.getExe pkgs.waybar} &
+        ${defaultTerminal} start --always-new-process
 
-  hyprlandStartup = pkgs.writeShellApplication {
-    name = "hyprland-startup";
-    text = ''
-      ${lib.getExe pkgs.waybar} &
-      ${defaultTerminal} start --always-new-process
-
-      if [ -x "$(command -v blueman-applet)" ]; then blueman-applet & fi
-    '';
-  };
-in {
-  imports = [
-    inputs.hyprland.homeManagerModules.default
-  ];
-
-  config = {
-    home.packages = [
-      inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
+        if [ -x "$(command -v blueman-applet)" ]; then blueman-applet & fi
+      '';
+    };
+  in {
+    imports = [
+      inputs.hyprland.homeManagerModules.default
     ];
 
-    wayland.windowManager.hyprland = {
-      enable = true;
+    config = {
+      home.packages = [
+        inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
+      ];
 
-      settings = {
-        "$mainMod" = "SUPER";
-        "$fileManager" = "thunar";
-        "$terminal" = "${defaultTerminal}";
-        "$menu" = "${lib.getExe pkgs.wofi} --show drun";
+      wayland.windowManager.hyprland = {
+        enable = true;
 
-        "exec-once" = lib.getExe hyprlandStartup;
+        settings = {
+          "$mainMod" = "SUPER";
+          "$fileManager" = "thunar";
+          "$terminal" = "${defaultTerminal}";
+          "$menu" = "${lib.getExe pkgs.wofi} --show drun";
 
-        monitor =
-          map (
-            m: let
-              resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-              position = "${toString m.x}x${toString m.y}";
-            in "${m.name},${
-              if m.enabled
-              then "${resolution},${position},1"
-              else "disable"
-            }"
-          )
-          config.myHomeModules.window-manager.monitors;
+          "exec-once" = lib.getExe hyprlandStartup;
 
-        cursor = {
-          no_warps = true;
-        };
+          monitor =
+            map (
+              m: let
+                resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+                position = "${toString m.x}x${toString m.y}";
+              in "${m.name},${
+                if m.enabled
+                then "${resolution},${position},1"
+                else "disable"
+              }"
+            )
+            config.myHomeModules.window-manager.monitors;
 
-        general = {
-          layout = "master";
-          resize_on_border = true;
-
-          gaps_in = 4;
-          gaps_out = 8;
-          border_size = 2;
-        };
-
-        group = {
-          groupbar = {
-            height = 3;
-            render_titles = false;
+          cursor = {
+            no_warps = true;
           };
-        };
 
-        decoration = {
-          shadow_offset = "0 5";
+          general = {
+            layout = "master";
+            resize_on_border = true;
 
-          rounding = 5;
-          active_opacity = 1.0;
-          inactive_opacity = 0.9;
-        };
+            gaps_in = 4;
+            gaps_out = 8;
+            border_size = 2;
+          };
 
-        misc = {
-          disable_splash_rendering = true;
-          disable_hyprland_logo = true;
-        };
+          group = {
+            groupbar = {
+              height = 3;
+              render_titles = false;
+            };
+          };
 
-        animations = {
-          enabled = true;
-          animation = [
-            "border, 1, 2, default"
-            "fade, 1, 4, default"
-            "windows, 1, 3, default, popin 80%"
-            "workspaces, 1, 2, default, slide"
+          decoration = {
+            shadow_offset = "0 5";
+
+            rounding = 5;
+            active_opacity = 1.0;
+            inactive_opacity = 0.9;
+          };
+
+          misc = {
+            disable_splash_rendering = true;
+            disable_hyprland_logo = true;
+          };
+
+          animations = {
+            enabled = true;
+            animation = [
+              "border, 1, 2, default"
+              "fade, 1, 4, default"
+              "windows, 1, 3, default, popin 80%"
+              "workspaces, 1, 2, default, slide"
+            ];
+          };
+
+          windowrulev2 = [
+            "suppressevent maximize, class:.*"
+            "bordersize 4,fullscreen:1"
+
+            "opacity 0.95 0.7,class:^(org.wezfurlong.wezterm)$"
+          ];
+
+          bind =
+            [
+              "$mainMod, Return, exec, $terminal"
+              "$mainMod, D, exec, $menu"
+              # compositor commands
+              "$mainMod SHIFT, Q, killactive"
+              "$mainMod, F, fullscreen, 1"
+              "$mainMod, W, togglegroup"
+              "$mainMod, Y, togglesplit,"
+              "$mainMod SHIFT, F, togglefloating,"
+
+              "$mainMod, left, movefocus, l"
+              "$mainMod, right, movefocus, r"
+              "$mainMod, up, movefocus, u"
+              "$mainMod, down, movefocus, d"
+
+              "$mainMod ALT, left, changegroupactive, b"
+              "$mainMod ALT, right, changegroupactive, f"
+              "$mainMod SHIFT, left, movewindoworgroup, l"
+              "$mainMod SHIFT, right, movewindoworgroup, r"
+              "$mainMod SHIFT, up, movewindoworgroup, u"
+              "$mainMod SHIFT, down, movewindoworgroup, d"
+
+              # special workspace
+              # "$mainMod, S, togglespecialworkspace, magic"
+              # "$mainMod SHIFT, S, movetoworkspace, special:magic"
+              # "$mainMod SHIFT, grave, movetoworkspace, special"
+              # "$mainMod, grave, togglespecialworkspace, eDP-1"
+
+              # cycle workspaces
+              # "$mainMod, bracketleft, workspace, m-1"
+              # "$mainMod, bracketright, workspace, m+1"
+
+              # cycle monitors
+              # "$mainMod SHIFT, bracketleft, focusmonitor, l"
+              # "$mainMod SHIFT, bracketright, focusmonitor, r"
+
+              # send focused workspace to left/right monitors
+              # "$mainMod SHIFT ALT, bracketleft, movecurrentworkspacetomonitor, l"
+              # "$mainMod SHIFT ALT, bracketright, movecurrentworkspacetomonitor, r"
+            ]
+            ++ workspaces;
+
+          bindle = [
+            ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+            ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+            ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+            ", PRINT, exec, grimblast copy area"
+            "SHIFT, PRINT, exec, grimblast save area ${config.xdg.userDirs.pictures}/Screenshot-$(date +%F_%T).png\n"
+          ];
+
+          bindm = [
+            # mouse movements
+            "$mainMod, mouse:272, movewindow"
+            "$mainMod, mouse:273, resizewindow"
+            "$mainMod ALT, mouse:272, resizewindow"
           ];
         };
 
-        windowrulev2 = [
-          "suppressevent maximize, class:.*"
-          "bordersize 4,fullscreen:1"
-
-          "opacity 0.95 0.7,class:^(org.wezfurlong.wezterm)$"
-        ];
-
-        bind =
-          [
-            "$mainMod, Return, exec, $terminal"
-            "$mainMod, D, exec, $menu"
-            # compositor commands
-            "$mainMod SHIFT, Q, killactive"
-            "$mainMod, F, fullscreen, 1"
-            "$mainMod, W, togglegroup"
-            "$mainMod, Y, togglesplit,"
-            "$mainMod SHIFT, F, togglefloating,"
-
-            "$mainMod, left, movefocus, l"
-            "$mainMod, right, movefocus, r"
-            "$mainMod, up, movefocus, u"
-            "$mainMod, down, movefocus, d"
-
-            "$mainMod ALT, left, changegroupactive, b"
-            "$mainMod ALT, right, changegroupactive, f"
-            "$mainMod SHIFT, left, movewindoworgroup, l"
-            "$mainMod SHIFT, right, movewindoworgroup, r"
-            "$mainMod SHIFT, up, movewindoworgroup, u"
-            "$mainMod SHIFT, down, movewindoworgroup, d"
-
-            # special workspace
-            # "$mainMod, S, togglespecialworkspace, magic"
-            # "$mainMod SHIFT, S, movetoworkspace, special:magic"
-            # "$mainMod SHIFT, grave, movetoworkspace, special"
-            # "$mainMod, grave, togglespecialworkspace, eDP-1"
-
-            # cycle workspaces
-            # "$mainMod, bracketleft, workspace, m-1"
-            # "$mainMod, bracketright, workspace, m+1"
-
-            # cycle monitors
-            # "$mainMod SHIFT, bracketleft, focusmonitor, l"
-            # "$mainMod SHIFT, bracketright, focusmonitor, r"
-
-            # send focused workspace to left/right monitors
-            # "$mainMod SHIFT ALT, bracketleft, movecurrentworkspacetomonitor, l"
-            # "$mainMod SHIFT ALT, bracketright, movecurrentworkspacetomonitor, r"
-          ]
-          ++ workspaces;
-
-        bindle = [
-          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", PRINT, exec, grimblast copy area"
-          "SHIFT, PRINT, exec, grimblast save area ${config.xdg.userDirs.pictures}/Screenshot-$(date +%F_%T).png\n"
-        ];
-
-        bindm = [
-          # mouse movements
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
-          "$mainMod ALT, mouse:272, resizewindow"
-        ];
-      };
-
-      systemd = {
-        variables = ["--all"];
-        extraCommands = [
-          "systemctl --user stop graphical-session.target"
-          "systemctl --user start hyprland-session.target"
-        ];
+        systemd = {
+          variables = ["--all"];
+          extraCommands = [
+            "systemctl --user stop graphical-session.target"
+            "systemctl --user start hyprland-session.target"
+          ];
+        };
       };
     };
   };
-}
-  ;
 }

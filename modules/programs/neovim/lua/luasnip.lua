@@ -1,6 +1,6 @@
 local present, ls = pcall(require, "luasnip")
 if not present then
-	return
+    return
 end
 
 local s = ls.snippet

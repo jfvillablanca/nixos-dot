@@ -81,18 +81,18 @@ the dendritic tree that are NOT flake-parts modules:
 
 ## Namespaces
 
-| concept | namespace |
-|---|---|
-| home-manager modules | `flake.modules.homeManager.<name>` |
-| nixos modules | `flake.modules.nixos.<name>` |
-| cross-class shared modules | `flake.modules.generic.<name>` |
-| host as feature | `flake.modules.nixos.<host>` |
-| user as feature | `flake.modules.{nixos,homeManager}.<user>` |
-| factory functions | `flake.factory.<name>` |
-| nixos systems (deployable) | `flake.nixosConfigurations.<host>` |
-| dev shell | `flake.devShells.x86_64-linux.default` |
-| templates | `flake.templates.basic` |
-| `mkNixos` helper | `flake.lib.mkNixos` |
+| concept                    | namespace                                  |
+| -------------------------- | ------------------------------------------ |
+| home-manager modules       | `flake.modules.homeManager.<name>`         |
+| nixos modules              | `flake.modules.nixos.<name>`               |
+| cross-class shared modules | `flake.modules.generic.<name>`             |
+| host as feature            | `flake.modules.nixos.<host>`               |
+| user as feature            | `flake.modules.{nixos,homeManager}.<user>` |
+| factory functions          | `flake.factory.<name>`                     |
+| nixos systems (deployable) | `flake.nixosConfigurations.<host>`         |
+| dev shell                  | `flake.devShells.x86_64-linux.default`     |
+| templates                  | `flake.templates.basic`                    |
+| `mkNixos` helper           | `flake.lib.mkNixos`                        |
 
 `flake.modules.<class>.<name>` comes from
 `inputs.flake-parts.flakeModules.modules`, imported in `flake.nix`.

@@ -70,11 +70,6 @@
       ];
       statusBarMonitor = "DP-1";
     };
-
-
-
-
-
   };
 
   stylix = {
@@ -83,46 +78,48 @@
   };
 
   home = {
-    packages = with pkgs; [
-      # Terminal
-      tldr # Lazy man's help/man page
-      nixpkgs-review # For reviewing PRs to nixpkgs repository
-      cachix # Nix binary cache hosting
-      trashy # Trash in cli
-      killall # Kill processes
-      ncdu # NCurses Disk Usage
-      unzip # Zip utility
-      zip # Zip utility
-      devenv
+    packages = with pkgs;
+      [
+        # Terminal
+        tldr # Lazy man's help/man page
+        nixpkgs-review # For reviewing PRs to nixpkgs repository
+        cachix # Nix binary cache hosting
+        trashy # Trash in cli
+        killall # Kill processes
+        ncdu # NCurses Disk Usage
+        unzip # Zip utility
+        zip # Zip utility
+        devenv
 
-      # Browser
-      # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
-      google-chrome
+        # Browser
+        # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
+        google-chrome
 
-      # Misc
-      neofetch # System lookup
-      musescore # Music notation and composition
-      discord # Communications
+        # Misc
+        neofetch # System lookup
+        musescore # Music notation and composition
+        discord # Communications
 
-      # Utils
-      pavucontrol # Volume control UI
-      pamixer # PipeWire CLI tool
-      vlc # Video player
-      file-roller # File archiving
-      eog # GUI image viewer
-      onboard # On-screen keyboard
+        # Utils
+        pavucontrol # Volume control UI
+        pamixer # PipeWire CLI tool
+        vlc # Video player
+        file-roller # File archiving
+        eog # GUI image viewer
+        onboard # On-screen keyboard
 
-      # GUI
-      xfce.thunar # Xfce file manager
-      xfce.thunar-volman # Removable media Thunar extension
-      libreoffice-qt
-      protonvpn-gui
+        # GUI
+        xfce.thunar # Xfce file manager
+        xfce.thunar-volman # Removable media Thunar extension
+        libreoffice-qt
+        protonvpn-gui
 
-              pkgs.vf
-      pkgs.use
-    ] ++ (with pkgs-master; [
+        pkgs.vf
+        pkgs.use
+      ]
+      ++ (with pkgs-master; [
         claude-code
-    ]);
+      ]);
     sessionVariables = {
       TERMINAL = "wezterm";
       EDITOR = "nvim";
