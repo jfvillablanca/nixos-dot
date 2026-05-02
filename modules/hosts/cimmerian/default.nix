@@ -105,7 +105,7 @@ in {
     programs = {
       hyprland = {
         enable = true;
-        package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       };
       nix-ld.enable = true;
     };
@@ -126,7 +126,7 @@ in {
           git
         ]
         ++ [
-          inputs.zen-browser.packages.${pkgs.system}.default
+          inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
     };
 

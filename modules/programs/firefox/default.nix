@@ -13,6 +13,8 @@
   profile = "dev-edition-default";
 in {
   config = {
+    stylix.targets.firefox.profileNames = [profile];
+
     programs.firefox = {
       enable = true;
       # package = pkgs.firefox-devedition;
