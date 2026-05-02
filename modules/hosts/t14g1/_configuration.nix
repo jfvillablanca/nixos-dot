@@ -9,8 +9,8 @@
   imports = [
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
 
-    ./hardware-configuration.nix
-    ./disko.nix
+    ./_hardware-configuration.nix
+    ./_disko.nix
 
     inputs.self.nixosModules.kmonad
     inputs.self.nixosModules.doas

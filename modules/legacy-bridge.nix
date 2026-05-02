@@ -133,6 +133,9 @@ in {
       user = "jmfv";
       hostName = "t14g1";
       base16Scheme = "gruvbox-dark-hard";
+      hostDir = self + /modules/hosts/t14g1;
+      configFile = "_configuration.nix";
+      homeFile = "_home.nix";
     };
 
     cimmerian = mkSystem {
