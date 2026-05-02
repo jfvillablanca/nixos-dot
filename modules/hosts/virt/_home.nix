@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ../../../homeModules/system/xdg.nix
   ];
 
   myHomeModules = {
