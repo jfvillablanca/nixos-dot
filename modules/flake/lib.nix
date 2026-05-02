@@ -16,9 +16,6 @@
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs pkgs-master pkgs-stable-24-05 pkgs-stable-25-05;
-        # Cross-cutting constant (single user across hosts). Migrated to
-        # the Constants Aspect in B8.
-        user = "jmfv";
       };
       modules = [
         inputs.disko.nixosModules.default
