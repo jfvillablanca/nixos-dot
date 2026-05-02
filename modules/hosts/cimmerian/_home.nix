@@ -118,8 +118,8 @@
       libreoffice-qt
       protonvpn-gui
 
-              (import ../../../customPkgs {inherit pkgs;}).vf
-      (import ../../../customPkgs {inherit pkgs;}).use
+              pkgs.vf
+      pkgs.use
     ] ++ (with pkgs-master; [
         claude-code
     ]);

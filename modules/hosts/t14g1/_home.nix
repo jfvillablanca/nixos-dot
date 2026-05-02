@@ -120,8 +120,8 @@
       zoom-us
       vscode
 
-              (import ../../../customPkgs {inherit pkgs;}).vf
-      (import ../../../customPkgs {inherit pkgs;}).use
+              pkgs.vf
+      pkgs.use
     ];
     sessionVariables = {
       TERMINAL = "wezterm";

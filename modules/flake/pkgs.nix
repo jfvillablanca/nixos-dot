@@ -8,6 +8,11 @@
 }: let
   system = "x86_64-linux";
 
+  packagesOverlay = final: _prev: {
+    vf = final.callPackage (self + /packages/by-name/v/vf) {};
+    use = final.callPackage (self + /packages/by-name/u/use) {};
+  };
+
   pkgs = import inputs.nixpkgs {
     inherit system;
     config.allowUnfree = true;
@@ -17,6 +22,8 @@
       # NOTE: Authentication Issue
       # https://github.com/aome510/spotify-player/issues/802#issuecomment-3191659178
       (import (self + /modules/programs/spotify-player/_overlay.nix))
+
+      packagesOverlay
     ];
   };
 
