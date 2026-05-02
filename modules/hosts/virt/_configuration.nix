@@ -6,14 +6,14 @@
   imports = [
     ./_hardware-configuration.nix
 
-    inputs.self.nixosModules.kmonad
-    inputs.self.nixosModules.doas
-    inputs.self.nixosModules.internationalization
-    inputs.self.nixosModules.network-manager
-    inputs.self.nixosModules.nix
-    inputs.self.nixosModules.spice-vda
-    inputs.self.nixosModules.timezone
-    inputs.self.nixosModules.fonts
+    inputs.self.modules.nixos.kmonad
+    inputs.self.modules.nixos.doas
+    inputs.self.modules.nixos.internationalization
+    inputs.self.modules.nixos.network-manager
+    inputs.self.modules.nixos.nix
+    inputs.self.modules.nixos.spice-vda
+    inputs.self.modules.nixos.timezone
+    inputs.self.modules.nixos.fonts
   ];
 
   # Bootloader.

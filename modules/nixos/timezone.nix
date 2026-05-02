@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.timezone =
+  flake.modules.nixos.timezone =
 {...}: {
   time.timeZone = "Asia/Manila";
   services.chrony = {

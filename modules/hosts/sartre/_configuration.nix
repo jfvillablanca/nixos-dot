@@ -10,15 +10,15 @@
     # ./_hardware-configuration.nix
     # ./_disko.nix
 
-    inputs.self.nixosModules.internationalization
-    # inputs.self.nixosModules.virtual-fs
-    # inputs.self.nixosModules.network-manager
-    inputs.self.nixosModules.nix
-    inputs.self.nixosModules.timezone
-    inputs.self.nixosModules.fonts
-    # inputs.self.nixosModules.sound
-    # inputs.self.nixosModules.bluetooth
-    inputs.self.nixosModules.steam
+    inputs.self.modules.nixos.internationalization
+    # inputs.self.modules.nixos.virtual-fs
+    # inputs.self.modules.nixos.network-manager
+    inputs.self.modules.nixos.nix
+    inputs.self.modules.nixos.timezone
+    inputs.self.modules.nixos.fonts
+    # inputs.self.modules.nixos.sound
+    # inputs.self.modules.nixos.bluetooth
+    inputs.self.modules.nixos.steam
   ];
 
   stylix = {

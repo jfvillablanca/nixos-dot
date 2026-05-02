@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.laptop-power-management =
+  flake.modules.nixos.laptop-power-management =
 {...}: {
   # Power Management Daemon
   services.tlp = {

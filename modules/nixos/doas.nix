@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.doas = {...}: {
+  flake.modules.nixos.doas = {...}: {
     security.doas.enable = true;
   };
 }
