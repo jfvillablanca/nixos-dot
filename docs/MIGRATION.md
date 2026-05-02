@@ -156,4 +156,19 @@ status:
     in `modules/flake/{pkgs,lib}.nix` exposes `pkgs.vf` and `pkgs.use`.
   - [x] B11: docs polish — `docs/ARCHITECTURE.md` rewritten, this file
     refreshed; obsolete `_configuration.nix` files removed.
-  - [ ] B12: final cleanup + NVD vs original baseline.
+  - [x] B12: final NVD vs original baseline.
+
+## Final state vs original baseline
+
+```
+<<< /nix/store/9gb2lbw6kqgrxdd2qbi4zjmjj5qgvzi3-nixos-system-cimmerian-25.11.20251116.50a96ed   (pre-migration)
+>>> /nix/store/a4dckpjfyhj1dcb38br6wdrbr2yg2ahj-nixos-system-cimmerian-25.11.20251116.50a96ed   (stage B end)
+Version changes:
+[C*]  #1  nixos-icons  0-unstable-2024-04-10 x2 -> 0-unstable-2024-04-10
+Closure size: 3763 -> 3762 (36 paths added, 37 paths removed, delta -1, disk usage -1.1MiB).
+```
+
+The lone change is a deduplication of `nixos-icons` (two store paths in
+the original collapsed into one). Closure shrinks by one path /
+~1.1 MiB. No package versions or selections change. Migration is
+functionally complete.
