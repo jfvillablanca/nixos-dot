@@ -91,10 +91,5 @@ in {
       base16Scheme = "gruvbox-material-dark-medium";
     };
 
-    sartre = mkSystem {
-      user = "jmfv";
-      hostName = "sartre";
-      base16Scheme = "rose-pine-moon";
-    };
   };
 }
