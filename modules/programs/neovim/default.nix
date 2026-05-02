@@ -7,7 +7,6 @@
   lib,
   ...
 }: let
-  cfg = config.myHomeModules.neovim;
 
   luaConfig = [
     ./lua/options.lua
@@ -16,14 +15,7 @@
     ./lua/cmp.lua # requires luasnip
   ];
 in {
-  options.myHomeModules.neovim = {
-    enable =
-      lib.mkEnableOption "enables neovim"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     xdg.configFile."nvim/lua/lsp" = {
       source = ./lua/lsp;
       recursive = true;

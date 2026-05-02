@@ -5,17 +5,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.tmux;
-in {
-  options.myHomeModules.tmux = {
-    enable =
-      lib.mkEnableOption "enables tmux"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs.tmux = {
       enable = true;
       mouse = true;

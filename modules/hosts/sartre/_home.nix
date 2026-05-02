@@ -13,44 +13,24 @@
     ]
     ++ (with inputs.self.modules.homeManager; [
       alacritty
-      atuin
-      autorandr
       bash
       bat
       btop
       delta
       direnv
-      eww
       eza
       fd
-      firefox
       fish
-      flameshot
       fzf
       gh
       git
       gitui
-      hyprland
-      i3
-      kitty
       neovim
-      pet
-      picom
-      polybar
       ripgrep
-      rofi
-      spotify-player
       starship
-      swaync
       tmux
-      wallpapers
-      waybar
       wezterm
-      window-manager
-      wofi
-      xdg
       yazi
-      zathura
       zellij
       zoxide
       zsh
@@ -59,57 +39,15 @@
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
-    xdg.enable = false;
-    wallpapers.enable = false;
 
-    window-manager = {
-      enable = false;
-      wm = "hyprland";
-      monitors = [
-        {
-          name = "eDP-1";
-          isPrimary = true;
-          width = 1920;
-          height = 1080;
-          x = 0;
-          y = 0;
-        }
-      ];
-    };
 
-    git.enable = true;
-    gh.enable = true;
-    neovim.enable = true;
 
-    alacritty.enable = true;
-    wezterm.enable = true;
 
-    atuin.enable = false;
-    bat.enable = true;
-    tmux.enable = true;
-    btop.enable = true;
-    flameshot.enable = false;
-    fd.enable = true;
-    ripgrep.enable = true;
-    fzf.enable = true;
-    gitui.enable = true;
-    yazi.enable = true;
-    eza.enable = true;
-    direnv.enable = true;
-    zoxide.enable = true;
-    starship.enable = true;
-    zellij.enable = true;
 
-    bash.enable = true;
-    fish.enable = true;
-    zsh.enable = true;
-
-    firefox.enable = false;
   };
 
   stylix = {
     targets = {
-      waybar.enable = false;
     };
   };
 
@@ -144,15 +82,7 @@
       # xfce.thunar # Xfce file manager
       # xfce.thunar-volman # Removable media Thunar extension
 
-      (
-        lib.mkIf (
-          config.myHomeModules.neovim.enable
-          && config.myHomeModules.bat.enable
-          && config.myHomeModules.fd.enable
-          && config.myHomeModules.ripgrep.enable
-        )
-        (import ../../../customPkgs {inherit pkgs;}).vf
-      )
+              (import ../../../customPkgs {inherit pkgs;}).vf
       (import ../../../customPkgs {inherit pkgs;}).use
     ];
     sessionVariables = {

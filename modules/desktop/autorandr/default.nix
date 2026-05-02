@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.autorandr;
-in {
-  options.myHomeModules.autorandr = {
-    enable =
-      lib.mkEnableOption "enables autorandr"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs.autorandr = {
       enable = true;
     };

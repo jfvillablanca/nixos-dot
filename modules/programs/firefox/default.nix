@@ -9,18 +9,10 @@
   system,
   ...
 }: let
-  cfg = config.myHomeModules.firefox;
 
   profile = "dev-edition-default";
 in {
-  options.myHomeModules.firefox = {
-    enable =
-      lib.mkEnableOption "enables firefox"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     programs.firefox = {
       enable = true;
       # package = pkgs.firefox-devedition;

@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.fish;
-in {
-  options.myHomeModules.fish = {
-    enable =
-      lib.mkEnableOption "enables fish"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       fish = {
         enable = true;

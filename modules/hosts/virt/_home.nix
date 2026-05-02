@@ -4,83 +4,36 @@
   ...
 }: {
   imports = with inputs.self.modules.homeManager; [
-    alacritty
-    atuin
-    autorandr
     bash
-    bat
     btop
     delta
     direnv
-    eww
     eza
     fd
-    firefox
     fish
     flameshot
     fzf
-    gh
     git
-    gitui
-    hyprland
-    i3
-    kitty
     neovim
-    pet
-    picom
-    polybar
     ripgrep
-    rofi
-    spotify-player
     starship
-    swaync
     tmux
-    wallpapers
-    waybar
     wezterm
-    window-manager
-    wofi
-    xdg
-    yazi
-    zathura
-    zellij
     zoxide
-    zsh
+
+    i3-stack
+    wallpapers
+    xdg
   ];
 
   myHomeModules = {
     window-manager = {
-      enable = true;
-      wm = "i3";
     };
 
-    git.enable = true;
-    gh.enable = false;
-    neovim.enable = true;
 
-    alacritty.enable = false;
-    wezterm.enable = true;
 
-    atuin.enable = false;
-    bat.enable = false;
-    tmux.enable = true;
-    btop.enable = true;
-    flameshot.enable = true;
-    fd.enable = true;
-    ripgrep.enable = true;
-    fzf.enable = true;
-    gitui.enable = false;
-    eza.enable = true;
-    direnv.enable = true;
-    zoxide.enable = true;
-    starship.enable = true;
-    zellij.enable = false;
 
-    bash.enable = true;
-    fish.enable = true;
-    zsh.enable = false;
 
-    firefox.enable = false;
   };
 
   home = {

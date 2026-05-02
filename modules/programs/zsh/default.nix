@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.zsh;
-in {
-  options.myHomeModules.zsh = {
-    enable =
-      lib.mkEnableOption "enables zsh"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       zsh = {
         enable = true;

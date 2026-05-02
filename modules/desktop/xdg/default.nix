@@ -4,17 +4,9 @@
     pkgs,
     config,
     ...
-  }: let
-    cfg = config.myHomeModules.xdg;
-  in {
-    options.myHomeModules.xdg = {
-      enable =
-        lib.mkEnableOption "xdg portals + userDirs"
-        // {
-          default = true;
-        };
-    };
-    config = lib.mkIf cfg.enable {
+  }:
+  {
+    config = {
       xdg = {
         enable = true;
         portal = {

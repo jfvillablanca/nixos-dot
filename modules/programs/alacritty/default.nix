@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.alacritty;
-in {
-  options.myHomeModules.alacritty = {
-    enable =
-      lib.mkEnableOption "enables alacritty"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       alacritty = {
         enable = true;

@@ -3,17 +3,9 @@
     lib,
     config,
     ...
-  }: let
-    cfg = config.myHomeModules.eza;
-  in {
-    options.myHomeModules.eza = {
-      enable =
-        lib.mkEnableOption "enables eza"
-        // {
-          default = true;
-        };
-    };
-    config = lib.mkIf cfg.enable {
+  }:
+  {
+    config = {
       programs = {
         eza = {
           enable = true;

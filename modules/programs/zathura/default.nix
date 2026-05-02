@@ -4,14 +4,10 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.zathura;
-in {
-  options.myHomeModules.zathura = {
-    enable = lib.mkEnableOption "enables zathura";
-  };
+}:
+{
 
-  config = lib.mkIf cfg.enable {
+  config = {
     programs = {
       zathura = {
         enable = true;

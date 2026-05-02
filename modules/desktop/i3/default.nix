@@ -6,7 +6,6 @@
   config,
   ...
 }: let
-  cfg = config.myHomeModules.i3;
 
   mod = "Mod4";
   term = "wezterm";
@@ -22,14 +21,7 @@
       done \
     '';
 in {
-  options.myHomeModules.i3 = {
-    enable =
-      lib.mkEnableOption "enables i3"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     xsession = {
       enable = true;
       windowManager = {

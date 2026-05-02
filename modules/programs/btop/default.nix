@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.btop;
-in {
-  options.myHomeModules.btop = {
-    enable =
-      lib.mkEnableOption "enables btop"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       btop = {
         enable = true;

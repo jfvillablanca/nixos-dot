@@ -13,14 +13,11 @@
     ]
     ++ (with inputs.self.modules.homeManager; [
       alacritty
-      atuin
-      autorandr
       bash
       bat
       btop
       delta
       direnv
-      eww
       eza
       fd
       firefox
@@ -30,39 +27,27 @@
       gh
       git
       gitui
-      hyprland
-      i3
       kitty
       neovim
       pet
-      picom
-      polybar
       ripgrep
-      rofi
-      spotify-player
       starship
-      swaync
       tmux
-      wallpapers
-      waybar
       wezterm
-      window-manager
-      wofi
-      xdg
       yazi
       zathura
-      zellij
       zoxide
       zsh
+
+      i3-stack
+      wallpapers
+      xdg
     ]);
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
     window-manager = {
-      enable = true;
-      wm = "i3";
-      # wm = "hyprland";
       monitors = [
         {
           name = "HDMI-1";
@@ -86,44 +71,14 @@
       statusBarMonitor = "DP-1";
     };
 
-    git.enable = true;
-    delta.enable = true;
-    gh.enable = true;
-    neovim.enable = true;
 
-    alacritty.enable = true;
-    wezterm.enable = true;
-    kitty.enable = true;
 
-    atuin.enable = false;
-    bat.enable = true;
-    tmux.enable = true;
-    btop.enable = true;
-    flameshot.enable = true;
-    fd.enable = true;
-    ripgrep.enable = true;
-    fzf.enable = true;
-    gitui.enable = true;
-    yazi.enable = true;
-    eza.enable = true;
-    spotify-player.enable = false;
-    direnv.enable = true;
-    zoxide.enable = true;
-    starship.enable = true;
-    zellij.enable = false;
-    pet.enable = true;
 
-    bash.enable = true;
-    fish.enable = true;
-    zsh.enable = true;
 
-    firefox.enable = true;
-    zathura.enable = true;
   };
 
   stylix = {
     targets = {
-      waybar.enable = false;
     };
   };
 
@@ -163,15 +118,7 @@
       libreoffice-qt
       protonvpn-gui
 
-      (
-        lib.mkIf (
-          config.myHomeModules.neovim.enable
-          && config.myHomeModules.bat.enable
-          && config.myHomeModules.fd.enable
-          && config.myHomeModules.ripgrep.enable
-        )
-        (import ../../../customPkgs {inherit pkgs;}).vf
-      )
+              (import ../../../customPkgs {inherit pkgs;}).vf
       (import ../../../customPkgs {inherit pkgs;}).use
     ] ++ (with pkgs-master; [
         claude-code
@@ -190,7 +137,6 @@
     # seems to be enabled by default for stateVersion < 23.05
     # causes an infinite loop error upon evaluation thus this is manually disabled
     # https://home-manager-options.extranix.com/?query=swaylock&release=release-24.05
-    swaylock.enable = false;
   };
 
   services = {};

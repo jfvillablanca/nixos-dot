@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.wofi;
-in {
-  options.myHomeModules.wofi = {
-    enable =
-      lib.mkEnableOption "enables wofi"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       wofi = {
         enable = true;

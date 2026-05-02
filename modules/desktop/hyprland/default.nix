@@ -7,7 +7,6 @@
   config,
   ...
 }: let
-  cfg = config.myHomeModules.hyprland;
 
   workspaces = builtins.concatLists (builtins.genList (
       x: let
@@ -38,14 +37,7 @@ in {
     inputs.hyprland.homeManagerModules.default
   ];
 
-  options.myHomeModules.hyprland = {
-    enable =
-      lib.mkEnableOption "enables hyprland"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     home.packages = [
       inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     ];

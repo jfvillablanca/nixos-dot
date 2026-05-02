@@ -6,17 +6,9 @@
   config,
   ...
 }: let
-  cfg = config.myHomeModules.waybar;
   inherit (config.colorScheme) palette;
 in {
-  options.myHomeModules.waybar = {
-    enable =
-      lib.mkEnableOption "enables waybar"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     programs = {
       waybar = {
         enable = true;

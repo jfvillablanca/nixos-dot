@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.spotify-player;
-in {
-  options.myHomeModules.spotify-player = {
-    enable =
-      lib.mkEnableOption "enables spotify-player"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       spotify-player = {
         enable = true;

@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.flameshot;
-in {
-  options.myHomeModules.flameshot = {
-    enable =
-      lib.mkEnableOption "enables flameshot"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     services.flameshot = {
       enable = true;
       settings = {

@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.picom;
-in {
-  options.myHomeModules.picom = {
-    enable =
-      lib.mkEnableOption "enables picom"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     services = {
       picom = {
         enable = true;

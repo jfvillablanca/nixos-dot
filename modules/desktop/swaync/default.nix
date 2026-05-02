@@ -6,18 +6,10 @@
   config,
   ...
 }: let
-  cfg = config.myHomeModules.swaync;
   inherit (config.colorScheme) palette;
   inherit (inputs.nix-colors.lib.conversions) hexToRGBString;
 in {
-  options.myHomeModules.swaync = {
-    enable =
-      lib.mkEnableOption "enables swaync"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     services = {
       swaync = {
         enable = true;

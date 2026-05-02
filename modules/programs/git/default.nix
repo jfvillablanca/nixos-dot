@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.git;
-in {
-  options.myHomeModules.git = {
-    enable =
-      lib.mkEnableOption "enables git in user land"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       git = {
         enable = true;

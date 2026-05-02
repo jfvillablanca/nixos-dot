@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.yazi;
-in {
-  options.myHomeModules.yazi = {
-    enable =
-      lib.mkEnableOption "enables yazi"
-      // {
-        default = false;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       yazi = {
         enable = true;

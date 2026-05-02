@@ -4,14 +4,10 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.kitty;
-in {
-  options.myHomeModules.kitty = {
-    enable = lib.mkEnableOption "enables kitty";
-  };
+}:
+{
 
-  config = lib.mkIf cfg.enable {
+  config = {
     programs = {
       kitty = {
         enable = true;

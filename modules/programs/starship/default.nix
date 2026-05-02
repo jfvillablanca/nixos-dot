@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.starship;
-in {
-  options.myHomeModules.starship = {
-    enable =
-      lib.mkEnableOption "enables starship"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       starship = {
         enable = true;

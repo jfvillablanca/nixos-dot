@@ -14,15 +14,11 @@
       inputs.impermanence.nixosModules.home-manager.impermanence
     ]
     ++ (with inputs.self.modules.homeManager; [
-      alacritty
-      atuin
-      autorandr
       bash
       bat
       btop
       delta
       direnv
-      eww
       eza
       fd
       firefox
@@ -32,38 +28,25 @@
       gh
       git
       gitui
-      hyprland
-      i3
-      kitty
       neovim
-      pet
-      picom
-      polybar
       ripgrep
-      rofi
-      spotify-player
       starship
-      swaync
       tmux
-      wallpapers
-      waybar
       wezterm
-      window-manager
-      wofi
-      xdg
       yazi
-      zathura
       zellij
       zoxide
       zsh
+
+      hyprland-stack
+      wallpapers
+      xdg
     ]);
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
     window-manager = {
-      enable = true;
-      wm = "hyprland";
       monitors = [
         {
           name = "eDP-1";
@@ -87,41 +70,14 @@
       ];
     };
 
-    git.enable = true;
-    delta.enable = true;
-    gh.enable = true;
-    neovim.enable = true;
 
-    alacritty.enable = false;
-    wezterm.enable = true;
 
-    atuin.enable = false;
-    bat.enable = true;
-    tmux.enable = true;
-    btop.enable = true;
-    flameshot.enable = true;
-    fd.enable = true;
-    ripgrep.enable = true;
-    fzf.enable = true;
-    gitui.enable = true;
-    yazi.enable = true;
-    eza.enable = true;
-    direnv.enable = true;
-    zoxide.enable = true;
-    starship.enable = true;
-    zellij.enable = true;
 
-    bash.enable = true;
-    fish.enable = true;
-    zsh.enable = true;
 
-    firefox.enable = true;
   };
 
   stylix = {
     targets = {
-      waybar.enable = false;
-      hyprpaper.enable = false;
     };
   };
 
@@ -164,15 +120,7 @@
       zoom-us
       vscode
 
-      (
-        lib.mkIf (
-          config.myHomeModules.neovim.enable
-          && config.myHomeModules.bat.enable
-          && config.myHomeModules.fd.enable
-          && config.myHomeModules.ripgrep.enable
-        )
-        (import ../../../customPkgs {inherit pkgs;}).vf
-      )
+              (import ../../../customPkgs {inherit pkgs;}).vf
       (import ../../../customPkgs {inherit pkgs;}).use
     ];
     sessionVariables = {

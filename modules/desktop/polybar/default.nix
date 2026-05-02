@@ -5,7 +5,6 @@
   config,
   ...
 }: let
-  cfg = config.myHomeModules.polybar;
   colors = {
     background = "#AA2A2A37"; # "#2A2A37"
     background-alt = "#BB363646"; # "#363646"
@@ -20,17 +19,7 @@
     cyan = "#7FB4CA";
   };
 in {
-  options.myHomeModules.polybar = {
-    enable =
-      lib.mkEnableOption "enables polybar"
-      // {
-        default = false;
-      };
-    monitor = lib.mkOption {
-      type = lib.types.str;
-    };
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     xdg.configFile."polybar/sound.sh" = {
       source = ./sound.sh;
     };
@@ -41,7 +30,7 @@ in {
         script = "polybar bar &";
         config = {
           "bar/top" = {
-            inherit (cfg) monitor;
+            monitor = config.myHomeModules.window-manager.statusBarMonitor;
             top = true;
             width = "100%";
             height = "24pt";

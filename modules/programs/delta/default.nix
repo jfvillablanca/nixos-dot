@@ -4,17 +4,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.git;
-in {
-  options.myHomeModules.delta = {
-    enable =
-      lib.mkEnableOption "enables delta in user land"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs = {
       delta = {
         enable = true;

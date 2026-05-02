@@ -5,17 +5,9 @@
   lib,
   config,
   ...
-}: let
-  cfg = config.myHomeModules.fzf;
-in {
-  options.myHomeModules.fzf = {
-    enable =
-      lib.mkEnableOption "enables fzf"
-      // {
-        default = true;
-      };
-  };
-  config = lib.mkIf cfg.enable {
+}:
+{
+  config = {
     programs.fzf = {
       enable = true;
       enableBashIntegration = true;
