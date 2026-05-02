@@ -91,12 +91,6 @@ in {
       base16Scheme = "gruvbox-material-dark-medium";
     };
 
-    t14g1 = mkSystem {
-      user = "jmfv";
-      hostName = "t14g1";
-      base16Scheme = "gruvbox-dark-hard";
-    };
-
     sartre = mkSystem {
       user = "jmfv";
       hostName = "sartre";
