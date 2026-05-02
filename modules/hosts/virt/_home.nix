@@ -1,40 +1,37 @@
 {
   pkgs,
   inputs,
+  base16Scheme,
   ...
 }: {
-  imports = with inputs.self.modules.homeManager; [
-    bash
-    btop
-    delta
-    direnv
-    eza
-    fd
-    fish
-    flameshot
-    fzf
-    git
-    neovim
-    ripgrep
-    starship
-    tmux
-    wezterm
-    zoxide
+  imports =
+    [
+      inputs.nix-colors.homeManagerModules.default
+    ]
+    ++ (with inputs.self.modules.homeManager; [
+      bash
+      btop
+      delta
+      direnv
+      eza
+      fd
+      fish
+      flameshot
+      fzf
+      git
+      neovim
+      ripgrep
+      starship
+      tmux
+      wezterm
+      zoxide
 
-    i3-stack
-    wallpapers
-    xdg
-  ];
+      i3-stack
+      wallpapers
+      xdg
+    ]);
 
-  myHomeModules = {
-    window-manager = {
-    };
-
-
-
-
-
-  };
+  colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   home = {
     packages = with pkgs; [

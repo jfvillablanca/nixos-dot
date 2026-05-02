@@ -59,6 +59,10 @@ in {
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment = {
+      pathsToLink = [
+        "/share/applications"
+        "/share/xdg-desktop-portal"
+      ];
       systemPackages = with pkgs; [
         wget
       ];
