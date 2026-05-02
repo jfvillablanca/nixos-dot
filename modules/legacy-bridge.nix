@@ -151,6 +151,9 @@ in {
       user = "jmfv";
       hostName = "sartre";
       base16Scheme = "rose-pine-moon";
+      hostDir = self + /modules/hosts/sartre;
+      configFile = "_configuration.nix";
+      homeFile = "_home.nix";
     };
   };
 
@@ -190,7 +193,7 @@ in {
               nerd-fonts.jetbrains-mono
             ];
           }
-          (self + /hosts/sartre/home.nix)
+          (self + /modules/hosts/sartre/_home.nix)
         ]
         ++ ported-home-modules;
 

@@ -7,8 +7,8 @@
   ...
 }: {
   imports = [
-    # ./hardware-configuration.nix
-    # ./disko.nix
+    # ./_hardware-configuration.nix
+    # ./_disko.nix
 
     inputs.self.nixosModules.internationalization
     # inputs.self.nixosModules.virtual-fs
@@ -25,7 +25,7 @@
     enable = true;
     # NOTE: unfortunately, stylix.image is non-optional
     # https://github.com/danth/stylix/issues/200
-    image = ../../homeModules/system/wallpapers/samuraidoge.png;
+    image = ../../../homeModules/system/wallpapers/samuraidoge.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
     cursor = {
