@@ -25,7 +25,7 @@
     enable = true;
     # NOTE: unfortunately, stylix.image is non-optional
     # https://github.com/danth/stylix/issues/200
-    image = ../../home/wallpapers/samuraidoge.png;
+    image = ../../desktop/wallpapers/samuraidoge.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
     cursor = {

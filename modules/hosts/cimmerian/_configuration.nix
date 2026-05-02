@@ -24,7 +24,7 @@
 
   stylix = {
     enable = true;
-    image = ../../home/wallpapers/samuraidoge.png;
+    image = ../../desktop/wallpapers/samuraidoge.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
     polarity = "dark";
     cursor = {
