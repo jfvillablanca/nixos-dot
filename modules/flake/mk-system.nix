@@ -97,12 +97,6 @@ in {
       base16Scheme = "gruvbox-dark-hard";
     };
 
-    cimmerian = mkSystem {
-      user = "jmfv";
-      hostName = "cimmerian";
-      base16Scheme = "spaceduck";
-    };
-
     sartre = mkSystem {
       user = "jmfv";
       hostName = "sartre";
