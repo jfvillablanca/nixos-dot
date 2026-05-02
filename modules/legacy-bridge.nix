@@ -127,6 +127,9 @@ in {
       user = "jmfv";
       hostName = "virt";
       base16Scheme = "gruvbox-material-dark-medium";
+      hostDir = self + /modules/hosts/virt;
+      configFile = "_configuration.nix";
+      homeFile = "_home.nix";
     };
 
     t14g1 = mkSystem {

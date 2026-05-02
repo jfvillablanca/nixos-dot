@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
+    ./_hardware-configuration.nix
 
     inputs.self.nixosModules.kmonad
     inputs.self.nixosModules.doas
