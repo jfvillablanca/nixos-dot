@@ -16,7 +16,7 @@
 
       # NOTE: Authentication Issue
       # https://github.com/aome510/spotify-player/issues/802#issuecomment-3191659178
-      (import (self + /modules/home/spotify-player/_overlay.nix))
+      (import (self + /modules/programs/spotify-player/_overlay.nix))
     ];
   };
 
