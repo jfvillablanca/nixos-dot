@@ -22,18 +22,11 @@ in {
       ./_hardware-configuration.nix
       ./_disko.nix
 
+      self.modules.nixos.system-desktop
+      self.modules.nixos.steam
+      self.modules.nixos.laptop-power-management
       self.modules.nixos.kmonad
       self.modules.nixos.doas
-      self.modules.nixos.internationalization
-      self.modules.nixos.virtual-fs
-      self.modules.nixos.network-manager
-      self.modules.nixos.nix
-      self.modules.nixos.timezone
-      self.modules.nixos.laptop-power-management
-      self.modules.nixos.fonts
-      self.modules.nixos.sound
-      self.modules.nixos.bluetooth
-      self.modules.nixos.steam
     ];
 
     networking.hostName = "t14g1";

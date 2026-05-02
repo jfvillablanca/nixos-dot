@@ -18,14 +18,10 @@ in {
     imports = [
       ./_hardware-configuration.nix
 
+      self.modules.nixos.system-cli
       self.modules.nixos.kmonad
       self.modules.nixos.doas
-      self.modules.nixos.internationalization
-      self.modules.nixos.network-manager
-      self.modules.nixos.nix
       self.modules.nixos.spice-vda
-      self.modules.nixos.timezone
-      self.modules.nixos.fonts
     ];
 
     networking.hostName = "virt";

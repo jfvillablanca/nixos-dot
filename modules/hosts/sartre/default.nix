@@ -20,14 +20,7 @@ in {
       # ./_hardware-configuration.nix
       # ./_disko.nix
 
-      self.modules.nixos.internationalization
-      # self.modules.nixos.virtual-fs
-      # self.modules.nixos.network-manager
-      self.modules.nixos.nix
-      self.modules.nixos.timezone
-      self.modules.nixos.fonts
-      # self.modules.nixos.sound
-      # self.modules.nixos.bluetooth
+      self.modules.nixos.system-default
       self.modules.nixos.steam
     ];
 
