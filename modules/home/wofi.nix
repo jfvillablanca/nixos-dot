@@ -1,5 +1,5 @@
 {
-  flake.homeModules.wofi =
+  flake.modules.homeManager.wofi =
 {
   lib,
   config,

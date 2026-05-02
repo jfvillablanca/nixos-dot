@@ -1,5 +1,5 @@
 {
-  flake.homeModules.firefox =
+  flake.modules.homeManager.firefox =
 {
   inputs,
   pkgs,

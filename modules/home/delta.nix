@@ -1,5 +1,5 @@
 {
-  flake.homeModules.delta =
+  flake.modules.homeManager.delta =
 {
   lib,
   config,

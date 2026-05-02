@@ -1,5 +1,5 @@
 {
-  flake.homeModules.zoxide =
+  flake.modules.homeManager.zoxide =
 {
   lib,
   config,

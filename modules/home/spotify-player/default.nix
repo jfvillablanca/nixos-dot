@@ -1,5 +1,5 @@
 {
-  flake.homeModules.spotify-player =
+  flake.modules.homeManager.spotify-player =
 {
   lib,
   config,

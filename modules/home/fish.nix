@@ -1,5 +1,5 @@
 {
-  flake.homeModules.fish =
+  flake.modules.homeManager.fish =
 {
   lib,
   config,

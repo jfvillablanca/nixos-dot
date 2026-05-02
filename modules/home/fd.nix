@@ -1,5 +1,5 @@
 {
-  flake.homeModules.fd =
+  flake.modules.homeManager.fd =
 {
   lib,
   config,

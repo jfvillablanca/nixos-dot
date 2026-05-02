@@ -1,5 +1,5 @@
 {
-  flake.homeModules.gitui =
+  flake.modules.homeManager.gitui =
 {
   lib,
   config,

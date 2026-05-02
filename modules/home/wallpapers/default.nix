@@ -1,5 +1,5 @@
 {
-  flake.homeModules.wallpapers = {
+  flake.modules.homeManager.wallpapers = {
     lib,
     config,
     ...

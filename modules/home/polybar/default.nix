@@ -1,5 +1,5 @@
 {
-  flake.homeModules.polybar =
+  flake.modules.homeManager.polybar =
 {
   lib,
   config,

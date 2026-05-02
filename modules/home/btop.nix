@@ -1,5 +1,5 @@
 {
-  flake.homeModules.btop =
+  flake.modules.homeManager.btop =
 {
   lib,
   config,

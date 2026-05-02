@@ -1,5 +1,5 @@
 {
-  flake.homeModules.gh =
+  flake.modules.homeManager.gh =
 {
   lib,
   config,

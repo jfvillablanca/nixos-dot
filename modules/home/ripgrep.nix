@@ -1,5 +1,5 @@
 {
-  flake.homeModules.ripgrep =
+  flake.modules.homeManager.ripgrep =
 {
   lib,
   config,

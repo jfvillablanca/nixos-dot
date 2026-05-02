@@ -1,5 +1,5 @@
 {
-  flake.homeModules.fzf =
+  flake.modules.homeManager.fzf =
 {
   pkgs,
   lib,

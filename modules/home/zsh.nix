@@ -1,5 +1,5 @@
 {
-  flake.homeModules.zsh =
+  flake.modules.homeManager.zsh =
 {
   lib,
   config,

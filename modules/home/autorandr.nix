@@ -1,5 +1,5 @@
 {
-  flake.homeModules.autorandr =
+  flake.modules.homeManager.autorandr =
 {
   lib,
   config,

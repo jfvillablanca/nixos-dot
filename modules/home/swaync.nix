@@ -1,5 +1,5 @@
 {
-  flake.homeModules.swaync =
+  flake.modules.homeManager.swaync =
 {
   inputs,
   lib,

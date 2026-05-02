@@ -1,6 +1,6 @@
 # Standalone home-manager configuration for `home-manager switch --flake .#jmfv`.
 # Reuses sartre's _home.nix as the host-specific layer and pulls in every
-# ported home module via flake.homeModules.
+# ported home module via flake.modules.homeManager.
 {
   inputs,
   self,
@@ -48,7 +48,7 @@
           }
           (self + /modules/hosts/sartre/_home.nix)
         ]
-        ++ builtins.attrValues config.flake.homeModules;
+        ++ builtins.attrValues config.flake.modules.homeManager;
     };
   };
 }

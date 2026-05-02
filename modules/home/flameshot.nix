@@ -1,5 +1,5 @@
 {
-  flake.homeModules.flameshot =
+  flake.modules.homeManager.flameshot =
 {
   lib,
   config,

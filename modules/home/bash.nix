@@ -1,5 +1,5 @@
 {
-  flake.homeModules.bash =
+  flake.modules.homeManager.bash =
 {
   lib,
   config,

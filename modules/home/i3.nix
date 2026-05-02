@@ -1,5 +1,5 @@
 {
-  flake.homeModules.i3 =
+  flake.modules.homeManager.i3 =
 {
   pkgs,
   lib,

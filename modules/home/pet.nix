@@ -1,5 +1,5 @@
 {
-  flake.homeModules.pet =
+  flake.modules.homeManager.pet =
 {
   lib,
   config,

@@ -80,7 +80,7 @@
                 }
                 (hostDir + ("/" + homeFile))
               ]
-              ++ builtins.attrValues config.flake.homeModules;
+              ++ builtins.attrValues config.flake.modules.homeManager;
           };
         }
       ];

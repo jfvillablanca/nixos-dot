@@ -1,5 +1,5 @@
 {
-  flake.homeModules.picom =
+  flake.modules.homeManager.picom =
 {
   lib,
   config,

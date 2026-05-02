@@ -1,5 +1,5 @@
 {
-  flake.homeModules.window-manager =
+  flake.modules.homeManager.window-manager =
 {
   pkgs,
   lib,
