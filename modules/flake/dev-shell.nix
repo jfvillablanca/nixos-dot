@@ -16,6 +16,9 @@
         deadnix
         nil
         nixd
+
+        # Task runner — see ./justfile for nvim-{baseline,gate,exp,exp-smoke}.
+        just
       ];
 
       # Installs the cachix/git-hooks pre-commit hook on `nix develop`
