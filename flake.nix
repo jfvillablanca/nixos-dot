@@ -41,6 +41,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Independently-advanceable nightly-overlay used only by
+    # `flake.packages.x86_64-linux.nvim-experimental`. Bumping this never
+    # moves cimmerian's daily-driver `.#nvim`, and vice versa. Advance
+    # via `nix flake update neovim-nightly-overlay-experimental`.
+    neovim-nightly-overlay-experimental = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
