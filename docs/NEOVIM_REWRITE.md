@@ -481,10 +481,42 @@ needs (telescope → ripgrep, none-ls → its formatter set, copilot.lua
 
 **Phase 4 — factory + host imports.**
 
-1. Expose `flake.factory.nvim` taking `{ colorscheme, tools, plugins.disabled, pkgs }`.
-2. Hosts (cimmerian, t14g1) import the factory, pass their preferences
-   (e.g. `colorscheme = "spaceduck"` from stylix slug).
-3. NVD-gate cimmerian to confirm closure equivalence.
+`flake.factory.nvim` (declared in `modules/programs/neovim-experimental/factory/`)
+is a Factory Aspect that produces a wrapped nvim derivation parameterized
+by host preferences. Same Factory pattern as `flake.factory.user`.
+
+```nix
+flake.factory.nvim = {
+  system,                         # required
+  colorscheme ? null,             # full colorscheme name (e.g. "base16-spaceduck")
+  base16 ? false,                 # include base16-nvim in the closure
+  debugEnable ? false,            # nvim.tools.debug.enable
+  markdownPreviewEnable ? false,  # nvim.tools.markdown-preview.enable
+  extraOverlays ? [],             # additional pkgs overlays
+  extraModules ? [],              # additional module-system overrides
+}: <wrapped nvim derivation>;
+```
+
+Per-host packages call the factory with their preferences from
+`modules/flake/packages.nix`:
+
+| Package                         | Variant                                                      |
+| ------------------------------- | ------------------------------------------------------------ |
+| `.#nvim-experimental`           | standalone, no host inference                                |
+| `.#nvim-experimental-cimmerian` | `base16-spaceduck` + debug + md-preview + eslint/texlab LSPs |
+| `.#nvim-experimental-t14g1`     | `base16-gruvbox-dark-hard` + same tool gates                 |
+
+Convenience targets in `justfile`:
+
+```fish
+just nvim-exp             # standalone
+just nvim-exp-cimmerian   # cimmerian-flavored
+just nvim-exp-t14g1       # t14g1-flavored
+```
+
+`.#nvim` (cimmerian's daily driver via the home-manager eval) is
+unaffected by Phase 4 — adding flake-package outputs doesn't touch
+cimmerian's NixOS closure. NVD-gate stays byte-equal.
 
 **Phase 5 — promotion.**
 
