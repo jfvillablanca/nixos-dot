@@ -205,15 +205,21 @@ runtimepath) rather than appending to `extraLuaConfig`. This makes the
 generated code debuggable — you can `:edit $VIMRUNTIME/lua/_spine-keymaps.lua`
 and read what the build produced.
 
-### Spines in Phase 1
+### Spines in use
 
-| Spine       | Option             | Consumer                                            | Status  |
-| ----------- | ------------------ | --------------------------------------------------- | ------- |
-| keymaps     | `nvim.keymaps`     | which-key (Phase 2) + `vim.keymap.set` (Phase 1)    | Phase 1 |
-| lsp-servers | `nvim.lsp.servers` | `vim.lsp.config` + `vim.lsp.enable` (native, 0.11+) | Phase 1 |
-| treesitter  | (passive)          | per-FileType `vim.treesitter.start()` autocmd       | Phase 1 |
+| Spine        | Option                                          | Consumer                                                                                                                  |
+| ------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| keymaps      | `nvim.keymaps`                                  | `vim.keymap.set` per entry; which-key auto-discovers descs                                                                |
+| lsp-servers  | `nvim.lsp.servers`                              | `vim.lsp.config` + `vim.lsp.enable` (native, 0.11+)                                                                       |
+| lsp-attach   | `nvim.lsp.{formatProviderDisable,formatOnSave}` | `LspAttach` autocmd: per-buffer keymaps (K/gd/gD/gI/gr/`<leader>l*`), diagnostic config, hover/sig border, format-on-save |
+| treesitter   | (passive)                                       | per-FileType `vim.treesitter.start()` autocmd                                                                             |
+| env-finalize | (none — `nvim.spineLua.zzz_env_finalize`)       | runs last; honors `NVIM_TRUECOLOR` + `NVIM_LOCAL_INIT`                                                                    |
 
-### Spines in Phase 2
+`lib/env-bootstrap/` is not a spine — it contributes to `nvim.extraLuaConfig`
+with `lib.mkOrder 100` so it runs before core options and per-plugin configs,
+populating `_G.NVIM_DISABLED` for `_G.nvim_disabled("<name>")` checks.
+
+### Spines deferred (no current contributor)
 
 | Spine       | Option                               | Consumer  |
 | ----------- | ------------------------------------ | --------- |
@@ -222,6 +228,9 @@ and read what the build produced.
 | formatters  | `nvim.formatters`                    | none-ls   |
 | linters     | `nvim.linters`                       | none-ls   |
 | dap         | `nvim.dap.{adapters,configurations}` | nvim-dap  |
+
+These plugins ship with their config inline today; spines get added when a
+contributor needs them.
 
 ## Treesitter strategy (Path B: passive parser asset)
 
@@ -251,30 +260,46 @@ library. Trade-off accepted in design discussion.
 
 ## Override knobs
 
-The per-plugin `nvim.plugins.<name>.package` is the primary knob. Three
-override flavors:
+The per-plugin `nvim.plugins.<name>.package` is the primary knob. Override
+flavors:
 
 1. **nixpkgs default (no work)** — `package = pkgs.vimPlugins.<name>`.
-2. **Per-plugin upstream input** — for a single plugin that's broken
-   in nixpkgs, add a flake input pinned to the upstream rev:
+2. **Per-plugin upstream input via flake-file.** Each plugin module
+   colocates its own flake input + builds from upstream HEAD. Canonical
+   shape (`plugins/oil/default.nix`):
+
    ```nix
-   # flake.nix
-   inputs.upstream-oil = { url = "github:stevearc/oil.nvim"; flake = false; };
+   {lib, ...}: {
+     flake-file.inputs.plugin-oil-nvim = {
+       url = "github:stevearc/oil.nvim";
+       flake = false;
+     };
+     flake.modules.nvim.oil = {config, inputs, pkgs, ...}: {
+       options.nvim.plugins.oil.package = lib.mkOption {
+         type = lib.types.package;
+         default = pkgs.vimUtils.buildVimPlugin {
+           pname = "oil-nvim";
+           version = "upstream-${inputs.plugin-oil-nvim.shortRev or "head"}";
+           src = inputs.plugin-oil-nvim;
+         };
+       };
+       # ...
+     };
+   }
    ```
-   ```nix
-   # plugins/oil/default.nix consumer-side override
-   nvim.plugins.oil.package = pkgs.vimUtils.buildVimPlugin {
-     pname = "oil-nvim"; version = "upstream";
-     src = inputs.upstream-oil;
-   };
-   ```
+
+   Workflow: edit module → `nix run .#write-flake` → `nix flake lock`
+   (or `nix flake update plugin-oil-nvim` later) → commit `flake.nix`
+   - `flake.lock` + module together. `nix flake check` fails if
+     `flake.nix` is stale w.r.t. the module declarations.
+
 3. **Bulk upstream pins via overlay** — a `_overlay.nix` under the
    experimental tree that swaps multiple `pkgs.vimPlugins.*` entries.
    Reserved for "we're tracking many plugins ahead of nixpkgs."
 
-The mantra: **as many flake inputs as necessary to keep things stable.**
+Mantra: **as many flake inputs as necessary to keep things stable.**
 If a plugin is broken when built from nixpkgs's pinned rev, add an
-input from a rev that ships a stable or patched version.
+upstream-pinned input via flake-file.
 
 ## The two-input neovim strategy
 
@@ -385,49 +410,29 @@ annotations so generated code is self-documenting.
 
 ## Phased rollout
 
-**Phase 1 — pipeline proven end-to-end.**
+**Phase 1 — pipeline proven end-to-end. Done.**
 
-1. Design doc (this file).
-2. Second pinned `neovim-nightly-overlay-experimental` flake input.
-3. Just-driven stability gate (`just nvim-baseline`, `just nvim-gate`,
-   `just nvim-exp-smoke`); `pkgs.just` in the dev shell.
-4. Aggregator skeleton: `default.nix` + `_wrapper.nix` +
-   `_skeleton-options.nix` + `.luarc.json`. Builds an empty wrapped
-   neovim.
-5. Spines: keymaps, lsp-servers, treesitter (Path B passive).
-6. Core config: options, keymaps, autocommands.
-7. Colorscheme option module (no plugin until base16-nvim is wired in
-   for slug consumers).
-8. Three representative plugins: oil (Simple Aspect), gitsigns
-   (spine contributor), telescope (spine consumer for extensions).
-9. One LSP server module (lua-ls) to exercise the lsp-servers spine.
+Aggregator skeleton (`default.nix` + `_wrapper.nix` +
+`_skeleton-options.nix` + `.luarc.json`) wraps `neovim-unwrapped` via
+`wrapNeovimUnstable`. Stability gate (`just nvim-baseline` /
+`just nvim-gate`) was set up against cimmerian's daily-driver baseline.
+Spines — keymaps, lsp-servers, treesitter (Path B passive). Core config
+ported (options, keymaps, autocommands). Three representative plugins
+proved Simple Aspect + spine-contributor + spine-consumer patterns
+(oil, gitsigns, telescope). lua-ls server module exercised the
+lsp-servers spine.
 
-After Phase 1: `nix run .#nvim-experimental` produces a runnable nvim
-with three plugins and one configured LSP server. The pipeline is
-proven; subsequent commits are bulk plugin ports.
+**Phase 2 — bulk plugin port. Done.**
 
-**Phase 2 — bulk plugin port.**
+Every plugin from the original `modules/programs/neovim/default.nix`
+sweep verdict ported as its own commit. Remaining ports landed in
+audit closeout (see below). Daily-driver gate stayed byte-equal
+throughout. Caveat: a stretch of commits in Phase 2 didn't build
+`.#nvim-experimental` cleanly because the gate only watches `.#nvim`;
+the working overlay fix landed in `d81f182`. See git log around
+`4e98912..d81f182`.
 
-One commit per plugin module, in this order:
-
-1. Trivially-config'd: oil (already), nvim-autopairs, nvim-surround,
-   treesj, indent-blankline-nvim, flash-nvim, todo-comments-nvim,
-   nvim-highlight-colors, cellular-automaton-nvim, nvim-ts-autotag,
-   nvim-web-devicons, vim-fugitive, refactoring-nvim, trouble-nvim.
-2. Spine-heavy: which-key (consumer), gitsigns (already), lualine
-   (statusline spine), blink.cmp (cmp-sources spine).
-3. LSP servers: bash-language-server, vtsls, tailwindcss, html/css/json
-   (vscode-langservers-extracted), texlab.
-4. Language-specific: nvim-vtsls, go-nvim (lazy), rustaceanvim (lazy).
-5. Big config: telescope (already), nvim-treesitter passive +
-   textobjects + context, none-ls.
-6. Optional / gated: nvim-dap (`tools.debug`), markdown-preview
-   (`tools.markdown-preview`), copilot.lua, base16-nvim (slug-gated).
-
-After every plugin commit: `just nvim-gate` confirms `.#nvim` is
-unchanged.
-
-**Phase 3 — portability hardening (foreign hosts).**
+**Phase 3 — portability hardening (foreign hosts). Done.**
 
 Four env-var overrides for foreign-host runs. Plumbing lives in
 `lib/env-bootstrap/` (runs before per-plugin configs) and
@@ -479,7 +484,7 @@ needs (telescope → ripgrep, none-ls → its formatter set, copilot.lua
 → withNodeJs). LSP servers contribute their packages via the
 `lsp-servers` spine.
 
-**Phase 4 — factory + host imports.**
+**Phase 4 — factory + host imports. Done.**
 
 `flake.factory.nvim` (declared in `modules/programs/neovim-experimental/factory/`)
 is a Factory Aspect that produces a wrapped nvim derivation parameterized
@@ -518,13 +523,75 @@ just nvim-exp-t14g1       # t14g1-flavored
 unaffected by Phase 4 — adding flake-package outputs doesn't touch
 cimmerian's NixOS closure. NVD-gate stays byte-equal.
 
-**Phase 5 — promotion.**
+## Audit and closeout (between Phase 4 and Phase 5)
 
-When the user pulls the trigger: `flake.packages.x86_64-linux.nvim`
-re-points at `nvim-experimental` (or the factory call cimmerian uses).
-Old `modules/programs/neovim/` is removed.
+A full audit ran before promotion. Goals 1, 3, 4 hit cleanly. Goal 2
+(override knob) was structurally present but never exercised
+end-to-end. Daily-driver feature parity had real gaps.
 
-## Future work (Phase 2+)
+Closeout fixes landed:
+
+| Gap                                                                                                      | Fix                                                                                                                                                                                                                |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| LSP attach behavior absent (no nav keymaps, no format-on-save, no diagnostic config)                     | `lib/lsp-attach/` spine: LspAttach autocmd, K/gd/gD/gI/gr/`<leader>l*` keymaps, format-on-save filtered to null-ls, hover/sig border, per-server formatter disable list                                            |
+| Buffer/window keymaps `<leader>{w,q,c,d}` missing                                                        | Added to `core/keymaps/_keymaps.lua` under "User shortcuts" section                                                                                                                                                |
+| Telescope `<leader>t*` muscle memory broken                                                              | `plugins/telescope/`: restored `<leader>t{f,h,b,c,C,R,k,o,r,w}` + `<leader>/` + `<leader><space>`                                                                                                                  |
+| Missing LSP servers (nixd, pylsp, ccls)                                                                  | Per-server modules under `lsp/servers/`. nixd default-on (cimmerian/t14g1 wire NixOS options expansion via factory `extraModules`); pylsp/ccls default-off. nil_ls/prismals/purescriptls explicitly dropped        |
+| Override knob (Goal 2) never exercised                                                                   | Adopted vic/flake-file for decentralized input declarations. oil-nvim is the proof-of-life — declares `flake-file.inputs.plugin-oil-nvim` from within its own module and builds via `pkgs.vimUtils.buildVimPlugin` |
+| Per-server formatter clash with none-ls                                                                  | `lua-ls`, `vtsls`, `nixd`, `pylsp` modules each contribute their server name to `nvim.lsp.formatProviderDisable`                                                                                                   |
+| Misc keymap parity (`<leader>g{n,t}` diffget, `<leader>fm{l,g,s}` fun, `<leader>h{u,R}` gitsigns extras) | Filled in across `vim-fugitive`, `cellular-automaton`, `gitsigns` modules                                                                                                                                          |
+
+**Findings the user explicitly accepted as wontfix:**
+
+- **Closure size larger than `.#nvim`** (3.6 GiB vs 3.2 GiB). The
+  experimental package bakes language toolchains and LSP servers into
+  the closure (gopls, rust-analyzer, clang-tools, lua-language-server,
+  formatter set). The original daily driver picks these up from
+  cimmerian's system-level packages on `$PATH`. Accepted for
+  portability symmetry across hosts.
+- Some Phase 2 commits don't build `.#nvim-experimental` individually —
+  bisect-hostile but doesn't affect daily driver. Not worth a rebase.
+
+## Phase 5 — promotion (planned)
+
+Trial period first: the user daily-drives `.#nvim-experimental-cimmerian`
+for ~1 week before promotion. Issues found during the trial get
+filed/fixed in the experimental tree without touching `.#nvim`.
+
+### Pre-promotion checklist
+
+Future session before promoting should re-verify:
+
+1. `just nvim-gate` byte-equal to baseline.
+2. `nix run .#nvim-experimental-cimmerian` smoke (open nvim, hit
+   `<leader>ff`, `K` on a symbol, save a `.lua` file, confirm format).
+3. cimmerian-only LSP servers attach (`bashls`, `lua_ls`, `nixd`,
+   `vtsls`, `tailwindcss`, `html/css/json`, `eslint`, `texlab`).
+4. None-ls formatters work end-to-end (stylua, alejandra, black, etc.).
+5. Sartre (WSL) smoke test — confirm `nix run .#nvim-experimental` with
+   `NVIM_DISABLE=copilot NVIM_TRUECOLOR=0` if needed.
+6. No new daily-driver muscle-memory gaps the user noticed during trial.
+
+### Promotion steps
+
+1. Capture cimmerian's NixOS baseline:
+   `nix build .#nixosConfigurations.cimmerian.config.system.build.toplevel`.
+2. In cimmerian's `_home.nix`, replace
+   `inputs.self.modules.homeManager.neovim` import with the equivalent
+   that consumes `flake.factory.nvim {...}` (set `programs.neovim.package`
+   directly or via a thin home-manager module).
+3. Re-build; NVD-diff vs baseline. Acceptable: version changes for the
+   neovim plugin set + extraPackages (expected; new closure shape).
+4. Switch `flake.packages.x86_64-linux.nvim` in
+   `modules/flake/packages.nix` to re-export the cimmerian-flavored
+   experimental output (or drop the alias if redundant with
+   `nvim-experimental-cimmerian`).
+5. Remove `modules/programs/neovim/` (the old tree).
+6. Pin a NEW baseline for `.#nvim` (it's now the experimental closure)
+   so future audits gate against it.
+7. Update memory + this doc to reflect promoted state.
+
+## Remaining future work
 
 - **Project-aware lazy loading.** Plugin modules already declare
   `lazy.event` / `lazy.cmd` / `lazy.ft` triggers; the lazy runner
@@ -532,10 +599,12 @@ Old `modules/programs/neovim/` is removed.
   that reads the triggers and `packadd`s on FileType.
 - **Project-aware formatters/linters.** none-ls's `condition` callbacks
   enable per-project tool selection. Wire via the formatters/linters
-  spines.
+  spines (currently deferred — none-ls is configured rigidly).
 - **Build variants.** `nvim-experimental-minimal` (no markdown-preview,
   no debug, no AI) and `nvim-experimental-full`. Two collectors
-  importing different subsets.
-- **flake-file adoption.** When the per-plugin upstream-input list
-  grows past a handful, migrate `inputs` declarations into per-plugin
-  feature modules via vic/flake-file.
+  importing different subsets via the factory.
+- **More upstream pins via flake-file.** Pattern is proven for oil; add
+  more as plugins drift from nixpkgs's pinned revs.
+- **Foreign-host extras.** copilot is the only plugin that opts into
+  `_G.nvim_disabled("...")` today. Add to other auth-needing or
+  network-using plugins when a real foreign-host case shows up.
