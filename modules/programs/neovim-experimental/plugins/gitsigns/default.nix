@@ -1,6 +1,3 @@
-# gitsigns-nvim — gutter signs + hunk operations. The spine contributor that
-# proves cross-cutting concerns: contributes its hunk-navigation keymaps to
-# `nvim.keymaps` (consumed by which-key in Phase 2; vim.keymap.set today).
 {lib, ...}: {
   flake.modules.nvim.gitsigns = {
     config,
@@ -67,6 +64,20 @@
           lhs = "<leader>hr";
           rhs = "<cmd>Gitsigns reset_hunk<cr>";
           desc = "Reset hunk";
+          group = "git";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>hu";
+          rhs = "<cmd>Gitsigns undo_stage_hunk<cr>";
+          desc = "Undo stage hunk";
+          group = "git";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>hR";
+          rhs = "<cmd>Gitsigns reset_buffer<cr>";
+          desc = "Reset buffer";
           group = "git";
         }
       ];

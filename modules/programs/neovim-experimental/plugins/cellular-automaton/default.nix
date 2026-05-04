@@ -20,6 +20,30 @@
           lazy.cmd = ["CellularAutomaton"];
         }
       ];
+
+      nvim.keymaps = [
+        {
+          mode = "n";
+          lhs = "<leader>fml";
+          rhs = "<cmd>CellularAutomaton make_it_rain<cr>";
+          desc = "Make it rain";
+          group = "fun";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>fmg";
+          rhs = "<cmd>CellularAutomaton game_of_life<cr>";
+          desc = "Game of life";
+          group = "fun";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>fms";
+          rhs = "<cmd>CellularAutomaton scramble<cr>";
+          desc = "Scramble";
+          group = "fun";
+        }
+      ];
     };
   };
 }

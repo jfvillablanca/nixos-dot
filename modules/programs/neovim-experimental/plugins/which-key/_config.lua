@@ -44,4 +44,5 @@ wk.add({
     { "<leader>l", group = "lsp" },
     { "<leader>b", group = "debug" },
     { "<leader>m", group = "treesj" },
+    { "<leader>fm", group = "fun (cellular-automaton)" },
 })
