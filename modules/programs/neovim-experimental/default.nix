@@ -7,16 +7,12 @@
 #    `flake.modules.nvim.default` via module-system imports, so a single
 #    entry point composes the full config.
 #
-# 2. Build: `flake.packages.x86_64-linux.nvim-experimental` evaluates the
-#    collected module set with `lib.evalModules` against the option types
-#    in `./_skeleton-options.nix`, then feeds the result to
-#    `./_wrapper.nix` (a callPackage helper that wraps nvim-unwrapped).
-#
-# The build path goes through neither nixosConfigurations nor home-manager.
-# `pkgs` here is built from `inputs.neovim-nightly-overlay-experimental` so
-# bumping that input never touches cimmerian's `.#nvim`.
+# 2. Build: `flake.packages.x86_64-linux.nvim-experimental` calls
+#    `flake.factory.nvim` (declared in ./factory/default.nix) with no
+#    host-specific overrides, producing the standalone variant. Per-host
+#    variants (`.#nvim-experimental-cimmerian`, `.#nvim-experimental-t14g1`)
+#    call the same factory with their slugs from modules/flake/packages.nix.
 {
-  inputs,
   lib,
   self,
   ...
@@ -26,40 +22,6 @@
     (lib.filterAttrs (n: _: n != "default") (self.modules.nvim or {}));
 
   perSystem = {system, ...}: {
-    packages.nvim-experimental = let
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          inputs.neovim-nightly-overlay-experimental.overlays.default
-          # Skip flaky upstream tests. neotest's treesitter parsing test is
-          # broken in nixpkgs's pinned tree-sitter grammars; rustaceanvim
-          # depends on neotest transitively. The lua-package layer is what
-          # fails (luajitPackages.neotest); override it via luajit's
-          # packageOverrides hook.
-          (_: prev: {
-            luajit = prev.luajit.override {
-              packageOverrides = _: luaprev: {
-                neotest = luaprev.neotest.overrideAttrs (_: {doCheck = false;});
-              };
-            };
-          })
-        ];
-      };
-
-      eval = lib.evalModules {
-        specialArgs = {inherit inputs lib pkgs;};
-        modules = [
-          ./_skeleton-options.nix
-          self.modules.nvim.default
-        ];
-      };
-
-      cfg = eval.config.nvim;
-    in
-      pkgs.callPackage ./_wrapper.nix {
-        plugins = cfg.plugins.list;
-        inherit (cfg) extraPackages extraLuaConfig colorscheme spineLua withNodeJs withPython3 withRuby;
-      };
+    packages.nvim-experimental = self.factory.nvim {inherit system;};
   };
 }
