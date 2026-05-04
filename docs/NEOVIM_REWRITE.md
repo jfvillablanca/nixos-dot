@@ -429,15 +429,55 @@ unchanged.
 
 **Phase 3 — portability hardening (foreign hosts).**
 
-1. Lua bootstrap reads env-var overrides:
-   - `NVIM_COLORSCHEME=<slug>` — overrides baked default.
-   - `NVIM_DISABLE=copilot,octo` — comma-separated plugin skip list.
-   - `NVIM_TRUECOLOR=0` — disables `termguicolors` for capability-poor
-     terminals.
-   - `NVIM_LOCAL_INIT=$HOME/.config/nvim-local/init.lua` — sourced last
-     if present, for per-machine tweaks without rebuilding.
-2. Smoke test on sartre (WSL Ubuntu).
-3. Each plugin's `extraPackages` reviewed for portability assumptions.
+Four env-var overrides for foreign-host runs. Plumbing lives in
+`lib/env-bootstrap/` (runs before per-plugin configs) and
+`lib/env-finalize/` (runs after, as a spine). Colorscheme override is
+inline in `_wrapper.nix`'s `customRC`.
+
+| env var            | effect                                                                            | implementation           |
+| ------------------ | --------------------------------------------------------------------------------- | ------------------------ |
+| `NVIM_DISABLE`     | comma-separated plugin skip list; plugins opt in via `_G.nvim_disabled("<name>")` | `lib/env-bootstrap/`     |
+| `NVIM_TRUECOLOR=0` | clear `termguicolors` for capability-poor terminals                               | `lib/env-finalize/`      |
+| `NVIM_COLORSCHEME` | override the build-time baked colorscheme                                         | inline in `_wrapper.nix` |
+| `NVIM_LOCAL_INIT`  | source per-machine init last; default `~/.config/nvim-local/init.lua`             | `lib/env-finalize/`      |
+
+Plugins opt into the disable gate by adding a one-liner at the top of
+their `_config.lua`:
+
+```lua
+if _G.nvim_disabled and _G.nvim_disabled("copilot") then
+  return
+end
+```
+
+Currently only `copilot.lua` opts in (the canonical foreign-host case
+since copilot needs GitHub auth). Add the same pattern to other
+plugins as portability cases come up.
+
+Smoke-test recipes (run on cimmerian for parity, then on sartre):
+
+```fish
+# Default run: all plugins active, baked colorscheme.
+nix run github:jfvillablanca/nixos-dot#nvim-experimental
+
+# Foreign-host run: skip copilot, force-disable truecolor.
+NVIM_TRUECOLOR=0 NVIM_DISABLE=copilot \
+  nix run github:jfvillablanca/nixos-dot#nvim-experimental
+
+# Custom colorscheme + per-machine init.
+NVIM_COLORSCHEME=desert NVIM_LOCAL_INIT=~/dotnvim/init.lua \
+  nix run github:jfvillablanca/nixos-dot#nvim-experimental
+
+# Headless verification.
+nix run github:jfvillablanca/nixos-dot#nvim-experimental -- \
+  --headless +'lua print("smoke: ok")' +q
+```
+
+extraPackages were audited and contain only nix-store paths — no
+host-specific assumptions. Each plugin pulls the runtime tools it
+needs (telescope → ripgrep, none-ls → its formatter set, copilot.lua
+→ withNodeJs). LSP servers contribute their packages via the
+`lsp-servers` spine.
 
 **Phase 4 — factory + host imports.**
 
