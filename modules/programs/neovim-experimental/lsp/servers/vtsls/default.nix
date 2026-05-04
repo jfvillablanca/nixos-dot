@@ -34,5 +34,8 @@
         };
       };
     };
+
+    # Defer formatting to none-ls (prettier / stylelint via the formatters spine).
+    nvim.lsp.formatProviderDisable = ["vtsls"];
   };
 }
