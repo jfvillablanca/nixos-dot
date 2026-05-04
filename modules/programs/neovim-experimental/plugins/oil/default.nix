@@ -1,8 +1,13 @@
-# oil-nvim — buffer-based file navigator. The single trivial Simple Aspect
-# plugin we use to prove the per-plugin module shape end-to-end.
+# Pinned to upstream HEAD via `flake-file.inputs.plugin-oil-nvim`.
 {lib, ...}: {
+  flake-file.inputs.plugin-oil-nvim = {
+    url = "github:stevearc/oil.nvim";
+    flake = false;
+  };
+
   flake.modules.nvim.oil = {
     config,
+    inputs,
     pkgs,
     ...
   }: {
@@ -10,8 +15,11 @@
       enable = lib.mkEnableOption "oil-nvim file navigator" // {default = true;};
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.vimPlugins.oil-nvim;
-        description = "oil-nvim source. Override to swap nixpkgs's pinned rev for upstream HEAD.";
+        default = pkgs.vimUtils.buildVimPlugin {
+          pname = "oil-nvim";
+          version = "upstream-${inputs.plugin-oil-nvim.shortRev or "head"}";
+          src = inputs.plugin-oil-nvim;
+        };
       };
     };
 

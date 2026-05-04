@@ -1081,6 +1081,22 @@
         "type": "github"
       }
     },
+    "plugin-oil-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771914681,
+        "narHash": "sha256-hoTQoNEsCbZ0aZMUUUvgkC9NYjovjUUirw2FN9b9dn0=",
+        "owner": "stevearc",
+        "repo": "oil.nvim",
+        "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevearc",
+        "repo": "oil.nvim",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -1125,6 +1141,7 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable-24-05": "nixpkgs-stable-24-05",
         "nixpkgs-stable-25-05": "nixpkgs-stable-25-05",
+        "plugin-oil-nvim": "plugin-oil-nvim",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix",
         "zen-browser": "zen-browser"

@@ -1,7 +1,7 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
     disko = {
@@ -51,6 +51,10 @@
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-stable-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
+    plugin-oil-nvim = {
+      url = "github:stevearc/oil.nvim";
+      flake = false;
+    };
     stylix.url = "github:danth/stylix";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
