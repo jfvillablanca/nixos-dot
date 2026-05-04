@@ -29,5 +29,19 @@
         }
       ];
     };
+
+    nvim-experimental-t14g1 = self.factory.nvim {
+      system = "x86_64-linux";
+      colorscheme = "base16-gruvbox-dark-hard";
+      base16 = true;
+      markdownPreviewEnable = true;
+      debugEnable = true;
+      extraModules = [
+        {
+          nvim.lsp.servers.eslint.enable = true;
+          nvim.lsp.servers.texlab.enable = true;
+        }
+      ];
+    };
   };
 }
