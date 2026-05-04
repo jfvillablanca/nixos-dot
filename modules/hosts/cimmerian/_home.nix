@@ -90,6 +90,8 @@
         zip # Zip utility
         devenv
 
+        inputs.self.packages.x86_64-linux.vimx
+
         # Browser
         # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
         google-chrome
