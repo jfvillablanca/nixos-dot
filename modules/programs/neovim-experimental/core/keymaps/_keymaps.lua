@@ -1,5 +1,12 @@
 -- Core keymaps + leader. Modern vim.keymap.set; replaces the legacy
 -- nvim_set_keymap shape used in modules/programs/neovim/lua/keymaps.lua.
+--
+-- Two sections:
+-- 1. Behavior tweaks — augment vim's defaults (centered scrolling, wrap-aware
+--    motion, stay-in-indent visual, etc.).
+-- 2. User shortcuts — leader-prefixed convenience for vim-builtin operations
+--    (save/quit/close-buffer). Plugin-bound shortcuts live in each plugin's
+--    module via the `nvim.keymaps` spine.
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -16,6 +23,8 @@ local function map(mode, lhs, rhs, o)
 end
 
 map("", "<Space>", "<Nop>")
+
+-- ===== Behavior tweaks =====
 
 -- Center cursor on vertical navigation
 map("n", "<C-d>", "<C-d>zz", { desc = "Scroll down (centered)" })
@@ -67,3 +76,11 @@ map("x", "<S-Up>", ":move '<-2<CR>gv-gv")
 
 -- Terminal: escape to normal
 map("t", "<ESC>", "<C-\\><C-n>")
+
+-- ===== User shortcuts =====
+
+-- Save / quit / close buffer. Plain vim-builtin commands.
+map("n", "<leader>w", "<cmd>w!<CR>", { desc = "Save" })
+map("n", "<leader>q", "<cmd>q!<CR>", { desc = "Quit" })
+map("n", "<leader>c", "<cmd>bd!<CR>", { desc = "Close buffer" })
+map("n", "<leader>d", "<cmd>bp|bd#<CR>", { desc = "Close buffer (keep window)" })
