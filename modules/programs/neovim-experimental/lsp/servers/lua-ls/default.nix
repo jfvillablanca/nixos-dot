@@ -28,5 +28,8 @@
         cfg.settings.Lua.workspace.library = vim.api.nvim_get_runtime_file("", true)
       '';
     };
+
+    # Defer formatting to none-ls (stylua via the formatters spine).
+    nvim.lsp.formatProviderDisable = ["lua_ls"];
   };
 }
