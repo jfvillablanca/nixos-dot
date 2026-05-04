@@ -38,7 +38,8 @@ wk.setup({
 -- keymaps' descriptions are auto-discovered from vim.keymap.set's `desc`.
 wk.add({
     { "<leader>t", group = "telescope" },
-    { "<leader>h", group = "git" },
+    { "<leader>g", group = "git (fugitive)" },
+    { "<leader>h", group = "git (hunks)" },
     { "<leader>x", group = "diag" },
     { "<leader>l", group = "lsp" },
     { "<leader>b", group = "debug" },

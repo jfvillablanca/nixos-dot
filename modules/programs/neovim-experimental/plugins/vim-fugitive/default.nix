@@ -20,6 +20,25 @@
           lazy.cmd = ["G" "Git" "Gdiffsplit" "Gread" "Gwrite" "Glog"];
         }
       ];
+
+      # Merge-conflict resolution: pick from the merge branch (//3) or the
+      # target branch (//2) inside a 3-way diff view.
+      nvim.keymaps = [
+        {
+          mode = "n";
+          lhs = "<leader>gn";
+          rhs = "<cmd>diffget //3<cr>";
+          desc = "Diffget from merge branch";
+          group = "git";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>gt";
+          rhs = "<cmd>diffget //2<cr>";
+          desc = "Diffget from target branch";
+          group = "git";
+        }
+      ];
     };
   };
 }
