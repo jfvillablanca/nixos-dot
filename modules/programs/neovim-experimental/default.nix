@@ -32,15 +32,17 @@
         config.allowUnfree = true;
         overlays = [
           inputs.neovim-nightly-overlay-experimental.overlays.default
-          # Skip flaky upstream tests that fail unrelated to our config.
-          # neotest's treesitter parsing test is broken in nixpkgs's pinned
-          # tree-sitter grammars; rustaceanvim depends on neotest transitively.
+          # Skip flaky upstream tests. neotest's treesitter parsing test is
+          # broken in nixpkgs's pinned tree-sitter grammars; rustaceanvim
+          # depends on neotest transitively. The lua-package layer is what
+          # fails (luajitPackages.neotest); override it via luajit's
+          # packageOverrides hook.
           (_: prev: {
-            vimPlugins =
-              prev.vimPlugins
-              // {
-                neotest = prev.vimPlugins.neotest.overrideAttrs (_: {doCheck = false;});
+            luajit = prev.luajit.override {
+              packageOverrides = _: luaprev: {
+                neotest = luaprev.neotest.overrideAttrs (_: {doCheck = false;});
               };
+            };
           })
         ];
       };
