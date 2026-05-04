@@ -38,6 +38,17 @@
             default = {};
             description = "Server init_options, roundtripped through vim.json.";
           };
+          preConfigLua = lib.mkOption {
+            type = lib.types.lines;
+            default = "";
+            description = ''
+              Lua snippet inserted into the spine's per-server setup block,
+              before `vim.lsp.config(name, cfg)`. Has access to `cfg` (the
+              decoded config table). Use to populate runtime-only fields like
+              `cfg.settings.Lua.workspace.library = vim.api.nvim_get_runtime_file("", true)`
+              that can't roundtrip through JSON.
+            '';
+          };
         };
       }));
       default = {};
@@ -47,34 +58,29 @@
     config = let
       enabled = lib.filterAttrs (_: srv: srv.enable) config.nvim.lsp.servers;
 
-      # Each server's lua-side config record. Settings/init_options are
-      # JSON-encoded; vim.json.decode produces the right Lua tables.
-      lspJson = builtins.toJSON (lib.mapAttrs (_: srv: {
+      # JSON-encoded static config per server. Per-server `preConfigLua` runs
+      # before `vim.lsp.config` so it can mutate `cfg` to add runtime fields.
+      serverBlock = name: srv: let
+        staticJson = builtins.toJSON {
           inherit (srv) cmd filetypes root_markers settings init_options;
-        })
-        enabled);
+        };
+      in ''
+        do
+          local cfg = vim.json.decode([==[${staticJson}]==])
+          ${srv.preConfigLua}
+          vim.lsp.config(${builtins.toJSON name}, cfg)
+          vim.lsp.enable(${builtins.toJSON name})
+        end
+      '';
     in {
       nvim.extraPackages = lib.mapAttrsToList (_: srv: srv.package) enabled;
 
       nvim.spineLua.lsp = ''
-        -- _spine_lsp.lua: synthesized from `nvim.lsp.servers.*.{cmd,filetypes,...}`.
+        -- _spine_lsp.lua: synthesized from `nvim.lsp.servers.*`.
         -- See modules/programs/neovim-experimental/lib/lsp-servers/default.nix.
         -- Uses native vim.lsp.config + vim.lsp.enable (neovim 0.11+).
 
-        ---@class NvimSpineLspServer
-        ---@field cmd string[]
-        ---@field filetypes string[]
-        ---@field root_markers string[]
-        ---@field settings table
-        ---@field init_options table
-
-        ---@type table<string, NvimSpineLspServer>
-        local servers = vim.json.decode([==[${lspJson}]==])
-
-        for name, cfg in pairs(servers) do
-          vim.lsp.config(name, cfg)
-          vim.lsp.enable(name)
-        end
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList serverBlock enabled)}
       '';
     };
   };
