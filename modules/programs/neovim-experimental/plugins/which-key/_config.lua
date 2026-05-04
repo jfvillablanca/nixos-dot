@@ -37,7 +37,7 @@ wk.setup({
 -- Group prefixes for the keymaps registered via the keymap spine. Individual
 -- keymaps' descriptions are auto-discovered from vim.keymap.set's `desc`.
 wk.add({
-    { "<leader>f", group = "find" },
+    { "<leader>t", group = "telescope" },
     { "<leader>h", group = "git" },
     { "<leader>x", group = "diag" },
     { "<leader>l", group = "lsp" },

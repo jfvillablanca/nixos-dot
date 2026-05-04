@@ -1,9 +1,3 @@
-# telescope-nvim — fuzzy picker. The largest config of the Phase 1 plugins;
-# proves the spine pattern's ability to host plugins with rich inline lua
-# while still emitting cross-cutting keymaps to the spine.
-#
-# `ripgrep` is added to extraPackages so telescope's vimgrep_arguments
-# resolve at runtime regardless of host PATH.
 {lib, ...}: {
   flake.modules.nvim.telescope = {
     config,
@@ -31,41 +25,93 @@
 
       nvim.extraPackages = [pkgs.ripgrep];
 
-      nvim.keymaps = [
+      nvim.keymaps = let
+        dropdown = name: "<cmd>lua require('telescope.builtin').${name}(require('telescope.themes').get_dropdown({previewer = false}))<cr>";
+      in [
+        # Top-level shortcuts (outside the <leader>t group).
         {
           mode = "n";
-          lhs = "<leader>ff";
-          rhs = "<cmd>Telescope find_files<cr>";
-          desc = "Find files";
-          group = "find";
-        }
-        {
-          mode = "n";
-          lhs = "<leader>fg";
+          lhs = "<leader>/";
           rhs = "<cmd>Telescope live_grep<cr>";
-          desc = "Live grep";
-          group = "find";
+          desc = "Find text";
         }
         {
           mode = "n";
-          lhs = "<leader>fb";
+          lhs = "<leader><space>";
           rhs = "<cmd>Telescope buffers<cr>";
           desc = "Buffers";
-          group = "find";
+        }
+
+        # <leader>t group.
+        {
+          mode = "n";
+          lhs = "<leader>tf";
+          rhs = dropdown "find_files";
+          desc = "Find files";
+          group = "telescope";
         }
         {
           mode = "n";
-          lhs = "<leader>fh";
-          rhs = "<cmd>Telescope help_tags<cr>";
-          desc = "Help tags";
-          group = "find";
+          lhs = "<leader>th";
+          rhs = dropdown "help_tags";
+          desc = "Find help";
+          group = "telescope";
         }
         {
           mode = "n";
-          lhs = "<leader>fr";
-          rhs = "<cmd>Telescope resume<cr>";
-          desc = "Resume last picker";
-          group = "find";
+          lhs = "<leader>tb";
+          rhs = "<cmd>Telescope git_branches<cr>";
+          desc = "Checkout branch";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tc";
+          rhs = "<cmd>Telescope git_commits<cr>";
+          desc = "Checkout commit";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tC";
+          rhs = "<cmd>Telescope commands<cr>";
+          desc = "Commands";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tR";
+          rhs = "<cmd>Telescope registers<cr>";
+          desc = "Registers";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tk";
+          rhs = "<cmd>Telescope keymaps<cr>";
+          desc = "Keymaps";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>to";
+          rhs = "<cmd>Telescope git_status<cr>";
+          desc = "Open changed file";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tr";
+          rhs = "<cmd>Telescope oldfiles<cr>";
+          desc = "Recent files";
+          group = "telescope";
+        }
+        {
+          mode = "n";
+          lhs = "<leader>tw";
+          rhs = "<cmd>Telescope grep_string<cr>";
+          desc = "Search current word";
+          group = "telescope";
         }
       ];
     };
