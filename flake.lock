@@ -223,9 +223,26 @@
         "type": "github"
       }
     },
+    "flake-file": {
+      "locked": {
+        "lastModified": 1777679829,
+        "narHash": "sha256-zQxY90pq7BDbeimAiOfuK2U0huzo6oHOiC8zEpRgsbQ=",
+        "owner": "vic",
+        "repo": "flake-file",
+        "rev": "04ca28cf570276e70a9a5f694791ab2a60f1f300",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "flake-file",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": "nixpkgs-lib"
+        "nixpkgs-lib": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1775087534,
@@ -844,7 +861,7 @@
     "nix-colors": {
       "inputs": {
         "base16-schemes": "base16-schemes",
-        "nixpkgs-lib": "nixpkgs-lib_2"
+        "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
         "lastModified": 1707825078,
@@ -913,21 +930,6 @@
       }
     },
     "nixpkgs-lib": {
-      "locked": {
-        "lastModified": 1774748309,
-        "narHash": "sha256-+U7gF3qxzwD5TZuANzZPeJTZRHS29OFQgkQ2kiTJBIQ=",
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "rev": "333c4e0545a6da976206c74db8773a1645b5870a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "type": "github"
-      }
-    },
-    "nixpkgs-lib_2": {
       "locked": {
         "lastModified": 1697935651,
         "narHash": "sha256-qOfWjQ2JQSQL15KLh6D7xQhx0qgZlYZTYlcEiRuAMMw=",
@@ -1106,6 +1108,7 @@
       "inputs": {
         "disko": "disko",
         "firefox-addons": "firefox-addons",
+        "flake-file": "flake-file",
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
         "home-manager": "home-manager",
