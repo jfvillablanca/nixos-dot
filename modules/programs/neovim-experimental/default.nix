@@ -32,6 +32,16 @@
         config.allowUnfree = true;
         overlays = [
           inputs.neovim-nightly-overlay-experimental.overlays.default
+          # Skip flaky upstream tests that fail unrelated to our config.
+          # neotest's treesitter parsing test is broken in nixpkgs's pinned
+          # tree-sitter grammars; rustaceanvim depends on neotest transitively.
+          (_: prev: {
+            vimPlugins =
+              prev.vimPlugins
+              // {
+                neotest = prev.vimPlugins.neotest.overrideAttrs (_: {doCheck = false;});
+              };
+          })
         ];
       };
 
