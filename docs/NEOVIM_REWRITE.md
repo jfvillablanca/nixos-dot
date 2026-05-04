@@ -120,18 +120,17 @@ Each plugin module:
     config,
     pkgs,
     ...
-  }: lib.mkMerge [
-    {
-      options.nvim.plugins.gitsigns = {
-        enable = lib.mkEnableOption "gitsigns" // {default = true;};
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.vimPlugins.gitsigns-nvim;
-          description = "gitsigns source. Override to swap nixpkgs's pinned rev for upstream HEAD.";
-        };
+  }: {
+    options.nvim.plugins.gitsigns = {
+      enable = lib.mkEnableOption "gitsigns" // {default = true;};
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.vimPlugins.gitsigns-nvim;
+        description = "gitsigns source. Override to swap nixpkgs's pinned rev for upstream HEAD.";
       };
-    }
-    (lib.mkIf config.nvim.plugins.gitsigns.enable {
+    };
+
+    config = lib.mkIf config.nvim.plugins.gitsigns.enable {
       nvim.plugins.list = [
         {
           plugin = config.nvim.plugins.gitsigns.package;
@@ -144,8 +143,8 @@ Each plugin module:
         {mode = "n"; lhs = "]c"; rhs = "<cmd>Gitsigns next_hunk<cr>"; desc = "Next git hunk"; group = "git";}
         {mode = "n"; lhs = "[c"; rhs = "<cmd>Gitsigns prev_hunk<cr>"; desc = "Prev git hunk"; group = "git";}
       ];
-    })
-  ];
+    };
+  };
 }
 ```
 
