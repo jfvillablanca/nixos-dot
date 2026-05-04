@@ -82,9 +82,17 @@
     -- Spines (synthesized; see modules/programs/neovim-experimental/lib/<name>/).
     ${spineRequires}
 
-    ${lib.optionalString (colorscheme != null) ''
-      pcall(function() vim.cmd.colorscheme("${colorscheme}") end)
+    -- Colorscheme: NVIM_COLORSCHEME env var wins over the build-time default.
+    -- See lib/env-bootstrap/ + lib/env-finalize/ for the other env hooks.
+    do
+      local cs = vim.env.NVIM_COLORSCHEME
+      ${lib.optionalString (colorscheme != null) ''
+      if not cs or cs == "" then cs = "${colorscheme}" end
     ''}
+      if cs and cs ~= "" then
+        pcall(vim.cmd.colorscheme, cs)
+      end
+    end
     EOF
   '';
 
