@@ -33,9 +33,18 @@ nvim-gate:
       nix run nixpkgs#nvd -- diff "$baseline" "$new"
     fi
 
-# Run the experimental package locally.
+# Run the experimental package locally (no host inference).
 nvim-exp:
     nix run .#nvim-experimental
+
+# Run the cimmerian-flavored experimental variant (base16-spaceduck +
+# debug + markdown-preview + eslint/texlab LSPs).
+nvim-exp-cimmerian:
+    nix run .#nvim-experimental-cimmerian
+
+# Run the t14g1-flavored experimental variant (base16-gruvbox-dark-hard).
+nvim-exp-t14g1:
+    nix run .#nvim-experimental-t14g1
 
 # Headless smoke test: load the experimental wrapped nvim, run a one-liner, exit 0.
 nvim-exp-smoke:
