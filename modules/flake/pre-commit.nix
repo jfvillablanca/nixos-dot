@@ -6,6 +6,11 @@
 # linter), and deadnix (dead-code finder). The same checks also run via
 # `nix flake check`.
 {inputs, ...}: {
+  flake-file.inputs.git-hooks-nix = {
+    url = "github:cachix/git-hooks.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   imports = [inputs.git-hooks-nix.flakeModule];
 
   perSystem = _: {
