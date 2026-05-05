@@ -7,6 +7,8 @@
   user = "jmfv";
   base16Scheme = "gruvbox-dark-hard";
 in {
+  flake-file.inputs.nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
   flake.modules.nixos.t14g1 = {
     lib,
     pkgs,
