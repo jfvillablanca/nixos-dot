@@ -12,6 +12,15 @@
   lib,
   ...
 }: {
+  # Independently-advanceable nightly-overlay used only by
+  # `flake.packages.x86_64-linux.nvim-experimental`. Bumping this never
+  # moves cimmerian's daily-driver `.#nvim`, and vice versa. Advance via
+  # `nix flake update neovim-nightly-overlay-experimental`.
+  flake-file.inputs.neovim-nightly-overlay-experimental = {
+    url = "github:nix-community/neovim-nightly-overlay";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.factory.nvim = {
     system,
     colorscheme ? null,
