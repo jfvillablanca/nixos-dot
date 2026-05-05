@@ -976,22 +976,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-stable-25-05": {
-      "locked": {
-        "lastModified": 1763049705,
-        "narHash": "sha256-A5LS0AJZ1yDPTa2fHxufZN++n8MCmtgrJDtxFxrH4S8=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3acb677ea67d4c6218f33de0db0955f116b7588c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-25.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1762596750,
@@ -1124,7 +1108,6 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-stable-24-05": "nixpkgs-stable-24-05",
-        "nixpkgs-stable-25-05": "nixpkgs-stable-25-05",
         "plugin-oil-nvim": "plugin-oil-nvim",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix"

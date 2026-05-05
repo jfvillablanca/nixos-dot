@@ -50,7 +50,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-stable-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
-    nixpkgs-stable-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
     plugin-oil-nvim = {
       url = "github:stevearc/oil.nvim";
       flake = false;
