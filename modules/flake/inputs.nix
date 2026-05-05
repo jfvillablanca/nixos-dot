@@ -57,16 +57,5 @@
     };
 
     impermanence.url = "github:nix-community/impermanence";
-
-    hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
-    };
-
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 }
