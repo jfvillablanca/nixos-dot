@@ -119,14 +119,10 @@ in {
       extraInit = ''
         xset s off -dpms
       '';
-      systemPackages = with pkgs;
-        [
-          vim
-          git
-        ]
-        ++ [
-          inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-        ];
+      systemPackages = with pkgs; [
+        vim
+        git
+      ];
     };
 
     home-manager = {
