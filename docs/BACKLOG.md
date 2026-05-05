@@ -83,8 +83,36 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   `.iso` uploads as a GitHub release asset. End-users `curl` the ISO
   without needing nix; nix-users build cached.
 - F.5 **vulnix / cve-bin-tool.** Lockfile vulnerability audit on each PR.
-- F.6 **Lockfile flatten.** flake-file ships `allfollow` + `prune-lock`
-  modules — adopt to shrink lock duplications.
+- F.6 **Lockfile flatten.** _Won't-fix._ flake-file's `allfollow` and
+  `nix-auto-follow` integrations both fail in our setup; not worth a
+  custom prune-lock program for the marginal savings.
+  - **allfollow (default config):** spikespaz/allfollow's own input is
+    `nixpkgs-unstable` (a different branch from our `nixos-unstable`).
+    When added, allfollow's nixpkgs claims the canonical `"nixpkgs"`
+    lock-node name, displacing our `nixos-unstable` to `"nixpkgs_4"`.
+    Transitive inputs that resolve via the path `["nixpkgs"]` (hyprland
+    et al.) silently shift to a different revision — massive closure
+    drift (binutils 2.46, glibc 2.42-61, gcc bumped, etc.). allfollow
+    has no exemption flag (`--no-follows`/`-p`/I-O only) so we can't
+    surgically opt-out specific inputs.
+  - **allfollow with `inputs.nixpkgs.follows = "nixpkgs"`:** lock graph
+    is correct (canonical `"nixpkgs"` stays our pin). But allfollow's
+    build chain depends on oxalica/rust-overlay, which fails to build
+    cargo against our newer `nixos-unstable` (FOD source-fetch error:
+    `do not know how to unpack source archive .../unknown`). Tool
+    itself can't be built.
+  - **nix-auto-follow (fzakaria/nix-auto-follow, Python):** flake-file
+    pre-pins its nixpkgs so the displacement bug doesn't fire; tool
+    builds and runs cleanly. Toplevel hashes byte-identical. But the
+    lock got _bigger_ (62→63 nodes, +18 lines), and several
+    `flake-parts_X` entries had their `rev` rewritten to revisions
+    that don't appear anywhere else in HEAD's lock. Net cost > net
+    benefit; murky semantics.
+  - **What to do instead.** F.6.0 (zen-browser removal +
+    input-colocation) already delivered the real lock/closure win
+    (cimmerian closure 19.1 → 17.6 GiB, –1.5 GiB). Manual
+    `inputs.nixpkgs.follows = "nixpkgs"` lines in feature modules are
+    the explicit, well-understood mechanism — keep them.
 
 ## G. Networking
 
@@ -175,8 +203,31 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
 
 ## M. Repo hygiene
 
-- M.1 **`nixosModules/` draft.** Long-untracked. Decide: graduate into the
-  dendritic tree, or delete.
+- M.1 **`nixosModules/` draft.** _Deferred — blocked on L.2 (system-tier
+  siblings)._ Sole content is `nixosModules/system/security/default.nix`
+  (hlissner-borrowed). Audited and partitioned; resume after L.2:
+  - **System tier (network hardening).** Keep:
+    `net.ipv4.icmp_ignore_bogus_error_responses=1`;
+    `net.ipv{4,6}.conf.all.accept_source_route=0`;
+    `net.ipv4.conf.{all,default}.send_redirects=0`;
+    `net.ipv{4,6}.conf.{all,default}.accept_redirects=0` +
+    `net.ipv4.conf.{all,default}.secure_redirects=0`;
+    `net.ipv4.tcp_rfc1337=1`; `net.ipv4.tcp_fastopen=3`;
+    `net.ipv4.tcp_congestion_control="bbr"` +
+    `net.core.default_qdisc="fq"` (canonical BBR pairing — not cake);
+    `boot.kernelModules += ["tcp_bbr"]` (list-merges with hardware files).
+  - **Drop entirely.** `kernel.sysrq=0` (workstation REISUB escape hatch);
+    `net.ipv4.conf.{all,default}.rp_filter=1` (would block G.1 Tailscale
+    subnet routing — revisit only if G.1 lands and we explicitly want
+    strict mode); `net.ipv4.tcp_syncookies=1` (mainline default);
+    `security.rtkit.enable=true` (already set in
+    `modules/services/sound/default.nix:3`);
+    `security.sudo.wheelNeedsPassword=false` (per-host preference; t14g1 +
+    virt use doas anyway).
+  - **Hyprland stack.** Move
+    `security.pam.services.hyprlock.text = "auth include login"` into
+    `modules/desktop/hyprland-stack/default.nix`.
+  - **Final step.** Delete `nixosModules/`.
 - M.2 **Per-host README.** `modules/hosts/<host>/README.md` describing role,
   install steps, post-install checklist.
 - M.3 **ADRs (architecture decision records).** `docs/decisions/000N-<topic>.md`
