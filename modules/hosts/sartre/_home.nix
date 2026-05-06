@@ -24,6 +24,8 @@
       git
       gitui
       neovim
+      nh
+      nom
       ripgrep
       starship
       tmux

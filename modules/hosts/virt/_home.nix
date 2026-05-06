@@ -20,6 +20,8 @@
       fzf
       git
       neovim
+      nh
+      nom
       ripgrep
       starship
       tmux

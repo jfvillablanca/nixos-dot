@@ -28,6 +28,8 @@
       gitui
       kitty
       neovim
+      nh
+      nom
       pet
       ripgrep
       starship
