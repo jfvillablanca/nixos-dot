@@ -76,7 +76,6 @@
       # xfce.thunar-volman # Removable media Thunar extension
 
       pkgs.vf
-      pkgs.use
     ];
     sessionVariables = {
       TERMINAL = "wezterm";

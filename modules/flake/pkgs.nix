@@ -10,7 +10,6 @@
 
   packagesOverlay = final: _prev: {
     vf = final.callPackage (self + /packages/by-name/v/vf) {};
-    use = final.callPackage (self + /packages/by-name/u/use) {};
   };
 
   pkgs = import inputs.nixpkgs {

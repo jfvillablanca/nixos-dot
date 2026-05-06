@@ -114,7 +114,6 @@
       vscode
 
       pkgs.vf
-      pkgs.use
     ];
     sessionVariables = {
       TERMINAL = "wezterm";

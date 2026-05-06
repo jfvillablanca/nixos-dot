@@ -26,7 +26,7 @@
 
         # Apply the same overlays modules/flake/pkgs.nix uses so the
         # nixosSystem-internal pkgs has neovim-nightly, the spotify-player
-        # auth fix, and our local packages (vf, use) all available.
+        # auth fix, and our local `vf` package available.
         {
           nixpkgs.config.allowUnfree = true;
           nixpkgs.overlays = [
@@ -34,7 +34,6 @@
             (import (self + /modules/programs/spotify-player/_overlay.nix))
             (final: _prev: {
               vf = final.callPackage (self + /packages/by-name/v/vf) {};
-              use = final.callPackage (self + /packages/by-name/u/use) {};
             })
           ];
         }

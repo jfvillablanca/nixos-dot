@@ -6,6 +6,7 @@
     imports = with self.modules.nixos; [
       system-default
       network-manager
+      nix-index
     ];
   };
 }
