@@ -127,7 +127,7 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   `.iso` uploads as a GitHub release asset. End-users `curl` the ISO
   without needing nix; nix-users build cached.
 - F.5 **vulnix / cve-bin-tool.** Lockfile vulnerability audit on each PR.
-- F.6 **Lockfile flatten.** _Won't-fix._ flake-file's `allfollow` and
+- ~~F.6 **Lockfile flatten.**~~ _Won't-fix._ flake-file's `allfollow` and
   `nix-auto-follow` integrations both fail in our setup; not worth a
   custom prune-lock program for the marginal savings.
   - **allfollow (default config):** spikespaz/allfollow's own input is
@@ -176,15 +176,15 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
 ## I. Dev environment
 
-- I.1 ★ **Replace `use` with `comma` + `nix-index-database`.** Drop
+- ~~I.1 ★ **Replace `use` with `comma` + `nix-index-database`.**~~ Drop
   `packages/by-name/u/use/`. comma resolves by binary name (`, convert`
   → imagemagick) via prebuilt nix-index DB; the existing `use` script
   needs the attribute name. Module: import
   `inputs.nix-index-database.nixosModules.nix-index` + add `comma` to
   user packages.
-- I.2 ★ **nh (nixos-helper).** Ergonomic rebuilds (`nh os switch`, `nh home
+- ~~I.2 ★ **nh (nixos-helper).**~~ Ergonomic rebuilds (`nh os switch`, `nh home
 switch`). Replaces raw `nixos-rebuild` / `home-manager` calls.
-- I.3 ★ **nix-output-monitor (nom).** Replaces the default build progress
+- ~~I.3 ★ **nix-output-monitor (nom).**~~ Replaces the default build progress
   output. Nicer dependency-graph view. `nix build |& nom` or
   `nh os switch` (which uses nom by default).
 - I.4 **devShells `.#dev-{rust,node,go,python}` for non-Nix repos.** Stack
@@ -201,16 +201,16 @@ switch`). Replaces raw `nixos-rebuild` / `home-manager` calls.
 Stable nvim already has nixd + autocomplete for nixpkgs lib + NixOS
 options (cimmerian) + home-manager options. Gaps:
 
-- J.1 **flake-parts options.** No completion on `perSystem.<tab>` or
+- ~~J.1 **flake-parts options.**~~ No completion on `perSystem.<tab>` or
   `flake.modules.<class>.<name>`. Add `debug.enable = true;` somewhere
   under `modules/flake/` to expose the flake-parts option tree at
   `outputs.debug.options`, then point `nixd`'s `options.flake_parts.expr`
   at it.
-- J.2 **Factory args.** No completion when editing the experimental factory
+- ~~J.2 **Factory args.**~~ No completion when editing the experimental factory
   call site. Expose `flake.lib.nvimOptions = eval.options` from the
   experimental aggregator (`modules/programs/neovim-experimental/factory/`)
   and add a matching `nixd.options.<name>.expr` entry.
-- J.3 **flake-file options.** _Covered by J.1._ flake-file declares
+- ~~J.3 **flake-file options.**~~ _Covered by J.1._ flake-file declares
   its options as a submodule at `flake-file.<...>` within the
   flake-parts top-level option tree. J.1's `flake_parts.expr =
 '...debug.options'` already exposes `flake-file` as a submodule
