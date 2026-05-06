@@ -14,6 +14,9 @@ local config = {
                 home_manager = {
                     expr = '(builtins.getFlake "/home/jmfv/nixos-dot").homeConfigurations."cimmerian".options',
                 },
+                flake_parts = {
+                    expr = '(builtins.getFlake "/home/jmfv/nixos-dot").debug.options',
+                },
             },
         },
     },

@@ -25,6 +25,7 @@ in {
           nvim.lsp.servers.nixd.settings.nixd.options = {
             nixos.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."cimmerian".options'';
             home_manager.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."cimmerian".config.home-manager.users.jmfv'';
+            flake_parts.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").debug.options'';
           };
         }
       ];
@@ -43,6 +44,7 @@ in {
           nvim.lsp.servers.nixd.settings.nixd.options = {
             nixos.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."t14g1".options'';
             home_manager.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."t14g1".config.home-manager.users.jmfv'';
+            flake_parts.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").debug.options'';
           };
         }
       ];
