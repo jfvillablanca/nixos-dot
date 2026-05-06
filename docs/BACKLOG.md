@@ -210,9 +210,17 @@ options (cimmerian) + home-manager options. Gaps:
   call site. Expose `flake.lib.nvimOptions = eval.options` from the
   experimental aggregator (`modules/programs/neovim-experimental/factory/`)
   and add a matching `nixd.options.<name>.expr` entry.
-- J.3 **flake-file options.** No completion on `flake-file.inputs.<tab>`.
-  Same shape: expose flake-file's evaluated options, point an `expr`
-  at it.
+- J.3 **flake-file options.** _Covered by J.1._ flake-file declares
+  its options as a submodule at `flake-file.<...>` within the
+  flake-parts top-level option tree. J.1's `flake_parts.expr =
+'...debug.options'` already exposes `flake-file` as a submodule
+  option at the top of `debug.options`; nixd handles submodule
+  traversal natively for registered option trees, so
+  `flake-file.inputs.<tab>` completion piggy-backs on the J.1 wiring.
+  No additional code change. If nixd ever stops descending into
+  submodules, expose
+  `(builtins.getFlake "...").debug.options."flake-file".type.getSubOptions []`
+  as a separate `flake_file.expr` entry.
 
 Wire the new entries into both `modules/programs/neovim/lua/lsp/servers/nixd.lua`
 (stable) and `modules/programs/neovim-experimental/lsp/servers/nixd/default.nix`
