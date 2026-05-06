@@ -17,6 +17,50 @@ Items the user has explicitly flagged interest in are marked ★.
   missing CPU/GPU-specific tuning that t14g1 has.
 - A.5 **NixOS-WSL hardening for sartre.** systemd, wsl.conf, win32-interop
   tuning, default user setup.
+- A.6 **Determinate Nix adoption (per-host opt-in).** Trial DetSys' Nix
+  fork on cimmerian, expand to t14g1 if stable. Unblocks L.4
+  (flake-schemas) as a side-benefit.
+  - **Shape.** Add `inputs.determinate` via flake-file (colocate to
+    `modules/system/nix/default.nix`). Add option
+    `myNixosModules.determinate.enable` (default `false`). Conditionally
+    `imports = lib.optional cfg.enable inputs.determinate.nixosModules.default`.
+  - **Conflict surface in our nix module:** drop
+    `nix.package = pkgs.nixVersions.stable;` (DetSys's module sets
+    `nix.package = inputs.nix.packages.<system>.default` at default
+    priority — direct collision; remove ours or `lib.mkDefault` it).
+    Pin `nix.registry.nixpkgs.to` back to our `nixos-unstable` so DetSys
+    doesn't shadow `inputs.nixpkgs` with `flakehub.com/.../nixpkgs-weekly`.
+  - **Pros.** Parallel evaluation (claimed 5× on eval-heavy work), lazy
+    trees (claimed 3× wall-time on large repos), `flake.schemas` honored
+    by `nix flake show` (per the flake-schemas README; **DetSys's own
+    docs only describe schemas as a FlakeHub-website feature, so
+    verify empirically before relying on this for L.4**).
+  - **Cons / caveats.**
+    - **Telemetry on by default** — sends OS/hw/lang/timezone +
+      Sentry crash reports. Disable via `DETSYS_IDS_TELEMETRY=disabled`
+      and/or `telemetry.sentry.endpoint=null`. Caveat from the docs:
+      "disabling telemetry also disables our tooling for rolling out
+      features, which means that some Determinate Nix features may not
+      be available."
+    - `/etc/nix/nix.conf` becomes DetSys-managed (`determinate-nixd`
+      writes it). Our `nix.settings.*` lands in `nix.custom.conf` —
+      the NixOS module handles this transparently
+      (`environment.etc."nix/nix.conf".target = "nix/nix.custom.conf"`).
+    - GC: `determinate-nixd` schedules its own (≥30 GB free target;
+      steady-state 5–20%; urgent <5%). Our `nix.gc = { dates = "weekly"; }`
+      may be subsumed.
+    - Tooling: community `nix-eval-jobs` is incompatible — DetSys ships
+      a fork. We don't currently use nix-eval-jobs, but flag for any
+      future CI work.
+    - FlakeHub Cache is paid + auth-required; not auto-enabled. Our
+      cachix substituters keep working as primary cache.
+    - Initial rebuild needs `--option extra-substituters https://install.determinate.systems`
+      (only the first time, per DetSys docs).
+  - **Validation plan.** Prototype on cimmerian only:
+    `nixos-rebuild build` → `test` → confirm `nix --version` shows
+    DetSys's, cachix substituters survive, `nix flake show` actually
+    consumes `flake.schemas`. Only `switch` once verified. Reverting
+    is "remove the import + rebuild" (no `/nix/store` migration).
 
 ## B. Sartre stabilization ★
 
@@ -198,8 +242,17 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
   `system-server` siblings.
 - L.3 **Aspect catalog tour.** Doc-Steve's wiki has Profile Aspect, Slot
   Aspect, etc. that we haven't tried. Pick one and apply.
-- L.4 **flake-schemas** (DeterminateSystems). Makes `nix flake show`
-  introspect `flake.modules.nvim.*` + `flake.factory.*` properly.
+- L.4 **flake-schemas** (DeterminateSystems). _Blocked on A.6
+  (Determinate Nix adoption)._ Upstream Nix (we run 2.31.2) doesn't
+  honor `flake.schemas` — the experimental feature `flake-schemas`
+  isn't recognized; `nix flake show` ignores the output entirely.
+  flake-schemas's own README confirms: "Flake schemas are currently
+  available only in Determinate Nix." DetSys's own docs only describe
+  schemas as a FlakeHub-website feature; whether their `nix flake show`
+  consumes `flake.schemas` is unverified — must test under A.6 before
+  relying on this. The schemas module shape itself is straightforward
+  (`version`, `doc`, `inventory : output -> { children = ...; }`); the
+  effort lives entirely in resolving the prerequisite.
 
 ## M. Repo hygiene
 
