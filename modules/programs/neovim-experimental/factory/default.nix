@@ -11,7 +11,25 @@
   self,
   lib,
   ...
-}: {
+}: let
+  # Module-system option introspection for nixd autocomplete. Same module
+  # set the factory uses (skeleton + `flake.modules.nvim.default` aggregator)
+  # but evaluated once at flake-eval time with default args, so nixd can
+  # complete `nvim.lsp.servers.<tab>` / `nvim.plugins.<tab>` etc. from any
+  # buffer. Exposed at `flake.nvimOptions` (top-level — flake-parts
+  # doesn't recursively merge `flake.lib` across modules) and consumed at
+  # host nixd call sites + the stable nvim's nixd.lua.
+  nvimOptionEval = lib.evalModules {
+    specialArgs = {
+      inherit inputs lib;
+      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    };
+    modules = [
+      ../_skeleton-options.nix
+      self.modules.nvim.default
+    ];
+  };
+in {
   # Independently-advanceable nightly-overlay used only by
   # `flake.packages.x86_64-linux.nvim-experimental`. Bumping this never
   # moves cimmerian's daily-driver `.#nvim`, and vice versa. Advance via
@@ -20,6 +38,8 @@
     url = "github:nix-community/neovim-nightly-overlay";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+
+  flake.nvimOptions = nvimOptionEval.options;
 
   flake.factory.nvim = {
     system,

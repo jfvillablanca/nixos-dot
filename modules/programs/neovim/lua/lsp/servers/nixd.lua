@@ -17,6 +17,9 @@ local config = {
                 flake_parts = {
                     expr = '(builtins.getFlake "/home/jmfv/nixos-dot").debug.options',
                 },
+                nvim = {
+                    expr = '(builtins.getFlake "/home/jmfv/nixos-dot").nvimOptions',
+                },
             },
         },
     },
