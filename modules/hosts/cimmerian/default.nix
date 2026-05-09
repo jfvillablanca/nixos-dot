@@ -22,6 +22,7 @@ in {
       self.modules.nixos.jmfv
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
+      self.modules.nixos.tailscale
     ];
 
     networking.hostName = "cimmerian";
@@ -60,6 +61,7 @@ in {
 
     myNixosModules = {
       steam.enable = true;
+      tailscale.enable = true;
     };
 
     virtualisation.docker = {
