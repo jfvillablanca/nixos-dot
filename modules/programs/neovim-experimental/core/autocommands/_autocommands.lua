@@ -14,11 +14,11 @@ autocmd("FileType", {
     end,
 })
 
--- Briefly highlight yanked text. vim.hl.on_yank renamed from vim.highlight in 0.11.
+-- Briefly highlight yanked text. Defaults: higroup=IncSearch, timeout=150
 autocmd("TextYankPost", {
     group = augroup("NvimCoreYankHighlight", { clear = true }),
     callback = function()
-        pcall(vim.hl.on_yank, { higroup = "Visual", timeout = 300 })
+        pcall(vim.hl.on_yank)
     end,
 })
 
