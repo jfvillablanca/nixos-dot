@@ -34,6 +34,7 @@
             (import (self + /modules/programs/spotify-player/_overlay.nix))
             (final: _prev: {
               vf = final.callPackage (self + /packages/by-name/v/vf) {};
+              vfx = final.callPackage (self + /packages/by-name/v/vfx) {};
             })
           ];
         }

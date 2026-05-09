@@ -118,6 +118,7 @@
         protonvpn-gui
 
         pkgs.vf
+        pkgs.vfx
       ]
       ++ (with pkgs-master; [
         claude-code
