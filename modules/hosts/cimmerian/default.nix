@@ -143,4 +143,6 @@ in {
   };
 
   flake.nixosConfigurations.cimmerian = self.lib.mkNixos "cimmerian";
+
+  flake.publicKeys.cimmerian = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBSS3Q5D0saZcnpIbtEdLpdb0OWZdOEIXgxeDppVM2M jmfv.dev@gmail.com";
 }
