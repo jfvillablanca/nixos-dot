@@ -173,7 +173,7 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   same overlay. Easier ssh, file transfer, distributed builds.
 - G.2 **SSH config consolidation.** Per-host `programs.ssh.matchBlocks`,
   shared `known_hosts`.
-- G.3 **Distributed builds.** Cimmerian as remote builder for t14g1
+- ~~G.3 **Distributed builds.**~~ Cimmerian as remote builder for t14g1
   (workstation has more cores).
 
 ## H. Self-hosted (optional)
