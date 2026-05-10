@@ -145,4 +145,6 @@ in {
   flake.nixosConfigurations.cimmerian = self.lib.mkNixos "cimmerian";
 
   flake.publicKeys.cimmerian = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBSS3Q5D0saZcnpIbtEdLpdb0OWZdOEIXgxeDppVM2M jmfv.dev@gmail.com";
+
+  flake.hostIdentityKeys.cimmerian = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHVQsv1En2SX2P0Tp+hQ+Cl9m1R50PTvCn145k6iRV0b root@cimmerian";
 }

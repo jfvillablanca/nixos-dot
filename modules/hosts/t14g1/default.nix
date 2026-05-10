@@ -247,4 +247,6 @@ in {
   flake.nixosConfigurations.t14g1 = self.lib.mkNixos "t14g1";
 
   flake.publicKeys.t14g1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFAAQv0TTQr9OUABswhWE6bQf+YcRkvRQHUigK7JsGUS jmfv.dev@gmail.com";
+
+  flake.hostIdentityKeys.t14g1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnmnhUtaRg/b++aKL5pnYhsf4Nehapm/wnOoiIu+JNZ root@t14g1";
 }
