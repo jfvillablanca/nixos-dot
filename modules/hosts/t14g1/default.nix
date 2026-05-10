@@ -27,7 +27,6 @@ in {
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
       self.modules.nixos.laptop-power-management
-      self.modules.nixos.kmonad
       self.modules.nixos.doas
       self.modules.nixos.tailscale
       self.modules.nixos.distributed-builds
