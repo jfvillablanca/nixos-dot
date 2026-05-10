@@ -30,6 +30,7 @@ in {
       self.modules.nixos.kmonad
       self.modules.nixos.doas
       self.modules.nixos.tailscale
+      self.modules.nixos.distributed-builds
     ];
 
     networking.hostName = "t14g1";
@@ -71,6 +72,7 @@ in {
     myNixosModules = {
       steam.enable = false;
       tailscale.enable = true;
+      distributedBuilds.enable = true;
     };
 
     boot = {
@@ -112,6 +114,7 @@ in {
         "/var/lib/systemd/coredump"
         "/var/lib/tailscale"
         "/etc/NetworkManager/system-connections"
+        "/root/.ssh"
       ];
       files = [
         "/etc/machine-id"
@@ -128,6 +131,8 @@ in {
       "d /persist/system/var/lib/systemd 0755 root root -"
       "d /persist/system/var/lib/systemd/coredump 0755 root root -"
       "d /persist/system/var/lib/tailscale 0700 root root -"
+      "d /persist/system/root 0700 root root -"
+      "d /persist/system/root/.ssh 0700 root root -"
       "d /persist/system/etc 0755 root root -"
       "d /persist/system/etc/NetworkManager 0755 root root -"
       "d /persist/system/etc/NetworkManager/system-connections 0755 root root -"
