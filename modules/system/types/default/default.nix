@@ -13,6 +13,7 @@
         internationalization
         timezone
         fonts
+        known-hosts
       ]);
   };
 }
