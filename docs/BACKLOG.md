@@ -306,6 +306,43 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
   +N% growth.
 - M.5 **Module-system unit tests.** `lib.evalModules` over feature modules
   with stub specialArgs; assert option types and defaults.
+- M.6 **Colocate impermanence persistence to feature modules.** Each
+  persisted directory currently requires two edits in the host file:
+  one in `environment.persistence."/persist/system".directories` and
+  one or more in `systemd.tmpfiles.rules` (with parent-dir rules for
+  deep paths). T14g1's host file accumulates per-feature data —
+  `/var/lib/tailscale` from the tailscale module, `/root/.ssh` from
+  distributed-builds, `/etc/NetworkManager/system-connections` from
+  NetworkManager — all leaking into the host's tmpfiles list. Two
+  API options to weigh when picking up:
+  - **M.6a (auto-derive tmpfiles).** Keep
+    `environment.persistence."/persist/system".directories` as the
+    source of truth; add a small `lib` helper that walks each entry
+    (and its parents) and emits the corresponding tmpfiles rules.
+    Kills the duplication without inventing new options. Per-feature
+    data still accumulates in the host file's `directories` list,
+    but each entry now lives on a single line. ~1-day refactor,
+    eval-equivalent before/after.
+  - **M.6b (per-feature persistence).** Each feature module that
+    needs persistence declares it via a new option, e.g.
+    `myNixosModules.impermanence.persistDirs = [ ... ];`. A central
+    aggregator on impermanence-using hosts merges the lists into
+    `environment.persistence` AND derives the tmpfiles rules.
+    Self-contained feature modules — disabling tailscale removes
+    its persistence automatically. Host file shrinks; new
+    feature-with-persistence is a single declaration in the feature
+    module. Larger refactor; introduces an option layer between
+    feature modules and `environment.persistence`.
+  - **Order.** M.6a is the cheaper precursor (replaces the tmpfiles
+    list with derived rules); M.6b builds on it (moves the
+    `directories` data from host to feature module, reusing the
+    derivation logic). Could ship M.6a alone if M.6b feels
+    invasive, or skip straight to M.6b once the API shape is
+    decided.
+  - **Proving ground.** T14g1 today (tailscale + distributed-builds
+    - NetworkManager already declaring persistence). Cimmerian
+      becomes a second host once A.1 lands; sartre never needs it
+      (WSL has no concept of an ephemeral root).
 
 ## N. Quality of life
 
@@ -315,6 +352,29 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
 - N.3 **sshfs / mounted remotes.** Quick filesystem access to other hosts.
 - N.4 **HDR / VRR / fractional scaling.** Display tunings if hardware
   supports.
+- N.5 **Cross-host clipboard sharing.** Yank-on-remote-ssh →
+  paste-on-local should "just work". Two main paths:
+  - **OSC 52 (recommended baseline).** Terminal escape sequence
+    that lets a remote shell write into the local terminal's
+    clipboard. Pure text, traverses SSH transparently, no daemons,
+    no extra ports. Modern terminals (alacritty / kitty / foot /
+    wezterm / ghostty), tmux, and nvim ≥0.10 all speak it. Setup
+    is per-component: terminal usually opt-in, tmux
+    `set -g set-clipboard on`, nvim `clipboard = "unnamedplus"`
+    plus OSC 52 provider. Works across the wayland (t14g1) ↔ x11
+    (cimmerian) split since the protocol is terminal-mediated.
+    One-way (remote → local) by default; paste-into-remote is
+    just typing into the terminal.
+  - **lemonade / clipboard-relay-style TCP daemon.** Bidirectional;
+    runs as a daemon on every host with an SSH port forward. More
+    moving parts. Only worth it if OSC 52 falls short — large
+    payloads, binary clipboards, or specific tooling that bypasses
+    the terminal.
+  - **Proving ground.** Test the t14g1 → cimmerian direction
+    (sitting at t14g1's local terminal, ssh'd into cimmerian,
+    yanking in nvim there → contents appear in t14g1's wayland
+    clipboard via wl-clipboard). If that works through tmux too,
+    it's done.
 
 ## O. Long-shot
 
