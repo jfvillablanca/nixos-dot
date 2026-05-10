@@ -102,8 +102,17 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
 ## D. Secrets ★
 
-- D.1 **sops-nix.** age key per host, encrypted yamls in `secrets/`. Migrate
-  cachix token, copilot auth, github tokens, ssh keys, wifi credentials.
+- D.1a **Declarative authorized_keys.** Public keys aren't secrets, so
+  no sops needed. Set `users.users.<u>.openssh.authorizedKeys.keys` in
+  the user module so every host trusts the same fleet of devices. NixOS
+  reads both `~/.ssh/authorized_keys` and `/etc/ssh/authorized_keys.d/%u`
+  by default — declarative entries layer on top of any manual ones.
+- D.1b **sops-nix proper.** age key per host, encrypted yamls in
+  `secrets/`. Migrate cachix token, copilot auth, github tokens, ssh
+  _private_ keys, wifi credentials. Half-day project the first time:
+  generate per-host age keys, derive a recipients list, write the
+  `sops-nix` flake-parts wiring, encrypt-in-place each secret, swap
+  hardcoded references to `config.sops.secrets.<name>.path`.
 - D.2 **yubikey integration.** GPG-on-yubikey + SSH signing.
 - D.3 **Audit current plaintext.** What's checked in today that shouldn't be.
 
@@ -160,7 +169,7 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
 ## G. Networking
 
-- G.1 **Tailscale or wireguard mesh.** Cimmerian + t14g1 + sartre on the
+- ~~G.1 **Tailscale or wireguard mesh.**~~ Cimmerian + t14g1 + sartre on the
   same overlay. Easier ssh, file transfer, distributed builds.
 - G.2 **SSH config consolidation.** Per-host `programs.ssh.matchBlocks`,
   shared `known_hosts`.
