@@ -102,6 +102,12 @@
           set -ag terminal-overrides ",$TERM:RGB"
           set-option -ga terminal-features ",alacritty:usstyle"
 
+          # OSC 52 clipboard passthrough — yanks inside tmux panes
+          # reach the outer terminal (and thus the host clipboard)
+          # over plain SSH, no helper daemon needed.
+          set-option -g  set-clipboard on
+          set-option -ga terminal-features ",alacritty:clipboard,wezterm:clipboard,foot:clipboard,kitty:clipboard,ghostty:clipboard"
+
           # Set base index of windows to 1
           set        -g  base-index 1
           set        -g  pane-base-index 1

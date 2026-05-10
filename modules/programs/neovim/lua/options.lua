@@ -47,3 +47,15 @@ end
 vim.opt.shortmess:append("c") -- don't give |ins-completion-menu| messages
 vim.opt.iskeyword:append("-") -- hyphenated words recognized by searches
 vim.opt.formatoptions:remove({ "c", "r", "o" }) -- don't insert the current comment leader automatically for auto-wrapping comments using 'textwidth', hitting <Enter> in insert mode, or hitting 'o' or 'O' in normal mode.
+
+-- Over SSH, route the +/* registers through OSC 52 so yanks on the
+-- remote land in the *local* terminal's clipboard. No remote display
+-- server needed. Locally, leave the auto-detected provider alone.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+    local osc52 = require("vim.ui.clipboard.osc52")
+    vim.g.clipboard = {
+        name = "OSC 52",
+        copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+        paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+    }
+end

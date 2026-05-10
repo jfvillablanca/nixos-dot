@@ -48,3 +48,15 @@ end
 vim.opt.shortmess:append("c")
 vim.opt.iskeyword:append("-")
 vim.opt.formatoptions:remove({ "c", "r", "o" })
+
+-- Over SSH, route the +/* registers through OSC 52 so yanks on the
+-- remote land in the *local* terminal's clipboard. No remote display
+-- server needed. Locally, leave the auto-detected provider alone.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+    local osc52 = require("vim.ui.clipboard.osc52")
+    vim.g.clipboard = {
+        name = "OSC 52",
+        copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+        paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+    }
+end
