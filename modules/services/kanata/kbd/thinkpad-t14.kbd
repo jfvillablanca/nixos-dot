@@ -1,0 +1,67 @@
+;; T14 built-in keyboard.
+;; Base: plain Colemak (matching Adv360 + chocofi ergos).
+;; Layers: nav (caps held), sym (right-alt held).
+;; Homerow mods on Colemak ARST / NEIO positions.
+
+(defvar
+  tap-time 200
+  hold-time 280
+)
+
+(defalias
+  ;; Layer triggers — caps tap = esc, ralt tap = ralt.
+  esc-nav  (tap-hold-release $tap-time $hold-time esc  (layer-while-held nav))
+  ralt-sym (tap-hold-release $tap-time $hold-time ralt (layer-while-held sym))
+
+  ;; Homerow mods left (QWERTY positions A S D F → tap Colemak A R S T + lmet lalt lsft lctl)
+  hrm-a (tap-hold-release $tap-time $hold-time a lmet)
+  hrm-s (tap-hold-release $tap-time $hold-time r lalt)
+  hrm-d (tap-hold-release $tap-time $hold-time s lsft)
+  hrm-f (tap-hold-release $tap-time $hold-time t lctl)
+
+  ;; Homerow mods right (QWERTY positions J K L ; → tap Colemak N E I O + rctl rsft ralt rmet)
+  hrm-j   (tap-hold-release $tap-time $hold-time n rctl)
+  hrm-k   (tap-hold-release $tap-time $hold-time e rsft)
+  hrm-l   (tap-hold-release $tap-time $hold-time i ralt)
+  hrm-scl (tap-hold-release $tap-time $hold-time o rmet)
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '         ret
+  lsft z    x    c    v    b    n    m    ,    .    /              rsft
+  lctl lmet lalt           spc            ralt sys  rctl
+)
+
+(deflayer base
+  esc      f1     f2     f3     f4     f5  f6  f7     f8     f9     f10      f11  f12
+  grv      1      2      3      4      5   6   7      8      9      0        -    =    bspc
+  tab      q      w      f      p      g   j   l      u      y      ;        [    ]    \
+  @esc-nav @hrm-a @hrm-s @hrm-d @hrm-f d   h   @hrm-j @hrm-k @hrm-l @hrm-scl '         ret
+  lsft     z      x      c      v      b   k   m      ,      .      /                  rsft
+  lctl     lmet   lalt              spc                @ralt-sym sys   rctl
+)
+
+;; Nav: arrows on right home row (HJKL→ in QWERTY positions = NEI; in Colemak),
+;; page nav on right row below, mods mirrored on left HRM positions for chord access.
+(deflayer nav
+  _   _    _    _    _    _   _    _    _    _    _    _    _
+  _   _    _    _    _    _   _    _    _    _    _    _    _   _
+  _   _    _    _    _    _   _    _    _    _    _    _    _   _
+  _   lmet lalt lsft lctl _   _    left down up   right _        _
+  _   _    _    _    _    _   home pgdn pgup end  _              _
+  _   _    _              _              _    _    _
+)
+
+;; Sym: left hand top-to-bottom = symbols (matching ZMK sym layer).
+;; Right home row HRM mirrored for chord access.
+(deflayer sym
+  _   _   _   _   _   _   _   _    _    _    _    _   _
+  _   _   _   _   _   _   _   _    _    _    _    _   _   _
+  _   =   &   *   (   )   _   _    _    _    _    _   _   _
+  _   -   $   %   ^   +   _   rctl rsft ralt rmet _       _
+  _   `   !   @   #   \   _   _    _    _    _              _
+  _   _   _              _              _    _    _
+)

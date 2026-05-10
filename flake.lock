@@ -1120,6 +1120,9 @@
         "hyprland-contrib": "hyprland-contrib",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
+        "kanata": [
+          "nixpkgs"
+        ],
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "neovim-nightly-overlay-experimental": "neovim-nightly-overlay-experimental",
         "nix-colors": "nix-colors",

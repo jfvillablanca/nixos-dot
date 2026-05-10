@@ -30,6 +30,7 @@ in {
       self.modules.nixos.doas
       self.modules.nixos.tailscale
       self.modules.nixos.distributed-builds
+      self.modules.nixos.kanata
     ];
 
     networking.hostName = "t14g1";
