@@ -9,21 +9,35 @@
 )
 
 (defalias
-  ;; Layer triggers — caps tap = esc, ralt tap = ralt.
+  ;; Layer triggers. Caps tap = esc, ralt tap = ralt.
   esc-nav  (tap-hold-release $tap-time $hold-time esc  (layer-while-held nav))
   ralt-sym (tap-hold-release $tap-time $hold-time ralt (layer-while-held sym))
 
-  ;; Homerow mods left (QWERTY positions A S D F → tap Colemak A R S T + lmet lalt lsft lctl)
+  ;; Homerow mods left (QWERTY positions A S D F: tap Colemak A R S T + lmet lalt lsft lctl).
   hrm-a (tap-hold-release $tap-time $hold-time a lmet)
   hrm-s (tap-hold-release $tap-time $hold-time r lalt)
   hrm-d (tap-hold-release $tap-time $hold-time s lsft)
   hrm-f (tap-hold-release $tap-time $hold-time t lctl)
 
-  ;; Homerow mods right (QWERTY positions J K L ; → tap Colemak N E I O + rctl rsft ralt rmet)
+  ;; Homerow mods right (QWERTY positions J K L ;: tap Colemak N E I O + rctl rsft ralt rmet).
   hrm-j   (tap-hold-release $tap-time $hold-time n rctl)
   hrm-k   (tap-hold-release $tap-time $hold-time e rsft)
   hrm-l   (tap-hold-release $tap-time $hold-time i ralt)
   hrm-scl (tap-hold-release $tap-time $hold-time o rmet)
+
+  ;; Shifted ASCII symbols emitted as unicode. Layout-independent
+  ;; and dodges the deflayer parser conflict with literal `(` `)`.
+  exc (unicode "!")
+  at  (unicode "@")
+  hsh (unicode "#")
+  dol (unicode "$")
+  pct (unicode "%")
+  crt (unicode "^")
+  amp (unicode "&")
+  ast (unicode "*")
+  lp  (unicode "(")
+  rp  (unicode ")")
+  pls (unicode "+")
 )
 
 (defsrc
@@ -58,10 +72,10 @@
 ;; Sym: left hand top-to-bottom = symbols (matching ZMK sym layer).
 ;; Right home row HRM mirrored for chord access.
 (deflayer sym
-  _   _   _   _   _   _   _   _    _    _    _    _   _
-  _   _   _   _   _   _   _   _    _    _    _    _   _   _
-  _   =   &   *   (   )   _   _    _    _    _    _   _   _
-  _   -   $   %   ^   +   _   rctl rsft ralt rmet _       _
-  _   `   !   @   #   \   _   _    _    _    _              _
-  _   _   _              _              _    _    _
+  _   _    _    _    _    _   _   _    _    _    _    _   _
+  _   _    _    _    _    _   _   _    _    _    _    _   _   _
+  _   =    @amp @ast @lp  @rp _   _    _    _    _    _   _   _
+  _   -    @dol @pct @crt @pls _  rctl rsft ralt rmet _       _
+  _   grv  @exc @at  @hsh \    _  _    _    _    _              _
+  _   _    _              _              _    _    _
 )
