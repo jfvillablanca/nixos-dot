@@ -23,6 +23,7 @@ in {
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
       self.modules.nixos.tailscale
+      self.modules.nixos.xrdp
     ];
 
     networking.hostName = "cimmerian";
@@ -62,6 +63,10 @@ in {
     myNixosModules = {
       steam.enable = true;
       tailscale.enable = true;
+      xrdp = {
+        enable = true;
+        windowManager = "${pkgs.i3}/bin/i3";
+      };
     };
 
     virtualisation.docker = {
