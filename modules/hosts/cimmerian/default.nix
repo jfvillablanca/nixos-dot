@@ -104,7 +104,10 @@ in {
           i3.enable = true;
         };
       };
-      openssh.enable = true;
+      openssh = {
+        enable = true;
+        settings.X11Forwarding = true;
+      };
       gnome.gnome-keyring.enable = true;
     };
 
@@ -122,9 +125,14 @@ in {
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment = {
-      # Disable DPMS and prevent screen from blanking
+      # Disable DPMS and prevent screen from blanking. Guarded
+      # because environment.extraInit fires in every shell — over
+      # plain ssh DISPLAY is unset, and over ssh -X it points at a
+      # forwarded X server that may not implement DPMS.
       extraInit = ''
-        xset s off -dpms
+        if [ -n "$DISPLAY" ]; then
+          xset s off -dpms 2>/dev/null || true
+        fi
       '';
       systemPackages = with pkgs; [
         vim
