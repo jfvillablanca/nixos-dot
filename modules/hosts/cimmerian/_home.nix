@@ -35,6 +35,7 @@
       starship
       tmux
       wezterm
+      xpra
       yazi
       zathura
       zoxide
