@@ -30,7 +30,6 @@
       neovim
       nh
       nom
-      remmina
       ripgrep
       starship
       tmux
