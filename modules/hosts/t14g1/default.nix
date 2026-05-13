@@ -4,19 +4,21 @@
   self,
   ...
 }: let
-  user = "jmfv";
   base16Scheme = "gruvbox-dark-hard";
 in {
   flake-file.inputs.nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
   flake.modules.nixos.t14g1 = {
+    config,
     lib,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,
     pkgs-stable-25-05,
     ...
-  }: {
+  }: let
+    inherit (config.systemConstants) user;
+  in {
     imports = [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen1
 

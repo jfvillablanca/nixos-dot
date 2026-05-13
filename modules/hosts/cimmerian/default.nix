@@ -4,16 +4,18 @@
   self,
   ...
 }: let
-  user = "jmfv";
   base16Scheme = "spaceduck";
 in {
   flake.modules.nixos.cimmerian = {
+    config,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,
     pkgs-stable-25-05,
     ...
-  }: {
+  }: let
+    inherit (config.systemConstants) user;
+  in {
     imports = [
       ./_hardware-configuration.nix
       ./_hardware-configuration-overrides.nix

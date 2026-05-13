@@ -4,16 +4,18 @@
   self,
   ...
 }: let
-  user = "jmfv";
   base16Scheme = "gruvbox-material-dark-medium";
 in {
   flake.modules.nixos.virt = {
+    config,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,
     pkgs-stable-25-05,
     ...
-  }: {
+  }: let
+    inherit (config.systemConstants) user;
+  in {
     imports = [
       ./_hardware-configuration.nix
 

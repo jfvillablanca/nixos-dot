@@ -4,17 +4,19 @@
   self,
   ...
 }: let
-  user = "jmfv";
   base16Scheme = "rose-pine-moon";
 in {
   flake.modules.nixos.sartre = {
+    config,
     lib,
     pkgs,
     pkgs-master,
     pkgs-stable-24-05,
     pkgs-stable-25-05,
     ...
-  }: {
+  }: let
+    inherit (config.systemConstants) user;
+  in {
     imports = [
       # ./_hardware-configuration.nix
       # ./_disko.nix
