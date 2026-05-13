@@ -1,0 +1,75 @@
+# Builds a NixOS-WSL tarball for the chosen host and publishes it as
+# a GitHub release asset under a rolling per-host tag, so foreign
+# Windows machines can `Invoke-WebRequest` the `.wsl` and
+# `wsl --import` without a Nix toolchain.
+#
+# Triggered manually via the Actions tab. The release tag
+# `wsl-<host>-latest` is overwritten on every run, so the download
+# URL is stable.
+name: release-wsl-tarball
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "NixOS-WSL host to package"
+        required: true
+        default: defenestration
+
+permissions: {}
+
+jobs:
+  build:
+    name: build ${{ inputs.host }} tarball
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: free disk space
+        # jlumbroso/free-disk-space@v1.3.1
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: checkout
+        # actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+
+      - name: install nix
+        # cachix/install-nix-action@v31.10.5
+        uses: cachix/install-nix-action@ab739621df7a23f52766f9ccc97f38da6b7af14f
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: cachix
+        # cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c
+        with:
+          name: nixos-dot
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: hyprland
+
+      - name: build tarball
+        run: |
+          nix run .#nixosConfigurations.${{ inputs.host }}.config.system.build.tarballBuilder \
+            --print-build-logs
+          mv nixos.wsl ${{ inputs.host }}.wsl
+          ls -lh ${{ inputs.host }}.wsl
+
+      - name: publish release
+        # softprops/action-gh-release@v3.0.0
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda
+        with:
+          tag_name: wsl-${{ inputs.host }}-latest
+          name: "WSL tarball: ${{ inputs.host }}"
+          files: ${{ inputs.host }}.wsl
+          make_latest: "false"

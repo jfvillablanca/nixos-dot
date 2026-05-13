@@ -32,6 +32,33 @@ for the configured hosts. Public key + subscription wiring in
 `modules/system/nix/`. Foreign machines: see comments at the top of that
 file for `nix.conf` snippet.
 
+## NixOS-WSL bootstrap
+
+WSL hosts in this flake (currently `defenestration`) ship as tarball
+release assets so a fresh Windows machine can import without a Nix
+toolchain.
+
+Build + publish: run the `release-wsl-tarball` workflow under the
+Actions tab (input: host name). It builds
+`.#nixosConfigurations.<host>.config.system.build.tarballBuilder`,
+runs it to emit `<host>.wsl`, and pushes it to a rolling release
+tagged `wsl-<host>-latest`.
+
+Import on Windows (PowerShell), substituting `<install-dir>` for the
+filesystem location where the distro should live:
+
+```powershell
+Invoke-WebRequest `
+  https://github.com/jfvillablanca/nixos-dot/releases/download/wsl-defenestration-latest/defenestration.wsl `
+  -OutFile defenestration.wsl
+wsl --import defenestration <install-dir> defenestration.wsl --version 2
+wsl -d defenestration
+```
+
+First boot lands as `jmfv`. From there, clone the repo and
+`sudo nixos-rebuild switch --flake .#defenestration` to start
+iterating from a local checkout.
+
 ## Docs
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - dendritic layout, namespaces, conventions.
