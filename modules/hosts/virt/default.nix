@@ -19,7 +19,6 @@ in {
 
       self.modules.nixos.jmfv
       self.modules.nixos.system-cli
-      self.modules.nixos.kmonad
       self.modules.nixos.doas
       self.modules.nixos.spice-vda
     ];
