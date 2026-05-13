@@ -60,8 +60,10 @@ jobs:
 
       - name: build tarball
         run: |
-          nix run .#nixosConfigurations.${{ inputs.host }}.config.system.build.tarballBuilder \
-            --print-build-logs
+          builder=$(nix build \
+            .#nixosConfigurations.${{ inputs.host }}.config.system.build.tarballBuilder \
+            --no-link --print-out-paths --print-build-logs)
+          sudo "$builder/bin/nixos-wsl-tarball-builder"
           mv nixos.wsl ${{ inputs.host }}.wsl
           ls -lh ${{ inputs.host }}.wsl
 
