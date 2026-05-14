@@ -116,6 +116,7 @@
         xfce.thunar-volman # Removable media Thunar extension
         zoom-us
         vscode
+        virt-viewer
 
         pkgs.vf
       ]
