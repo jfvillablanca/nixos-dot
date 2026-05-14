@@ -87,6 +87,36 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   release tag. Validates the consumer-mode pull-from-`github:`
   and-rebuild loop without touching sartre. Promoting sartre to
   this flow is still B.1.
+- B.6 **Safe pull-and-rebuild on the long-idle Windows sartre.**
+  Existing install on a Windows box is pinned to a stale commit;
+  HEAD's sartre eval has drifted (additive changes only as audited
+  on 2026-05-15: declarative authorized_keys, declarative
+  known_hosts, OSC 52 clipboard, nh + nom, systemConstants user
+  refactor, `use` replaced by `comma`). Biggest unknown is the
+  `nixos-wsl` input bump between the pinned lock and HEAD. Recipe
+  before pulling:
+
+  ```bash
+  # 1. Note current pinned commit
+  git rev-parse HEAD
+
+  # 2. Eyeball the delta in sartre-relevant trees
+  git fetch
+  git diff HEAD origin/main -- \
+    modules/hosts/sartre/ modules/users/jmfv/ \
+    modules/system/ modules/programs/
+
+  # 3. Pull, build only (no activation)
+  git pull
+  sudo nixos-rebuild build --flake .#sartre
+
+  # 4. Stage for next boot without touching running generation,
+  #    then reboot WSL from PowerShell (`wsl --shutdown`)
+  sudo nixos-rebuild boot --flake .#sartre
+
+  # 5. If anything breaks: rollback, or re-import previous tarball
+  sudo nixos-rebuild switch --rollback
+  ```
 
 ## C. Desktop / WM stack hot-swap ★
 
