@@ -80,6 +80,13 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   but can install Nix). fish/git/starship/tmux/nvim portable subset.
 - B.4 **Cachix smoke checklist.** First-run on sartre should never trigger a
   source build. Document the verification.
+- ~~B.5 **Bootstrappable NixOS-WSL proving ground (`defenestration`).**~~
+  Branched a minimal NixOS-WSL host (`modules/hosts/defenestration/`)
+  paired with a `release-wsl-tarball` workflow that builds via
+  `tarballBuilder` and publishes the `.wsl` to a rolling GitHub
+  release tag. Validates the consumer-mode pull-from-`github:`
+  and-rebuild loop without touching sartre. Promoting sartre to
+  this flow is still B.1.
 
 ## C. Desktop / WM stack hot-swap ★
 
