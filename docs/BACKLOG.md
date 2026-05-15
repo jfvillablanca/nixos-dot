@@ -136,6 +136,20 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   cimmerian once the stack abstraction lands.
 - C.6 **xdg-portal consistency.** Per-stack portal wiring so file pickers
   etc. work regardless of which stack you're on.
+- ~~C.7 **Carcosa QEMU+SPICE lab MVP.**~~ Replaced `virt` with
+  `carcosa`, a bare-CLI QEMU+SPICE NixOS VM on cimmerian.
+  Validates the iteration loop end-to-end:
+
+  ```bash
+  # on cimmerian
+  nixos-rebuild build-vm --flake .#carcosa
+  ./result/bin/run-carcosa-vm
+
+  # on any tailnet peer (virt-viewer wired into t14g1's home)
+  remote-viewer spice://cimmerian:5930
+  ```
+
+  MVP only; revisit to add WM variants once C.1 + C.2 land.
 
 ## D. Secrets ★
 
