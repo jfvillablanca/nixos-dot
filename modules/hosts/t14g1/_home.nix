@@ -117,6 +117,7 @@
         zoom-us
         vscode
         virt-viewer
+        moonlight-qt # Sunshine client
 
         pkgs.vf
       ]
