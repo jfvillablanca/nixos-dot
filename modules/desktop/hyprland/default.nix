@@ -98,7 +98,9 @@
           };
 
           decoration = {
-            shadow_offset = "0 5";
+            shadow = {
+              offset = "0 5";
+            };
 
             rounding = 5;
             active_opacity = 1.0;
