@@ -4,7 +4,7 @@
     inherit (config.systemConstants) user;
   in {
     imports = [
-      self.modules.nixos.jmfv
+      self.modules.nixos.user
       self.modules.nixos.system-default
     ];
 

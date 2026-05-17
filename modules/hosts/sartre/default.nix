@@ -21,7 +21,7 @@ in {
       # ./_hardware-configuration.nix
       # ./_disko.nix
 
-      self.modules.nixos.jmfv
+      self.modules.nixos.user
       self.modules.nixos.system-default
       self.modules.nixos.steam
     ];
@@ -107,7 +107,7 @@ in {
         system = "x86_64-linux";
       };
       users.${user}.imports = [
-        self.modules.homeManager.jmfv
+        self.modules.homeManager.user
         ./_home.nix
       ];
     };

@@ -8,11 +8,11 @@
   flake.modules.nixos.carcosa = {config, ...}: let
     inherit (config.systemConstants) user;
   in {
-    imports = with self.modules.nixos; [
-      jmfv
-      system-cli
-      doas
-      spice-vda
+    imports = [
+      self.modules.nixos.user
+      self.modules.nixos.system-cli
+      self.modules.nixos.doas
+      self.modules.nixos.spice-vda
     ];
 
     networking.hostName = "carcosa";

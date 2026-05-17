@@ -1,17 +1,21 @@
-# jmfv — the only user. Calls the user factory to register both the
-# system account and home-manager defaults, then trusts every host
-# in the fleet by aggregating `flake.publicKeys`.
+# The single user feature. Reads its identity from
+# `self.constants.user` (default `jmfv`), calls the user factory to
+# register both the system account and home-manager defaults, and
+# trusts every host in the fleet by aggregating `flake.publicKeys`.
+# The flake-module keys (`.user` under both classes) are generic so
+# consumers don't have to know the user's name.
 {self, ...}: let
-  jmfv = self.factory.user "jmfv";
+  inherit (self.constants) user;
+  userBundle = self.factory.user user;
 in {
-  flake.modules.nixos.jmfv = {
-    imports = [jmfv.nixos];
-    users.users.jmfv.openssh.authorizedKeys.keys =
+  flake.modules.nixos.user = {
+    imports = [userBundle.nixos];
+    users.users.${user}.openssh.authorizedKeys.keys =
       builtins.attrValues self.publicKeys;
   };
-  flake.modules.homeManager.jmfv = {
+  flake.modules.homeManager.user = {
     imports = [
-      jmfv.homeManager
+      userBundle.homeManager
       self.modules.generic.systemConstants
     ];
   };
