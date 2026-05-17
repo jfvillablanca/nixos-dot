@@ -357,43 +357,45 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
   +N% growth.
 - M.5 **Module-system unit tests.** `lib.evalModules` over feature modules
   with stub specialArgs; assert option types and defaults.
-- M.6 **Colocate impermanence persistence to feature modules.** Each
-  persisted directory currently requires two edits in the host file:
-  one in `environment.persistence."/persist/system".directories` and
-  one or more in `systemd.tmpfiles.rules` (with parent-dir rules for
-  deep paths). T14g1's host file accumulates per-feature data —
-  `/var/lib/tailscale` from the tailscale module, `/root/.ssh` from
-  distributed-builds, `/etc/NetworkManager/system-connections` from
-  NetworkManager — all leaking into the host's tmpfiles list. Two
-  API options to weigh when picking up:
-  - **M.6a (auto-derive tmpfiles).** Keep
-    `environment.persistence."/persist/system".directories` as the
-    source of truth; add a small `lib` helper that walks each entry
-    (and its parents) and emits the corresponding tmpfiles rules.
-    Kills the duplication without inventing new options. Per-feature
-    data still accumulates in the host file's `directories` list,
-    but each entry now lives on a single line. ~1-day refactor,
-    eval-equivalent before/after.
-  - **M.6b (per-feature persistence).** Each feature module that
-    needs persistence declares it via a new option, e.g.
-    `myNixosModules.impermanence.persistDirs = [ ... ];`. A central
-    aggregator on impermanence-using hosts merges the lists into
-    `environment.persistence` AND derives the tmpfiles rules.
-    Self-contained feature modules — disabling tailscale removes
-    its persistence automatically. Host file shrinks; new
-    feature-with-persistence is a single declaration in the feature
-    module. Larger refactor; introduces an option layer between
-    feature modules and `environment.persistence`.
-  - **Order.** M.6a is the cheaper precursor (replaces the tmpfiles
-    list with derived rules); M.6b builds on it (moves the
-    `directories` data from host to feature module, reusing the
-    derivation logic). Could ship M.6a alone if M.6b feels
-    invasive, or skip straight to M.6b once the API shape is
-    decided.
-  - **Proving ground.** T14g1 today (tailscale + distributed-builds
-    - NetworkManager already declaring persistence). Cimmerian
-      becomes a second host once A.1 lands; sartre never needs it
-      (WSL has no concept of an ephemeral root).
+- ~~M.6 **Colocate impermanence persistence to feature modules.**~~
+  Landed as a backend-abstracting Persistence Aspect at
+  `modules/system/persistence/default.nix` that owns the
+  impermanence import and exposes an inversion-of-control surface.
+
+  ```nix
+  myNixosModules.persistence = {
+    enable; root; directories; files; parentTmpfiles; userHomes;
+  };
+
+  myHomeModules.persistence = {
+    enable; root; directories; files; allowOther;
+  };
+  ```
+
+  Feature modules (tailscale, distributed-builds, network-manager)
+  write their own persisted paths via these options under their
+  existing `mkIf cfg.enable` blocks. The system-scope aggregator
+  wires the merged lists into `environment.persistence.<root>`,
+  derives the matching `systemd.tmpfiles.rules` (parents
+  auto-emitted in insertion order; modes overridable via
+  `parentTmpfiles`), and emits the `set-persisted-home-ownership`
+  chown service from `userHomes`. A sibling HM aggregator imports
+  `inputs.impermanence.nixosModules.home-manager.impermanence` and
+  assigns `home.persistence.<root>` from the option set.
+  Swap-friendliness: the only places that mention impermanence are
+  the two `imports` lines in the aggregator; replacing them with a
+  `preservation` backend is a one-file edit. Feature modules and
+  hosts never name a backend.
+  Eval-equivalent across cimmerian, sartre, carcosa, defenestration
+  (drvPath byte-identical). T14g1's drvPath drifts cosmetically:
+  set of `environment.persistence` directories and
+  `systemd.tmpfiles.rules` is identical, only sequenced differently
+  because module-evaluation order now drives list ordering instead
+  of the hand-written inline list. The
+  `set-persisted-home-ownership` service body is byte-identical in
+  the single-user case. Proving ground is t14g1 only; cimmerian
+  gains it once A.1 lands.
+
 - ~~M.7 **Treewide magic-string refactor onto `systemConstants`.**~~
   Centralised duplicated identity values onto the constants Aspect:
   `systemConstants.user` (was duplicated in
