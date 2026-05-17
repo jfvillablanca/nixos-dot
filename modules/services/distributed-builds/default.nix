@@ -33,7 +33,8 @@
 
       sshUser = lib.mkOption {
         type = lib.types.str;
-        default = "jmfv";
+        default = config.systemConstants.user;
+        defaultText = lib.literalExpression "config.systemConstants.user";
         description = ''
           User on the remote that owns nix-daemon trust. Must be in
           the builder's `nix.settings.trusted-users`.
