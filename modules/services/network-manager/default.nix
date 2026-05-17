@@ -4,6 +4,10 @@
     networking.networkmanager.enable = true;
     programs.nm-applet.enable = true;
 
+    myNixosModules.persistence.directories = [
+      "/etc/NetworkManager/system-connections"
+    ];
+
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
     # Configure network proxy if necessary
