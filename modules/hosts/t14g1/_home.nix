@@ -39,10 +39,22 @@
       zoxide
       zsh
 
+      moonlight-qt
+
       hyprland-stack
       wallpapers
       xdg
     ]);
+
+  programs.moonlight-qt.extraSettings = {
+    General = {
+      width = 1920;
+      height = 1080;
+      fps = 60;
+      bitrate = 50000;
+      videocfg = 2; # 0=auto, 1=H.264, 2=HEVC, 4=AV1
+    };
+  };
 
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
@@ -117,7 +129,6 @@
         zoom-us
         vscode
         virt-viewer
-        moonlight-qt # Sunshine client
 
         pkgs.vf
       ]
