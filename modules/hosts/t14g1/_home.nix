@@ -10,7 +10,6 @@
     [
       inputs.nix-colors.homeManagerModules.default
       # inputs.walker.homeManagerModules.walker
-      inputs.impermanence.nixosModules.home-manager.impermanence
     ]
     ++ (with inputs.self.modules.homeManager; [
       bash
@@ -30,6 +29,7 @@
       neovim
       nh
       nom
+      persistence
       ripgrep
       starship
       tmux
@@ -142,42 +142,43 @@
       GIT_EDITOR = "nvim";
       MANPAGER = "nvim +Man!";
     };
+  };
 
-    persistence."/persist/home/${user}" = {
-      directories = [
-        "dev"
-        "nixos-dot"
-        "Downloads"
-        "Documents"
-        "Pictures"
-        "Videos"
-        # ".gnupg"
-        ".ssh"
-        ".config/gh"
-        # ".nixops"
-        # ".local/share/keyrings"
-        ".local/share/direnv"
-        ".local/share/fish"
-        ".local/share/zoxide"
-        ".local/state/nvim"
-        ".tmux/resurrect"
-        ".mozilla/firefox"
-        ".claude"
+  myHomeModules.persistence = {
+    enable = true;
+    root = "/persist/home/${user}";
+    directories = [
+      "dev"
+      "nixos-dot"
+      "Downloads"
+      "Documents"
+      "Pictures"
+      "Videos"
+      # ".gnupg"
+      ".ssh"
+      ".config/gh"
+      # ".nixops"
+      # ".local/share/keyrings"
+      ".local/share/direnv"
+      ".local/share/fish"
+      ".local/share/zoxide"
+      ".local/state/nvim"
+      ".tmux/resurrect"
+      ".mozilla/firefox"
+      ".claude"
 
-        # the idiot apps that use the .config directory
-        # to store state
-        ".config/google-chrome"
-        ".config/discord"
-        # {
-        #   directory = ".local/share/Steam";
-        #   method = "symlink";
-        # }
-      ];
-      files = [
-        ".claude.json"
-      ];
-      allowOther = true;
-    };
+      # the idiot apps that use the .config directory
+      # to store state
+      ".config/google-chrome"
+      ".config/discord"
+      # {
+      #   directory = ".local/share/Steam";
+      #   method = "symlink";
+      # }
+    ];
+    files = [
+      ".claude.json"
+    ];
   };
 
   programs = {};
