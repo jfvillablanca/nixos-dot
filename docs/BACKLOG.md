@@ -408,25 +408,25 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
   all 4 affected packages — drvPaths byte-identical before/after.
   README gained a "Forking / adopting" section walking through the
   knobs.
-- M.8 **Structural-rename swap-friendliness.** Two layers of magic
-  remain encoded by path or attribute name rather than by config:
-  - **Per-host directory.** `modules/hosts/<host>/` directory name +
-    matching `flake.modules.nixos.<host>` key + literal
-    `networking.hostName = "<host>"` in each `default.nix`. A
-    swap means renaming the directory and four-ish references in
-    lockstep. Could be reduced to a single edit by deriving
-    `hostName` from a per-host option whose default reads
-    `baseNameOf ./.` (or similar), but the dir name remains
-    canonical.
-  - **User-module identifier.** `modules/users/jmfv/` directory +
-    every `self.modules.{nixos,homeManager}.jmfv` reference (five
-    files at the time of M.7). Same shape: the directory name is
-    the module key. Renaming for adoption is `git mv` + sed across
-    consumers. Could templatize with a `flake.lib.userModule`
-    helper, but the consumers are few; the README "Forking"
-    section already documents the recipe.
-    Both are "swap-friendly" today via documented manual renames;
-    M.8 would be the structural refactor to eliminate them.
+- ~~M.8 **Structural-rename swap-friendliness.**~~ Both layers
+  decoupled:
+  - **Per-host directory.** Each host file now derives
+    `hostName = baseNameOf (toString ./.)` and uses
+    `${hostName}` for the flake module key,
+    `flake.nixosConfigurations` entry, `networking.hostName`,
+    and the per-host registries (`flake.publicKeys`,
+    `flake.hostIdentityKeys`). Renaming a host is now a single
+    `git mv modules/hosts/<old> modules/hosts/<new>` plus
+    swapping the SSH-key payloads.
+  - **User-module identifier.** The user feature is registered
+    under generic keys `flake.modules.{nixos,homeManager}.user`
+    (was `.jmfv`). Inside `modules/users/jmfv/default.nix` the
+    identity is read from `self.constants.user`, mirrored by
+    `systemConstants.user`, so a single default edit (or override)
+    moves the whole pipeline. The directory still happens to be
+    named `jmfv` but is just a label — adopters can rename freely.
+    Eval-verified across all 5 hosts + all 4 affected packages —
+    drvPaths byte-identical before/after.
 
 ## N. Quality of life
 
