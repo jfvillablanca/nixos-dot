@@ -44,6 +44,13 @@
 
       networking.firewall.trustedInterfaces =
         lib.optional cfg.trustInterface "tailscale0";
+
+      myNixosModules.persistence.directories = [
+        {
+          directory = "/var/lib/tailscale";
+          mode = "0700";
+        }
+      ];
     };
   };
 }
