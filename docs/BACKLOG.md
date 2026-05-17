@@ -394,6 +394,39 @@ system-desktop` is coarse. Add `system-laptop`, `system-workstation`,
     - NetworkManager already declaring persistence). Cimmerian
       becomes a second host once A.1 lands; sartre never needs it
       (WSL has no concept of an ephemeral root).
+- ~~M.7 **Treewide magic-string refactor onto `systemConstants`.**~~
+  Centralised duplicated identity values onto the constants Aspect:
+  `systemConstants.user` (was duplicated in
+  `services/distributed-builds`, `flake/packages.nix`), new
+  `systemConstants.repoPath` (was hard-coded as
+  `/home/jmfv/nixos-dot` in `programs/nh` and the eight `nixd.expr`
+  templates in `flake/packages.nix`), new `systemConstants.git.{name,
+email}` (was hard-coded in `programs/git`). Also wired the HM
+  class to import `systemConstants` via the `users/jmfv` module
+  (was nominally promised in the constants module's docstring but
+  never hooked up). Eval-verified equivalent across all 5 hosts +
+  all 4 affected packages — drvPaths byte-identical before/after.
+  README gained a "Forking / adopting" section walking through the
+  knobs.
+- M.8 **Structural-rename swap-friendliness.** Two layers of magic
+  remain encoded by path or attribute name rather than by config:
+  - **Per-host directory.** `modules/hosts/<host>/` directory name +
+    matching `flake.modules.nixos.<host>` key + literal
+    `networking.hostName = "<host>"` in each `default.nix`. A
+    swap means renaming the directory and four-ish references in
+    lockstep. Could be reduced to a single edit by deriving
+    `hostName` from a per-host option whose default reads
+    `baseNameOf ./.` (or similar), but the dir name remains
+    canonical.
+  - **User-module identifier.** `modules/users/jmfv/` directory +
+    every `self.modules.{nixos,homeManager}.jmfv` reference (five
+    files at the time of M.7). Same shape: the directory name is
+    the module key. Renaming for adoption is `git mv` + sed across
+    consumers. Could templatize with a `flake.lib.userModule`
+    helper, but the consumers are few; the README "Forking"
+    section already documents the recipe.
+    Both are "swap-friendly" today via documented manual renames;
+    M.8 would be the structural refactor to eliminate them.
 
 ## N. Quality of life
 

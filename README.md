@@ -59,6 +59,49 @@ First boot lands as `jmfv`. From there, clone the repo and
 `sudo nixos-rebuild switch --flake .#defenestration` to start
 iterating from a local checkout.
 
+## Forking / adopting this repo
+
+Most cross-cutting identity values are exposed as options under
+`config.systemConstants` (declared at
+`modules/system/constants/default.nix`). To adopt this repo for
+your own use:
+
+1. Override the constants in a module the host imports (or set new
+   defaults directly in the constants module if you're forking).
+   The available knobs:
+   - `systemConstants.user` — primary user account on every host.
+   - `systemConstants.repoPath` — absolute path to the local
+     checkout (defaults to `/home/<user>/nixos-dot`; override if
+     yours lives elsewhere).
+   - `systemConstants.git.name` / `.email` — git author identity
+     baked into commits.
+
+2. Replace SSH key material in each host file:
+   - `flake.publicKeys.<host>` — your per-host SSH pubkeys
+     (aggregated into every user's `authorized_keys`).
+   - `flake.hostIdentityKeys.<host>` — server identity keys
+     (aggregated into every host's `known_hosts`).
+
+   Generate fresh keys with `ssh-keygen -t ed25519` on each box
+   and paste the public halves in. The old entries can be deleted
+   verbatim — nothing else references them.
+
+3. Items still encoded by path / filename (treat these as
+   structural and rename together):
+   - Hostnames: `modules/hosts/<name>/` directory + the matching
+     `flake.modules.nixos.<name>` and `networking.hostName`
+     entries in `default.nix`.
+   - User-module name: `modules/users/jmfv/` directory + every
+     `self.modules.{nixos,homeManager}.jmfv` reference. The
+     filename is the module's identifier.
+
+4. Re-lock and rebuild:
+
+   ```bash
+   nix flake update
+   sudo nixos-rebuild switch --flake .#<host>
+   ```
+
 ## Docs
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - dendritic layout, namespaces, conventions.
