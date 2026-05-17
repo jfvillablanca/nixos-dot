@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.git = _: {
+  flake.modules.homeManager.git = {config, ...}: {
     config = {
       programs = {
         git = {
@@ -7,8 +7,7 @@
           settings = {
             init.defaultBranch = "main";
             user = {
-              name = "jfvillablanca";
-              email = "31008330+jfvillablanca@users.noreply.github.com";
+              inherit (config.systemConstants.git) name email;
             };
             color.ui = "auto";
             rerere.enabled = true;
