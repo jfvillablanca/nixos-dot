@@ -4,9 +4,21 @@
   ...
 }: let
   pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+
+  hostConsts = host: inputs.self.nixosConfigurations.${host}.config.systemConstants;
+  hostHome = host: inputs.self.nixosConfigurations.${host}.config.home-manager.users.${(hostConsts host).user};
+
+  nixdOptionsFor = host: let
+    inherit (hostConsts host) user repoPath;
+  in {
+    nixos.expr = ''(builtins.getFlake "${repoPath}").nixosConfigurations."${host}".options'';
+    home_manager.expr = ''(builtins.getFlake "${repoPath}").nixosConfigurations."${host}".config.home-manager.users.${user}'';
+    flake_parts.expr = ''(builtins.getFlake "${repoPath}").debug.options'';
+    nvim.expr = ''(builtins.getFlake "${repoPath}").nvimOptions'';
+  };
 in {
   flake.packages.x86_64-linux = {
-    nvim = inputs.self.nixosConfigurations.cimmerian.config.home-manager.users.jmfv.programs.neovim.finalPackage;
+    nvim = (hostHome "cimmerian").programs.neovim.finalPackage;
 
     # nixd's NixOS options expansion is host-specific (it embeds the flake's
     # local checkout path and the host name). Lives at the factory call site
@@ -22,12 +34,7 @@ in {
         {
           nvim.lsp.servers.eslint.enable = true;
           nvim.lsp.servers.texlab.enable = true;
-          nvim.lsp.servers.nixd.settings.nixd.options = {
-            nixos.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."cimmerian".options'';
-            home_manager.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."cimmerian".config.home-manager.users.jmfv'';
-            flake_parts.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").debug.options'';
-            nvim.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nvimOptions'';
-          };
+          nvim.lsp.servers.nixd.settings.nixd.options = nixdOptionsFor "cimmerian";
         }
       ];
     };
@@ -42,12 +49,7 @@ in {
         {
           nvim.lsp.servers.eslint.enable = true;
           nvim.lsp.servers.texlab.enable = true;
-          nvim.lsp.servers.nixd.settings.nixd.options = {
-            nixos.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."t14g1".options'';
-            home_manager.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nixosConfigurations."t14g1".config.home-manager.users.jmfv'';
-            flake_parts.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").debug.options'';
-            nvim.expr = ''(builtins.getFlake "/home/jmfv/nixos-dot").nvimOptions'';
-          };
+          nvim.lsp.servers.nixd.settings.nixd.options = nixdOptionsFor "t14g1";
         }
       ];
     };
