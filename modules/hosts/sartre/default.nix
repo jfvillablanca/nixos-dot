@@ -4,9 +4,10 @@
   self,
   ...
 }: let
+  hostName = baseNameOf (toString ./.);
   base16Scheme = "rose-pine-moon";
 in {
-  flake.modules.nixos.sartre = {
+  flake.modules.nixos.${hostName} = {
     config,
     lib,
     pkgs,
@@ -26,7 +27,7 @@ in {
       self.modules.nixos.steam
     ];
 
-    networking.hostName = "sartre";
+    networking.hostName = hostName;
 
     # HACK:
     # first user of NixOS-WSL is "nixos" which currently uses UID 1000
@@ -113,5 +114,5 @@ in {
     };
   };
 
-  flake.nixosConfigurations.sartre = self.lib.mkNixos "sartre";
+  flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
 }

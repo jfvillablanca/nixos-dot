@@ -1,6 +1,8 @@
 # defenestration — NixOS-WSL test host bootstrapped via tarballBuilder.
-{self, ...}: {
-  flake.modules.nixos.defenestration = {config, ...}: let
+{self, ...}: let
+  hostName = baseNameOf (toString ./.);
+in {
+  flake.modules.nixos.${hostName} = {config, ...}: let
     inherit (config.systemConstants) user;
   in {
     imports = [
@@ -8,7 +10,7 @@
       self.modules.nixos.system-default
     ];
 
-    networking.hostName = "defenestration";
+    networking.hostName = hostName;
 
     system.stateVersion = "25.05";
 
@@ -20,5 +22,5 @@
     nixpkgs.config.allowUnfree = true;
   };
 
-  flake.nixosConfigurations.defenestration = self.lib.mkNixos "defenestration";
+  flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
 }

@@ -4,8 +4,10 @@
 #   ./result/bin/run-carcosa-vm
 # Reached from any tailnet peer:
 #   remote-viewer spice://cimmerian:5930
-{self, ...}: {
-  flake.modules.nixos.carcosa = {config, ...}: let
+{self, ...}: let
+  hostName = baseNameOf (toString ./.);
+in {
+  flake.modules.nixos.${hostName} = {config, ...}: let
     inherit (config.systemConstants) user;
   in {
     imports = [
@@ -15,7 +17,7 @@
       self.modules.nixos.spice-vda
     ];
 
-    networking.hostName = "carcosa";
+    networking.hostName = hostName;
 
     system.stateVersion = "25.05";
 
@@ -49,5 +51,5 @@
     nixpkgs.config.allowUnfree = true;
   };
 
-  flake.nixosConfigurations.carcosa = self.lib.mkNixos "carcosa";
+  flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
 }

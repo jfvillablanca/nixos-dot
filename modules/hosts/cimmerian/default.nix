@@ -4,9 +4,10 @@
   self,
   ...
 }: let
+  hostName = baseNameOf (toString ./.);
   base16Scheme = "spaceduck";
 in {
-  flake.modules.nixos.cimmerian = {
+  flake.modules.nixos.${hostName} = {
     config,
     pkgs,
     pkgs-master,
@@ -27,7 +28,7 @@ in {
       self.modules.nixos.tailscale
     ];
 
-    networking.hostName = "cimmerian";
+    networking.hostName = hostName;
 
     # Don't touch me :)
     system.stateVersion = "22.11";
@@ -152,9 +153,9 @@ in {
     };
   };
 
-  flake.nixosConfigurations.cimmerian = self.lib.mkNixos "cimmerian";
+  flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
 
-  flake.publicKeys.cimmerian = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBSS3Q5D0saZcnpIbtEdLpdb0OWZdOEIXgxeDppVM2M jmfv.dev@gmail.com";
+  flake.publicKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBSS3Q5D0saZcnpIbtEdLpdb0OWZdOEIXgxeDppVM2M jmfv.dev@gmail.com";
 
-  flake.hostIdentityKeys.cimmerian = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHVQsv1En2SX2P0Tp+hQ+Cl9m1R50PTvCn145k6iRV0b root@cimmerian";
+  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHVQsv1En2SX2P0Tp+hQ+Cl9m1R50PTvCn145k6iRV0b root@cimmerian";
 }

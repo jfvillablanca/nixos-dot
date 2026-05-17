@@ -4,11 +4,12 @@
   self,
   ...
 }: let
+  hostName = baseNameOf (toString ./.);
   base16Scheme = "gruvbox-dark-hard";
 in {
   flake-file.inputs.nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-  flake.modules.nixos.t14g1 = {
+  flake.modules.nixos.${hostName} = {
     config,
     lib,
     pkgs,
@@ -35,7 +36,7 @@ in {
       self.modules.nixos.kanata
     ];
 
-    networking.hostName = "t14g1";
+    networking.hostName = hostName;
 
     users.users.${user}.initialPassword = "12345";
 
@@ -256,10 +257,10 @@ in {
     };
   };
 
-  flake.nixosConfigurations.t14g1 = self.lib.mkNixos "t14g1";
+  flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
 
-  flake.publicKeys.t14g1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFAAQv0TTQr9OUABswhWE6bQf+YcRkvRQHUigK7JsGUS jmfv.dev@gmail.com";
-  flake.publicKeys.t14g1-root = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWKj8zIYP0LgZmik2Fu6JfgIvTmmYCndBseqPUOVgrY t14g1 root build key";
+  flake.publicKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFAAQv0TTQr9OUABswhWE6bQf+YcRkvRQHUigK7JsGUS jmfv.dev@gmail.com";
+  flake.publicKeys."${hostName}-root" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWKj8zIYP0LgZmik2Fu6JfgIvTmmYCndBseqPUOVgrY t14g1 root build key";
 
-  flake.hostIdentityKeys.t14g1 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnmnhUtaRg/b++aKL5pnYhsf4Nehapm/wnOoiIu+JNZ root@t14g1";
+  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnmnhUtaRg/b++aKL5pnYhsf4Nehapm/wnOoiIu+JNZ root@t14g1";
 }
