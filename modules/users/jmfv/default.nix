@@ -9,5 +9,10 @@ in {
     users.users.jmfv.openssh.authorizedKeys.keys =
       builtins.attrValues self.publicKeys;
   };
-  flake.modules.homeManager.jmfv = jmfv.homeManager;
+  flake.modules.homeManager.jmfv = {
+    imports = [
+      jmfv.homeManager
+      self.modules.generic.systemConstants
+    ];
+  };
 }
