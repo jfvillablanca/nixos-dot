@@ -100,6 +100,24 @@
           systems = ["x86_64-linux"];
         }
       ];
+
+      myNixosModules.persistence = {
+        directories = [
+          {
+            directory = "/root/.ssh";
+            mode = "0700";
+          }
+        ];
+        # /root needs 0700 even though we only bind-mount /root/.ssh;
+        # default 0755 on the persisted parent would leak the dir's
+        # name even if its contents are unreadable.
+        parentTmpfiles = [
+          {
+            directory = "/root";
+            mode = "0700";
+          }
+        ];
+      };
     };
   };
 }
