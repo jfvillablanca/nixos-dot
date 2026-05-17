@@ -14,6 +14,7 @@
         timezone
         fonts
         known-hosts
+        persistence
       ]);
   };
 }

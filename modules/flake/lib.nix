@@ -1,8 +1,9 @@
 # `inputs.self.lib.mkNixos "cimmerian"` constructs a NixOS configuration
 # that pulls the host feature `flake.modules.nixos.<hostName>` plus the
-# framework-level modules (disko, impermanence, stylix, nixos-wsl,
-# home-manager). Each host's `modules/hosts/<name>/default.nix` calls
-# `mkNixos` directly to set its own `flake.nixosConfigurations.<name>`.
+# framework-level modules (disko, stylix, nixos-wsl, home-manager).
+# Impermanence (or any other persistence backend) is imported by the
+# `persistence` Aspect at `modules/system/persistence/default.nix`, not
+# here, so swapping backends stays a one-file change.
 {
   inputs,
   self,
@@ -19,7 +20,6 @@
       };
       modules = [
         inputs.disko.nixosModules.default
-        inputs.impermanence.nixosModules.impermanence
         inputs.stylix.nixosModules.stylix
         inputs.nixos-wsl.nixosModules.default
         inputs.home-manager.nixosModules.home-manager
