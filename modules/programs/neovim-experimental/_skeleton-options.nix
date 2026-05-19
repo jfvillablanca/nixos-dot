@@ -90,7 +90,7 @@
     withNodeJs = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Wrap nvim with a node provider. Auto-enabled when copilot or markdown-preview are on.";
+      description = "Wrap nvim with a node provider. Auto-enabled when markdown-preview is on.";
     };
     withPython3 = lib.mkOption {
       type = lib.types.bool;

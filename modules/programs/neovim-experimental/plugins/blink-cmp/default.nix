@@ -2,10 +2,6 @@
 # (nvim-cmp + cmp-buffer + cmp-path + cmp-cmdline + cmp_luasnip + cmp-nvim-lsp +
 # cmp-nvim-lua + luasnip + friendly-snippets) with a single plugin. Native
 # `vim.snippet` handles snippet expansion if needed.
-#
-# A `nvim.cmp.sources` spine isn't added here because no current plugin
-# contributes a custom source (copilot.lua's `blink-cmp-copilot` is the
-# obvious future user; spine added when it lands).
 {lib, ...}: {
   flake.modules.nvim.blink-cmp = {
     config,
