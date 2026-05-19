@@ -139,21 +139,6 @@
 
           # AI
           {
-            plugin = copilot-vim;
-            type = "lua";
-            config =
-              /*
-              lua
-              */
-              ''
-                vim.keymap.set('i', '<Right>', 'copilot#Accept("\\<CR>")', {
-                  expr = true,
-                  replace_keycodes = false
-                })
-                vim.g.copilot_no_tab_map = true
-              '';
-          }
-          {
             plugin = codecompanion-nvim;
             type = "lua";
             config =
