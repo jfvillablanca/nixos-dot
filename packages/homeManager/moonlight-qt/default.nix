@@ -8,6 +8,11 @@
   cfg = config.programs.moonlight-qt;
   iniFormat = pkgs.formats.ini {};
   declared = iniFormat.generate "moonlight-managed.conf" cfg.extraSettings;
+  mergeConfig = pkgs.writeShellApplication {
+    name = "moonlight-qt-merge-config";
+    runtimeInputs = with pkgs; [coreutils gawk];
+    text = builtins.readFile ./merge-config.sh;
+  };
 in {
   options.programs.moonlight-qt = {
     enable = lib.mkEnableOption "moonlight-qt game streaming client";
@@ -42,7 +47,7 @@ in {
     home.packages = [cfg.package];
 
     home.activation.moonlightMergeConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      run ${pkgs.runtimeShell} ${./merge-config.sh} \
+      run ${lib.getExe mergeConfig} \
         "$HOME/.config/Moonlight Game Streaming Project/Moonlight.conf" \
         ${declared}
     '';
