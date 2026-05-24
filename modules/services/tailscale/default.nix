@@ -33,6 +33,17 @@
           etc.) without those ports being open to the LAN.
         '';
       };
+
+      enableSSH = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = ''
+          Pass `--ssh` to `tailscale up`. Lets tailnet peers
+          authorized by ACL `tailscale ssh` in with identity carried
+          by Tailscale, no separate keys. Off by default; flip on
+          hosts you intend to expose as a relay or admin target.
+        '';
+      };
     };
 
     config = lib.mkIf cfg.enable {
@@ -40,6 +51,7 @@
         enable = true;
         openFirewall = true;
         inherit (cfg) useRoutingFeatures;
+        extraSetFlags = lib.optional cfg.enableSSH "--ssh";
       };
 
       networking.firewall.trustedInterfaces =
