@@ -48,6 +48,19 @@
               type = lib.types.str;
               default = "normal";
             };
+            fingerprint = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = ''
+                EDID hex from `autorandr --fingerprint`. When set for
+                every monitor in the list, the autorandr feature
+                synthesises a declarative profile keyed off these
+                fingerprints, so the layout reapplies on udev hotplug
+                events instead of relying on a one-shot session-start
+                xrandr command. Stable across reboots; tied to the
+                physical monitor.
+              '';
+            };
           };
         });
         default = [];
