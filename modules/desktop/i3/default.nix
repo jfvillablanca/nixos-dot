@@ -19,29 +19,6 @@
               terminal = term;
               startup = [
                 {
-                  command = ''
-                    xrandr ${
-                      lib.strings.concatStringsSep " " (map (
-                          m: let
-                            resolution = "--mode ${toString m.width}x${toString m.height} --rate ${toString m.refreshRate}";
-                            position = "--pos ${toString m.x}x${toString m.y} --rotate ${m.rotate}";
-                          in "--output ${m.name} ${
-                            if m.isPrimary
-                            then "--primary"
-                            else ""
-                          } ${
-                            if m.enabled
-                            then "${resolution} ${position}"
-                            else "--off"
-                          }"
-                        )
-                        config.myHomeModules.window-manager.monitors)
-                    }
-                  '';
-                  notification = false;
-                  always = true;
-                }
-                {
                   command = "picom";
                   notification = false;
                   always = true;
