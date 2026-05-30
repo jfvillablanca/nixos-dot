@@ -171,6 +171,7 @@
       # to store state
       ".config/google-chrome"
       ".config/discord"
+      ".config/Moonlight Game Streaming Project"
       # {
       #   directory = ".local/share/Steam";
       #   method = "symlink";
