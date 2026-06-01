@@ -16,6 +16,7 @@
     gh
     git
     gitui
+    kitty
     neovim
     nh
     nom
