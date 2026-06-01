@@ -43,6 +43,11 @@ in {
     # this nixpkgs-provided one.
     nix.package = pkgs.lixPackageSets.stable.lix;
 
+    nix.settings = {
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" user];
+    };
+
     system.defaults = {
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
