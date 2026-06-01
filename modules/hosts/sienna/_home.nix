@@ -26,6 +26,8 @@
     yazi
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   home.packages = [pkgs.claude-code];
 
   # Override the systemConstants default (Linux-flavoured `/home/...`)
