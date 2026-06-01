@@ -28,10 +28,13 @@
       };
     };
 
-    homeManager = _: {
+    homeManager = {pkgs, ...}: {
       home = {
         username = name;
-        homeDirectory = "/home/${name}";
+        homeDirectory =
+          if pkgs.stdenv.isDarwin
+          then "/Users/${name}"
+          else "/home/${name}";
         # Don't touch me :)
         stateVersion = "22.11";
       };

@@ -19,7 +19,13 @@
   lib,
   ...
 }: {
-  imports = [inputs.flake-file.flakeModules.dendritic];
+  imports = [
+    inputs.flake-file.flakeModules.dendritic
+    # Registers `flake.darwinConfigurations` as a top-level flake output;
+    # flake-parts handles `flake.nixosConfigurations` natively but darwin
+    # needs its own wiring.
+    inputs.nix-darwin.flakeModules.default
+  ];
 
   # Match the previous explicit `systems = ["x86_64-linux"]` in flake.nix.
   # `flakeModules.dendritic` would otherwise enable all systems and `nix flake
@@ -57,5 +63,24 @@
     };
 
     impermanence.url = "github:nix-community/impermanence";
+
+    # nix-darwin master tracks `nixpkgs-unstable`, not `nixos-unstable`
+    # (the two channels diverge -- nixos-unstable lags for darwin
+    # compatibility). Carry a separate input so the Linux hosts can keep
+    # following nixos-unstable unchanged.
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
   };
 }

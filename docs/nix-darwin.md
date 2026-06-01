@@ -35,12 +35,13 @@ profile plus a curated slice of system state.
   versions and is the right thing for first-install on a Mac that has Nix but
   has not yet had `nix-darwin` materialised. After the first activation
   `darwin-rebuild` is on `$PATH` and the two forms are equivalent.
-- **macOS support.** mid-2026 supports the active macOS line (Sequoia 15.x and
-  Sonoma 14.x are stable). macOS Tahoe (26.x) lands in the autumn 2025/2026
-  cycle; nix-darwin tracks Apple's annual cadence with a one-or-two-release
-  lag for option churn around defaults that get renamed under the hood.
-  Verify Tahoe support status on first install via the README's compatibility
-  table.
+- **macOS support.** Mid-2026 supports Sonoma 14.x, Sequoia 15.x, and Tahoe
+  26.x (Tahoe shipped 2025-09-15). M5 Pro hardware ships with Tahoe 26.4 or
+  newer. nix-darwin's Tahoe-compat PRs landed into master through autumn 2025
+  and were backported to `nix-darwin-25.11` and `nix-darwin-26.05`. macOS 27
+  is expected in autumn 2026 and will be the final release with full
+  Rosetta 2; macOS 28 (2027) phases Rosetta 2 out for all but legacy gaming
+  titles.
 
 What it is **not**: a re-implementation of macOS APIs, a sandbox, or anything
 that replaces Apple's launchd/PAM/profiles infrastructure. It writes config
@@ -56,12 +57,16 @@ Four installers are in play. Pick deliberately, because the choice is sticky.
    modern macOS: System Integrity Protection, signed-system-volume, the
    read-only `/` and the disappearance of the `nixbld` group all bite. Do not
    use.
-2. **Determinate Systems `nix-installer` producing upstream Nix.** The
-   community-de-facto-standard installer. Multi-user only on Darwin, plants a
-   separate `Nix Store` APFS volume, drops a `launchd` job, gives you a clean
-   uninstaller. The Nix it installs is upstream CppNix, not the Determinate
-   fork. Source: <https://github.com/DeterminateSystems/nix-installer>. This
-   is what most nix-darwin users land on in 2026.
+2. **Determinate Systems `nix-installer`.** Until late 2025 the
+   community-de-facto-standard for installing upstream CppNix on macOS.
+   **As of early 2026 this installer no longer installs upstream Nix at
+   all** -- DS dropped the `--prefer-upstream-nix` flag and the
+   "Install Determinate Nix?" confirmation prompt now only branches into
+   "install Determinate Nix" or "abort the installer entirely". If you run
+   this installer today you get Determinate Nix (the fork, option 3 below),
+   period. Reference:
+   <https://determinate.systems/blog/installer-dropping-upstream/>. Source:
+   <https://github.com/DeterminateSystems/nix-installer>.
 3. **Determinate Nix (the fork).** Same installer binary, different flag, and
    different daemon image. Ships flake-schemas-aware tooling, lazy trees,
    "always-on flakes" defaults, and Determinate's own CA model. On Darwin the
@@ -75,12 +80,28 @@ Four installers are in play. Pick deliberately, because the choice is sticky.
    Not blocked, but the nix-darwin module ecosystem is overwhelmingly tested
    against CppNix and Determinate Nix. Be prepared to file bugs if behaviour
    diverges. Source: <https://lix.systems/>.
+5. **NixOS Foundation experimental installer.** Long-term destination per the
+   Foundation, presently marked experimental. Same multi-user / APFS-volume
+   shape as the Determinate installer, but Foundation-owned rather than DS-
+   owned. nix-darwin gained support for it in PR #1702 (merged 2026-02-18,
+   backported to `nix-darwin-25.11` in #1717). Invocation:
+   `curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install`.
+   Use today only if you want to dogfood the Foundation's tooling; the DS
+   installer remains the lower-risk default. Source:
+   <https://github.com/NixOS/experimental-nix-installer>.
 
-Practical recommendation for this repo, today: **use the Determinate Systems
-nix-installer in its upstream-Nix mode**. It matches what cimmerian/t14g1
-already run (CppNix), avoids the A.6 question, and keeps the Darwin and Linux
-toolchain identical for caching/binary-substitution purposes. Revisit when A.6
-ships on Linux.
+Practical recommendation for this repo, mid-2026 (revised after DS dropped
+upstream Nix): the three real choices are
+**(option 5) NixOS Foundation experimental installer** for upstream CppNix
+matching cimmerian/t14g1; **(option 3) DS installer** if you want Determinate
+Nix (gets you lazy trees, flake-schemas, and avoids the open `$TMPDIR`
+symlink bug #1577 on Tahoe); or **(option 4) Lix installer** if you want the
+friendly fork. None of these choices propagate to other hosts: each machine
+has its own Nix install, and the flake source is portable across all three.
+The host-side `nix.package` option in nix-darwin declares which package
+manages the daemon going forward, and should match what the installer put
+down to avoid the installer-vs-config drift one-time replacement on first
+activation.
 
 Irreversibility: uninstall is supported (`/nix/nix-installer uninstall`) and
 removes the volume, the daemon and the shell-init shims. Swapping installer
@@ -107,11 +128,24 @@ install; treat it as one-way.
   `vf`/`vfx` local packages need a one-line architecture-gate review). The
   second route is the smaller diff; the first is the right end-state when more
   than one mac shows up.
-- **Tahoe / firmware caveats.** macOS 26 (Tahoe) reshuffled some private
-  frameworks and several `system.defaults.dock` and Finder keys were renamed.
-  nix-darwin generally lags a minor release on Tahoe defaults. Pin to a
-  nix-darwin commit that has the Tahoe-compat PR merged before the Mac
-  upgrades past 26.0. Verify on first install.
+- **Tahoe / firmware caveats.** macOS Tahoe (26.x) shipped 2025-09-15 and is
+  what M5 Pro hardware comes loaded with. The Tahoe-compat PRs are merged
+  into master and backported to `nix-darwin-25.11` / `nix-darwin-26.05`. The
+  open-issue tail is non-trivial: see §13 for known Tahoe-era footguns
+  (TMPDIR symlink quirk, broken `mas` CLI, GUI session required for first
+  activation). Pair the input branch with the matching nixpkgs branch
+  (`nix-darwin-26.05` with `nixos-26.05`).
+- **M5 Pro (2026 hardware) notes.** Announced 2026-03-02, available
+  2026-03-11. 3 nm N3P process, ARMv9.2-A ISA, new "Fusion Architecture"
+  bonding two dies in a single SoC. CPU base 15 cores (5 super + 10
+  performance), up to 18 cores; GPU 16-20 cores with a Neural Accelerator
+  per core; 16-core Neural Engine; LPDDR5X 9600 MT/s at 307 GB/s; up to
+  64 GB unified memory (M5 Max is the 128 GB SKU). Thunderbolt 5
+  (120 Gb/s), Wi-Fi 7 + Bluetooth 6 via the new on-package N1 chip. The
+  system identifier is **still `aarch64-darwin`** -- the Fusion
+  Architecture sits below the kernel boundary and does not affect Nix
+  evaluation or substitution. No M5-specific knobs are needed in the host
+  config; treat it as a generic `aarch64-darwin` target.
 - **direnv / lorri.** Both work fine on `aarch64-darwin`. `services.lorri` is
   available via the nix-darwin module set but is generally not worth running
   in 2026; prefer `nix-direnv` driven by user-level `programs.direnv` in
@@ -175,7 +209,35 @@ Two things to note:
   demonstrates this auto-registration for a non-standard class. Verify on first
   install by `nix flake show` after the first commit.
 
-## 5. Home-manager integration
+## 5. Run-as-root activation and `system.primaryUser`
+
+This is the single biggest behavioural change in current nix-darwin versus
+older READMEs and blog posts. As of mid-2025 master (shipped in
+`nix-darwin-25.11` and `nix-darwin-26.05`), the **entire activation pipeline
+runs as root**, not as the invoking user. Three consequences:
+
+- **Every rebuild needs `sudo`.** `darwin-rebuild switch` without `sudo` now
+  errors with `sudo: darwin-rebuild: command not found` -- this is the same
+  root cause as the chronic open issue nix-darwin#1544. The correct
+  invocations are:
+  - First install: `sudo nix run nix-darwin -- switch --flake .#<host>`
+  - Subsequent: `sudo darwin-rebuild switch --flake .#<host>`
+- **`system.primaryUser` is now load-bearing.** Any option that historically
+  applied to the user running `darwin-rebuild` (most `home-manager.*` wiring
+  and a portion of `homebrew.*`) now applies to whichever username
+  `system.primaryUser` names. The module enforces this with an assertion:
+  build fails with a message listing exactly which options need a primary
+  user. Set `system.primaryUser = "<your-username>"` on every host.
+  Upstream documents this as a transition mechanism that may shrink later,
+  but for now it is required.
+- **`system.activationScripts.postUserActivation` was removed.** Any custom
+  user-scoped activation needs an explicit `sudo -u "$PRIMARY_USER" ...`
+  inside a regular activation script.
+
+Reference: `modules/system/primary-user.nix` in the nix-darwin tree, and
+issue <https://github.com/nix-darwin/nix-darwin/issues/1457>.
+
+## 6. Home-manager integration
 
 Three modes exist. This repo should pick (a) for the new Mac and keep (b) as a
 documented escape hatch for B.3.
@@ -199,6 +261,11 @@ documented escape hatch for B.3.
     ];
   };
   ```
+
+  Under the run-as-root activation model (§5), `system.primaryUser` must be
+  set to the same `user` value, since `home-manager.users.${user}` is one of
+  the options that requires a primary user. The build will fail with a clear
+  assertion message if it is missing.
 
   This is the path that makes `flake.modules.homeManager.<feature>` modules
   shared between Linux and Darwin hosts -- the shared bash/git/fzf/yazi
@@ -224,7 +291,7 @@ profile + HM profile). `useUserPackages = true` matches existing hosts and
 gets HM-installed packages into `~/.nix-profile`-style availability for the
 GUI launcher.
 
-## 6. Homebrew / Cask via `nix-homebrew`
+## 7. Homebrew / Cask via `nix-homebrew`
 
 There is a population of macOS apps that nixpkgs cannot package for licensing,
 distribution-format, or arm64-coverage reasons: 1Password (the native app, not
@@ -289,19 +356,44 @@ homebrew = {
   brews = [
     "mas"
   ];
-  masApps = {
-    "Xcode" = 497799835;
-  };
 };
 ```
 
-Trade-off: `cleanup = "zap"` makes nix-darwin remove any cask not declared
-here. That is the closest-to-pure-nix posture and the one most owners of a
-nix-darwin Mac prefer in 2026, accepting that any one-off `brew install`
-performed manually gets reaped on next activation. If you want softer
-behaviour, use `cleanup = "uninstall"` (removes manually-installed) or
-`"none"` (leaves them alone). The choice depends on whether you can resist
-running `brew install` ad-hoc.
+Trade-off, with all four `cleanup` values (full enum from
+`modules/homebrew.nix`):
+
+- `"none"` (upstream default) -- leave everything alone. Imperative
+  `brew install` survives activation.
+- `"check"` -- drift-detection only. Activation fails loudly if the live
+  install diverges from the declaration, no destructive action. Useful as a
+  tripwire before flipping to `"uninstall"` or `"zap"`.
+- `"uninstall"` -- run `brew bundle --cleanup` to uninstall anything not
+  declared. Cask data files are left behind.
+- `"zap"` -- run `brew bundle --cleanup --zap` to uninstall and delete all
+  cask-associated files (preferences, support directories). Strictest
+  posture, closest to a pure-nix install.
+
+Pick deliberately. `"zap"` is the most declarative but reaps any ad-hoc
+`brew install`; `"none"` keeps the imperative side-channel open at the cost
+of allowing config drift; `"check"` is the diagnostic middle ground. Mac App
+Store apps installed via `homebrew.masApps` are **never** removed regardless
+of cleanup mode -- this is a Homebrew Bundle limitation called out in the
+nix-darwin source.
+
+`homebrew.onActivation.extraEnv` (added in nix-darwin PR #1745, merged
+2026-05-03) injects extra environment variables into the brew invocation.
+Useful for `HOMEBREW_NO_ENV_HINTS=1` and similar mute-the-noise toggles.
+
+**Mac App Store via `homebrew.masApps` is currently broken** (as of early
+2026). The `mas` CLI that nix-darwin shells out to relied on a private API
+that Apple locked down in a Tahoe point release; `mas install <appid>` no
+longer works. See <https://github.com/mas-cli/mas/issues/1029> and
+<https://github.com/nix-darwin/nix-darwin/issues/1627>. The option still
+exists and `nix-darwin` will happily generate the Brewfile, but activation
+will fail when `mas install` errors. Until upstream `mas` is unblocked,
+install Mac App Store apps imperatively via the App Store GUI (signed in
+with your Apple ID). Such apps are not touched by `darwin-rebuild`
+activation regardless of `cleanup` setting.
 
 The "purely-nix-no-brew" posture is technically achievable -- nixpkgs's
 `aarch64-darwin` coverage for CLI tools is excellent -- but it costs you
@@ -309,7 +401,7 @@ The "purely-nix-no-brew" posture is technically achievable -- nixpkgs's
 default fleet posture for this repo should be `homebrew` enabled for casks
 only; CLI tooling stays in nixpkgs.
 
-## 7. `system.defaults`
+## 8. `system.defaults`
 
 nix-darwin's option tree under `system.defaults` covers a curated slice of
 what `defaults write` can set. Three sub-trees see most use:
@@ -355,7 +447,7 @@ com.apple.<something>`. The advantage of staying inside `system.defaults` is
 that it survives `darwin-rebuild rollback`. Source for the option tree:
 <https://daiderd.com/nix-darwin/manual/index.html> (the rendered options).
 
-## 8. TouchID for sudo
+## 9. TouchID for sudo
 
 Apple has historically wiped `/etc/pam.d/sudo` on point-release upgrades. The
 nix-darwin option for "make TouchID for sudo survive macOS updates" is:
@@ -372,7 +464,7 @@ directly) is deprecated; do not use it on Sonoma or later. Reference:
 description in the rendered manual. Verify the exact option path
 (`sudo_local.touchIdAuth` vs. legacy form) on first install.
 
-## 9. launchd agents
+## 10. launchd agents
 
 The NixOS systemd analogy is exact:
 
@@ -389,20 +481,27 @@ and `launchd.user.agents.<name>.serviceConfig`; the option's keys map 1:1 to
 launchd plist keys (StartInterval, KeepAlive, RunAtLoad, etc.), not to
 systemd-unit semantics. Translate, don't transcribe.
 
-## 10. Fleet integration plan for this repo
+## 11. Fleet integration plan for this repo
 
 Concrete, file-by-file proposal. Pick a host name; this writeup uses
 `<macname>` as a placeholder.
 
-### 10.1 Inputs (via flake-file)
+### 11.1 Inputs (via flake-file)
 
 Edit `/home/jmfv/nixos-dot/modules/flake/inputs.nix` under
 `flake-file.inputs`:
 
 ```nix
+# nix-darwin master tracks nixpkgs-unstable, not nixos-unstable. These two
+# channels diverge: nixos-unstable lags for Darwin compatibility (it's the
+# NixOS-hydra branch), while nixpkgs-unstable tracks the cross-platform
+# nixpkgs hydra. nix-darwin master will assertion-fail at evaluation if
+# you point it at nixos-unstable. Carry a separate input so the Linux
+# hosts can keep following nixos-unstable unchanged.
+nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 nix-darwin = {
   url = "github:nix-darwin/nix-darwin";
-  inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nixpkgs.follows = "nixpkgs-unstable";
 };
 nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 homebrew-core = {
@@ -419,7 +518,7 @@ Then `nix run .#write-flake` to regenerate `flake.nix`, then `nix flake lock`.
 Commit both. This is the same loop already documented in `inputs.nix`'s
 header.
 
-### 10.2 `modules/flake/lib.nix`
+### 11.2 `modules/flake/lib.nix`
 
 Add a sibling constructor next to `mkNixos`:
 
@@ -455,7 +554,7 @@ Notes:
   decision; some stylix targets are Linux-only. Import in the host file, not
   in `mkDarwin`.
 
-### 10.3 `modules/flake/pkgs.nix`
+### 11.3 `modules/flake/pkgs.nix`
 
 The current file hardcodes `system = "x86_64-linux"`. The cleanest extension:
 keep the existing Linux materialisation, and add a parallel
@@ -476,16 +575,40 @@ Then `_module.args.pkgs-darwin = pkgs-darwin;` and pass that into
 and `pkgs-stable-*` can stay Linux-only until a darwin host actually needs
 them; cross every bridge once.
 
-### 10.4 Dendritic class registration
+### 11.4 Dendritic class registration and the `darwinConfigurations` output
 
-Nothing to do. `flake-parts.flakeModules.modules` (wired by
-`flake-file.flakeModules.dendritic` in `inputs.nix`) auto-registers any class
-name referenced under `flake.modules.<class>.<name>`. The first
-`flake.modules.darwin.<name>` declaration in a dendritic module is enough; the
-`nvim` class already proves this. Verify after first commit by
-`nix eval .#darwinConfigurations.<macname>.config.system.build.toplevel.drvPath`.
+Two distinct pieces of wiring, easy to conflate:
 
-### 10.5 First host: `modules/hosts/<macname>/default.nix`
+- **Module class auto-registration (free).** `flake-parts.flakeModules.modules`
+  (wired by `flake-file.flakeModules.dendritic` in `inputs.nix`) auto-
+  registers any class name referenced under `flake.modules.<class>.<name>`.
+  The first `flake.modules.darwin.<name>` declaration in a dendritic module is
+  enough; the `nvim` class already proves this for a non-standard class.
+- **The `flake.darwinConfigurations` output (NOT free).** Unlike
+  `nixosConfigurations`, flake-parts does **not** know about
+  `darwinConfigurations` as a top-level flake output by default. You must
+  import `inputs.nix-darwin.flakeModules.default` from `inputs.nix`:
+
+  ```nix
+  imports = [
+    inputs.flake-file.flakeModules.dendritic
+    inputs.nix-darwin.flakeModules.default
+  ];
+  ```
+
+  Without this, `flake.darwinConfigurations.<host>` evaluates fine internally
+  but `nix flake show` reports no such attribute, and `darwin-rebuild` cannot
+  find the host. Easy to miss because the error is "attribute not found",
+  not a nicely-worded module-system message.
+
+Verify both pieces after the first commit by:
+
+```
+nix eval .#darwinConfigurations --apply 'c: builtins.attrNames c'
+# => [ "<macname>" ]
+```
+
+### 11.5 First host: `modules/hosts/<macname>/default.nix`
 
 The shipping shape, not pseudocode. Mirrors cimmerian's layout in
 `modules/hosts/cimmerian/default.nix`:
@@ -513,6 +636,8 @@ in {
     networking.hostName = hostName;
     networking.computerName = hostName;
     networking.localHostName = hostName;
+
+    system.primaryUser = user;
 
     # Darwin's stateVersion is an integer, not "22.11"-style. Pin once,
     # never bump. See the nix-darwin manual under `system.stateVersion`.
@@ -572,7 +697,7 @@ And a sibling `./_home.nix` that picks from `self.modules.homeManager.*`
 excluding the Linux-only WM/desktop modules: bash, git, fzf, yazi, neovim,
 direnv, starship, tmux are all safe.
 
-### 10.6 Aspect compatibility
+### 11.6 Aspect compatibility
 
 Aspect-by-Aspect verdict for the existing repo:
 
@@ -595,7 +720,39 @@ darwin half of the user factory; it's a 5-line module that does little more
 than `users.users.${user}.home = "/Users/${user}";` (and `shell` if you want
 fish as login shell). Build it next to `modules/users/jmfv/default.nix`.
 
-## 11. What you cannot do from nix-darwin
+### 11.7 First activation
+
+On the freshly-installed Mac, with Nix daemon up and the flake repo checked
+out:
+
+```
+sudo nix run nix-darwin -- switch --flake .#<macname>
+```
+
+Three things to know going in:
+
+- `nix run nix-darwin` is required for the _first_ activation -- the
+  `darwin-rebuild` command does not exist on `$PATH` until the first
+  generation has been built.
+- The `sudo` prefix is required from the first command onwards (see §5).
+  Without it you get the misleading `sudo: darwin-rebuild: command not
+found` error.
+- **Run from a graphical Terminal session, not over SSH.** The activation
+  script needs the App Management TCC permission to manage
+  `/Applications/Nix Apps/`; from a fresh SSH session it errors out instead
+  of prompting. If you must do the first run over SSH, pre-grant "Allow
+  full disk access for remote users" in System Settings > General > Sharing
+  > Remote Login > the (i) info button. See `modules/system/applications.nix`
+  > in the nix-darwin tree.
+
+After first activation:
+
+```
+sudo darwin-rebuild switch --flake .#<macname>
+sudo darwin-rebuild check  --flake .#<macname>   # dry-activate before switch
+```
+
+## 12. What you cannot do from nix-darwin
 
 A short, blunt list. Save yourself the search.
 
@@ -624,7 +781,7 @@ When in doubt: anything that requires either a signed-with-Apple-ID action,
 a user-prompted approval in System Settings, or a write into `/System` is
 out of reach.
 
-## 12. Migration risk and rollback
+## 13. Migration risk and rollback
 
 - **Rollback is a profile generation rollback, not a bootloader rollback.**
   `darwin-rebuild rollback` (or `--rollback` on switch) restores the previous
@@ -656,6 +813,28 @@ out of reach.
   upgrade, particularly around renamed defaults keys. Pin a known-good
   nix-darwin commit, do not auto-bump, and do `darwin-rebuild check` after
   every macOS upgrade.
+- **TMPDIR symlink issue on macOS 26** (open: nix-darwin#1577). `nix flake
+update` can fail with `failed to extract archive (Cannot extract through
+symlink /tmp/nix-...)` because `/tmp` is a symlink to `/private/tmp` and
+  recent upstream Nix tightened symlink traversal. Workaround at the host
+  level:
+
+  ```nix
+  services.nix-daemon.tempDir = "/private/tmp";
+  ```
+
+  Determinate Nix does not exhibit this; upstream CppNix on Tahoe does. Pin
+  the workaround until upstream fixes it.
+
+- **First activation must run from a GUI session, not SSH.** Covered in §11.7
+  above; mentioned again here because it is a silent footgun: the failure
+  mode is "activation aborts" without an obvious cause. Pre-grant "Allow
+  full disk access for remote users" in System Settings if SSH-only is the
+  only option.
+- **Mac App Store via `mas` is broken** (closed wontfix: nix-darwin#1627;
+  upstream tracking: mas-cli/mas#1029). Apple locked down a private API.
+  Install MAS apps imperatively via the App Store GUI; they survive
+  `darwin-rebuild` unaffected, regardless of `homebrew.onActivation.cleanup`.
 
 ## References
 

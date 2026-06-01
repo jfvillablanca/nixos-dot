@@ -4,6 +4,10 @@
 # Impermanence (or any other persistence backend) is imported by the
 # `persistence` Aspect at `modules/system/persistence/default.nix`, not
 # here, so swapping backends stays a one-file change.
+#
+# `mkDarwin` is the macOS counterpart. Pulls
+# `flake.modules.darwin.<hostName>` plus home-manager and nix-homebrew.
+# disko, impermanence, and nixos-wsl have no Darwin analogue.
 {
   inputs,
   self,
@@ -40,6 +44,28 @@
         }
 
         self.modules.nixos.${hostName}
+      ];
+    };
+
+  flake.lib.mkDarwin = hostName:
+    inputs.nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      specialArgs = {
+        inherit inputs;
+      };
+      modules = [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.nix-homebrew.darwinModules.nix-homebrew
+
+        {
+          nixpkgs.hostPlatform = "aarch64-darwin";
+          nixpkgs.config.allowUnfree = true;
+          nixpkgs.overlays = [
+            inputs.neovim-nightly-overlay.overlays.default
+          ];
+        }
+
+        self.modules.darwin.${hostName}
       ];
     };
 }
