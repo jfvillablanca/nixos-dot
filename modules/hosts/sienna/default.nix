@@ -15,6 +15,7 @@ in {
   in {
     imports = [
       self.modules.darwin.user
+      self.modules.darwin.tailscale
     ];
 
     networking.hostName = hostName;
@@ -36,6 +37,8 @@ in {
     };
 
     programs.fish.enable = true;
+
+    myDarwinModules.tailscale.enable = true;
 
     # Use Lix as the Nix implementation. Must match what the host-side
     # installer put down (https://install.lix.systems/lix); first

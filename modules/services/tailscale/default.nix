@@ -65,4 +65,25 @@
       ];
     };
   };
+
+  # Darwin twin. nix-darwin's `services.tailscale` is daemon + MagicDNS
+  # only — none of the NixOS routing/firewall/SSH knobs — so this exposes
+  # just `enable`; subnet/exit-node/--ssh flags go on `tailscale up` by hand.
+  flake.modules.darwin.tailscale = {
+    lib,
+    config,
+    ...
+  }: let
+    cfg = config.myDarwinModules.tailscale;
+  in {
+    options.myDarwinModules.tailscale.enable =
+      lib.mkEnableOption "tailscale mesh VPN"
+      // {
+        default = false;
+      };
+
+    config = lib.mkIf cfg.enable {
+      services.tailscale.enable = true;
+    };
+  };
 }
