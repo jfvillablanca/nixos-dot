@@ -27,9 +27,6 @@
     inputs.nix-darwin.flakeModules.default
   ];
 
-  # Match the previous explicit `systems = ["x86_64-linux"]` in flake.nix.
-  # `flakeModules.dendritic` would otherwise enable all systems and `nix flake
-  # show` / CI would try to evaluate aarch64-darwin etc.
   systems = ["x86_64-linux"];
 
   flake-file.inputs = {
@@ -73,6 +70,12 @@
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     homebrew-core = {
       url = "github:homebrew/homebrew-core";

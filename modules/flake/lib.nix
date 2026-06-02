@@ -54,7 +54,7 @@
         inherit inputs;
       };
       modules = [
-        inputs.home-manager.darwinModules.home-manager
+        inputs.home-manager-unstable.darwinModules.home-manager
         inputs.nix-homebrew.darwinModules.nix-homebrew
 
         {
