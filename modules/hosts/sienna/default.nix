@@ -40,6 +40,8 @@ in {
 
     myDarwinModules.tailscale.enable = true;
 
+    services.openssh.enable = true;
+
     # Use Lix as the Nix implementation. Must match what the host-side
     # installer put down (https://install.lix.systems/lix); first
     # darwin-rebuild switch will replace the installer-laid binary with
