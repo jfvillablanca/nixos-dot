@@ -1,8 +1,8 @@
 # Aggregates `flake.hostIdentityKeys` into `programs.ssh.knownHosts`
 # system-wide, so every host pre-trusts every other host's sshd
 # identity. Imported by `system-default`.
-{self, ...}: {
-  flake.modules.nixos.known-hosts = {lib, ...}: {
+{self, ...}: let
+  knownHostsModule = {lib, ...}: {
     programs.ssh.knownHosts =
       lib.mapAttrs (name: publicKey: {
         hostNames = [name];
@@ -10,4 +10,7 @@
       })
       self.hostIdentityKeys;
   };
+in {
+  flake.modules.nixos.known-hosts = knownHostsModule;
+  flake.modules.darwin.known-hosts = knownHostsModule;
 }

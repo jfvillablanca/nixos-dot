@@ -16,6 +16,7 @@ in {
     imports = [
       self.modules.darwin.user
       self.modules.darwin.tailscale
+      self.modules.darwin.known-hosts
     ];
 
     networking.hostName = hostName;
@@ -106,4 +107,6 @@ in {
   flake.darwinConfigurations.${hostName} = self.lib.mkDarwin hostName;
 
   flake.publicKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGEIUW//BFc0vmos7O0s/YGou+PH0hlZjwcnFsEamdYk sienna";
+
+  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFXm3GJmV7Jec7zCkUy4BROGBjaYyO2i4w5T4Jd00SwX root@sienna";
 }
