@@ -16,6 +16,9 @@ in {
   flake.modules.darwin.user = {config, ...}: {
     imports = [self.modules.generic.systemConstants];
     system.primaryUser = config.systemConstants.user;
+
+    users.users.${user}.openssh.authorizedKeys.keys =
+      builtins.attrValues self.publicKeys;
   };
   flake.modules.homeManager.user = {
     imports = [
