@@ -17,10 +17,7 @@
     git
     gitui
     kitty
-    # neovim — disabled on darwin (backlog). The neovim home module reads
-    # config.colorScheme.slug (nix-colors), but sienna has no theming layer
-    # (no stylix / nix-colors), so it fails to evaluate here. Re-enable once
-    # darwin theming is sorted.
+    neovim
     nh
     nom
     ripgrep
@@ -31,7 +28,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  home.packages = [pkgs.claude-code];
+  home.packages = [
+    pkgs.claude-code
+    (pkgs.callPackage (inputs.self + /packages/by-name/v/vf) {})
+  ];
 
   # Override the systemConstants default (Linux-flavoured `/home/...`)
   # for nh's flake-path resolution. Could be lifted into a darwin-aware
