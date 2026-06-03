@@ -1,4 +1,11 @@
 {
+  flake.modules.darwin.fish = {pkgs, ...}: {
+    config = {
+      programs.fish.enable = true;
+      environment.shells = [pkgs.fish];
+    };
+  };
+
   flake.modules.homeManager.fish = _: {
     config = {
       programs = {
