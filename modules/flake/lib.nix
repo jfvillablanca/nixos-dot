@@ -60,9 +60,6 @@
         {
           nixpkgs.hostPlatform = "aarch64-darwin";
           nixpkgs.config.allowUnfree = true;
-          nixpkgs.overlays = [
-            inputs.neovim-nightly-overlay.overlays.default
-          ];
         }
 
         self.modules.darwin.${hostName}
