@@ -283,13 +283,6 @@
               # config =
             }
 
-            # # refactoring
-            {
-              plugin = refactoring-nvim;
-              type = "lua";
-              config = builtins.readFile ./lua/refactoring.lua;
-            }
-
             # Debugger
             # nvim-dap
             {
