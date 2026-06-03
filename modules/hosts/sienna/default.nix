@@ -15,6 +15,7 @@ in {
   in {
     imports = [
       self.modules.darwin.user
+      self.modules.darwin.fish
       self.modules.darwin.tailscale
       self.modules.darwin.known-hosts
     ];
@@ -34,10 +35,7 @@ in {
       uid = 501;
       isHidden = false;
       home = "/Users/${user}";
-      shell = pkgs.fish;
     };
-
-    programs.fish.enable = true;
 
     myDarwinModules.tailscale.enable = true;
 
