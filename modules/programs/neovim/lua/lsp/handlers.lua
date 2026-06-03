@@ -40,24 +40,7 @@ M.setup = function()
 
     vim.diagnostic.config(config)
 
-    local border = {
-        { "╭", "FloatBorder" },
-        { "─", "FloatBorder" },
-        { "╮", "FloatBorder" },
-        { "│", "FloatBorder" },
-        { "╯", "FloatBorder" },
-        { "─", "FloatBorder" },
-        { "╰", "FloatBorder" },
-        { "│", "FloatBorder" },
-    }
-
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = border,
-    })
+    vim.o.winborder = "rounded"
 end
 
 -- null-ls is back baby!
