@@ -13,12 +13,19 @@ in {
     users.users.${user}.openssh.authorizedKeys.keys =
       builtins.attrValues self.publicKeys;
   };
-  flake.modules.darwin.user = {config, ...}: {
+  flake.modules.darwin.user = {
+    config,
+    pkgs,
+    ...
+  }: {
     imports = [self.modules.generic.systemConstants];
     system.primaryUser = config.systemConstants.user;
 
-    users.users.${user}.openssh.authorizedKeys.keys =
-      builtins.attrValues self.publicKeys;
+    users.knownUsers = [user];
+    users.users.${user} = {
+      shell = pkgs.fish;
+      openssh.authorizedKeys.keys = builtins.attrValues self.publicKeys;
+    };
   };
   flake.modules.homeManager.user = {
     imports = [
