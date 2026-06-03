@@ -7,6 +7,7 @@
           enableBashIntegration = true;
           enableFishIntegration = true;
           enableZshIntegration = true;
+          shellWrapperName = "yy";
         };
       };
     };
