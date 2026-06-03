@@ -61,6 +61,23 @@ Items the user has explicitly flagged interest in are marked ★.
     DetSys's, cachix substituters survive, `nix flake show` actually
     consumes `flake.schemas`. Only `switch` once verified. Reverting
     is "remove the import + rebuild" (no `/nix/store` migration).
+- A.7 ★ **Migrate the Linux hosts to nixpkgs 26.11 + collapse the input
+  split.** sienna (nix-darwin) tracks 26.11 through its own
+  `nixpkgs-unstable` and `home-manager-unstable` inputs; cimmerian/t14g1
+  still ride 25.11 (`nixpkgs` / `home-manager`). Bump the Linux hosts to
+  26.11, then unify onto one nixpkgs and one home-manager and delete the
+  `*-unstable` duplicates. The shared modules are already dual-compatible
+  (neovim builds on 25.11 and 26.11 today), but a ~6-month jump surfaces
+  per-host deltas observed while wiring sienna:
+  - `nodePackages` removed — LSPs moved to top-level (already migrated in
+    `modules/programs/neovim`, byte-identical on 25.11).
+  - `services.kmscon.fonts` removed — comes from stale stylix; bump stylix.
+  - `boot.initrd.postDeviceCommands` rejected under systemd stage-1 initrd —
+    t14g1's btrfs root-wipe must move to a `boot.initrd.systemd.services` unit.
+  - `hyprland` input won't update (`submodules = true` → `nix flake update`
+    aborts with `opening file ''`); fix or repin before the bump.
+
+  Rebuild + test each host (CI only evals; Linux builds happen on the hosts).
 
 ## B. Sartre stabilization ★
 
@@ -486,5 +503,7 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
 
 - O.1 **Custom kernel feature via flake-file.** Per-host kernel patches.
   Only if hardware needs it.
-- O.2 **nix-darwin host.** Only relevant if you get a Mac.
+- ~~O.2 **nix-darwin host.**~~ Landed — `sienna` (M5 Pro MacBook) is a
+  first-class nix-darwin host (see `docs/nix-darwin.md`). Tracks 26.11 via
+  `nixpkgs-unstable` + `home-manager-unstable`; fleet unification is A.7.
 - O.3 **nixos-on-android (Termux + UserLAnd).** Extreme; for the meme.
