@@ -498,19 +498,6 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
   - Document in HM's release notes; copy the description into the
     upstream option docs.
   - Open the PR; address review.
-- N.7 ★ **Keep sienna awake on lid-close while on AC (clamshell).** Goal: the
-  Mac stays reachable over the tailnet and can drive an external monitor with
-  the lid shut, as long as power is connected; on battery it should still
-  sleep normally. Two cases: with an external display attached, Apple Silicon
-  clamshell mode mostly works out of the box (power + external display); the
-  headless "ssh into a closed lid, no monitor" case needs the `disablesleep`
-  pmset flag (`pmset -c disablesleep 1`, where `-c` scopes it to the AC
-  adapter). nix-darwin's `power.sleep.{computer,display,harddisk}` only drives
-  `systemsetup -setComputerSleep` (a global idle timer, not power-source-aware,
-  and no clamshell knob), so this needs a `system.activationScripts` hook
-  running `pmset -c disablesleep 1` (idempotent; re-assert each switch). Verify
-  it survives reboot and check `pmset -g` reflects it. `caffeinate -s` is the
-  ad-hoc runtime fallback if the declarative path misbehaves.
 
 ## O. Long-shot
 
