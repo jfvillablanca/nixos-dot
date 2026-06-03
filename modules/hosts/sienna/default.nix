@@ -18,6 +18,7 @@ in {
       self.modules.darwin.fish
       self.modules.darwin.tailscale
       self.modules.darwin.known-hosts
+      self.modules.darwin.timezone
     ];
 
     networking.hostName = hostName;
