@@ -34,6 +34,7 @@ in {
       self.modules.nixos.tailscale
       self.modules.nixos.distributed-builds
       self.modules.nixos.kanata
+      self.modules.nixos.openssh
     ];
 
     networking.hostName = hostName;
@@ -76,6 +77,7 @@ in {
       steam.enable = false;
       tailscale.enable = true;
       distributedBuilds.enable = true;
+      openssh.enable = true;
       persistence = {
         enable = true;
         userHomes = [{inherit user;}];
@@ -133,12 +135,6 @@ in {
         touchpad = {
           naturalScrolling = true;
           tapping = true;
-        };
-      };
-      openssh = {
-        enable = true;
-        settings = {
-          X11Forwarding = true;
         };
       };
       actkbd = {
@@ -222,5 +218,5 @@ in {
   flake.publicKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFAAQv0TTQr9OUABswhWE6bQf+YcRkvRQHUigK7JsGUS jmfv.dev@gmail.com";
   flake.publicKeys."${hostName}-root" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWKj8zIYP0LgZmik2Fu6JfgIvTmmYCndBseqPUOVgrY t14g1 root build key";
 
-  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnmnhUtaRg/b++aKL5pnYhsf4Nehapm/wnOoiIu+JNZ root@t14g1";
+  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7wcHSp3W0Gwx9LATsW3m2+vbDiST1TYlM8LzgtiCqj root@t14g1";
 }
