@@ -19,6 +19,7 @@ in {
       self.modules.darwin.tailscale
       self.modules.darwin.known-hosts
       self.modules.darwin.timezone
+      self.modules.darwin.nix-index
     ];
 
     networking.hostName = hostName;
