@@ -5,6 +5,7 @@
   ...
 }: {
   imports = with inputs.self.modules.homeManager; [
+    aerospace
     bash
     bat
     btop
