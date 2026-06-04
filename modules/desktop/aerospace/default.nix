@@ -27,6 +27,7 @@
 
         (lib.nameValuePair "alt-f" "fullscreen")
         (lib.nameValuePair "alt-shift-f" "layout floating tiling")
+        (lib.nameValuePair "alt-shift-space" "enable toggle")
         (lib.nameValuePair "alt-y" "layout tiles horizontal vertical")
         (lib.nameValuePair "alt-shift-q" "close")
       ]
