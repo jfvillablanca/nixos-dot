@@ -168,6 +168,18 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
   MVP only; revisit to add WM variants once C.1 + C.2 land.
 
+- C.8 **Decouple per-host bits from the shared Hyprland module.** The
+  Hyprland module already pulls monitor layout from
+  `myHomeModules.window-manager.monitors`, but stragglers remain — most
+  recently the lid-switch `bindl` references `eDP-1` literally instead
+  of the host's declared primary monitor. Expose an option (e.g.
+  `myHomeModules.window-manager.internalMonitor` defaulting to
+  `isPrimary == true`) and have the lid handler interpolate it, so a
+  future second laptop with a different `eDP-N` "just works." Sweep the
+  module for similar host-coupling while at it. Pairs naturally with
+  C.3 (drop static monitor declarations) once kanshi/hyprctl-monitor-add
+  lands.
+
 ## D. Secrets ★
 
 - D.1a **Declarative authorized_keys.** Public keys aren't secrets, so
