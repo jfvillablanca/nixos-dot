@@ -168,6 +168,36 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
   MVP only; revisit to add WM variants once C.1 + C.2 land.
 
+- C.8 ★ **Darwin desktop UX stack (AeroSpace + companions).** The nix-darwin
+  sibling to `i3-stack`/`hyprland-stack` — bring i3/Hyprland-style tiling to
+  sienna. From the nix-darwin research pass (2026-06-03):
+  - **AeroSpace** is the WM choice over yabai: an i3-inspired tree tiler that
+    never requires disabling SIP (it parks inactive-workspace windows
+    off-screen via public accessibility APIs; yabai needs partial SIP-off for
+    its scripting addition). Declarative via home-manager `programs.aerospace`
+    (`settings` attrset serialized to `aerospace.toml`) or nix-darwin
+    `services.aerospace`. Caveats: the HM module had a breaking
+    `userSettings`→`settings` rename (home-manager #6790) and forces
+    `start-at-login = false` when it manages the launchd agent.
+  - **sketchybar** menu bar pairs via an `exec-on-workspace-change` hook
+    firing `sketchybar --trigger aerospace_workspace_change`
+    (chenxin-yan/nix-dotfiles is a working Nix example).
+  - **Karabiner-Elements** for declarative key remap (kmonad is Linux-only,
+    cf. N.1); has nix modules — confirm the shape in the follow-up pass.
+  - **mac-app-util** indexes Nix-built `.app`s into Spotlight/Dock (nix apps
+    are otherwise invisible to Spotlight); useful regardless of WM.
+  - Expand the **`system.defaults`** surface (KeyRepeat/InitialKeyRepeat,
+    trackpad, Dock, Finder, screenshots, hot corners, spaces); sienna sets a
+    handful today. Exact options pending the follow-up research pass.
+  - Caveat: no surveyed source tested macOS 26 "Tahoe" / M5 (best evidence is
+    an M4 host); check the AeroSpace tracker for Tahoe regressions.
+  - App-mgmt gotcha surfaced alongside: `homebrew.masApps` is NOT
+    declaratively prunable (Mac App Store apps aren't auto-uninstalled even
+    under cleanup `zap`) — prefer nixpkgs → Homebrew cask → `masApps` last.
+  - Refs: AeroSpace guide (nikitabobko.github.io/AeroSpace), z0al/dotfiles
+    (dendritic `_darwin.nix` + 1Password secrets), chenxin-yan/nix-dotfiles
+    (AeroSpace+sketchybar), konradmalik/dotfiles (multi-host darwin + sops).
+
 ## D. Secrets ★
 
 - D.1a **Declarative authorized_keys.** Public keys aren't secrets, so
@@ -181,6 +211,19 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   generate per-host age keys, derive a recipients list, write the
   `sops-nix` flake-parts wiring, encrypt-in-place each secret, swap
   hardcoded references to `config.sops.secrets.<name>.path`.
+  Darwin specifics (from the 2026-06-03 research, deferred — no use-case yet):
+  sops-nix ships `darwinModules.sops` but on darwin is usually wired via the
+  home-manager module; the age key lives at
+  `~/Library/Application Support/sops/age/keys.txt` (or `SOPS_AGE_KEY_FILE`).
+  konradmalik/dotfiles runs a multi-tier age strategy (per-host key derived
+  from the SSH host key, per-person key, and a global backup key, so a missing
+  key only fails to decrypt rather than blocking a new host). agenix also
+  works (Darwin-aware home-manager paths) but has an ssh-config
+  path-expansion rough edge (ryantm/agenix #260). For the no-on-disk-secrets
+  case, brokering via 1Password (SSH agent + git auth + signing) sidesteps
+  sops/agenix entirely (z0al/dotfiles) — but only covers what 1Password can
+  serve; launchd daemons needing file-materialized secrets still need
+  sops/agenix.
 - D.2 **yubikey integration.** GPG-on-yubikey + SSH signing.
 - D.3 **Audit current plaintext.** What's checked in today that shouldn't be.
 
