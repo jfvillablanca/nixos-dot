@@ -2,3 +2,6 @@ result
 .direnv
 .pre-commit-config.yaml
 .nvim-baseline.path
+
+# scratch / research dumps — never committed
+*.local.md
