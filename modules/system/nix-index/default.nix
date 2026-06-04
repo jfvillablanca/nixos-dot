@@ -16,4 +16,10 @@
     # Wraps `comma` with the index DB and adds it to environment.systemPackages.
     programs.nix-index-database.comma.enable = true;
   };
+
+  flake.modules.darwin.nix-index = {
+    imports = [inputs.nix-index-database.darwinModules.nix-index];
+
+    programs.nix-index-database.comma.enable = true;
+  };
 }
