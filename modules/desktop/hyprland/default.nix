@@ -186,6 +186,17 @@
             "$mainMod, mouse:273, resizewindow"
             "$mainMod ALT, mouse:272, resizewindow"
           ];
+
+          # Lid close blanks the internal panel via DPMS instead of
+          # suspending, so the host stays reachable over SSH in
+          # clamshell mode. logind is configured to ignore the lid
+          # event on the host. DPMS (rather than `monitor,disable`)
+          # keeps workspaces pinned to eDP-1 and avoids the flaky
+          # re-attach path on lid open.
+          bindl = [
+            ", switch:on:Lid Switch, exec, hyprctl dispatch dpms off eDP-1"
+            ", switch:off:Lid Switch, exec, hyprctl dispatch dpms on eDP-1"
+          ];
         };
 
         systemd = {

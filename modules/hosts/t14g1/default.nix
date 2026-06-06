@@ -116,6 +116,15 @@ in {
 
     fileSystems."/persist".neededForBoot = true;
 
+    # Clamshell-friendly: never suspend on lid close so the box stays
+    # reachable over SSH with the lid down. Hyprland disables the
+    # internal panel via a switch bind (see modules/desktop/hyprland).
+    services.logind.settings.Login = {
+      HandleLidSwitch = "ignore";
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "ignore";
+    };
+
     # Enable window manager
     services = {
       displayManager = {

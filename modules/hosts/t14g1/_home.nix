@@ -34,6 +34,7 @@
       starship
       tmux
       wezterm
+      kitty
       yazi
       zellij
       zoxide
