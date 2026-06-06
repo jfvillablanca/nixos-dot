@@ -521,12 +521,14 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
     yanking in nvim there → contents appear in t14g1's wayland
     clipboard via wl-clipboard). If that works through tmux too,
     it's done.
-- N.6 **Upstream `programs.moonlight-qt` home-manager module.**
+- N.6 **Upstream the `programs.moonlight` home-manager module.**
   Local stock-shape module lives at
-  `packages/homeManager/moonlight-qt/` (enable + package +
+  `packages/homeManager/moonlight/` (enable + package +
   extraSettings, bash/awk merger that preserves `[hosts]` state
-  and the embedded client private key). The dendritic wrapper at
-  `modules/programs/moonlight-qt/` stays in this repo. Before
+  and the embedded client private key; the merge is Linux-only). The
+  dendritic wrapper at `modules/programs/moonlight/` stays in this repo.
+  (Locally renamed `moonlight-qt` → `moonlight`; upstream may prefer the
+  package name `moonlight-qt`.) Before
   opening a PR against `nix-community/home-manager`:
   - Audit option naming: `extraSettings` matches
     `programs.git.extraConfig`'s shape, but `settings` is the more
@@ -535,7 +537,7 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
     blank line; keys appended to an existing section land after
     any in-section blank lines instead of before them. Both are
     cosmetic but worth tightening for upstream review.
-  - Add a HM module test under `tests/modules/programs/moonlight-qt`
+  - Add a HM module test under `tests/modules/programs/moonlight`
     that asserts the merged file contains both declared keys and a
     seeded `[hosts]` entry.
   - Document in HM's release notes; copy the description into the
