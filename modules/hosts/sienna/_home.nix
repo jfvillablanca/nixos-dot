@@ -52,6 +52,7 @@
 
   home.packages = [
     pkgs.claude-code
+    pkgs.devenv
     (pkgs.callPackage (inputs.self + /packages/by-name/v/vf) {})
   ];
 
