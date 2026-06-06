@@ -6,6 +6,7 @@
           enable = true;
           settings = {
             window_padding_width = 5;
+            confirm_os_window_close = 0;
 
             cursor_trail = 1;
             cursor_trail_decay = "0.05 0.2";
