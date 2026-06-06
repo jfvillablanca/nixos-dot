@@ -326,6 +326,41 @@ switch`). Replaces raw `nixos-rebuild` / `home-manager` calls.
 - I.5 **`flake.templates.{rust,node,go,python}`.** Companion to the
   devShells above — `nix flake init -t github:.../#rust` for new
   projects.
+- I.6 ★ **`claude-code` HM module: declarative settings + memory +
+  skills + hooks + MCP servers, shareable across the fleet.** Today
+  claude-code is just `pkgs-master.claude-code` in each host's
+  `home.packages`; everything user-facing (`~/.claude/settings.json`,
+  `~/.claude/CLAUDE.md`, `~/.claude/skills/<name>/`,
+  `~/.claude/settings.json::hooks`, `~/.claude/settings.json::mcpServers`)
+  lives outside nix and drifts per-host. Promote to a feature module
+  at `modules/programs/claude-code/` with:
+  - `myHomeModules.claudeCode.enable`, `.package` (default
+    `pkgs-master.claude-code` to keep the rolling-edge channel).
+  - `.settings` (attrs serialised to `~/.claude/settings.json` via
+    `xdg.configFile` or `home.file`; module-system merge gives the
+    per-host override surface). Cover `permissions.allow / .deny`,
+    `model`, `env`, `statusLine`, `theme`.
+  - `.hooks` (attrset by event name → list of commands; serialised
+    into `settings.json::hooks`).
+  - `.mcpServers` (attrset → `settings.json::mcpServers`). Auth
+    tokens stay out of nix; reference D.1b sops integration once it
+    lands.
+  - `.memory` (string written to `~/.claude/CLAUDE.md`, optional).
+  - `.skills` (attrset of name → path; each becomes a directory
+    under `~/.claude/skills/<name>/` via `home.file`'s `source =
+./skills/<name>` recursive copy).
+
+  Persistence intersection: t14g1 already keeps `~/.claude` and
+  `.claude.json` via `myHomeModules.persistence.directories`; after
+  the module lands those entries should migrate into the module
+  itself (post-M.6-HM IoC), so disabling the module also disables
+  the persistence claim. Sienna (macOS) gets the same module
+  automatically once the HM scope is shared via the user factory.
+
+  Validation: drvPath byte-equal on hosts that flip enable to true
+  with empty settings (the module synthesises only the empty
+  scaffolding); content diff visible once a real `.settings` payload
+  lands.
 
 ## J. Editor LSP coverage on this repo
 
