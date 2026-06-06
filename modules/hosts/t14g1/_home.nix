@@ -39,14 +39,14 @@
       zoxide
       zsh
 
-      moonlight-qt
+      moonlight
 
       hyprland-stack
       wallpapers
       xdg
     ]);
 
-  programs.moonlight-qt.extraSettings = {
+  programs.moonlight.extraSettings = {
     General = {
       width = 1920;
       height = 1080;
