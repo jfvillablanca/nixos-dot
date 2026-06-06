@@ -21,6 +21,7 @@
       git
       gitui
       kitty
+      moonlight
       neovim
       nh
       nom
@@ -36,6 +37,16 @@
     enable = true;
     enableReleaseChecks = false;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
+  };
+
+  programs.moonlight.extraSettings = {
+    General = {
+      width = 3840;
+      height = 2160;
+      fps = 60;
+      bitrate = 80000;
+      videocfg = 2;
+    };
   };
 
   home.packages = [
