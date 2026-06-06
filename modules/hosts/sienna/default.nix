@@ -5,6 +5,7 @@
   ...
 }: let
   hostName = baseNameOf (toString ./.);
+  base16Scheme = "kanagawa-dragon";
 in {
   flake.modules.darwin.${hostName} = {
     config,
@@ -94,7 +95,7 @@ in {
       useGlobalPkgs = false;
       useUserPackages = true;
       extraSpecialArgs = {
-        inherit inputs user;
+        inherit inputs user base16Scheme;
         system = "aarch64-darwin";
       };
       users.${user}.imports = [
