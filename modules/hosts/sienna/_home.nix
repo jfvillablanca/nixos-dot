@@ -29,6 +29,7 @@
       starship
       tmux
       yazi
+      zoxide
     ]);
 
   nixpkgs.config.allowUnfree = true;
