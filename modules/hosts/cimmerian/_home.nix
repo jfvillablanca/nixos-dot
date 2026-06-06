@@ -27,7 +27,7 @@
       git
       gitui
       kitty
-      moonlight-qt
+      moonlight
       neovim
       nh
       nom
@@ -46,7 +46,7 @@
       xdg
     ]);
 
-  programs.moonlight-qt.extraSettings = {
+  programs.moonlight.extraSettings = {
     General = {
       width = 1920;
       height = 1080;
