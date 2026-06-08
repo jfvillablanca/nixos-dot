@@ -21,6 +21,7 @@ in {
       self.modules.darwin.known-hosts
       self.modules.darwin.timezone
       self.modules.darwin.nix-index
+      self.modules.darwin.kanata
     ];
 
     networking.hostName = hostName;

@@ -1,0 +1,90 @@
+;; sienna (MacBook, aarch64-darwin) — kanata remap.
+;; Plain QWERTY base with home-row mods and nav/sym/num layers. Mirrors
+;; t14g1's ergonomics (same physical keys, same finger->modifier order)
+;; so muscle memory carries across machines — only the *taps* differ
+;; (QWERTY letters here vs Colemak on t14g1).
+;;
+;; macOS modifier names: lmet/rmet = Command, lalt/ralt = Option,
+;; lctl = Control, lsft = Shift. The same held home-row key is Super on
+;; Linux and Command on macOS — that is the muscle-memory bridge.
+;;
+;; Driver + permissions are a one-time imperative bootstrap; the daemons
+;; that load this file stay inert until then. See docs/kanata-macos.md.
+
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tap-time 200
+  hold-time 280
+)
+
+(defalias
+  ;; Caps: tap = esc, hold = nav layer. CapsLock proper is intentionally
+  ;; absent — kanata's idiom is caps-word (@cw, on the nav layer): smart
+  ;; caps that auto-ends after 2s idle and shifts - to _.
+  esc-nav (tap-hold-release $tap-time $hold-time esc (layer-while-held nav))
+  cw (caps-word 2000)
+
+  ralt-sym (tap-hold-release $tap-time $hold-time ralt (layer-while-held sym))
+  tab-num (tap-hold-release $tap-time $hold-time tab (layer-while-held num))
+
+  ;; Home-row mods (a s d f / j k l ;), mirroring t14g1's finger order.
+  hrm-a (tap-hold-release $tap-time $hold-time a lmet)
+  hrm-s (tap-hold-release $tap-time $hold-time s lalt)
+  hrm-d (tap-hold-release $tap-time $hold-time d lsft)
+  hrm-f (tap-hold-release $tap-time $hold-time f lctl)
+  hrm-j (tap-hold-release $tap-time $hold-time j rctl)
+  hrm-k (tap-hold-release $tap-time $hold-time k rsft)
+  hrm-l (tap-hold-release $tap-time $hold-time l ralt)
+  hrm-scl (tap-hold-release $tap-time $hold-time ; rmet)
+)
+
+(defsrc
+  tab  q    w    e    r    t    y    u    i    o    p
+  caps a    s    d    f    g    h    j    k    l    ;
+  z    x    c    v    b    n    m    ,    .    /
+  ralt
+)
+
+(deflayer base
+  @tab-num q      w      e      r      t   y   u      i      o      p
+  @esc-nav @hrm-a @hrm-s @hrm-d @hrm-f g   h   @hrm-j @hrm-k @hrm-l @hrm-scl
+  z        x      c      v      b      n   m   ,      .      /
+  @ralt-sym
+)
+
+;; nav (hold Caps): arrows on h j k l (vim)  |  home/pgdn/pgup/end on n m , .
+;; @cw (on c) = caps-word, kanata's CapsLock idiom. Left home row mirrors
+;; the mods so you can chord while navigating.
+(deflayer nav
+  _   _    _    _    _    _    _    _    _     _    _
+  _   lmet lalt lsft lctl _    left down up   right _
+  _   _    @cw  _    _    home pgdn pgup end  _
+  _
+)
+
+;; sym (hold Right-Option): symbols on the left hand (US QWERTY shifted
+;; keycodes, no literal parens to confuse the parser). Right home row
+;; mirrors the mods for chord access.
+;;   =  &  *  (  )
+;;   -  $  %  ^  +
+;;   `  !  @  #  \
+(deflayer sym
+  _   =    S-7  S-8  S-9  S-0  _    _    _    _    _
+  _   -    S-4  S-5  S-6  S-=  _    rctl rsft ralt rmet
+  grv S-1  S-2  S-3  \    _    _    _    _    _
+  _
+)
+
+;; num (hold Tab): right-hand numpad.  Left home row mirrors the mods.
+;;   7 8 9
+;;   4 5 6 0
+;;   1 2 3
+(deflayer num
+  _   _    _    _    _    _    _    7    8    9    _
+  _   lmet lalt lsft lctl _    _    4    5    6    0
+  _   _    _    _    _    _    1    2    3    _
+  _
+)
