@@ -12,6 +12,7 @@
       bash
       bat
       btop
+      claudeCode
       direnv
       eza
       fd
@@ -49,8 +50,9 @@
     };
   };
 
+  myHomeModules.claudeCode.enable = true;
+
   home.packages = [
-    pkgs.claude-code
     (pkgs.callPackage (inputs.self + /packages/by-name/v/vf) {})
   ];
 
