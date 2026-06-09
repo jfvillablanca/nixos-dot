@@ -12,6 +12,7 @@
       bash
       bat
       btop
+      claudeCode
       direnv
       eza
       fd
@@ -52,8 +53,9 @@
     };
   };
 
+  myHomeModules.claudeCode.enable = true;
+
   home.packages = [
-    pkgs.claude-code
     pkgs.devenv
     pkgs.docker-client
     pkgs.docker-compose

@@ -31,6 +31,11 @@ in {
     imports = [
       userBundle.homeManager
       self.modules.generic.systemConstants
+      # Expose the persistence option set in every HM scope so feature
+      # modules can contribute `myHomeModules.persistence.directories`
+      # unconditionally. Inert (enable = false) on hosts that don't
+      # use it; t14g1 flips enable in its own _home.nix.
+      self.modules.homeManager.persistence
     ];
   };
 }
