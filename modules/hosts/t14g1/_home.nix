@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  pkgs-master,
   user,
   base16Scheme,
   ...
@@ -15,6 +14,7 @@
       bash
       bat
       btop
+      claudeCode
       delta
       direnv
       eza
@@ -59,6 +59,7 @@
   colorScheme = inputs.nix-colors.colorSchemes.${base16Scheme};
 
   myHomeModules = {
+    claudeCode.enable = true;
     window-manager = {
       monitors = [
         {
@@ -90,51 +91,47 @@
   };
 
   home = {
-    packages = with pkgs;
-      [
-        # Terminal
-        tldr # Lazy man's help/man page
-        nixpkgs-review # For reviewing PRs to nixpkgs repository
-        trashy # Trash in cli
-        killall # Kill processes
-        ncdu # NCurses Disk Usage
-        unzip # Zip utility
-        zip # Zip utility
-        lazydocker # Docker and Docker compose management utility
-        nix-init
-        libreoffice-qt
-        devenv
+    packages = with pkgs; [
+      # Terminal
+      tldr # Lazy man's help/man page
+      nixpkgs-review # For reviewing PRs to nixpkgs repository
+      trashy # Trash in cli
+      killall # Kill processes
+      ncdu # NCurses Disk Usage
+      unzip # Zip utility
+      zip # Zip utility
+      lazydocker # Docker and Docker compose management utility
+      nix-init
+      libreoffice-qt
+      devenv
 
-        # Browser
-        # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
-        google-chrome
+      # Browser
+      # Alternate browser for running web apps that are "unoptimized" in Firefox (or can't play with Firefox's hardened security policies)
+      google-chrome
 
-        # Misc
-        neofetch # System lookup
-        musescore # Music notation and composition
-        discord # Communications
+      # Misc
+      neofetch # System lookup
+      musescore # Music notation and composition
+      discord # Communications
 
-        # Utils
-        pavucontrol # Volume control UI
-        pamixer # PipeWire CLI tool
-        vlc # Video player
-        file-roller # File archiving
-        eog # GUI image viewer
-        onboard # On-screen keyboard
-        zathura # PDF Viewer
+      # Utils
+      pavucontrol # Volume control UI
+      pamixer # PipeWire CLI tool
+      vlc # Video player
+      file-roller # File archiving
+      eog # GUI image viewer
+      onboard # On-screen keyboard
+      zathura # PDF Viewer
 
-        # GUI
-        xfce.thunar # Xfce file manager
-        xfce.thunar-volman # Removable media Thunar extension
-        zoom-us
-        vscode
-        virt-viewer
+      # GUI
+      xfce.thunar # Xfce file manager
+      xfce.thunar-volman # Removable media Thunar extension
+      zoom-us
+      vscode
+      virt-viewer
 
-        pkgs.vf
-      ]
-      ++ (with pkgs-master; [
-        claude-code
-      ]);
+      pkgs.vf
+    ];
     sessionVariables = {
       TERMINAL = "wezterm";
       EDITOR = "nvim";
@@ -165,7 +162,6 @@
       ".local/state/nvim"
       ".tmux/resurrect"
       ".mozilla/firefox"
-      ".claude"
 
       # the idiot apps that use the .config directory
       # to store state
@@ -177,9 +173,7 @@
       #   method = "symlink";
       # }
     ];
-    files = [
-      ".claude.json"
-    ];
+    files = [];
   };
 
   programs = {};
