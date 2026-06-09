@@ -80,10 +80,10 @@ in {
     homebrew = {
       enable = true;
       onActivation.cleanup = "zap";
+      brews = ["colima"];
       casks = [
         "1password"
         "discord"
-        "docker"
         "firefox"
         "google-chrome"
         "raycast"

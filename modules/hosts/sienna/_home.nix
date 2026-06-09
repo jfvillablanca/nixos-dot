@@ -55,8 +55,26 @@
   home.packages = [
     pkgs.claude-code
     pkgs.devenv
+    pkgs.docker-client
+    pkgs.docker-compose
     (pkgs.callPackage (inputs.self + /packages/by-name/v/vf) {})
   ];
+
+  # Headless Docker engine via Colima (launchd brings it up at login,
+  # replacing Docker Desktop). Colima comes from Homebrew — its VM tooling
+  # needs macOS virtualization entitlements the nixpkgs build lacks; the
+  # docker CLI/compose stay on nixpkgs.
+  launchd.agents.colima = {
+    enable = true;
+    config = {
+      ProgramArguments = ["/opt/homebrew/bin/colima" "start" "--foreground"];
+      RunAtLoad = true;
+      KeepAlive = true;
+      EnvironmentVariables.PATH = "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+      StandardOutPath = "${config.home.homeDirectory}/Library/Logs/colima.out.log";
+      StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/colima.err.log";
+    };
+  };
 
   # Override the systemConstants default (Linux-flavoured `/home/...`)
   # for nh's flake-path resolution. Could be lifted into a darwin-aware
