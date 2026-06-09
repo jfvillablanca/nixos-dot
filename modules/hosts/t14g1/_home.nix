@@ -29,7 +29,6 @@
       neovim
       nh
       nom
-      persistence
       ripgrep
       starship
       tmux
