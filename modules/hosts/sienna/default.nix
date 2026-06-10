@@ -22,6 +22,7 @@ in {
       self.modules.darwin.timezone
       self.modules.darwin.nix-index
       self.modules.darwin.kanata
+      self.modules.darwin.docker
     ];
 
     networking.hostName = hostName;
@@ -80,7 +81,6 @@ in {
     homebrew = {
       enable = true;
       onActivation.cleanup = "zap";
-      brews = ["colima"];
       casks = [
         "1password"
         "discord"
