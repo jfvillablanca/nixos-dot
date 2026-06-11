@@ -1,4 +1,4 @@
-# cimmerian — desktop machine, i3 + Hyprland (i3 active by default).
+# cimmerian — desktop machine, Xorg + i3.
 {
   inputs,
   self,
@@ -119,12 +119,14 @@ in {
     };
 
     programs = {
-      hyprland = {
-        enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      };
       nix-ld.enable = true;
     };
+
+    # Link portal dirs for HM's xdg.portal (was implicit via programs.hyprland).
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
