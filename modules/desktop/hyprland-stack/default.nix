@@ -3,7 +3,6 @@
 {inputs, ...}: {
   flake.modules.homeManager.hyprland-stack = {pkgs, ...}: {
     imports = with inputs.self.modules.homeManager; [
-      eww
       hyprland
       swaync
       waybar
