@@ -162,7 +162,10 @@
       ".local/share/zoxide"
       ".local/state/nvim"
       ".tmux/resurrect"
-      ".mozilla/firefox"
+      # firefox adopted the XDG configPath (~/.config/mozilla/firefox) in
+      # 26.05+; persist the new path so the profile survives the wipe. The
+      # on-disk profile is migrated from .mozilla/firefox out of band.
+      ".config/mozilla/firefox"
 
       # the idiot apps that use the .config directory
       # to store state
