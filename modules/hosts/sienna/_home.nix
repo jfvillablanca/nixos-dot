@@ -42,8 +42,6 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
   };
 
-  gtk.gtk4.theme = config.gtk.theme;
-
   programs.moonlight.extraSettings = {
     General = {
       width = 3840;
