@@ -98,6 +98,15 @@ in {
       # https://community.frame.work/t/attn-critical-bugs-in-amdgpu-driver-included-with-kernel-6-18-x-6-19-x/79221
       kernelPackages = pkgs.linuxPackages_6_12;
 
+      # Keep the greetd/tuigreet prompt (VT1) legible: tuigreet shares the VT
+      # with the kernel console, so runtime warnings (amdgpu, wifi, etc.) at
+      # the default loglevel scribble over the greeter. Lower the console log
+      # level and quiet boot output -- err+ still reaches the console and
+      # journald keeps everything regardless.
+      consoleLogLevel = 3;
+      kernelParams = ["quiet" "udev.log_level=3"];
+      initrd.verbose = false;
+
       # nixpkgs 26.11 defaults systemd stage-1 initrd on, which does not
       # support `boot.initrd.postDeviceCommands`. Stay on scripted stage-1 so
       # the btrfs ephemeral-root wipe below keeps working. (Alternative:
