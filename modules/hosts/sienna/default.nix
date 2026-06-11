@@ -86,6 +86,7 @@ in {
         "discord"
         "firefox"
         "google-chrome"
+        "logi-options+"
         "raycast"
         "slack"
         "spotify"
