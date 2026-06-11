@@ -103,6 +103,13 @@ in {
         windowManager = {
           i3.enable = true;
         };
+        # GDM 50's Wayland greeter launches X11 sessions but leaves
+        # XDG_SESSION_TYPE=wayland, so chromium/electron ozone auto-detect
+        # picks the absent Wayland backend and fails to start. Correct the
+        # type for the i3 session and everything it spawns.
+        displayManager.sessionCommands = ''
+          export XDG_SESSION_TYPE=x11
+        '';
       };
       openssh = {
         enable = true;
