@@ -32,7 +32,24 @@
     config.allowUnfree = true;
   };
 
-  pkgs-stable-24-05 = import inputs.nixpkgs-stable-24-05 {inherit system;};
+  # firefox-devedition is pinned to this 24.05 stable instance (see
+  # modules/programs/firefox); its speech-dispatcher pulls ~645 MiB of
+  # mbrola-voices. We do not use TTS, so strip mbrola here too.
+  pkgs-stable-24-05 = import inputs.nixpkgs-stable-24-05 {
+    inherit system;
+    overlays = [
+      # firefox-devedition is pinned to this 24.05 instance (see
+      # modules/programs/firefox); its speech-dispatcher pulls ~645 MiB of
+      # mbrola-voices. We do not use TTS, so build speechd with an mbrola-free
+      # espeak (overriding espeak-ng alone does not reach speechd's `espeak`).
+      (_: prev: let
+        espeak' = prev.espeak-ng.override {mbrolaSupport = false;};
+      in {
+        espeak-ng = espeak';
+        speechd = prev.speechd.override {espeak = espeak';};
+      })
+    ];
+  };
 
   pkgs-stable-25-05 = import inputs.nixpkgs {
     inherit system;

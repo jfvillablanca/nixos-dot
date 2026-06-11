@@ -40,6 +40,16 @@
               vf = final.callPackage (self + /packages/by-name/v/vf) {};
               vfx = final.callPackage (self + /packages/by-name/v/vfx) {};
             })
+            # Strip mbrola (~645 MiB of mbrola-voices) from the TTS path: speechd
+            # pulls it via espeak-ng's mbrolaSupport. We do not use TTS. Override
+            # both espeak-ng (for direct consumers) and speechd's `espeak` input
+            # (the alias does not follow the espeak-ng overlay into callPackage).
+            (_: prev: let
+              espeak' = prev.espeak-ng.override {mbrolaSupport = false;};
+            in {
+              espeak-ng = espeak';
+              speechd = prev.speechd.override {espeak = espeak';};
+            })
           ];
         }
 
