@@ -85,6 +85,14 @@ in {
       efi.efiSysMountPoint = "/boot/efi";
     };
 
+    # Pin the 6.12 LTS kernel. amdgpu in 6.18.x regressed rotated scanout
+    # on this Cezanne/Renoir-class APU (DCN 2.1): the left HDMI-1 output
+    # set to `rotate left` bleeds across into DP-1 instead of scanning out
+    # rotated. 6.12 (the 25.11 kernel) drove this layout correctly. Drop
+    # the pin once a 6.18.x point release / the 6.19 amdgpu reverts land.
+    # https://community.frame.work/t/attn-critical-bugs-in-amdgpu-driver-included-with-kernel-6-18-x-6-19-x/79221
+    boot.kernelPackages = pkgs.linuxPackages_6_12;
+
     # Enable window manager
     services = {
       displayManager = {
