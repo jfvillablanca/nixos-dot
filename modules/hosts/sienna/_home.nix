@@ -40,6 +40,7 @@
     enable = true;
     enableReleaseChecks = false;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/${base16Scheme}.yaml";
+    opacity.terminal = 0.9;
   };
 
   gtk.gtk4.theme = config.gtk.theme;
