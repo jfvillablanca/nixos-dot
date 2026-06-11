@@ -26,6 +26,7 @@ in {
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
       self.modules.nixos.tailscale
+      self.modules.nixos.docker
     ];
 
     networking.hostName = hostName;
@@ -67,13 +68,6 @@ in {
       tailscale.enable = true;
     };
 
-    virtualisation.docker = {
-      enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
     virtualisation.virtualbox = {
