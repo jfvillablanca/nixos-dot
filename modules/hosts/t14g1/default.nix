@@ -35,6 +35,7 @@ in {
       self.modules.nixos.distributed-builds
       self.modules.nixos.kanata
       self.modules.nixos.openssh
+      self.modules.nixos.docker
     ];
 
     networking.hostName = hostName;
@@ -178,13 +179,6 @@ in {
     # Polkit (need enabled for sway)
     security.polkit.enable = true;
 
-    virtualisation.docker = {
-      enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
     # Allow unfree packages
