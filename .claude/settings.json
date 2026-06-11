@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["Bash(nix path-info *)", "WebSearch"]
+  }
+}
