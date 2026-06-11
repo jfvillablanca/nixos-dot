@@ -142,8 +142,18 @@ in {
 
     # Enable window manager
     services = {
-      displayManager = {
-        gdm.enable = true;
+      # GDM 50 cannot launch the Hyprland Wayland session: it waits for the
+      # compositor to self-register, Hyprland never does, so login bounces
+      # back to the greeter ("Unable to run session" / "Session never
+      # registered"). greetd execs the compositor directly and avoids that
+      # handoff. cimmerian keeps GDM (it runs X11/i3, which is unaffected).
+      # GDM-specific regression: nixpkgs#490431, nixpkgs#484328.
+      greetd = {
+        enable = true;
+        settings.default_session = {
+          command = "${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd Hyprland";
+          user = "greeter";
+        };
       };
       xserver = {
         enable = true;
