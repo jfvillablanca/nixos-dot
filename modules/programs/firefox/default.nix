@@ -5,6 +5,7 @@
   };
 
   flake.modules.homeManager.firefox = {
+    config,
     inputs,
     pkgs,
     pkgs-stable-24-05,
@@ -20,6 +21,9 @@
         enable = true;
         # package = pkgs.firefox-devedition;
         package = pkgs-stable-24-05.firefox-devedition;
+        # Adopt the 26.05+ XDG default; the profile dir is migrated to
+        # $XDG_CONFIG_HOME/mozilla/firefox out of band (see upgrade notes).
+        configPath = "${config.xdg.configHome}/mozilla/firefox";
         profiles = {
           "${profile}" = {
             isDefault = true;
