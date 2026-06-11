@@ -1,5 +1,10 @@
 {
-  flake.modules.homeManager.aerospace = {lib, ...}: let
+  flake.modules.homeManager.aerospace = {
+    lib,
+    pkgs,
+    config,
+    ...
+  }: let
     workspaceKeys =
       map toString (lib.range 1 9);
 
@@ -36,6 +41,70 @@
 
       (lib.nameValuePair "ctrl-alt-shift-semicolon" "mode service")
     ];
+
+    # Dynamic workspace persistence. AeroSpace has no native session restore,
+    # so we roll our own on the CLI: on-focus-changed snapshots the live
+    # window->workspace map, and a login agent replays it as macOS reopens
+    # windows (otherwise they all pile onto workspace 1). Match is by
+    # bundle-id + title (window-ids are regenerated across reboot), falling
+    # back to the app's first-seen workspace.
+    layoutFormat = "%{window-id} %{app-bundle-id} %{workspace} %{window-title}";
+    stateExpr = "\${XDG_STATE_HOME:-$HOME/.local/state}/aerospace";
+
+    layoutSave = pkgs.writeShellApplication {
+      name = "aerospace-layout-save";
+      runtimeInputs = [config.programs.aerospace.package pkgs.jq pkgs.coreutils];
+      text = ''
+        state="${stateExpr}"
+        # Don't capture the mid-restore pile-up over the good snapshot.
+        if [ -e "$state/restore.lock" ]; then exit 0; fi
+        mkdir -p "$state"
+        tmp="$(mktemp "$state/layout.XXXXXX")"
+        if aerospace list-windows --all --format ${lib.escapeShellArg layoutFormat} --json >"$tmp" 2>/dev/null; then
+          mv -f "$tmp" "$state/layout.json"
+        else
+          rm -f "$tmp"
+        fi
+      '';
+    };
+
+    layoutRestore = pkgs.writeShellApplication {
+      name = "aerospace-layout-restore";
+      runtimeInputs = [config.programs.aerospace.package pkgs.jq pkgs.coreutils];
+      text = ''
+        state="${stateExpr}"
+        layout="$state/layout.json"
+        if [ ! -f "$layout" ]; then exit 0; fi
+        mkdir -p "$state"
+
+        # Lock out the saver while we replay, release on any exit.
+        : >"$state/restore.lock"
+        trap 'rm -f "$state/restore.lock"' EXIT
+
+        placed=" "
+        deadline=$(( $(date +%s) + 30 ))
+        # macOS reopens windows over several seconds; poll, place each window
+        # exactly once as it appears, then stop fighting the user.
+        while [ "$(date +%s)" -lt "$deadline" ]; do
+          current="$(aerospace list-windows --all --format ${lib.escapeShellArg layoutFormat} --json 2>/dev/null)" || { sleep 1; continue; }
+          moves="$(jq -rn --argjson saved "$(cat "$layout")" --argjson cur "$current" '
+            $cur[] as $w
+            | ([ $saved[] | select(.["app-bundle-id"] == $w["app-bundle-id"] and .["window-title"] == $w["window-title"]) | .workspace ][0]) as $exact
+            | ([ $saved[] | select(.["app-bundle-id"] == $w["app-bundle-id"]) | .workspace ][0]) as $byApp
+            | ($exact // $byApp) as $target
+            | select($target != null and $target != $w.workspace)
+            | "\($w["window-id"]) \($target)"
+          ')" || { sleep 1; continue; }
+          while read -r wid ws; do
+            if [ -z "$wid" ]; then continue; fi
+            case "$placed" in *" $wid "*) continue ;; esac
+            aerospace move-node-to-workspace --window-id "$wid" "$ws" >/dev/null 2>&1 || true
+            placed="$placed$wid "
+          done <<< "$moves"
+          sleep 1
+        done
+      '';
+    };
   in {
     config = {
       programs.aerospace = {
@@ -52,6 +121,7 @@
           "on-focused-monitor-changed" = ["move-mouse monitor-lazy-center"];
           "automatically-unhide-macos-hidden-apps" = false;
           "on-mode-changed" = [];
+          "on-focus-changed" = ["exec-and-forget ${layoutSave}/bin/aerospace-layout-save"];
           "persistent-workspaces" = map lib.toUpper workspaceKeys;
 
           "key-mapping".preset = "qwerty";
@@ -79,6 +149,21 @@
           };
         };
       };
+
+      # Replay the saved layout at login. Runs once (no KeepAlive); the
+      # script self-limits to ~30s of polling. On a normal `darwin switch`
+      # the live layout already matches the snapshot, so it no-ops.
+      launchd.agents.aerospace-layout-restore = {
+        enable = true;
+        config = {
+          ProgramArguments = ["${layoutRestore}/bin/aerospace-layout-restore"];
+          RunAtLoad = true;
+          StandardOutPath = "/tmp/aerospace-layout-restore.out.log";
+          StandardErrorPath = "/tmp/aerospace-layout-restore.err.log";
+        };
+      };
+
+      home.packages = [layoutSave layoutRestore];
     };
   };
 }
