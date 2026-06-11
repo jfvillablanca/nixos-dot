@@ -90,6 +90,14 @@ in {
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
 
+      # Pin the 6.12 LTS kernel to match the fleet and stay on the kernel
+      # this T14 (AMD Gen1, Renoir) already ran on 25.11. amdgpu in 6.18.x
+      # has documented critical regressions on Renoir-class APUs, so don't
+      # debut 6.18 on the ephemeral-root host. Drop the pin once the
+      # 6.18.x / 6.19 amdgpu reverts land.
+      # https://community.frame.work/t/attn-critical-bugs-in-amdgpu-driver-included-with-kernel-6-18-x-6-19-x/79221
+      kernelPackages = pkgs.linuxPackages_6_12;
+
       # nixpkgs 26.11 defaults systemd stage-1 initrd on, which does not
       # support `boot.initrd.postDeviceCommands`. Stay on scripted stage-1 so
       # the btrfs ephemeral-root wipe below keeps working. (Alternative:
