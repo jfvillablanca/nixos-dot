@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.btop = _: {
+  flake.modules.homeManager.btop = {lib, ...}: {
     config = {
       programs = {
         btop = {
@@ -12,7 +12,8 @@
             #* Themes should be placed in "../share/btop/themes" relative to binary or "$HOME/.config/btop/themes"
 
             #* If the theme set background should be shown, set to False if you want terminal background transparency.
-            theme_background = true;
+            #* mkDefault so stylix can flip it to false when terminal opacity < 1.
+            theme_background = lib.mkDefault true;
 
             #* Sets if 24-bit truecolor should be used, will convert 24-bit colors to 256 color (6x6x6 color cube) if false.
             truecolor = true;
