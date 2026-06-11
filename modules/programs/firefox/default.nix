@@ -5,7 +5,6 @@
   };
 
   flake.modules.homeManager.firefox = {
-    config,
     inputs,
     pkgs,
     pkgs-stable-24-05,
@@ -21,9 +20,12 @@
         enable = true;
         # package = pkgs.firefox-devedition;
         package = pkgs-stable-24-05.firefox-devedition;
-        # Adopt the 26.05+ XDG default; the profile dir is migrated to
-        # $XDG_CONFIG_HOME/mozilla/firefox out of band (see upgrade notes).
-        configPath = "${config.xdg.configHome}/mozilla/firefox";
+        # Pin the legacy profile path explicitly. The pinned firefox-devedition
+        # 133.0b1 (stable-24-05) ignores the XDG configPath and always reads
+        # ~/.mozilla/firefox; adopting the 26.05 XDG default silently produced a
+        # blank profile on the ephemeral root. This also decouples us from the
+        # stateVersion-gated default, which now flips to the XDG path.
+        configPath = ".mozilla/firefox";
         profiles = {
           "${profile}" = {
             isDefault = true;
