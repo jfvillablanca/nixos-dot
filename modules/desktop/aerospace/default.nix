@@ -1,8 +1,7 @@
 {
   flake.modules.homeManager.aerospace = {lib, ...}: let
     workspaceKeys =
-      map toString (lib.range 1 9)
-      ++ lib.stringToCharacters "abcdefgimnopqrstuvwxyz";
+      map toString (lib.range 1 9);
 
     workspaceBindings =
       lib.concatMap (
