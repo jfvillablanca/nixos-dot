@@ -43,6 +43,14 @@
           ];
         }
 
+        # Temporary: nixpkgs 26.11 dropped `services.kmscon.config` (replaced
+        # by `services.kmscon.fonts` + `.extraConfig`). stylix's kmscon target
+        # still writes the removed option, which throws at eval even with the
+        # target disabled (a definition on an undeclared option path errors
+        # regardless of its `mkIf` guard). No host runs a kmscon console, so
+        # drop the module until stylix adapts (https://github.com/danth/stylix).
+        {disabledModules = ["${inputs.stylix}/modules/kmscon/nixos.nix"];}
+
         self.modules.nixos.${hostName}
       ];
     };

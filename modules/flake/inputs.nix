@@ -33,7 +33,12 @@
     flake-file.url = lib.mkDefault "github:vic/flake-file";
 
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Whole fleet (Linux + darwin) tracks the `nixpkgs-unstable` channel.
+    # nix-darwin needs it (nixos-unstable lags for darwin compatibility);
+    # the Linux hosts ride the same channel so the lock carries one nixpkgs
+    # tree instead of two near-duplicate unstable pins. Trades the NixOS
+    # release-blocking test gate for the raw channel (days of lag on linux).
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -61,19 +66,16 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    # nix-darwin master tracks `nixpkgs-unstable`, not `nixos-unstable`
-    # (the two channels diverge -- nixos-unstable lags for darwin
-    # compatibility). Carry a separate input so the Linux hosts can keep
-    # following nixos-unstable unchanged.
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Distinct home-manager rev for darwin (nix-darwin's HM module surface
+    # differs from the NixOS one); shares the unified nixpkgs.
     home-manager-unstable = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";

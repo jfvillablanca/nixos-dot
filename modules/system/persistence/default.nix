@@ -274,8 +274,9 @@ in {
   }: let
     cfg = config.myHomeModules.persistence;
   in {
-    imports = [inputs.impermanence.nixosModules.home-manager.impermanence];
-
+    # impermanence's HM module is auto-imported by its NixOS module since
+    # 2026-01 (the standalone HM flake output was deprecated), so no manual
+    # import here.
     options.myHomeModules.persistence = {
       enable =
         lib.mkEnableOption "home persistence"
@@ -299,16 +300,13 @@ in {
         type = lib.types.listOf lib.types.str;
         default = [];
       };
-
-      allowOther = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-      };
     };
 
     config = lib.mkIf cfg.enable {
+      # impermanence 2026-01 uses real bind mounts (not bindfs), so the
+      # former `allowOther` knob was removed.
       home.persistence.${cfg.root} = {
-        inherit (cfg) directories files allowOther;
+        inherit (cfg) directories files;
       };
     };
   };

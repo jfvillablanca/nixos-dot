@@ -112,7 +112,7 @@
       google-chrome
 
       # Misc
-      neofetch # System lookup
+      fastfetch # System lookup
       musescore # Music notation and composition
       discord # Communications
 
@@ -125,10 +125,10 @@
       onboard # On-screen keyboard
 
       # GUI
-      xfce.thunar # Xfce file manager
-      xfce.thunar-volman # Removable media Thunar extension
+      thunar # Xfce file manager
+      thunar-volman # Removable media Thunar extension
       libreoffice-qt
-      protonvpn-gui
+      proton-vpn
 
       pkgs.vf
       pkgs.vfx

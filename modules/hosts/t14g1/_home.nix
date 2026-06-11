@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  user,
   base16Scheme,
   ...
 }: {
@@ -110,7 +109,7 @@
       google-chrome
 
       # Misc
-      neofetch # System lookup
+      fastfetch # System lookup
       musescore # Music notation and composition
       discord # Communications
 
@@ -124,8 +123,8 @@
       zathura # PDF Viewer
 
       # GUI
-      xfce.thunar # Xfce file manager
-      xfce.thunar-volman # Removable media Thunar extension
+      thunar # Xfce file manager
+      thunar-volman # Removable media Thunar extension
       zoom-us
       vscode
       virt-viewer
@@ -143,7 +142,9 @@
 
   myHomeModules.persistence = {
     enable = true;
-    root = "/persist/home/${user}";
+    # impermanence 2026-01 appends the home dir automatically; give the
+    # prefix only ("/persist" -> stored at /persist/home/<user>, unchanged).
+    root = "/persist";
     directories = [
       "dev"
       "nixos-dot"

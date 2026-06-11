@@ -89,6 +89,12 @@ in {
       # Use the systemd-boot EFI boot loader.
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
+
+      # nixpkgs 26.11 defaults systemd stage-1 initrd on, which does not
+      # support `boot.initrd.postDeviceCommands`. Stay on scripted stage-1 so
+      # the btrfs ephemeral-root wipe below keeps working. (Alternative:
+      # migrate the wipe to a `boot.initrd.systemd.services` unit.)
+      initrd.systemd.enable = lib.mkForce false;
       initrd.postDeviceCommands = lib.mkAfter ''
         mkdir /btrfs_tmp
         mount /dev/root_vg/root /btrfs_tmp
@@ -153,12 +159,12 @@ in {
           {
             keys = [224];
             events = ["key"];
-            command = "/run/current-system/sw/bin/light -U 10";
+            command = "/run/current-system/sw/bin/brightnessctl set 10%-";
           }
           {
             keys = [225];
             events = ["key"];
-            command = "/run/current-system/sw/bin/light -A 10";
+            command = "/run/current-system/sw/bin/brightnessctl set +10%";
           }
         ];
       };
@@ -171,13 +177,14 @@ in {
         enable = true;
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       };
-
-      # Screen Brightness
-      light.enable = true;
     };
 
     # Polkit (need enabled for sway)
     security.polkit.enable = true;
+
+    # Backlight control (replaces the removed `programs.light`); udev rules
+    # let video-group users adjust brightness without root.
+    services.udev.packages = [pkgs.brightnessctl];
 
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
@@ -198,6 +205,7 @@ in {
       '';
       systemPackages = with pkgs; [
         wget
+        brightnessctl # backlight control (replaces removed `light`)
       ];
     };
 
