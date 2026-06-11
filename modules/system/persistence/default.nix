@@ -270,6 +270,7 @@ in {
   flake.modules.homeManager.persistence = {
     config,
     lib,
+    options,
     ...
   }: let
     cfg = config.myHomeModules.persistence;
@@ -302,12 +303,18 @@ in {
       };
     };
 
-    config = lib.mkIf cfg.enable {
+    # `home.persistence` is only declared where impermanence's NixOS module
+    # injects its HM module (via home-manager.sharedModules) -- i.e. NixOS, not
+    # darwin (re-importing it manually trips impermanence's assertion). Emit the
+    # config only when the option exists; gating on `options` (declarations) not
+    # `pkgs` avoids the config<->pkgs infinite recursion. The options above stay
+    # declared everywhere so feature modules can still contribute directories.
+    config = lib.optionalAttrs (options.home ? persistence) (lib.mkIf cfg.enable {
       # impermanence 2026-01 uses real bind mounts (not bindfs), so the
       # former `allowOther` knob was removed.
       home.persistence.${cfg.root} = {
         inherit (cfg) directories files;
       };
-    };
+    });
   };
 }
