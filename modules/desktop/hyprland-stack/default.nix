@@ -14,7 +14,8 @@
       kooha
       wl-clipboard
       waypaper
-      swww
+      # swww was renamed to awww upstream; same derivation/binary.
+      awww
     ];
   };
 }
