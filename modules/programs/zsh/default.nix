@@ -1,9 +1,11 @@
 {
-  flake.modules.homeManager.zsh = _: {
+  flake.modules.homeManager.zsh = {config, ...}: {
     config = {
       programs = {
         zsh = {
           enable = true;
+          # Adopt the 26.05+ XDG default ($XDG_CONFIG_HOME/zsh) for dotfiles.
+          dotDir = "${config.xdg.configHome}/zsh";
           autosuggestion.enable = true;
           enableCompletion = true;
           syntaxHighlighting.enable = true;

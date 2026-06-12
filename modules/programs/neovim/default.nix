@@ -259,18 +259,6 @@
               # Haskell
               # haskell-tools-nvim
 
-              # Go
-              {
-                plugin = go-nvim;
-                type = "lua";
-                config = ''
-                  require('go').setup({
-                    trouble = true,
-                    luasnip = true,
-                  })
-                '';
-              }
-
               # Rust
               # # crates.nvim
               # {

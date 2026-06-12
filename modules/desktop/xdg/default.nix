@@ -14,6 +14,8 @@
         userDirs = {
           enable = true;
           createDirectories = false;
+          # Adopt the 26.05+ default: do not export XDG_*_DIR session vars.
+          setSessionVariables = false;
         };
       };
     };

@@ -9,7 +9,6 @@
   lib,
   neovim-unwrapped,
   wrapNeovimUnstable,
-  neovimUtils,
   vimUtils,
   symlinkJoin,
   writeTextFile,
@@ -95,21 +94,19 @@
     end
     EOF
   '';
-
-  nvimConfig = neovimUtils.makeNeovimConfig {
-    inherit withNodeJs withPython3 withRuby customLuaRC;
-    plugins = allPlugins;
-    inherit customRC;
-  };
 in
-  wrapNeovimUnstable neovim-unwrapped (nvimConfig
-    // {
-      wrapperArgs =
-        nvimConfig.wrapperArgs
-        ++ lib.optionals (extraPackages != []) [
-          "--prefix"
-          "PATH"
-          ":"
-          "${lib.makeBinPath extraPackages}"
-        ];
-    })
+  # wrapNeovimUnstable assembles the lua env + init RC itself, so pass the
+  # plugins / RC / interpreter flags straight in (neovimUtils.makeNeovimConfig
+  # is deprecated).
+  wrapNeovimUnstable neovim-unwrapped {
+    inherit withNodeJs withPython3 withRuby;
+    plugins = allPlugins;
+    neovimRcContent = customRC;
+    luaRcContent = customLuaRC;
+    wrapperArgs = lib.optionals (extraPackages != []) [
+      "--prefix"
+      "PATH"
+      ":"
+      "${lib.makeBinPath extraPackages}"
+    ];
+  }

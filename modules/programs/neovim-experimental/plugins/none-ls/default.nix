@@ -37,8 +37,8 @@
         gofumpt
         actionlint
         clang-tools
-        nodePackages.stylelint
-        nodePackages.sql-formatter
+        stylelint
+        sql-formatter
         python3Packages.isort
         python3Packages.black
       ];

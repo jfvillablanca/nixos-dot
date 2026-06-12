@@ -4,6 +4,7 @@
       type = "git";
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland-contrib = {
@@ -55,6 +56,12 @@
 
       wayland.windowManager.hyprland = {
         enable = true;
+
+        # Hyprland 0.52 predates the Lua config language (default in 0.55),
+        # so keep hyprlang generation explicitly. home-manager's default
+        # flips to "lua" at home.stateVersion >= 26.05, which 0.52 cannot
+        # parse -- pin it rather than rely on the stateVersion-gated default.
+        configType = "hyprlang";
 
         settings = {
           "$mainMod" = "SUPER";

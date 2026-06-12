@@ -35,6 +35,7 @@ in {
       self.modules.nixos.distributed-builds
       self.modules.nixos.kanata
       self.modules.nixos.openssh
+      self.modules.nixos.docker
     ];
 
     networking.hostName = hostName;
@@ -88,6 +89,29 @@ in {
       # Use the systemd-boot EFI boot loader.
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
+
+      # Pin the 6.12 LTS kernel to match the fleet and stay on the kernel
+      # this T14 (AMD Gen1, Renoir) already ran on 25.11. amdgpu in 6.18.x
+      # has documented critical regressions on Renoir-class APUs, so don't
+      # debut 6.18 on the ephemeral-root host. Drop the pin once the
+      # 6.18.x / 6.19 amdgpu reverts land.
+      # https://community.frame.work/t/attn-critical-bugs-in-amdgpu-driver-included-with-kernel-6-18-x-6-19-x/79221
+      kernelPackages = pkgs.linuxPackages_6_12;
+
+      # Keep the greetd/tuigreet prompt (VT1) legible: tuigreet shares the VT
+      # with the kernel console, so runtime warnings (amdgpu, wifi, etc.) at
+      # the default loglevel scribble over the greeter. Lower the console log
+      # level and quiet boot output -- err+ still reaches the console and
+      # journald keeps everything regardless.
+      consoleLogLevel = 3;
+      kernelParams = ["quiet" "udev.log_level=3"];
+      initrd.verbose = false;
+
+      # nixpkgs 26.11 defaults systemd stage-1 initrd on, which does not
+      # support `boot.initrd.postDeviceCommands`. Stay on scripted stage-1 so
+      # the btrfs ephemeral-root wipe below keeps working. (Alternative:
+      # migrate the wipe to a `boot.initrd.systemd.services` unit.)
+      initrd.systemd.enable = lib.mkForce false;
       initrd.postDeviceCommands = lib.mkAfter ''
         mkdir /btrfs_tmp
         mount /dev/root_vg/root /btrfs_tmp
@@ -127,8 +151,18 @@ in {
 
     # Enable window manager
     services = {
-      displayManager = {
-        gdm.enable = true;
+      # GDM 50 cannot launch the Hyprland Wayland session: it waits for the
+      # compositor to self-register, Hyprland never does, so login bounces
+      # back to the greeter ("Unable to run session" / "Session never
+      # registered"). greetd execs the compositor directly and avoids that
+      # handoff. cimmerian keeps GDM (it runs X11/i3, which is unaffected).
+      # GDM-specific regression: nixpkgs#490431, nixpkgs#484328.
+      greetd = {
+        enable = true;
+        settings.default_session = {
+          command = "${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd Hyprland";
+          user = "greeter";
+        };
       };
       xserver = {
         enable = true;
@@ -152,12 +186,12 @@ in {
           {
             keys = [224];
             events = ["key"];
-            command = "/run/current-system/sw/bin/light -U 10";
+            command = "/run/current-system/sw/bin/brightnessctl set 10%-";
           }
           {
             keys = [225];
             events = ["key"];
-            command = "/run/current-system/sw/bin/light -A 10";
+            command = "/run/current-system/sw/bin/brightnessctl set +10%";
           }
         ];
       };
@@ -170,21 +204,15 @@ in {
         enable = true;
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       };
-
-      # Screen Brightness
-      light.enable = true;
     };
 
     # Polkit (need enabled for sway)
     security.polkit.enable = true;
 
-    virtualisation.docker = {
-      enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
+    # Backlight control (replaces the removed `programs.light`); udev rules
+    # let video-group users adjust brightness without root.
+    services.udev.packages = [pkgs.brightnessctl];
+
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
     # Allow unfree packages
@@ -204,6 +232,7 @@ in {
       '';
       systemPackages = with pkgs; [
         wget
+        brightnessctl # backlight control (replaces removed `light`)
       ];
     };
 

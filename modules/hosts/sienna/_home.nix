@@ -43,8 +43,6 @@
     opacity.terminal = 0.9;
   };
 
-  gtk.gtk4.theme = config.gtk.theme;
-
   programs.moonlight.extraSettings = {
     General = {
       width = 3840;

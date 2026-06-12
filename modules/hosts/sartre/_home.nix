@@ -63,7 +63,7 @@
       # google-chrome
 
       # Misc
-      neofetch # System lookup
+      fastfetch # System lookup
 
       # Utils
       # pavucontrol # Volume control UI

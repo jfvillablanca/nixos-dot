@@ -3,7 +3,6 @@
 {inputs, ...}: {
   flake.modules.homeManager.hyprland-stack = {pkgs, ...}: {
     imports = with inputs.self.modules.homeManager; [
-      eww
       hyprland
       swaync
       waybar
@@ -15,7 +14,8 @@
       kooha
       wl-clipboard
       waypaper
-      swww
+      # swww was renamed to awww upstream; same derivation/binary.
+      awww
     ];
   };
 }

@@ -40,8 +40,26 @@
               vf = final.callPackage (self + /packages/by-name/v/vf) {};
               vfx = final.callPackage (self + /packages/by-name/v/vfx) {};
             })
+            # Strip mbrola (~645 MiB of mbrola-voices) from the TTS path: speechd
+            # pulls it via espeak-ng's mbrolaSupport. We do not use TTS. Override
+            # both espeak-ng (for direct consumers) and speechd's `espeak` input
+            # (the alias does not follow the espeak-ng overlay into callPackage).
+            (_: prev: let
+              espeak' = prev.espeak-ng.override {mbrolaSupport = false;};
+            in {
+              espeak-ng = espeak';
+              speechd = prev.speechd.override {espeak = espeak';};
+            })
           ];
         }
+
+        # Temporary: nixpkgs 26.11 dropped `services.kmscon.config` (replaced
+        # by `services.kmscon.fonts` + `.extraConfig`). stylix's kmscon target
+        # still writes the removed option, which throws at eval even with the
+        # target disabled (a definition on an undeclared option path errors
+        # regardless of its `mkIf` guard). No host runs a kmscon console, so
+        # drop the module until stylix adapts (https://github.com/danth/stylix).
+        {disabledModules = ["${inputs.stylix}/modules/kmscon/nixos.nix"];}
 
         self.modules.nixos.${hostName}
       ];

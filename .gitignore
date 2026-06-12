@@ -5,3 +5,6 @@ result
 
 # scratch / research dumps — never committed
 *.local.md
+
+# Claude Code per-user local overrides (settings.json is the shared, tracked one)
+.claude/settings.local.json

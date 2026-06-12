@@ -1,4 +1,4 @@
-# cimmerian — desktop machine, i3 + Hyprland (i3 active by default).
+# cimmerian — desktop machine, Xorg + i3.
 {
   inputs,
   self,
@@ -26,6 +26,7 @@ in {
       self.modules.nixos.system-desktop
       self.modules.nixos.steam
       self.modules.nixos.tailscale
+      self.modules.nixos.docker
     ];
 
     networking.hostName = hostName;
@@ -67,13 +68,6 @@ in {
       tailscale.enable = true;
     };
 
-    virtualisation.docker = {
-      enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
-    };
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
 
     virtualisation.virtualbox = {
@@ -91,6 +85,14 @@ in {
       efi.efiSysMountPoint = "/boot/efi";
     };
 
+    # Pin the 6.12 LTS kernel. amdgpu in 6.18.x regressed rotated scanout
+    # on this Cezanne/Renoir-class APU (DCN 2.1): the left HDMI-1 output
+    # set to `rotate left` bleeds across into DP-1 instead of scanning out
+    # rotated. 6.12 (the 25.11 kernel) drove this layout correctly. Drop
+    # the pin once a 6.18.x point release / the 6.19 amdgpu reverts land.
+    # https://community.frame.work/t/attn-critical-bugs-in-amdgpu-driver-included-with-kernel-6-18-x-6-19-x/79221
+    boot.kernelPackages = pkgs.linuxPackages_6_12;
+
     # Enable window manager
     services = {
       displayManager = {
@@ -101,6 +103,13 @@ in {
         windowManager = {
           i3.enable = true;
         };
+        # GDM 50's Wayland greeter launches X11 sessions but leaves
+        # XDG_SESSION_TYPE=wayland, so chromium/electron ozone auto-detect
+        # picks the absent Wayland backend and fails to start. Correct the
+        # type for the i3 session and everything it spawns.
+        displayManager.sessionCommands = ''
+          export XDG_SESSION_TYPE=x11
+        '';
       };
       openssh = {
         enable = true;
@@ -110,12 +119,14 @@ in {
     };
 
     programs = {
-      hyprland = {
-        enable = true;
-        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      };
       nix-ld.enable = true;
     };
+
+    # Link portal dirs for HM's xdg.portal (was implicit via programs.hyprland).
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
