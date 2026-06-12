@@ -54,21 +54,66 @@
     layoutFormat = "%{window-id} %{app-bundle-id} %{workspace} %{window-title}";
     stateExpr = "\${XDG_STATE_HOME:-$HOME/.local/state}/aerospace";
     respawnAppsJson = builtins.toJSON config.myHomeModules.aerospace.respawnApps;
+    saveStrategy = config.myHomeModules.aerospace.saveStrategy;
 
-    layoutSave = pkgs.writeShellApplication {
-      name = "aerospace-layout-save";
+    # Shared core: snapshot the live layout once. Skips during restore and
+    # never persists an empty desktop, so it's safe for any strategy to call.
+    saveCore = pkgs.writeShellApplication {
+      name = "aerospace-layout-save-now";
       runtimeInputs = [config.programs.aerospace.package pkgs.jq pkgs.coreutils];
       text = ''
         state="${stateExpr}"
-        # Don't capture the mid-restore pile-up over the good snapshot.
         if [ -e "$state/restore.lock" ]; then exit 0; fi
         mkdir -p "$state"
         tmp="$(mktemp "$state/layout.XXXXXX")"
-        if aerospace list-windows --all --format ${lib.escapeShellArg layoutFormat} --json >"$tmp" 2>/dev/null; then
-          mv -f "$tmp" "$state/layout.json"
+        if aerospace list-windows --all --format ${lib.escapeShellArg layoutFormat} --json >"$tmp" 2>/dev/null \
+          && [ "$(jq 'length' "$tmp" 2>/dev/null || echo 0)" -gt 0 ]; then
+          mv -f "$tmp" "$state/layout.json" # never overwrite with an empty desktop
         else
           rm -f "$tmp"
         fi
+      '';
+    };
+
+    # "event" strategy: save on every on-focus-changed, debounced. Focus
+    # changes fire in bursts (incl. teardown); stamp a token, wait, and bail
+    # if superseded -- on teardown the session dies before the wait elapses.
+    saveEvent = pkgs.writeShellApplication {
+      name = "aerospace-layout-save";
+      runtimeInputs = [saveCore pkgs.coreutils];
+      text = ''
+        state="${stateExpr}"
+        if [ -e "$state/restore.lock" ]; then exit 0; fi
+        mkdir -p "$state"
+        token="$$-$RANDOM"
+        printf '%s' "$token" >"$state/save.token"
+        sleep 2
+        [ "$(cat "$state/save.token" 2>/dev/null)" = "$token" ] || exit 0
+        aerospace-layout-save-now
+      '';
+    };
+
+    # "shutdown" strategy: a persistent agent that saves only on SIGTERM
+    # (logout/shutdown). Directly tests "capture at teardown" -- and logs
+    # whether aerospace was still reachable, since it may be torn down first.
+    saveDaemon = pkgs.writeShellApplication {
+      name = "aerospace-layout-saver";
+      runtimeInputs = [saveCore pkgs.jq pkgs.coreutils];
+      text = ''
+        state="${stateExpr}"
+        mkdir -p "$state"
+        log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
+        on_term() {
+          log "SIGTERM -> final save"
+          aerospace-layout-save-now
+          log "done; snapshot now $(jq 'length' "$state/layout.json" 2>/dev/null || echo '?') windows"
+          exit 0
+        }
+        trap on_term TERM
+        log "=== saver started (shutdown strategy) ==="
+        while true; do
+          sleep 3600 & wait $! || true
+        done
       '';
     };
 
@@ -197,6 +242,18 @@
       '';
     };
 
+    options.myHomeModules.aerospace.saveStrategy = lib.mkOption {
+      type = lib.types.enum ["event" "shutdown"];
+      default = "event";
+      description = ''
+        How the layout snapshot is captured (experimental A/B):
+        - "event": debounced save on every aerospace on-focus-changed.
+        - "shutdown": a persistent login agent that saves only on SIGTERM
+          (logout/shutdown), capturing the final layout -- if aerospace is
+          still reachable when the session tears down.
+      '';
+    };
+
     config = {
       programs.aerospace = {
         enable = true;
@@ -212,7 +269,7 @@
           "on-focused-monitor-changed" = ["move-mouse monitor-lazy-center"];
           "automatically-unhide-macos-hidden-apps" = false;
           "on-mode-changed" = [];
-          "on-focus-changed" = ["exec-and-forget ${layoutSave}/bin/aerospace-layout-save"];
+          "on-focus-changed" = lib.optionals (saveStrategy == "event") ["exec-and-forget ${saveEvent}/bin/aerospace-layout-save"];
           "persistent-workspaces" = map lib.toUpper workspaceKeys;
 
           "key-mapping".preset = "qwerty";
@@ -254,7 +311,19 @@
         };
       };
 
-      home.packages = [layoutSave layoutRestore];
+      # "shutdown" strategy only: persistent agent that flushes on SIGTERM.
+      launchd.agents.aerospace-layout-saver = lib.mkIf (saveStrategy == "shutdown") {
+        enable = true;
+        config = {
+          ProgramArguments = ["${saveDaemon}/bin/aerospace-layout-saver"];
+          RunAtLoad = true;
+          KeepAlive = true;
+          StandardOutPath = "/tmp/aerospace-layout-saver.out.log";
+          StandardErrorPath = "/tmp/aerospace-layout-saver.err.log";
+        };
+      };
+
+      home.packages = [saveCore layoutRestore];
     };
   };
 }
