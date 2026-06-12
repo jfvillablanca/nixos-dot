@@ -55,15 +55,11 @@
 
   myHomeModules.claudeCode.enable = true;
 
-  # Apps with no native multi-window restore; the aerospace login restore
-  # re-opens the missing windows so they can be placed back onto workspaces.
-  # kitty restores nothing; Chrome collapses multi-profile windows to one
-  # picker -- respawned Chrome windows land on the right workspaces but as
-  # generic (profile-picker) windows, which is an accepted trade-off here.
-  myHomeModules.aerospace.respawnApps = [
-    "net.kovidgoyal.kitty"
-    "com.google.Chrome"
-  ];
+  # kitty has no native window restoration; the aerospace login restore
+  # re-opens its missing windows so they can be placed back onto workspaces.
+  # (Chrome is intentionally excluded: it only ever restores a single profile
+  # picker, so respawning it just yields a stray window, not the lost ones.)
+  myHomeModules.aerospace.respawnApps = ["net.kovidgoyal.kitty"];
 
   home.packages = [
     pkgs.devenv
