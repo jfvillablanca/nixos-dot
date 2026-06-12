@@ -1,0 +1,88 @@
+# Periodic flake.lock updater. Opens a never-auto-merged PR and annotates it
+# with per-input GitHub compare links, so input bumps are reviewable for new
+# features / fixes / breaking changes (the changelog a raw lock diff lacks).
+# See docs/BACKLOG.md F.1.
+#
+# - Excludes `hyprland`: its input sets `submodules = true`, which makes
+#   `nix flake update` abort (`opening file ''`, cf. A.7). Drop the exclusion
+#   once that is fixed upstream.
+# - Action revisions pinned to exact SHAs (a repointed tag can't slip in code).
+# - The PR is opened with FLAKE_BOT_TOKEN (a PAT), NOT the default
+#   GITHUB_TOKEN: PRs created by GITHUB_TOKEN do not trigger `on: pull_request`
+#   workflows, so build-cache.yml would never run on the bot's PR. The PAT
+#   makes the open a real user event so build-cache validates the bump.
+name: flake-update
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        # actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+
+      - name: compute inputs to update (all except hyprland) + snapshot lock
+        id: inputs
+        run: |
+          list=$(jq -r '.nodes.root.inputs | keys[]' flake.lock \
+            | grep -vx hyprland | tr '\n' ' ')
+          echo "list=$list" >> "$GITHUB_OUTPUT"
+          printf 'Updating:\n%s\n' "$list" | tr ' ' '\n'
+          cp flake.lock /tmp/flake.lock.old
+
+      - name: update flake.lock
+        id: update
+        # DeterminateSystems/update-flake-lock@v28
+        uses: DeterminateSystems/update-flake-lock@834c491b2ece4de0bbd00d85214bb5e83b4da5c6
+        with:
+          token: ${{ secrets.FLAKE_BOT_TOKEN }}
+          inputs: ${{ steps.inputs.outputs.list }}
+          branch: flake-update
+          commit-msg: "flake.lock: periodic input bump"
+          pr-title: "flake.lock: periodic input bump"
+          pr-labels: dependencies
+
+      - name: annotate PR with per-input changelog
+        if: steps.update.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.FLAKE_BOT_TOKEN }}
+          PR: ${{ steps.update.outputs.pull-request-number }}
+        run: |
+          git fetch --depth=1 origin flake-update
+          git show origin/flake-update:flake.lock > /tmp/flake.lock.new
+          {
+            echo "## Periodic flake.lock update"
+            echo
+            echo "Automated input bumps (\`hyprland\` excluded). **Do not auto-merge** -- review the per-input changes below and wait for \`build-cache\` to go green."
+            echo
+            echo "### Input changes"
+            echo
+            jq -rn \
+              --slurpfile o /tmp/flake.lock.old \
+              --slurpfile n /tmp/flake.lock.new '
+              ($o[0].nodes) as $on | ($n[0].nodes) as $nn
+              | [ ($nn | keys[]) as $k
+                  | ($on[$k].locked.rev) as $or
+                  | ($nn[$k].locked.rev) as $nr
+                  | select($or != null and $nr != null and $or != $nr)
+                  | {name: $k, t: $nn[$k].locked.type,
+                     owner: $nn[$k].locked.owner, repo: $nn[$k].locked.repo,
+                     o: $or, n: $nr} ]
+              | if length == 0 then "- (no revision changes)"
+                else (.[] |
+                  if .t == "github" then
+                    "- **\(.name)**: [`\(.o[0:8])...\(.n[0:8])`](https://github.com/\(.owner)/\(.repo)/compare/\(.o)...\(.n))"
+                  else
+                    "- **\(.name)** (\(.t)): `\(.o[0:8])` -> `\(.n[0:8])`"
+                  end)
+                end'
+          } > /tmp/body.md
+          gh pr edit "$PR" --body-file /tmp/body.md
