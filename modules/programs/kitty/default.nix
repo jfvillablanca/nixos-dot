@@ -10,6 +10,14 @@
           enable = true;
           settings = lib.mkMerge [
             {
+              # Disable config live-reload. Value is a debounce in seconds
+              # (default 0.1); a negative value disables it. Live-reload is
+              # pointless with immutable nix config, and kitty's symlink-aware
+              # watcher (kitty #10066) follows the ~/.config/kitty/kitty.conf
+              # -> /nix/store symlink and recursively watches a huge tree,
+              # exhausting inotify.
+              auto_reload_config = -1;
+
               window_padding_width = 5;
               confirm_os_window_close = 0;
 
