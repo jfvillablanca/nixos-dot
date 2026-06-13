@@ -38,6 +38,15 @@ jobs:
           printf 'Updating:\n%s\n' "$list" | tr ' ' '\n'
           cp flake.lock /tmp/flake.lock.old
 
+      # update-flake-lock@v28 runs `nix flake update` but does not self-install
+      # Nix; it requires Determinate Nix on the runner. Telemetry disabled --
+      # this is the ephemeral CI runner only, not a host's nix (cf. A.6).
+      - name: install nix
+        # DeterminateSystems/determinate-nix-action@v3
+        uses: DeterminateSystems/determinate-nix-action@9adf02b41cfdac2632e1c16f0480ff5bf3b05dd6
+        with:
+          diagnostic-endpoint: ""
+
       - name: update flake.lock
         id: update
         # DeterminateSystems/update-flake-lock@v28
