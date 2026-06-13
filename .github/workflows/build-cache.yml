@@ -1,10 +1,14 @@
-# Build every host on push and PR; cachix-action pushes any new
-# store paths to nixos-dot.cachix.org so a fresh machine can pull
-# pre-built closures instead of rebuilding from source.
+# Build every buildable x86_64-linux output on push and PR; cachix-action
+# pushes any new store paths to nixos-dot.cachix.org so a fresh machine can
+# pull pre-built closures instead of rebuilding from source.
 #
-# Action revisions are pinned to exact SHAs (not tags) so a tag
-# pointer being repointed at a malicious commit can't compromise the
-# pipeline silently.
+# The build matrix is generated dynamically (matrix-gen job) from the flake's
+# own outputs: the CI host set (cimmerian, t14g1) plus every
+# packages.x86_64-linux and devShells.x86_64-linux attr. Adding a package or
+# devShell gets it built + cached with no edit here.
+#
+# Action revisions are pinned to exact SHAs (not tags) so a tag pointer being
+# repointed at a malicious commit can't compromise the pipeline silently.
 name: build-cache
 
 on:
@@ -17,13 +21,52 @@ permissions:
   contents: read
 
 jobs:
+  # Emit the buildable-output matrix from the flake itself. Hosts are bounded to
+  # the CI set (cimmerian, t14g1) to cap build cost -- the WSL/QEMU hosts
+  # (sartre, defenestration, carcosa) are validated by eval, not a full build.
+  matrix-gen:
+    name: generate build matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - name: checkout
+        # actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+
+      - name: install nix
+        # cachix/install-nix-action@v31.10.5
+        uses: cachix/install-nix-action@ab739621df7a23f52766f9ccc97f38da6b7af14f
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: enumerate buildable x86_64-linux outputs
+        id: gen
+        run: |
+          set -euo pipefail
+          hosts='["cimmerian","t14g1"]'
+          pkgs=$(nix eval --json '.#packages.x86_64-linux' --apply builtins.attrNames)
+          shells=$(nix eval --json '.#devShells.x86_64-linux' --apply builtins.attrNames)
+          matrix=$(jq -cn \
+            --argjson hosts "$hosts" \
+            --argjson pkgs "$pkgs" \
+            --argjson shells "$shells" '
+            { include:
+              [ ($hosts[]  | {name: ("host:"+.),  attr: ("nixosConfigurations."+.+".config.system.build.toplevel")}),
+                ($pkgs[]   | {name: ("pkg:"+.),   attr: ("packages.x86_64-linux."+.)}),
+                ($shells[] | {name: ("shell:"+.), attr: ("devShells.x86_64-linux."+.)}) ] }')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "$matrix" | jq .
+
   build:
-    name: build ${{ matrix.host }}
+    name: build ${{ matrix.name }}
+    needs: matrix-gen
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        host: [cimmerian, t14g1]
+      matrix: ${{ fromJSON(needs.matrix-gen.outputs.matrix) }}
 
     steps:
       - name: free disk space
@@ -58,20 +101,31 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: hyprland
 
-      - name: build ${{ matrix.host }}
+      - name: build ${{ matrix.name }}
         run: |
-          nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
-            --print-build-logs
+          nix build ".#${{ matrix.attr }}" --print-build-logs
 
-  # Report-only "PR delta" for the flake-update bot's PR (backlog F.5): per-host
-  # package-version changes (`nix store diff-closures`) plus the vulnix CVE
-  # delta. Never gates merge -- input for your manual merge decision. Runs ONLY
-  # on the bot's PR (head branch `flake-update`) so human PRs aren't noised up.
-  # Darwin/sienna is not covered (no Linux CI build for it).
-  vuln:
-    name: PR delta (closures + CVEs)
+  # Report-only "PR delta" for the flake-update bot's PR (backlog F.5). Posts a
+  # single comment with the package-version delta computed TWO ways for A/B
+  # comparison, plus the vulnix CVE delta. Never gates merge -- input for the
+  # manual merge decision. Runs ONLY on the bot's PR (head branch
+  # `flake-update`) so human PRs aren't noised up.
+  #
+  #   Method A (pure eval, no build, covers ALL outputs incl. darwin/sienna):
+  #     eval base & PR drvPath per output, walk `nix-store -qR`, parse
+  #     name-version off the store paths, filter build-noise, diff. Approximates
+  #     the runtime delta; darwin/sienna is covered because the .drv evaluates on
+  #     the Linux runner with no build.
+  #   Method B (build + dix, Linux hosts only): build base & PR toplevel for
+  #     cimmerian + t14g1, run `dix --output json` for the exact realized-runtime
+  #     version table. Bounded to those 2 hosts to cap build cost; cannot cover
+  #     darwin (no realized out-paths on Linux).
+  pr-delta:
+    name: PR delta (A/B version diff + CVEs)
     needs: build
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'flake-update'
+    # `!cancelled()` so a single flaky package build in `build` can't suppress
+    # the report (Method A is pure-eval; Method B rebuilds the hosts itself).
+    if: ${{ !cancelled() && github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'flake-update' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -111,18 +165,124 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: hyprland
 
-      - name: build closures, diff + scan, post PR-delta comment
+      # Method A enumerates every output's drvPath under both locks (pure eval,
+      # no build), so it sees nixos hosts, darwin/sienna, packages and
+      # devShells. The bot only changes flake.lock, so swapping the lock in the
+      # working tree (which a dirty git flake honours) yields the true base
+      # eval without re-checking-out flake.nix.
+      - name: Method A -- pure-eval drv-requisites diff (all outputs)
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          export LC_ALL=C   # stable collation so sort/join/comm agree
+
+          # Enumerate every output as "label<TAB>flakeAttr-to-.drvPath".
+          enumerate() {
+            local h p s
+            for h in $(nix eval --json '.#nixosConfigurations' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'nixos:%s\tnixosConfigurations.%s.config.system.build.toplevel.drvPath\n' "$h" "$h"
+            done
+            for h in $(nix eval --json '.#darwinConfigurations' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'darwin:%s\tdarwinConfigurations.%s.system.drvPath\n' "$h" "$h"
+            done
+            for p in $(nix eval --json '.#packages.x86_64-linux' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'pkg-linux:%s\tpackages.x86_64-linux.%s.drvPath\n' "$p" "$p"
+            done
+            for p in $(nix eval --json '.#packages.aarch64-darwin' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'pkg-darwin:%s\tpackages.aarch64-darwin.%s.drvPath\n' "$p" "$p"
+            done
+            for s in $(nix eval --json '.#devShells.x86_64-linux' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'shell-linux:%s\tdevShells.x86_64-linux.%s.drvPath\n' "$s" "$s"
+            done
+            for s in $(nix eval --json '.#devShells.aarch64-darwin' --apply builtins.attrNames | jq -r '.[]'); do
+              printf 'shell-darwin:%s\tdevShells.aarch64-darwin.%s.drvPath\n' "$s" "$s"
+            done
+          }
+
+          # Resolve each label to a .drv for the current working-tree lock.
+          drvmap() {
+            local out=$1 label attr drv
+            : > "$out"
+            while IFS=$'\t' read -r label attr; do
+              drv=$(nix eval --raw ".#$attr" 2>/dev/null) || drv=""
+              printf '%s\t%s\n' "$label" "$drv" >> "$out"
+            done < /tmp/enum.txt
+          }
+
+          # Walk a .drv closure -> "name<TAB>version" for runtime-ish paths,
+          # filtering patches/hooks/tarballs/bootstrap/stdenv/config noise.
+          emit_nv() {
+            nix-store --query --requisites "$1" 2>/dev/null \
+              | sed -E 's#^/nix/store/[a-z0-9]{32}-##; s#\.drv$##' \
+              | grep -vE '\.(patch|sh|diff|tar\.[a-z0-9]+|tar|tgz|zip|gz|xz|bz2|json|toml|cfg|conf|nix|lock)$' \
+              | grep -vE -- '-(hook|wrapper-hook)(-[0-9.]+)?$' \
+              | grep -vE '^(bootstrap|stdenv|source$|unpack$|mirrors-list|builder$|setup-hook|default-builder|etc$)' \
+              | grep -vE -- '-(stdenv|stdenv-linux|stdenv-darwin|bootstrap|env)$' \
+              | grep -E '^.*[a-zA-Z]-[0-9].*$' \
+              | sed -E 's#^(.*[a-zA-Z])-([0-9].*)$#\1\t\2#' \
+              | LC_ALL=C sort -u
+          }
+          collapse() { awk -F'\t' '{v[$1]=v[$1]?v[$1]","$2:$2} END{for(k in v) print k"\t"v[k]}' "$1" | LC_ALL=C sort; }
+
+          enumerate > /tmp/enum.txt
+          echo "Enumerated outputs:"; cut -f1 /tmp/enum.txt | sed 's/^/  /'
+
+          # PR side = current working tree; base side = base flake.lock overlaid
+          # (the bot only ever changes flake.lock).
+          drvmap /tmp/drv.pr.txt
+          git checkout "$BASE_SHA" -- flake.lock
+          drvmap /tmp/drv.base.txt
+          git checkout HEAD -- flake.lock
+
+          # Build the Method-A section, one collapsible block per output.
+          {
+            echo "### Method A -- pure-eval drv-requisites diff (all outputs incl. darwin)"
+            echo
+            echo "Eval-only (no build). Parses \`name-version\` off the closure's"
+            echo "store paths and filters build-noise, so it approximates a runtime"
+            echo "delta. Covers **every** output -- nixos hosts, **darwin/sienna**,"
+            echo "packages, devShells -- on the Linux runner."
+            echo
+            while IFS=$'\t' read -r label _; do
+              bdrv=$(awk -F'\t' -v l="$label" '$1==l{print $2}' /tmp/drv.base.txt)
+              pdrv=$(awk -F'\t' -v l="$label" '$1==l{print $2}' /tmp/drv.pr.txt)
+              if [ -z "$bdrv" ] || [ -z "$pdrv" ]; then
+                echo "<details><summary><code>$label</code> -- eval failed one side</summary>"
+                echo; echo "base drv: \`${bdrv:-<none>}\`  pr drv: \`${pdrv:-<none>}\`"; echo
+                echo "</details>"; echo
+                continue
+              fi
+              if [ "$bdrv" = "$pdrv" ]; then
+                echo "- <code>$label</code>: no change (identical drv)"
+                continue
+              fi
+              emit_nv "$bdrv" > /tmp/m.base.nv; collapse /tmp/m.base.nv > /tmp/m.base.map
+              emit_nv "$pdrv" > /tmp/m.pr.nv;   collapse /tmp/m.pr.nv   > /tmp/m.pr.map
+              changed=$(join -t"$(printf '\t')" -a1 -a2 -e '(absent)' -o '0,1.2,2.2' \
+                /tmp/m.base.map /tmp/m.pr.map \
+                | awk -F'\t' '$2 != $3 { printf "%s: %s -> %s\n", $1, $2, $3 }')
+              n=$(printf '%s\n' "$changed" | grep -c . || true)
+              echo "<details><summary><code>$label</code> -- ${n} changed</summary>"
+              echo; echo '```'
+              if [ -n "$changed" ]; then printf '%s\n' "$changed"; else echo "(no runtime version changes after filtering)"; fi
+              echo '```'; echo "</details>"; echo
+            done < /tmp/enum.txt
+          } > /tmp/method-a.md
+          echo "Method A section written."
+
+      - name: Method B -- build + dix on Linux hosts; vulnix CVE delta
         env:
           GH_TOKEN: ${{ secrets.FLAKE_BOT_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
+          export LC_ALL=C   # stable collation so sort/comm agree
           hosts=(cimmerian t14g1)
 
           # Build the PR closures, then the base closures with the base
-          # flake.lock overlaid. The bot only changes flake.lock, so flake.nix
-          # is identical -- swapping the lock yields the true base closure.
+          # flake.lock overlaid (flake.nix is identical; only the lock moved).
           build_side() {
             local side=$1 h
             for h in "${hosts[@]}"; do
@@ -133,11 +293,43 @@ jobs:
           build_side pr
           git checkout "$BASE_SHA" -- flake.lock
           build_side base
+          git checkout HEAD -- flake.lock
 
-          # vulnix per side. It exits non-zero when it finds CVEs, so `|| true`;
-          # but a *successful* scan always prints a JSON array -- validate that
-          # to tell "0 CVEs" from "scan failed" (no more silent 0/0). CVE ids
-          # are regex-extracted so we don't couple to vulnix's JSON schema.
+          # Method B: dix --output json (nvd fallback) per host on the realized
+          # out-paths. --force-correctness avoids the SQLite immutable-mode path
+          # that can be flaky in CI. dix exits 0 on a clean diff.
+          {
+            echo "### Method B -- build + \`dix\` realized-closure diff (cimmerian + t14g1)"
+            echo
+            echo "Build-based; the exact realized-runtime version table. Linux"
+            echo "hosts only -- darwin has no realized out-paths on this runner."
+            echo
+            for h in "${hosts[@]}"; do
+              tbl=""
+              if dixjson=$(nix run nixpkgs#dix -- --force-correctness --output json \
+                    "result-base-$h" "result-pr-$h" 2>/dev/null) \
+                 && printf '%s' "$dixjson" | jq -e '.diffs' >/dev/null 2>&1; then
+                tbl=$(printf '%s' "$dixjson" | jq -r '
+                  .diffs[] | . as $d
+                  | ($d.versions | map(select(.kind=="changed")) | .[0]) as $c
+                  | if $c then "\($d.name): \($c.old.name) -> \($c.new.name)"
+                    else "\($d.name): \($d.status)" end')
+              else
+                tbl=$(nix run nixpkgs#nvd -- diff "result-base-$h" "result-pr-$h" 2>/dev/null \
+                      | sed -n '/Version changes:/,$p' || true)
+              fi
+              n=$(printf '%s\n' "$tbl" | grep -c . || true)
+              echo "<details><summary><b>$h</b> -- ${n} changed</summary>"
+              echo; echo '```'
+              if [ -n "$tbl" ]; then printf '%s\n' "$tbl"; else echo "(no version changes)"; fi
+              echo '```'; echo "</details>"; echo
+            done
+          } > /tmp/method-b.md
+
+          # vulnix CVE delta per side. It exits non-zero when it finds CVEs, so
+          # `|| true`; a *successful* scan always prints a JSON array -- validate
+          # that to tell "0 CVEs" from "scan failed". CVE ids are regex-extracted
+          # so we don't couple to vulnix's JSON schema.
           scan_ok=1
           for side in pr base; do
             outs=()
@@ -162,25 +354,16 @@ jobs:
           nfix=$(printf '%s\n' "$fixed" | grep -c . || true)
 
           {
-            echo "## PR delta -- closures + CVEs (cimmerian + t14g1)"
+            echo "## PR delta -- version diff (A/B) + CVEs"
             echo
-            echo "Report only; does **not** gate merge. Input for the manual merge call."
+            echo "Report only; does **not** gate merge. Two version-diff methods are"
+            echo "shown side by side for A/B comparison -- A is eval-only and covers"
+            echo "darwin; B is build-based and exact but Linux-only. Pick whichever"
+            echo "reads better; this is input for the manual merge call."
             echo
-            echo "### Package changes per host (\`nix store diff-closures\`)"
-            echo
-            for h in "${hosts[@]}"; do
-              dc=$(nix store diff-closures "result-base-$h" "result-pr-$h" 2>/dev/null || true)
-              n=$(printf '%s\n' "$dc" | grep -c . || true)
-              echo "<details><summary><b>$h</b> -- ${n} changed</summary>"
-              echo
-              echo '```'
-              if [ -n "$dc" ]; then printf '%s\n' "$dc"; else echo "(no version changes)"; fi
-              echo '```'
-              echo
-              echo "</details>"
-              echo
-            done
-            echo "### Vulnerability delta (vulnix)"
+            cat /tmp/method-a.md
+            cat /tmp/method-b.md
+            echo "### Vulnerability delta (vulnix, cimmerian + t14g1)"
             echo
             if [ "$scan_ok" -eq 1 ]; then
               echo "Totals -- base: **${nbase}** CVEs, PR: **${npr}** CVEs. Name+version"
@@ -198,5 +381,13 @@ jobs:
             fi
           } > delta.md
 
+          # Full report always lands in the job log; the PR comment is capped to
+          # GitHub's ~65536-char limit so a big bump can't fail the post itself.
+          echo "===== full PR-delta report ====="; cat delta.md
+          if [ "$(wc -c < delta.md)" -gt 62000 ]; then
+            head -c 62000 delta.md > delta.cap.md
+            printf '\n\n> [!NOTE]\n> Report truncated to fit the comment limit -- full version is in the job log.\n' >> delta.cap.md
+            mv delta.cap.md delta.md
+          fi
           gh pr comment "$PR" --body-file delta.md --edit-last \
             || gh pr comment "$PR" --body-file delta.md
