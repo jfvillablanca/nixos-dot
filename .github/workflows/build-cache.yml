@@ -63,13 +63,13 @@ jobs:
           nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
             --print-build-logs
 
-  # Report-only CVE delta for the flake-update bot's PR (backlog F.5). Never
-  # gates merge -- you make the call when reviewing the PR. Runs ONLY on the
-  # bot's PR (head branch `flake-update`) so human PRs aren't noised up. Scans
-  # the PR closure and the base closure with vulnix and posts the difference.
+  # Report-only "PR delta" for the flake-update bot's PR (backlog F.5): per-host
+  # package-version changes (`nix store diff-closures`) plus the vulnix CVE
+  # delta. Never gates merge -- input for your manual merge decision. Runs ONLY
+  # on the bot's PR (head branch `flake-update`) so human PRs aren't noised up.
   # Darwin/sienna is not covered (no Linux CI build for it).
   vuln:
-    name: vuln delta (flake-update PR)
+    name: PR delta (closures + CVEs)
     needs: build
     if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'flake-update'
     runs-on: ubuntu-latest
@@ -111,7 +111,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           extraPullNames: hyprland
 
-      - name: scan PR + base closures, post CVE delta comment
+      - name: build closures, diff + scan, post PR-delta comment
         env:
           GH_TOKEN: ${{ secrets.FLAKE_BOT_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
@@ -120,53 +120,83 @@ jobs:
           set -euo pipefail
           hosts=(cimmerian t14g1)
 
-          # vulnix over the given hosts' toplevels -> sorted unique CVE ids.
-          # CVE ids are pulled by regex so we don't couple to vulnix's JSON
-          # schema. vulnix exits non-zero when it finds CVEs; `|| true` keeps
-          # that from aborting under `set -e`/pipefail.
-          scan() {
-            local tag=$1
-            local outs=()
-            local h
+          # Build the PR closures, then the base closures with the base
+          # flake.lock overlaid. The bot only changes flake.lock, so flake.nix
+          # is identical -- swapping the lock yields the true base closure.
+          build_side() {
+            local side=$1 h
             for h in "${hosts[@]}"; do
               nix build ".#nixosConfigurations.$h.config.system.build.toplevel" \
-                -o "result-$tag-$h" --print-build-logs
-              outs+=("result-$tag-$h")
+                -o "result-$side-$h" --print-build-logs
             done
-            nix run nixpkgs#vulnix -- --json "${outs[@]}" 2>/dev/null \
-              | grep -oE 'CVE-[0-9]{4}-[0-9]{4,}' | sort -u || true
           }
+          build_side pr
+          git checkout "$BASE_SHA" -- flake.lock
+          build_side base
 
-          scan pr > pr.cve
-          git checkout "$BASE_SHA" -- flake.lock   # base lock onto the tree
-          scan base > base.cve
+          # vulnix per side. It exits non-zero when it finds CVEs, so `|| true`;
+          # but a *successful* scan always prints a JSON array -- validate that
+          # to tell "0 CVEs" from "scan failed" (no more silent 0/0). CVE ids
+          # are regex-extracted so we don't couple to vulnix's JSON schema.
+          scan_ok=1
+          for side in pr base; do
+            outs=()
+            for h in "${hosts[@]}"; do outs+=("result-$side-$h"); done
+            nix run nixpkgs#vulnix -- --json "${outs[@]}" \
+              > "vulnix-$side.json" 2> "vulnix-$side.err" || true
+            if jq -e 'type == "array"' "vulnix-$side.json" >/dev/null 2>&1; then
+              grep -oE 'CVE-[0-9]{4}-[0-9]{4,}' "vulnix-$side.json" \
+                | sort -u > "$side.cve" || true
+            else
+              scan_ok=0
+              : > "$side.cve"
+              echo "::warning::vulnix $side scan produced no valid JSON output"
+              sed "s/^/vulnix-$side.err: /" "vulnix-$side.err" >&2 || true
+            fi
+          done
 
+          nbase=$(wc -l < base.cve); npr=$(wc -l < pr.cve)
           new=$(comm -23 pr.cve base.cve || true)
           fixed=$(comm -13 pr.cve base.cve || true)
           nnew=$(printf '%s\n' "$new" | grep -c . || true)
           nfix=$(printf '%s\n' "$fixed" | grep -c . || true)
 
           {
-            echo "## Vulnerability delta -- vulnix (cimmerian + t14g1)"
+            echo "## PR delta -- closures + CVEs (cimmerian + t14g1)"
             echo
-            echo "Report only; does **not** gate merge. vulnix matches by"
-            echo "name+version, so expect some false positives. Darwin/sienna"
-            echo "is not covered (no Linux CI build)."
+            echo "Report only; does **not** gate merge. Input for the manual merge call."
             echo
-            echo "### New CVEs: ${nnew:-0}"
-            if [ -n "$new" ]; then
-              printf '%s\n' "$new" | sed 's#^#- https://nvd.nist.gov/vuln/detail/#'
+            echo "### Package changes per host (\`nix store diff-closures\`)"
+            echo
+            for h in "${hosts[@]}"; do
+              dc=$(nix store diff-closures "result-base-$h" "result-pr-$h" 2>/dev/null || true)
+              n=$(printf '%s\n' "$dc" | grep -c . || true)
+              echo "<details><summary><b>$h</b> -- ${n} changed</summary>"
+              echo
+              echo '```'
+              if [ -n "$dc" ]; then printf '%s\n' "$dc"; else echo "(no version changes)"; fi
+              echo '```'
+              echo
+              echo "</details>"
+              echo
+            done
+            echo "### Vulnerability delta (vulnix)"
+            echo
+            if [ "$scan_ok" -eq 1 ]; then
+              echo "Totals -- base: **${nbase}** CVEs, PR: **${npr}** CVEs. Name+version"
+              echo "matching (false positives expected); Darwin/sienna not covered."
+              echo
+              echo "**New: ${nnew}**"
+              if [ -n "$new" ]; then printf '%s\n' "$new" | sed 's#^#- https://nvd.nist.gov/vuln/detail/#'; else echo "_none_"; fi
+              echo
+              echo "**Fixed: ${nfix}**"
+              if [ -n "$fixed" ]; then printf '%s\n' "$fixed" | sed 's/^/- /'; else echo "_none_"; fi
             else
-              echo "_none_"
+              echo "> [!WARNING]"
+              echo "> vulnix produced no valid JSON for at least one side -- CVE delta"
+              echo "> unavailable this run. See the job log for the vulnix error."
             fi
-            echo
-            echo "### Fixed since base: ${nfix:-0}"
-            if [ -n "$fixed" ]; then
-              printf '%s\n' "$fixed" | sed 's/^/- /'
-            else
-              echo "_none_"
-            fi
-          } > vuln.md
+          } > delta.md
 
-          gh pr comment "$PR" --body-file vuln.md --edit-last \
-            || gh pr comment "$PR" --body-file vuln.md
+          gh pr comment "$PR" --body-file delta.md --edit-last \
+            || gh pr comment "$PR" --body-file delta.md
