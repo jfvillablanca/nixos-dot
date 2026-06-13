@@ -41,7 +41,13 @@
   hrm-scl (tap-hold-release $tap-time $hold-time ; rmet)
 )
 
+;; Top row in standard-function-key mode (NSGlobalDomain fnState = true, set
+;; in the host config) sends F1-F12 on the reliable keyboard usage page, which
+;; kanata maps to the media functions below -- this avoids the flaky consumer-
+;; key pass-through (kanata #1726). F3-F6 have no consumer code kanata can
+;; emit (Mission Control/Spotlight/Dictation/DND), so they stay plain F-keys.
 (defsrc
+  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   tab  q    w    e    r    t    y    u    i    o    p
   caps a    s    d    f    g    h    j    k    l    ;
   z    x    c    v    b    n    m    ,    .    /
@@ -49,6 +55,7 @@
 )
 
 (deflayer base
+  brdn brup f3 f4 f5 f6 prev pp next mute vold volu
   @tab-num q      w      e      r      t   y   u      i      o      p
   @esc-nav @hrm-a @hrm-s @hrm-d @hrm-f g   h   @hrm-j @hrm-k @hrm-l @hrm-scl
   z        x      c      v      b      n   m   ,      .      /
@@ -59,6 +66,7 @@
 ;; @cw (on c) = caps-word, kanata's CapsLock idiom. Left home row mirrors
 ;; the mods so you can chord while navigating.
 (deflayer nav
+  _   _    _    _    _    _    _    _    _    _    _    _
   _   _    _    _    _    _    _    _    _     _    _
   _   lmet lalt lsft lctl _    left down up   right _
   _   _    @cw  _    _    home pgdn pgup end  _
@@ -72,6 +80,7 @@
 ;;   -  $  %  ^  +
 ;;   `  !  @  #  \
 (deflayer sym
+  _   _    _    _    _    _    _    _    _    _    _    _
   _   =    S-7  S-8  S-9  S-0  _    _    _    _    _
   _   -    S-4  S-5  S-6  S-=  _    rctl rsft ralt rmet
   grv S-1  S-2  S-3  \    _    _    _    _    _
@@ -83,6 +92,7 @@
 ;;   4 5 6 0
 ;;   1 2 3
 (deflayer num
+  _   _    _    _    _    _    _    _    _    _    _    _
   _   _    _    _    _    _    _    7    8    9    _
   _   lmet lalt lsft lctl _    _    4    5    6    0
   _   _    _    _    _    _    1    2    3    _

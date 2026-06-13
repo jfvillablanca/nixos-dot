@@ -30,6 +30,13 @@
     vhidDaemon = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
     kanataArgs = ["${kanataPkg}/bin/kanata" "--nodelay" "--cfg" "${./kbd/macbook-qwerty.kbd}"];
   in {
+    # The kbd maps the F-row to media keys off the standard keyboard usage
+    # page, so the top row must report F1-F12 rather than the default Apple
+    # media/consumer codes (whose pass-through through kanata's virtual device
+    # is unreliable -- kanata #1726). Flip the global "use F-keys as standard
+    # function keys" setting to make that the case.
+    system.defaults.NSGlobalDomain."com.apple.keyboard.fnState" = true;
+
     launchd.daemons.karabiner-vhid-daemon.serviceConfig = {
       ProgramArguments = [vhidDaemon];
       RunAtLoad = true;
