@@ -247,8 +247,42 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
 ## F. CI / automation
 
-- F.1 **nix-flake-update bot.** Renovate-style auto-PRs for input bumps.
-  Filter to specific inputs; never auto-merge.
+- F.1 ★ **nix-flake-update bot + per-bump changelog.** Periodic auto-PRs for
+  flake-input bumps, with click-through visibility into what each bump
+  actually changed (features / fixes / breaking changes). Scoped 2026-06-12
+  after the 25.11 -> 26.11 roll, where every breakage was caught by
+  `nixos-rebuild build`, not by any changelog.
+  - **Tool: `DeterminateSystems/update-flake-lock`, not Renovate.**
+    - flake.nix is generator-owned by vic/flake-file -- the bot must touch
+      **only flake.lock**. update-flake-lock does exactly that; Renovate's
+      nix manager keys off `flake.nix` strings and would fight
+      `nix run .#write-flake`.
+    - Renovate's headline feature (rendering GitHub **release notes** in the
+      PR) only fires for inputs pinned to **tagged releases**. Ours are
+      almost all **branch-tracking** (`nixpkgs-unstable`, `home-manager`,
+      `stylix`, `hyprland` git, `impermanence`...), which publish no per-bump
+      release notes -- so that advantage is moot here.
+    - update-flake-lock reuses our existing conventions: SHA-pinned actions,
+      cachix, PR-triggered builds. One workflow file, no Renovate app.
+  - **Periodic bump.** `on.schedule` cron (e.g. weekly Mon). SHA-pin the
+    action like the others. **Never auto-merge** -- opens a PR only.
+  - **Changelog mechanism = per-input compare links.** Since branch-tracking
+    inputs have no release notes, the authoritative "what changed" is the
+    commit range between the old and new locked revs. A step diffs the old
+    and new flake.lock, maps each changed node to its
+    `owner/repo/<old>...<new>` range, and writes per-input GitHub compare
+    links (plus a short shortlog) into the PR body via a `gh pr edit`
+    follow-up. For nixpkgs the compare link is the changelog (the channel
+    ships none per bump).
+  - **Validation -- already wired.** The update PR triggers `build-cache.yml`,
+    which builds cimmerian + t14g1 from the bumped lock; green = closure
+    builds, breakages surface there (the same net the 26.11 roll relied on).
+    Deepen later with F.2 (matrix expansion) / F.3 (VM smoke tests).
+  - **Hard gotchas baked into the repo:**
+    - 🔴 `hyprland` has `submodules = true` (`flake.nix`); `nix flake update`
+      aborts on it (`opening file ''`, cf. A.7). The `inputs:` list **must
+      exclude hyprland**, or fix that first -- else every run fails.
+    - The bot must never edit `flake.nix` (flake-file owns it).
 - F.2 **Matrix expansion.** `build-cache.yml` builds sartre + virt alongside
   cimmerian + t14g1.
 - F.3 **VM smoke tests** (`nixos-lib.runTest`). Boot each host config in
