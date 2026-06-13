@@ -304,6 +304,24 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   dependency for personal infra.
 - H.2 **vaultwarden / nextcloud.** If cimmerian is up reliably.
 - H.3 **gitea / forgejo.** Private repo mirror.
+- H.4 ★ **Always-on homelab node.** The keystone for several deferred items:
+  a low-power box (RPi 4 / mini-PC) wired to the router's LAN segment,
+  always on. Tenants: local DNS, a nix build farm (remote builder), a
+  Tailscale subnet-router + exit-node for the home LAN, and the WoL relay
+  (below). Bootstrap via the B.2 nixos-anywhere recipe; add as a `system-cli`
+  host (no desktop). Cross-refs: G (subnet routing / exit-node), F (build
+  farm).
+  - **WoL relay + MAC registry (refines `docs/wol-relay.md`).** Rather than the
+    doc's single `wolRelay.targets` entry and one `wake-<name>` binary per
+    host, a declarative **registry** of every wake-able target
+    (`{ name; mac; }` list, e.g. a `myNixosModules.wol` option or under
+    `systemConstants`) plus a **chooser** wrapper (`wake <tab>` completion or
+    an fzf picker over the registry). The relay (this node, on the LAN at L2)
+    takes the trigger over the tailnet and emits the magic packet; see
+    `docs/wake-on-lan-windows.md` for the Windows-side prep.
+  - **Stopgap today:** cimmerian is NOT always-on, but while it happens to be
+    up on the LAN, `, wakeonlan 30:56:0F:72:CC:EC` wakes the Windows/Sunshine
+    box.
 
 ## I. Dev environment
 
