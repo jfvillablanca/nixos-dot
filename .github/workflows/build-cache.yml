@@ -62,3 +62,111 @@ jobs:
         run: |
           nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
             --print-build-logs
+
+  # Report-only CVE delta for the flake-update bot's PR (backlog F.5). Never
+  # gates merge -- you make the call when reviewing the PR. Runs ONLY on the
+  # bot's PR (head branch `flake-update`) so human PRs aren't noised up. Scans
+  # the PR closure and the base closure with vulnix and posts the difference.
+  # Darwin/sienna is not covered (no Linux CI build for it).
+  vuln:
+    name: vuln delta (flake-update PR)
+    needs: build
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'flake-update'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: free disk space
+        # jlumbroso/free-disk-space@v1.3.1
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      - name: checkout
+        # actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          fetch-depth: 0
+
+      - name: install nix
+        # cachix/install-nix-action@v31.10.5
+        uses: cachix/install-nix-action@ab739621df7a23f52766f9ccc97f38da6b7af14f
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: cachix
+        # cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c
+        with:
+          name: nixos-dot
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: hyprland
+
+      - name: scan PR + base closures, post CVE delta comment
+        env:
+          GH_TOKEN: ${{ secrets.FLAKE_BOT_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          hosts=(cimmerian t14g1)
+
+          # vulnix over the given hosts' toplevels -> sorted unique CVE ids.
+          # CVE ids are pulled by regex so we don't couple to vulnix's JSON
+          # schema. vulnix exits non-zero when it finds CVEs; `|| true` keeps
+          # that from aborting under `set -e`/pipefail.
+          scan() {
+            local tag=$1
+            local outs=()
+            local h
+            for h in "${hosts[@]}"; do
+              nix build ".#nixosConfigurations.$h.config.system.build.toplevel" \
+                -o "result-$tag-$h" --print-build-logs
+              outs+=("result-$tag-$h")
+            done
+            nix run nixpkgs#vulnix -- --json "${outs[@]}" 2>/dev/null \
+              | grep -oE 'CVE-[0-9]{4}-[0-9]{4,}' | sort -u || true
+          }
+
+          scan pr > pr.cve
+          git checkout "$BASE_SHA" -- flake.lock   # base lock onto the tree
+          scan base > base.cve
+
+          new=$(comm -23 pr.cve base.cve || true)
+          fixed=$(comm -13 pr.cve base.cve || true)
+          nnew=$(printf '%s\n' "$new" | grep -c . || true)
+          nfix=$(printf '%s\n' "$fixed" | grep -c . || true)
+
+          {
+            echo "## Vulnerability delta -- vulnix (cimmerian + t14g1)"
+            echo
+            echo "Report only; does **not** gate merge. vulnix matches by"
+            echo "name+version, so expect some false positives. Darwin/sienna"
+            echo "is not covered (no Linux CI build)."
+            echo
+            echo "### New CVEs: ${nnew:-0}"
+            if [ -n "$new" ]; then
+              printf '%s\n' "$new" | sed 's#^#- https://nvd.nist.gov/vuln/detail/#'
+            else
+              echo "_none_"
+            fi
+            echo
+            echo "### Fixed since base: ${nfix:-0}"
+            if [ -n "$fixed" ]; then
+              printf '%s\n' "$fixed" | sed 's/^/- /'
+            else
+              echo "_none_"
+            fi
+          } > vuln.md
+
+          gh pr comment "$PR" --body-file vuln.md --edit-last \
+            || gh pr comment "$PR" --body-file vuln.md
