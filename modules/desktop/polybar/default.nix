@@ -22,7 +22,7 @@
       services = {
         polybar = {
           enable = true;
-          script = "polybar bar &";
+          script = "polybar top &";
           config = {
             "bar/top" = {
               monitor = config.myHomeModules.window-manager.statusBarMonitor;
