@@ -18,11 +18,6 @@
               modifier = mod;
               terminal = term;
               startup = [
-                {
-                  command = "picom";
-                  notification = false;
-                  always = true;
-                }
                 # {
                 #   command = "${launch_polybar}";
                 #   notification = false;
