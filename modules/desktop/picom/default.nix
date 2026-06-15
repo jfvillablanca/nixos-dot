@@ -6,7 +6,7 @@
           enable = true;
           # activeOpacity = 1.00;
           # inactiveOpacity = 0.90;
-          backend = "glx";
+          backend = "xrender";
           vSync = true; # had to enable due to some screen tearing
           # opacityRules = [
           #   "100:class_g='firefox' && focused"
