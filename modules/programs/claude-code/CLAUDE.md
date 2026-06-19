@@ -23,12 +23,29 @@ Lookup order:
 2. `node_modules/<package>` only as fallback
 3. Training data: never
 
-If the clone is missing, identify the upstream and surface the command
-before running:
+The clone must match the _installed_ version, not `main` -- reasoning about
+an old dep from newer source gives wrong answers. If it's missing, surface
+the command first, then check out the matching ref:
 
 ```
-gh repo clone <owner>/<repo> ~/oss/<name> -- --depth=1
+gh repo clone <owner>/<repo> ~/oss/<name>     # full history, all tags
+cd ~/oss/<name> && git checkout <tag/SHA matching the installed version>
 ```
+
+Don't `--depth=1` -- it discards the history (`log`/`blame`/cross-version
+`diff`) that's often the point. Huge repos: `git clone --filter=blob:none`
+keeps history without the bulk. Refresh an existing clone with
+`git fetch --tags`, then checkout the matching ref. If an existing clone is
+**shallow** and the rev/tag you need is missing, `git fetch --unshallow --tags`
+to backfill it rather than re-cloning.
+
+Delegate the clone + source investigation to a subagent (one focused task)
+-- it keeps the clone output and history spelunking out of the main context,
+returning just the cited conclusion. Especially for deep-history repos.
+
+If the clone's checked-out ref doesn't match what's installed
+(`node_modules` / lockfile), prefer the installed copy -- it's the source of
+truth for behaviour.
 
 Cite specific files when claiming library behaviour (e.g.
 `~/oss/effect-smol/packages/effect/src/Effect.ts:1234`). "I think it
