@@ -83,6 +83,7 @@ in {
       onActivation.cleanup = "zap";
       casks = [
         "1password"
+        "bitwarden"
         "discord"
         "firefox"
         "google-chrome"
