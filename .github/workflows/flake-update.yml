@@ -1,6 +1,9 @@
-# Periodic flake.lock updater. Opens a never-auto-merged PR and annotates it
-# with per-input GitHub compare links, so input bumps are reviewable for new
-# features / fixes / breaking changes (the changelog a raw lock diff lacks).
+# Periodic flake.lock updater. Opens a never-auto-merged PR and annotates its
+# body with (a) per-input GitHub compare links and (b) the eval-only package
+# version delta across every flake output (via `.#flake-delta`, no build, incl.
+# darwin), so input bumps are reviewable for new features / fixes / breaking
+# changes (the changelog a raw lock diff lacks). The build-based CVE + runtime
+# closure delta is posted separately as a comment by build-cache.yml.
 # See docs/BACKLOG.md F.1.
 #
 # - Excludes `hyprland`: its input sets `submodules = true`, which makes
@@ -47,6 +50,12 @@ jobs:
         with:
           diagnostic-endpoint: ""
 
+      # Build the version-diff tool from the pre-bump tree (out-of-tree symlink
+      # so the update action's git operations can't disturb it). The tool is
+      # lock-agnostic; it diffs the two lock files passed to it.
+      - name: build flake-delta
+        run: nix build .#flake-delta -o /tmp/flake-delta
+
       - name: update flake.lock
         id: update
         # DeterminateSystems/update-flake-lock@v28
@@ -59,7 +68,7 @@ jobs:
           pr-title: "flake.lock: periodic input bump"
           pr-labels: dependencies
 
-      - name: annotate PR with per-input changelog
+      - name: annotate PR (compare-links + package version delta)
         if: steps.update.outputs.pull-request-number
         env:
           GH_TOKEN: ${{ secrets.FLAKE_BOT_TOKEN }}
@@ -70,7 +79,7 @@ jobs:
           {
             echo "## Periodic flake.lock update"
             echo
-            echo "Automated input bumps (\`hyprland\` excluded). **Do not auto-merge** -- review the per-input changes below and wait for \`build-cache\` to go green."
+            echo "Automated input bumps (\`hyprland\` excluded). **Do not auto-merge** -- review the changes below; \`build-cache\` posts the CVE + runtime-closure delta as a comment."
             echo
             echo "### Input changes"
             echo
@@ -93,5 +102,19 @@ jobs:
                     "- **\(.name)** (\(.t)): `\(.o[0:8])` -> `\(.n[0:8])`"
                   end)
                 end'
-          } > /tmp/body.md
+            echo
+            # Eval-only package version delta across every output (incl. darwin).
+            /tmp/flake-delta/bin/flake-delta /tmp/flake.lock.old /tmp/flake.lock.new \
+              || echo "_flake-delta failed to run; see the input changes above and the job log._"
+          } > /tmp/body.full.md
+
+          # Full body to the job log; the posted body is capped to GitHub's
+          # ~65536-char limit so a large bump can't fail the edit.
+          echo "===== full PR body ====="; cat /tmp/body.full.md
+          if [ "$(wc -c < /tmp/body.full.md)" -gt 62000 ]; then
+            head -c 62000 /tmp/body.full.md > /tmp/body.md
+            printf '\n\n> [!NOTE]\n> Body truncated to fit the PR-body limit -- full delta is in the flake-update job log.\n' >> /tmp/body.md
+          else
+            cp /tmp/body.full.md /tmp/body.md
+          fi
           gh pr edit "$PR" --body-file /tmp/body.md
