@@ -19,6 +19,9 @@
 
         # Task runner — see ./justfile for nvim-{baseline,gate,exp,exp-smoke}.
         just
+
+        # Local driver for the flake-update PR version-diff (eval-only).
+        (callPackage (self + /packages/by-name/f/flake-delta) {})
       ];
 
       # Installs the cachix/git-hooks pre-commit hook on `nix develop`
