@@ -89,7 +89,6 @@ in {
         "google-chrome"
         "keycastr"
         "logi-options+"
-        "raycast"
         "slack"
         "spotify"
       ];
