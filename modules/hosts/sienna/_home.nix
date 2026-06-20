@@ -28,6 +28,7 @@
       nh
       nom
       ripgrep
+      sol
       starship
       tmux
       yazi
@@ -60,6 +61,15 @@
   # (Chrome is intentionally excluded: it only ever restores a single profile
   # picker, so respawning it just yields a stray window, not the lost ones.)
   myHomeModules.aerospace.respawnApps = ["net.kovidgoyal.kitty"];
+
+  # Sol activates the running kitty (and jumps to its workspace); this script
+  # item spawns a fresh instance on the current workspace instead -- the rofi
+  # "open a new window" behaviour. `open -na` needs no PATH, resolves the app
+  # via LaunchServices.
+  myHomeModules.sol.newWindowApps.Kitty = {
+    icon = "🐱";
+    command = "open -na kitty";
+  };
 
   home.packages = [
     pkgs.devenv

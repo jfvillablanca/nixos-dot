@@ -23,6 +23,7 @@ in {
       self.modules.darwin.nix-index
       self.modules.darwin.kanata
       self.modules.darwin.docker
+      self.modules.darwin.sol
     ];
 
     networking.hostName = hostName;
