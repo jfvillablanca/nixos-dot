@@ -61,5 +61,7 @@ in {
         exec nvim "$@"
       '';
     };
+
+    flake-delta = pkgs.callPackage (self + /packages/by-name/f/flake-delta) {};
   };
 }
