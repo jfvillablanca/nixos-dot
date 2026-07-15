@@ -125,7 +125,15 @@
 
       networking.firewall = {
         allowedTCPPorts = [cfg.httpPort];
-        allowedUDPPorts = [67 69];
+        # 67 = DHCP, 69 = TFTP, 4011 = proxyDHCP boot-server phase (dnsmasq
+        # binds PXE_PORT=4011 whenever pxe-service/enable_pxe is set --
+        # confirmed in pinned dnsmasq 2.93 source: dhcp.c's dhcp_init()
+        # calls make_fd(PXE_PORT) when daemon->enable_pxe, and
+        # dhcp-protocol.h defines PXE_PORT 4011). Without it, UEFI PXE
+        # clients get the proxy's initial offer but never the boot
+        # filename from the second-phase Boot Server Discover, and PXE
+        # boot silently times out.
+        allowedUDPPorts = [67 69 4011];
       };
     };
   };
