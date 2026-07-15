@@ -44,13 +44,30 @@
           hosts you intend to expose as a relay or admin target.
         '';
       };
+
+      authKeyFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = ''
+          Path to a file (outside the Nix store, delivered out-of-band,
+          never committed) holding a Tailscale auth key. When set,
+          tailscaled auto-authenticates on first boot -- no interactive
+          login. Use a tagged, pre-authorized, non-ephemeral key so the
+          node has key-expiry disabled and never needs re-auth. Pass a
+          quoted string path, never a Nix path literal.
+        '';
+      };
     };
 
     config = lib.mkIf cfg.enable {
       services.tailscale = {
         enable = true;
         openFirewall = true;
-        inherit (cfg) useRoutingFeatures;
+        inherit (cfg) useRoutingFeatures authKeyFile;
+        authKeyParameters = lib.mkIf (cfg.authKeyFile != null) {
+          ephemeral = false;
+          preauthorized = true;
+        };
         extraSetFlags = lib.optional cfg.enableSSH "--ssh";
       };
 
