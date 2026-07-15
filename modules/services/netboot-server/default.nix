@@ -102,6 +102,13 @@
 
       services.dnsmasq = {
         enable = true;
+        # port = 0 below turns off the DNS listener entirely (proxyDHCP/TFTP
+        # only), so nothing answers on 127.0.0.1:53. resolveLocalQueries
+        # defaults to true and would otherwise inject 127.0.0.1 into
+        # networking.nameservers and flip on resolvconf's local resolver,
+        # breaking the HOST's own DNS resolution for as long as this module
+        # is enabled.
+        resolveLocalQueries = false;
         settings = {
           port = 0;
           log-dhcp = true;
