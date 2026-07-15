@@ -58,9 +58,12 @@
         };
       };
 
-      home-manager.sharedModules = [
-        {stylix.targets.xfce.enable = true;}
-      ];
+      # stylix's XFCE theming is HM-only (no NixOS option) and is only DECLARED
+      # in the HM tree when stylix auto-injects its HM module, itself gated on
+      # stylix.enable. Guard our append the same way, else it targets an
+      # undeclared option and hard-errors when stylix is off.
+      home-manager.sharedModules =
+        lib.mkIf config.stylix.enable [{stylix.targets.xfce.enable = true;}];
     };
   };
 }
