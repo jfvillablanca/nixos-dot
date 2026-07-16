@@ -36,9 +36,12 @@
     # ("/persist" -> /persist/home/<user>).
     root = "/persist";
     directories = [
+      # The flake clone lives here (repoPath = /home/jmfv/nixos-dot); persist
+      # it so the clone and `nh os switch` survive the ephemeral-root wipe.
+      "nixos-dot"
       ".ssh"
-      # Sunshine pairing certs + config: persist so paired Moonlight clients
-      # survive the ephemeral-root wipe. VERIFY this is the real dir first.
+      # Sunshine pairing certs + config, so paired Moonlight clients survive
+      # the ephemeral-root wipe (confirmed: reconnects without re-pairing).
       ".config/sunshine"
     ];
   };
