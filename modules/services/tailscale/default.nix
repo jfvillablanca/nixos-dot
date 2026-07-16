@@ -64,10 +64,13 @@
         enable = true;
         openFirewall = true;
         inherit (cfg) useRoutingFeatures authKeyFile;
-        authKeyParameters = lib.mkIf (cfg.authKeyFile != null) {
-          ephemeral = false;
-          preauthorized = true;
-        };
+        # Do NOT set authKeyParameters here: it appends a
+        # `?ephemeral=...&preauthorized=...` query string to the key, which is
+        # the OAuth-client-secret convention. For a plain pre-generated
+        # `tskey-auth-...` key (tag/expiry/preauth are fixed at generation)
+        # that query string makes the control server take the "validate API
+        # key" path and reject it ("invalid key: unable to validate API key").
+        # Send the raw key only.
         extraSetFlags = lib.optional cfg.enableSSH "--ssh";
       };
 
