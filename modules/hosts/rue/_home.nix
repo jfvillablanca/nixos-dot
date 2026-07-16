@@ -19,6 +19,7 @@
       git
       kitty
       neovim
+      nh
       ripgrep
       starship
       tmux
