@@ -27,7 +27,6 @@ in {
       self.modules.nixos.steam
       self.modules.nixos.tailscale
       self.modules.nixos.docker
-      self.modules.nixos.netboot-server
     ];
 
     networking.hostName = hostName;
@@ -67,13 +66,6 @@ in {
     myNixosModules = {
       steam.enable = true;
       tailscale.enable = true;
-      # TEMPORARY: one-shot netboot server to provision `rue` over PXE.
-      # Reverted after install (see docs/superpowers/plans Task 10).
-      netbootServer = {
-        enable = true;
-        serveHost = "192.168.1.2"; # cimmerian LAN IP (wlo1)
-        dhcpSubnet = "192.168.1.0"; # /24 LAN
-      };
     };
 
     users.extraGroups.docker.members = ["username-with-access-to-socket"];
