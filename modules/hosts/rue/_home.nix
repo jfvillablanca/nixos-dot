@@ -17,6 +17,7 @@
       fish
       fzf
       git
+      kitty
       neovim
       ripgrep
       starship
