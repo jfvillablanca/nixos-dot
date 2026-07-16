@@ -71,7 +71,14 @@
         # that query string makes the control server take the "validate API
         # key" path and reject it ("invalid key: unable to validate API key").
         # Send the raw key only.
-        extraSetFlags = lib.optional cfg.enableSSH "--ssh";
+        #
+        # --ssh goes on `tailscale up` (extraUpFlags), NOT `tailscale set`
+        # (extraSetFlags): nixpkgs' tailscaled-set unit runs even when the
+        # bootstrap `up` fails, so a failed first join leaves ssh=true on a
+        # logged-out node, and the next `up` (without --ssh) then trips
+        # "changing settings via 'tailscale up' requires mentioning all
+        # non-default flags". Keeping --ssh on the `up` call avoids that.
+        extraUpFlags = lib.optional cfg.enableSSH "--ssh";
       };
 
       networking.firewall.trustedInterfaces =
