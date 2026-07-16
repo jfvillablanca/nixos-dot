@@ -147,4 +147,9 @@ in {
   };
 
   flake.nixosConfigurations.${hostName} = self.lib.mkNixos hostName;
+
+  # rue runs Tailscale SSH (openssh is off), so this is the host key tailscaled
+  # presents, captured via `ssh-keyscan rue`. It lives in /var/lib/tailscale
+  # (persisted by the tailscale module), so it's stable across reboots.
+  flake.hostIdentityKeys.${hostName} = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHqXPLw9J1EiDsVcXs9zfDr5MSIuj2SH+XZaR5vAjnWf";
 }
