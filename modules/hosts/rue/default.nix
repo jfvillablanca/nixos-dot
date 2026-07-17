@@ -32,6 +32,7 @@ in {
       self.modules.nixos.tailscale
       self.modules.nixos.sunshine
       self.modules.nixos.xfce
+      self.modules.nixos.netdata
     ];
 
     networking.hostName = hostName;
@@ -72,12 +73,16 @@ in {
       tailscale = {
         enable = true;
         enableSSH = true;
-        # Delivered out-of-band by nixos-anywhere --extra-files (Task 9) onto
-        # the /persist subvol so it survives the first-boot root wipe. Quoted
-        # string, NOT a path literal.
+        # Delivered out-of-band onto the /persist subvol so it survives the
+        # first-boot root wipe. Quoted string, NOT a path literal.
         authKeyFile = "/persist/secrets/tailscale-authkey";
+        # Always-on box -> also serve as the tailnet exit node. Needs a
+        # one-time approval in the Tailscale console after the first rebuild.
+        useRoutingFeatures = "both";
+        advertiseExitNode = true;
       };
       sunshine.enable = true;
+      netdata.enable = true;
       xfce = {
         enable = true;
         autoLoginUser = user;
