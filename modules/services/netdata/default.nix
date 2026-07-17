@@ -5,6 +5,7 @@
   flake.modules.nixos.netdata = {
     lib,
     config,
+    pkgs,
     ...
   }: let
     cfg = config.myNixosModules.netdata;
@@ -16,6 +17,10 @@
     config = lib.mkIf cfg.enable {
       services.netdata = {
         enable = true;
+        # Default pkgs.netdata ships WITHOUT the web dashboard (API works but
+        # `/` 404s). withCloudUi bundles the v3 dashboard; it carries the
+        # ncul1 (Netdata Cloud UI) licence, so the host needs allowUnfree.
+        package = pkgs.netdata.override {withCloudUi = true;};
         config.web."bind to" = "0.0.0.0";
       };
     };
