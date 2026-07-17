@@ -22,6 +22,13 @@
         # ncul1 (Netdata Cloud UI) licence, so the host needs allowUnfree.
         package = pkgs.netdata.override {withCloudUi = true;};
         config.web."bind to" = "0.0.0.0";
+        # Bounded + not persisted: RAM-only metrics ring instead of the
+        # dbengine TSDB, so nothing accumulates in /var/lib/netdata between the
+        # (rare) reboots. Default dbengine keeps 3 tiers x 1024MiB ~= 3GiB on
+        # the ephemeral root; we don't need retained history, just a fixed live
+        # window. `db = ram` is the memory mode; `retention` caps the ring.
+        config.db.db = "ram";
+        config.db.retention = 3600; # points/metric (~1h at 1s step)
       };
     };
   };
