@@ -5,6 +5,15 @@
     ...
   }: let
     cfg = config.myNixosModules.tailscale;
+    # Flags applied both at join (`tailscale up`, extraUpFlags) and on every
+    # activation (`tailscale set`, extraSetFlags). On `up` keeps the bootstrap
+    # self-consistent (no "mention all non-default flags" trip); on `set` makes
+    # an already-running host re-apply them on rebuild, since autoconnect's `up`
+    # no-ops once the node is Running -- `set` is what applies later changes
+    # like toggling the exit node.
+    persistentFlags =
+      (lib.optional cfg.enableSSH "--ssh")
+      ++ (lib.optional cfg.advertiseExitNode "--advertise-exit-node");
   in {
     options.myNixosModules.tailscale = {
       enable =
@@ -45,6 +54,18 @@
         '';
       };
 
+      advertiseExitNode = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = ''
+          Advertise this host as a Tailscale exit node
+          (`--advertise-exit-node`). Requires `useRoutingFeatures =
+          "server"` or `"both"` (IP forwarding) and a one-time approval in
+          the admin console (Machines -> host -> approve exit node). Off by
+          default; only for an always-on host you route traffic through.
+        '';
+      };
+
       authKeyFile = lib.mkOption {
         type = lib.types.nullOr lib.types.path;
         default = null;
@@ -64,22 +85,27 @@
         enable = true;
         openFirewall = true;
         inherit (cfg) useRoutingFeatures authKeyFile;
-        # Do NOT set authKeyParameters here: it appends a
-        # `?ephemeral=...&preauthorized=...` query string to the key, which is
-        # the OAuth-client-secret convention. For a plain pre-generated
-        # `tskey-auth-...` key (tag/expiry/preauth are fixed at generation)
-        # that query string makes the control server take the "validate API
-        # key" path and reject it ("invalid key: unable to validate API key").
-        # Send the raw key only.
-        #
-        # --ssh goes on `tailscale up` (extraUpFlags), NOT `tailscale set`
-        # (extraSetFlags): nixpkgs' tailscaled-set unit runs even when the
-        # bootstrap `up` fails, so a failed first join leaves ssh=true on a
-        # logged-out node, and the next `up` (without --ssh) then trips
-        # "changing settings via 'tailscale up' requires mentioning all
-        # non-default flags". Keeping --ssh on the `up` call avoids that.
-        extraUpFlags = lib.optional cfg.enableSSH "--ssh";
+        # Do NOT set authKeyParameters: it appends a
+        # `?ephemeral=...&preauthorized=...` query string (the OAuth-client
+        # convention). On a plain pre-generated `tskey-auth-...` key that makes
+        # the control server reject it ("invalid key: unable to validate API
+        # key"). Send the raw key only.
+        extraUpFlags = persistentFlags;
+        extraSetFlags = persistentFlags;
       };
+
+      assertions = [
+        {
+          assertion =
+            !cfg.advertiseExitNode
+            || lib.elem cfg.useRoutingFeatures ["server" "both"];
+          message = ''
+            myNixosModules.tailscale.advertiseExitNode requires
+            useRoutingFeatures = "server" or "both" (exit nodes need IP
+            forwarding).
+          '';
+        }
+      ];
 
       networking.firewall.trustedInterfaces =
         lib.optional cfg.trustInterface "tailscale0";
