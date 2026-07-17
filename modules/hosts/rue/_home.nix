@@ -43,6 +43,10 @@
       # Sunshine pairing certs + config, so paired Moonlight clients survive
       # the ephemeral-root wipe (confirmed: reconnects without re-pairing).
       ".config/sunshine"
+      # tmux-resurrect save dir. XDG_DATA_HOME is unset in this session, so
+      # resurrect uses the ~/.tmux/resurrect default; persist it so
+      # continuum-restore brings sessions back after the root wipe.
+      ".tmux/resurrect"
     ];
   };
 
