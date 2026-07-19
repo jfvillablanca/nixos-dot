@@ -28,6 +28,14 @@
       # Type is `pathNotInStore`: a quoted string, never a Nix path literal
       # (a literal would copy into the store and be rejected). Same convention
       # as tailscale's authKeyFile. mkDefault so a host can relocate it.
+      #
+      # BOOTSTRAP PRECONDITION: this key must exist on the host BEFORE the first
+      # activation that consumes a secret. On a fresh install of a host that also
+      # sets `users.mutableUsers = false` with a sops `hashedPasswordFile`, a
+      # missing key means the account is created with no valid password (`!`) ->
+      # installer/console recovery. Deliver it out-of-band to /persist first
+      # (like the tailscale authkey). The two-phase rollout only nets you on a
+      # host that already has a working password; a clean reinstall does not.
       sops.age.keyFile = lib.mkDefault "/persist/secrets/age/keys.txt";
     };
   };
