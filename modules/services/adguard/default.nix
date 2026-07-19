@@ -60,6 +60,57 @@
           hide-version = true;
         };
       };
+
+      # AdGuard Home. Web UI + control API on loopback ONLY (no `users:` -> no
+      # auth needed; the local `adguard-mode` CLI reaches it on 127.0.0.1;
+      # dashboard via `ssh -L 3000:localhost:3000 rue`). DNS (:53) listens on all
+      # interfaces, gated by the firewall to the LAN iface + tailscale0.
+      # Declare ONLY stable keys -- protection_enabled / clients / users are
+      # runtime state the CLI owns (persisted under /var/lib/AdGuardHome), so a
+      # rebuild must not reset the mode.
+      services.adguardhome = {
+        enable = true;
+        mutableSettings = true;
+        host = "127.0.0.1";
+        port = 3000;
+        openFirewall = false;
+        settings = {
+          dns = {
+            bind_hosts = ["0.0.0.0"];
+            port = 53;
+            upstream_dns = ["127.0.0.1:5335"];
+            # bootstrap only resolves upstream hostnames / filter-list URLs before
+            # the resolver is warm; our upstream is a bare IP, so this is just for
+            # the initial blocklist fetch.
+            bootstrap_dns = ["9.9.9.9" "1.1.1.1"];
+            enable_dnssec = true;
+            ratelimit = 0; # LAN-only; not internet-exposed
+          };
+          filtering.filtering_enabled = true;
+          filters = [
+            {
+              enabled = true;
+              url = cfg.blocklistUrl;
+              name = "HaGeZi Pro";
+              id = 1;
+            }
+          ];
+        };
+      };
+
+      # 53 reachable on the wired LAN (tailscale0 is already a trusted interface
+      # via the tailscale module, so tailnet peers reach :53 without this).
+      networking.firewall.interfaces.${cfg.lanInterface} = {
+        allowedTCPPorts = [53];
+        allowedUDPPorts = [53];
+      };
+
+      # Persist AdGuard's state (query log, stats, runtime mode/clients) and
+      # Unbound's DNSSEC root anchor across the ephemeral-root wipe.
+      myNixosModules.persistence.directories = [
+        "/var/lib/AdGuardHome"
+        "/var/lib/unbound"
+      ];
     };
   };
 }

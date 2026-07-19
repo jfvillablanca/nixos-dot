@@ -35,9 +35,29 @@ in {
       self.modules.nixos.netdata
       self.modules.nixos.wol
       self.modules.nixos.sops
+      self.modules.nixos.adguard
     ];
 
     networking.hostName = hostName;
+
+    # AdGuard is rue's own resolver (started by myNixosModules.adguard below);
+    # do not let Tailscale's MagicDNS resolv.conf override it -- see
+    # `services.tailscale.extraSetFlags` for the `--accept-dns=false` that
+    # keeps tailscaled from managing resolv.conf in the first place.
+    networking.nameservers = ["127.0.0.1"];
+
+    # rue is the tailnet nameserver (via AdGuard) and must resolve through its
+    # own local AdGuard, not Tailscale's MagicDNS -- accept-dns=true would let
+    # tailscaled overwrite resolv.conf with 100.100.100.100, and in `off` mode
+    # (adguard-mode CLI, Task 5) the tailnet nameserver is cleared, which would
+    # break rue's own resolution. `extraSetFlags` (not `extraUpFlags`): the
+    # tailscale module's `tailscaled-set` unit runs after
+    # `tailscaled-autoconnect`, so this reliably re-asserts on every boot even
+    # though `tailscale up` no-ops once already Running (see
+    # modules/services/tailscale/default.nix). This list merges with
+    # myNixosModules.tailscale's own `extraSetFlags` (listOf -> concatenated,
+    # not overwritten), so it needs no change to the shared tailscale module.
+    services.tailscale.extraSetFlags = ["--accept-dns=false"];
 
     # Password hash comes from sops (encrypted at secrets/rue.yaml, decrypted
     # with the /persist age key). neededForUsers materialises it to
@@ -97,6 +117,12 @@ in {
       sunshine.enable = true;
       netdata.enable = true;
       sops.enable = true;
+      adguard = {
+        enable = true;
+        lanInterface = "enp1s0";
+        tailnetIp = "100.70.231.87";
+        # lanCidr / routerIp / blocklistUrl use defaults
+      };
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
       wol.targets = self.constants.wolTargets;
