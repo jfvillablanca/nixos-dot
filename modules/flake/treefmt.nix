@@ -26,7 +26,9 @@
       # alejandra would reformat it on every commit, then write-flake reformats
       # it back on the next regeneration — a churn loop. flake-file's emitted
       # form is canonical for the generated file.
-      settings.global.excludes = ["flake.nix"];
+      # secrets/* are sops-encrypted -- prettier would reformat and corrupt
+      # the ciphertext.
+      settings.global.excludes = ["flake.nix" "secrets/*"];
     };
   };
 }

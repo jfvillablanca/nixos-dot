@@ -78,6 +78,10 @@
       url = "github:stevearc/oil.nvim";
       flake = false;
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix.url = "github:danth/stylix";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
