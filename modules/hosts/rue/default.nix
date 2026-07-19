@@ -47,6 +47,11 @@ in {
     sops.secrets."rue-password".neededForUsers = true;
     users.users.${user}.hashedPasswordFile = config.sops.secrets."rue-password".path;
 
+    # Make the sops hash the single source of truth: rewrites the existing
+    # user's shadow entry from hashedPasswordFile on every activation. Safe now
+    # that Task 4 proved the secret decrypts and materialises.
+    users.mutableUsers = false;
+
     # Fresh 2026 install -- set to the release you install from; verify with
     # `nixos-version` on the RAM installer (Task 9). Do NOT copy t14g1's 22.11.
     system.stateVersion = "26.05";
