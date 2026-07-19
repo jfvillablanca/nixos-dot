@@ -34,11 +34,18 @@ in {
       self.modules.nixos.xfce
       self.modules.nixos.netdata
       self.modules.nixos.wol
+      self.modules.nixos.sops
     ];
 
     networking.hostName = hostName;
 
-    users.users.${user}.initialPassword = "12345";
+    # Password hash comes from sops (encrypted at secrets/rue.yaml, decrypted
+    # with the /persist age key). neededForUsers materialises it to
+    # /run/secrets-for-users/rue-password before the users activation runs.
+    # defaultSopsFile is type `path`; ciphertext is safe to copy into the store.
+    sops.defaultSopsFile = ../../../secrets/rue.yaml;
+    sops.secrets."rue-password".neededForUsers = true;
+    users.users.${user}.hashedPasswordFile = config.sops.secrets."rue-password".path;
 
     # Fresh 2026 install -- set to the release you install from; verify with
     # `nixos-version` on the RAM installer (Task 9). Do NOT copy t14g1's 22.11.
@@ -84,6 +91,7 @@ in {
       };
       sunshine.enable = true;
       netdata.enable = true;
+      sops.enable = true;
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
       wol.targets = self.constants.wolTargets;
