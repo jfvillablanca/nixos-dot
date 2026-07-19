@@ -28,6 +28,20 @@
     '';
   };
 
+  options.flake.constants.wolTargets = lib.mkOption {
+    type = lib.types.attrsOf lib.types.str;
+    default = {
+      # Windows box (Wake-on-LAN magic-packet target). MACs aren't secret --
+      # they are broadcast on the LAN -- so this lives in plain config.
+      defenestration = "30:56:0F:72:CC:EC";
+    };
+    description = ''
+      Named Wake-on-LAN targets (name -> MAC), at flake scope as
+      `self.constants.wolTargets`. Consumed by the `wol` module to generate
+      `wake-<name>` commands.
+    '';
+  };
+
   config.flake.modules.generic.systemConstants = {
     config,
     lib,
