@@ -1,0 +1,9 @@
+keys:
+  - &admin age1fnkfre3sj2w8m3gey4vwcegaufy5ywd03s3dlmz2m93k44akf3wq9k3g0x
+  - &rue age170uwv6qymchu0ndq2hg9xmee2ar8k8ay5z42r93q5jph2zlv752qwltth6
+creation_rules:
+  - path_regex: secrets/rue\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *rue
