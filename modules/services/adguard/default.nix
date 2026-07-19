@@ -105,10 +105,33 @@
         allowedUDPPorts = [53];
       };
 
+      # The nixpkgs AdGuard module runs under DynamicUser=true, which makes
+      # systemd manage /var/lib/private/AdGuardHome and symlink
+      # /var/lib/AdGuardHome -> it. That symlink cannot be created over the
+      # impermanence bind-mount at /var/lib/AdGuardHome (systemd exit
+      # 238/STATE_DIRECTORY). Use a static user so StateDirectory is
+      # /var/lib/AdGuardHome directly; CAP_NET_BIND_SERVICE (ambient) still lets
+      # it bind :53 as non-root.
+      users.users.adguardhome = {
+        isSystemUser = true;
+        group = "adguardhome";
+      };
+      users.groups.adguardhome = {};
+      systemd.services.adguardhome.serviceConfig = {
+        DynamicUser = lib.mkForce false;
+        User = "adguardhome";
+        Group = "adguardhome";
+      };
+
       # Persist AdGuard's state (query log, stats, runtime mode/clients) and
       # Unbound's DNSSEC root anchor across the ephemeral-root wipe.
       myNixosModules.persistence.directories = [
-        "/var/lib/AdGuardHome"
+        {
+          directory = "/var/lib/AdGuardHome";
+          user = "adguardhome";
+          group = "adguardhome";
+          mode = "0700";
+        }
         "/var/lib/unbound"
       ];
     };
