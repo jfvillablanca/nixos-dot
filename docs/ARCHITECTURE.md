@@ -13,6 +13,9 @@ References:
 
 ```
 flake.nix                                # inputs + mkFlake + import-tree
+.sops.yaml                               # sops-nix recipients (public age keys only)
+secrets/
+  <name>.yaml                            # sops-encrypted secret (ciphertext, git-tracked)
 docs/
   MIGRATION.md                           # phase-by-phase history
   STAGE_B_PLAN.md                        # canonical-restructure plan
@@ -45,6 +48,7 @@ modules/
   system/                                # nixos system-level concerns
     <feature>/default.nix
     constants/default.nix                # flake.modules.generic.systemConstants — Constants Aspect
+    sops/default.nix                     # sops-nix secrets (per-host age key on /persist)
     types/{default,cli,desktop}/default.nix  # inheritance hierarchy
   hosts/
     <hostname>/{default.nix, _hardware-configuration.nix, _disko.nix, _home.nix}
@@ -192,6 +196,46 @@ that wraps `nixpkgs.lib.nixosSystem` with the standard framework
 modules (disko, impermanence, stylix, nixos-wsl, home-manager) plus
 overlays (neovim-nightly, spotify-player auth fix, local packages).
 
+## Secrets (sops-nix)
+
+Encrypted secrets use **sops-nix** (`modules/system/sops/default.nix`,
+opt-in via `myNixosModules.sops.enable`). Nothing secret enters the Nix
+store: secrets are committed as **ciphertext** under `secrets/*.yaml`,
+decrypted at activation into `/run/secrets*` (tmpfs), and consumed by
+path (e.g. `users.users.<u>.hashedPasswordFile`).
+
+- **Decryption identity** — a dedicated per-host **age key** at
+  `/persist/secrets/age/keys.txt` (0600 root:root), delivered
+  out-of-band like the tailscale authkey, so it survives the
+  ephemeral-root wipe and needs no sshd. `sops.age.keyFile` is a quoted
+  string (type `pathNotInStore`; a path literal would copy into the
+  store and be rejected). Chosen over ssh-to-age because headless hosts
+  (rue) run Tailscale SSH with openssh off — there is no `/etc/ssh` host
+  key to derive from (sops-nix imports none when openssh is disabled).
+- **Recipients** — repo-root `.sops.yaml` (public keys only; read by the
+  `sops` CLI, not by Nix). Each secret encrypts to the **host key + a
+  universal admin key**; the admin key is the recovery / re-encrypt path
+  if a host's `/persist` key is lost.
+- **First consumer** — rue's login password: a `neededForUsers` secret
+  → `/run/secrets-for-users/rue-password` → `hashedPasswordFile`, with
+  `users.mutableUsers = false` making the sops hash authoritative.
+
+Load-bearing constraints:
+
+- `secrets/*` is excluded from treefmt (`modules/flake/treefmt.nix`) —
+  prettier would reformat and corrupt the ciphertext. `secrets/` is
+  still git-tracked (encrypted).
+- Flakes see only git-tracked files, and sops-nix hashes the ciphertext
+  at eval (`validateSopsFiles`) — `git add secrets/<f>.yaml` before any
+  `nix eval` / rebuild.
+- On an ephemeral-root host, `/persist` must be `neededForBoot = true`
+  so the key is mounted before the users activation (the default
+  activation branch has no `RequiresMountsFor` guard).
+- **Bootstrap:** on a fresh install with `mutableUsers = false`, the age
+  key must exist on `/persist` before the first `switch`, or the account
+  is created with no valid password (`!`) → installer recovery. The
+  two-phase rollout only nets a host that already has a working password.
+
 ## Adding things
 
 ### A new feature (program / desktop / service / system)
@@ -243,6 +287,25 @@ overlays (neovim-nightly, spotify-player auth fix, local packages).
    `users.<name>.imports`.
 3. Per-host adjustments (e.g. `users.users.<name>.initialPassword`,
    `users.users.<name>.uid`) go on top of the factory base.
+
+### A new secret
+
+1. If a new host will consume it, generate its age key
+   (`age-keygen`), put the **public** key in `.sops.yaml`, and deliver
+   the **private** key out-of-band to `<host>:/persist/secrets/age/keys.txt`
+   (0600 root:root). Existing hosts already have their key.
+2. Add a `creation_rules` entry in `.sops.yaml` mapping the file to its
+   recipients (`[admin, <host>]`), then author it:
+   `sops secrets/<name>.yaml`. The top-level YAML key should equal the
+   sops secret name so the default `key = <name>` lookup applies (no
+   `.key` override). Regenerate an existing file's recipients with
+   `sops updatekeys secrets/<name>.yaml`.
+3. In the host: `myNixosModules.sops.enable = true;`, set
+   `sops.defaultSopsFile`, declare `sops.secrets.<name>` (add
+   `neededForUsers = true` for anything the user-creation activation
+   needs, e.g. a password), and consume `config.sops.secrets.<name>.path`.
+4. `git add secrets/<name>.yaml .sops.yaml` before evaluating (flakes
+   only see tracked files, and eval hashes the ciphertext).
 
 ### A new local package
 
