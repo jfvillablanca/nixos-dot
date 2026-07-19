@@ -1,0 +1,65 @@
+# AdGuard Home DNS sinkhole on rue, backed by a local recursive Unbound
+# resolver. AdGuard (:53) filters and forwards to Unbound (127.0.0.1:5335),
+# which resolves recursively from the root with DNSSEC -- no third-party
+# resolver in the path. The `adguard-mode` CLI (added in a later task) flips
+# filtering scope at runtime via AdGuard's loopback control API + the Tailscale
+# DNS API. The current mode is runtime state, never declared here.
+{
+  flake.modules.nixos.adguard = {
+    config,
+    lib,
+    ...
+  }: let
+    cfg = config.myNixosModules.adguard;
+  in {
+    options.myNixosModules.adguard = {
+      enable = lib.mkEnableOption "AdGuard Home DNS sinkhole" // {default = false;};
+      lanInterface = lib.mkOption {
+        type = lib.types.str;
+        description = "Wired LAN interface AdGuard's DNS (:53) is reachable on.";
+        example = "enp1s0";
+      };
+      lanCidr = lib.mkOption {
+        type = lib.types.str;
+        default = "192.168.1.0/24";
+        description = "LAN subnet; the `lan-passthrough` client matches it in tailnet mode.";
+      };
+      routerIp = lib.mkOption {
+        type = lib.types.str;
+        default = "192.168.1.1";
+        description = "ISP router IP (documentation / the DHCP secondary DNS target).";
+      };
+      tailnetIp = lib.mkOption {
+        type = lib.types.str;
+        description = "rue's own tailnet IP; the CLI points the tailnet nameserver here.";
+        example = "100.70.231.87";
+      };
+      blocklistUrl = lib.mkOption {
+        type = lib.types.str;
+        default = "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt";
+        description = "HaGeZi Pro (low-false-positive) blocklist, AdGuard/adblock format.";
+      };
+    };
+
+    config = lib.mkIf cfg.enable {
+      # Recursive resolver. NOT the system resolver (AdGuard owns :53) ->
+      # resolveLocalQueries = false. Validates DNSSEC from the root anchor.
+      services.unbound = {
+        enable = true;
+        resolveLocalQueries = false;
+        enableRootTrustAnchor = true;
+        settings.server = {
+          interface = ["127.0.0.1@5335"];
+          access-control = ["127.0.0.0/8 allow" "::1 allow"];
+          harden-glue = true;
+          harden-dnssec-stripped = true;
+          use-caps-for-id = true;
+          prefetch = true;
+          edns-buffer-size = 1232;
+          hide-identity = true;
+          hide-version = true;
+        };
+      };
+    };
+  };
+}
