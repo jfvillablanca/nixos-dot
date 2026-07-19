@@ -33,6 +33,7 @@ in {
       self.modules.nixos.sunshine
       self.modules.nixos.xfce
       self.modules.nixos.netdata
+      self.modules.nixos.wol
     ];
 
     networking.hostName = hostName;
@@ -83,6 +84,9 @@ in {
       };
       sunshine.enable = true;
       netdata.enable = true;
+      # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
+      # wake-defenestration` from anywhere on the tailnet powers on the box.
+      wol.targets = self.constants.wolTargets;
       xfce = {
         enable = true;
         autoLoginUser = user;
