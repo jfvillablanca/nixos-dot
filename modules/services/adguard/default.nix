@@ -1,13 +1,15 @@
 # AdGuard Home DNS sinkhole on rue, backed by a local recursive Unbound
 # resolver. AdGuard (:53) filters and forwards to Unbound (127.0.0.1:5335),
 # which resolves recursively from the root with DNSSEC -- no third-party
-# resolver in the path. The `adguard-mode` CLI (added in a later task) flips
-# filtering scope at runtime via AdGuard's loopback control API + the Tailscale
-# DNS API. The current mode is runtime state, never declared here.
+# resolver in the path. The `adguard-mode` CLI flips filtering scope at
+# runtime via AdGuard's loopback control API only (no Tailscale API; the
+# tailnet nameserver is set by hand in the Tailscale console). The current
+# mode is runtime state, never declared here.
 {
   flake.modules.nixos.adguard = {
     config,
     lib,
+    pkgs,
     ...
   }: let
     cfg = config.myNixosModules.adguard;
@@ -133,6 +135,69 @@
           mode = "0700";
         }
         "/var/lib/unbound"
+      ];
+
+      # `adguard-mode` flips AdGuard's filtering scope at runtime via its
+      # loopback-only control API (no `users:` -> no auth needed). See
+      # module comment above for the mode semantics.
+      environment.systemPackages = [
+        pkgs.dnsutils # native dig/nslookup on the DNS host
+        (pkgs.writeShellApplication {
+          name = "adguard-mode";
+          runtimeInputs = [pkgs.curl pkgs.jq];
+          text = ''
+            AGH="http://127.0.0.1:3000/control"
+            LAN_CIDR="${cfg.lanCidr}"
+
+            protection() { # $1 = true|false, $2 = duration_ms
+              curl -sf -X POST "$AGH/protection" -H "Content-Type: application/json" \
+                -d "{\"enabled\": $1, \"duration\": $2}" >/dev/null
+            }
+            lan_client() { # $1 = filtering_enabled (true|false)
+              local body count
+              body=$(jq -n --argjson fe "$1" \
+                '{name: "lan-passthrough", ids: ["'"$LAN_CIDR"'"], use_global_settings: false, filtering_enabled: $fe}')
+              count=$(curl -sf "$AGH/clients" | jq -r '[.clients[]? | select(.name == "lan-passthrough")] | length')
+              if [ "$count" = "0" ]; then
+                curl -sf -X POST "$AGH/clients/add" -H "Content-Type: application/json" -d "$body" >/dev/null
+              else
+                curl -sf -X POST "$AGH/clients/update" -H "Content-Type: application/json" \
+                  -d "{\"name\": \"lan-passthrough\", \"data\": $body}" >/dev/null
+              fi
+            }
+            parse_dur_ms() {
+              case "''${1:-}" in
+                "") echo 0 ;;
+                *m) echo $(( ''${1%m} * 60000 )) ;;
+                *s) echo $(( ''${1%s} * 1000 )) ;;
+                *) echo "bad duration: $1 (use e.g. 15m, 30s)" >&2; exit 1 ;;
+              esac
+            }
+
+            case "''${1:-status}" in
+              off)
+                protection false "$(parse_dur_ms "''${2:-}")"
+                echo "mode: off (filtering disabled for everyone)" ;;
+              tailnet)
+                lan_client false
+                protection true 0
+                echo "mode: tailnet (LAN passthrough; tailnet-source filtered)" ;;
+              broad)
+                lan_client true
+                protection true 0
+                echo "mode: broad (everyone filtered)" ;;
+              status)
+                prot=$(curl -sf "$AGH/status" | jq -r .protection_enabled 2>/dev/null || echo "UNREACHABLE")
+                lanfe=$(curl -sf "$AGH/clients" | jq -r '(.clients[]? | select(.name == "lan-passthrough") | .filtering_enabled) // "none"' 2>/dev/null || echo "?")
+                echo "protection=$prot  lan_passthrough_filtering=$lanfe"
+                if [ "$prot" = "false" ]; then echo "=> off"
+                elif [ "$lanfe" = "false" ]; then echo "=> tailnet"
+                elif [ "$prot" = "true" ]; then echo "=> broad"
+                else echo "=> unknown"; fi ;;
+              *) echo "usage: adguard-mode off [15m] | tailnet | broad | status" >&2; exit 1 ;;
+            esac
+          '';
+        })
       ];
     };
   };
