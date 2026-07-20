@@ -150,33 +150,34 @@
             LAN_CIDR="${cfg.lanCidr}"
 
             protection() { # $1 = true|false, $2 = duration_ms
-              curl -sf -X POST "$AGH/protection" -H "Content-Type: application/json" \
+              curl -sf --max-time 5 --connect-timeout 2 -X POST "$AGH/protection" -H "Content-Type: application/json" \
                 -d "{\"enabled\": $1, \"duration\": $2}" >/dev/null
             }
             lan_client() { # $1 = filtering_enabled (true|false)
               local body count
-              body=$(jq -n --argjson fe "$1" \
-                '{name: "lan-passthrough", ids: ["'"$LAN_CIDR"'"], use_global_settings: false, filtering_enabled: $fe}')
-              count=$(curl -sf "$AGH/clients" | jq -r '[.clients[]? | select(.name == "lan-passthrough")] | length')
+              body=$(jq -n --argjson fe "$1" --arg lan "$LAN_CIDR" \
+                '{name: "lan-passthrough", ids: [$lan], use_global_settings: false, filtering_enabled: $fe}')
+              count=$(curl -sf --max-time 5 --connect-timeout 2 "$AGH/clients" | jq -r '[.clients[]? | select(.name == "lan-passthrough")] | length')
               if [ "$count" = "0" ]; then
-                curl -sf -X POST "$AGH/clients/add" -H "Content-Type: application/json" -d "$body" >/dev/null
+                curl -sf --max-time 5 --connect-timeout 2 -X POST "$AGH/clients/add" -H "Content-Type: application/json" -d "$body" >/dev/null
               else
-                curl -sf -X POST "$AGH/clients/update" -H "Content-Type: application/json" \
+                curl -sf --max-time 5 --connect-timeout 2 -X POST "$AGH/clients/update" -H "Content-Type: application/json" \
                   -d "{\"name\": \"lan-passthrough\", \"data\": $body}" >/dev/null
               fi
             }
             parse_dur_ms() {
               case "''${1:-}" in
                 "") echo 0 ;;
-                *m) echo $(( ''${1%m} * 60000 )) ;;
-                *s) echo $(( ''${1%s} * 1000 )) ;;
+                *m) n=''${1%m}; case "$n" in '''|*[!0-9]*) echo "bad duration: $1 (use e.g. 15m, 30s)" >&2; exit 1 ;; esac; echo $(( n * 60000 )) ;;
+                *s) n=''${1%s}; case "$n" in '''|*[!0-9]*) echo "bad duration: $1 (use e.g. 15m, 30s)" >&2; exit 1 ;; esac; echo $(( n * 1000 )) ;;
                 *) echo "bad duration: $1 (use e.g. 15m, 30s)" >&2; exit 1 ;;
               esac
             }
 
             case "''${1:-status}" in
               off)
-                protection false "$(parse_dur_ms "''${2:-}")"
+                dur=$(parse_dur_ms "''${2:-}")
+                protection false "$dur"
                 echo "mode: off (filtering disabled for everyone)" ;;
               tailnet)
                 lan_client false
@@ -187,8 +188,8 @@
                 protection true 0
                 echo "mode: broad (everyone filtered)" ;;
               status)
-                prot=$(curl -sf "$AGH/status" | jq -r .protection_enabled 2>/dev/null || echo "UNREACHABLE")
-                lanfe=$(curl -sf "$AGH/clients" | jq -r '(.clients[]? | select(.name == "lan-passthrough") | .filtering_enabled) // "none"' 2>/dev/null || echo "?")
+                prot=$(curl -sf --max-time 5 --connect-timeout 2 "$AGH/status" | jq -r .protection_enabled 2>/dev/null || echo "UNREACHABLE")
+                lanfe=$(curl -sf --max-time 5 --connect-timeout 2 "$AGH/clients" | jq -r '(.clients[]? | select(.name == "lan-passthrough") | .filtering_enabled) // "none"' 2>/dev/null || echo "?")
                 echo "protection=$prot  lan_passthrough_filtering=$lanfe"
                 if [ "$prot" = "false" ]; then echo "=> off"
                 elif [ "$lanfe" = "false" ]; then echo "=> tailnet"
