@@ -26,14 +26,9 @@
         default = "192.168.1.0/24";
         description = "LAN subnet; the `lan-passthrough` client matches it in tailnet mode.";
       };
-      routerIp = lib.mkOption {
-        type = lib.types.str;
-        default = "192.168.1.1";
-        description = "ISP router IP (documentation / the DHCP secondary DNS target).";
-      };
       tailnetIp = lib.mkOption {
         type = lib.types.str;
-        description = "rue's own tailnet IP; the CLI points the tailnet nameserver here.";
+        description = "rue's own tailnet IP. The tailnet's global nameserver is pointed here by hand in the Tailscale admin console (Override local DNS) for away-coverage -- this option is documentation only; no code here consumes it.";
         example = "100.70.231.87";
       };
       blocklistUrl = lib.mkOption {
@@ -52,7 +47,7 @@
         enableRootTrustAnchor = true;
         settings.server = {
           interface = ["127.0.0.1@5335"];
-          access-control = ["127.0.0.0/8 allow" "::1 allow"];
+          access-control = ["127.0.0.0/8 allow" "::1/128 allow"];
           harden-glue = true;
           harden-dnssec-stripped = true;
           use-caps-for-id = true;
@@ -100,8 +95,12 @@
         };
       };
 
-      # 53 reachable on the wired LAN (tailscale0 is already a trusted interface
-      # via the tailscale module, so tailnet peers reach :53 without this).
+      # 53 reachable on the wired LAN. tailscale0 needs no rule here -- the
+      # tailscale module already adds it to
+      # networking.firewall.trustedInterfaces, so tailnet peers reach :53
+      # without this. Defense-in-depth: cfg.lanInterface must stay LAN-side --
+      # never point this at a WAN-facing interface, or the recursive Unbound
+      # behind it (ratelimit=0) becomes an open resolver.
       networking.firewall.interfaces.${cfg.lanInterface} = {
         allowedTCPPorts = [53];
         allowedUDPPorts = [53];

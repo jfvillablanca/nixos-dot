@@ -48,10 +48,9 @@ in {
 
     # rue is the tailnet nameserver (via AdGuard) and must resolve through its
     # own local AdGuard, not Tailscale's MagicDNS -- accept-dns=true would let
-    # tailscaled overwrite resolv.conf with 100.100.100.100, and in `off` mode
-    # (adguard-mode CLI, Task 5) the tailnet nameserver is cleared, which would
-    # break rue's own resolution. `extraSetFlags` (not `extraUpFlags`): the
-    # tailscale module's `tailscaled-set` unit runs after
+    # tailscaled overwrite resolv.conf with 100.100.100.100, breaking rue's own
+    # resolution (rue must use its own AdGuard at 127.0.0.1). `extraSetFlags`
+    # (not `extraUpFlags`): the tailscale module's `tailscaled-set` unit runs after
     # `tailscaled-autoconnect`, so this reliably re-asserts on every boot even
     # though `tailscale up` no-ops once already Running (see
     # modules/services/tailscale/default.nix). This list merges with
@@ -121,7 +120,7 @@ in {
         enable = true;
         lanInterface = "enp1s0";
         tailnetIp = "100.70.231.87";
-        # lanCidr / routerIp / blocklistUrl use defaults
+        # lanCidr / blocklistUrl use defaults
       };
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
