@@ -336,26 +336,61 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 
 - H.1 **atticd or harmonia.** Local nix binary cache. Reduces cachix
   dependency for personal infra.
-- H.2 **vaultwarden / nextcloud.** If cimmerian is up reliably.
+- H.2 **vaultwarden / nextcloud.** Natural tenants for `rue` now that it's the
+  always-on node (H.4);
 - H.3 **gitea / forgejo.** Private repo mirror.
-- H.4 ★ **Always-on homelab node.** The keystone for several deferred items:
-  a low-power box (RPi 4 / mini-PC) wired to the router's LAN segment,
-  always on. Tenants: local DNS, a nix build farm (remote builder), a
-  Tailscale subnet-router + exit-node for the home LAN, and the WoL relay
-  (below). Bootstrap via the B.2 nixos-anywhere recipe; add as a `system-cli`
-  host (no desktop). Cross-refs: G (subnet routing / exit-node), F (build
-  farm).
-  - **WoL relay + MAC registry (refines `docs/wol-relay.md`).** Rather than the
-    doc's single `wolRelay.targets` entry and one `wake-<name>` binary per
-    host, a declarative **registry** of every wake-able target
-    (`{ name; mac; }` list, e.g. a `myNixosModules.wol` option or under
-    `systemConstants`) plus a **chooser** wrapper (`wake <tab>` completion or
-    an fzf picker over the registry). The relay (this node, on the LAN at L2)
-    takes the trigger over the tailnet and emits the magic packet; see
-    `docs/wake-on-lan-windows.md` for the Windows-side prep.
-  - **Stopgap today:** cimmerian is NOT always-on, but while it happens to be
-    up on the LAN, `, wakeonlan 30:56:0F:72:CC:EC` wakes the Windows/Sunshine
-    box.
+- H.4 ★ **Always-on homelab node — `rue`.** The keystone, now realised as
+  **`rue`** (Dell OptiPlex 3050): a low-power always-on box, LAN-wired, on the
+  tailnet, reached over Tailscale SSH; btrfs ephemeral root + `/persist`
+  impermanence like the fleet. Tenant status:
+  - ~~**Bootstrap / install.**~~ Done — installed over Windows (USB graphical
+    ISO + local disko/`nixos-install --flake github:...#rue`). The B.2
+    nixos-anywhere path was abandoned (WiFi broadcast/PXE no-go).
+  - ~~**Tailscale exit-node.**~~ Done — `advertiseExitNode = true` +
+    `useRoutingFeatures = "both"` (one-time console approval). Subnet-router for
+    the home LAN is still open (routes not yet advertised).
+  - ~~**WoL relay + MAC registry.**~~ Done — `myNixosModules.wol` with
+    `wolTargets` (`self.constants.wolTargets`) generates a `wake-<name>` per
+    target; `ssh rue wake-defenestration` is the remote power button.
+    Supersedes the `docs/wol-relay.md` single-target sketch and the old
+    cimmerian `, wakeonlan` stopgap. A `wake <tab>`/fzf chooser over the
+    registry is an unbuilt nice-to-have.
+  - ~~**Monitoring.**~~ Done — netdata on-disk, bounded to 5 MiB, at
+    `http://rue:19999` over the tailnet.
+  - ~~**Secrets.**~~ Done — sops-nix; rue's login password is the first secret
+    (see `docs/ARCHITECTURE.md` → Secrets, and D.1b).
+  - ~~**Local DNS (AdGuard Home).**~~ Done — AdGuard Home on rue backed by a
+    local recursive Unbound (DNSSEC), HaGeZi Pro blocklist, `adguard-mode
+off|tailnet|broad|status` CLI (AdGuard control API on loopback). Router
+    (superadmin `adminpldt` to unlock the locked DHCP DNS fields) hands the LAN
+    rue `.2` primary + router `.1` secondary → structural graceful degradation.
+    Tailnet nameserver = rue `100.70.231.87` + Override-on for away-coverage.
+    Router IPv6 RA disabled to close the RDNSS bypass (LAN is IPv4-only now).
+    See `docs/ARCHITECTURE.md` if promoted there.
+  - **AdGuard hardening session (follow-ups).** Deferred pieces from the build:
+    - **Reliable DNS testing method.** nslookup/dig (macOS + Termux) lie (own
+      resolv.conf, not the system resolver); before/after block tests get fooled
+      by client DNS caching. Document a sane recipe: rue's query log / `top_clients`
+      (server-side truth), `scutil --dns` + `dscacheutil` on macOS, browser test
+      `adblock.turtlecute.org` (watch the Host category — rue is DNS-only), and
+      cache-busting between on/off tests.
+    - **IPv6 broad coverage.** RA is currently disabled (IPv4-only LAN). To restore
+      LAN IPv6 without re-opening the RDNSS bypass: bind AdGuard on `::` too +
+      stable rue LAN IPv6 + point the router's IPv6 DNS at rue (superadmin IPv6).
+    - **Per-device `tailnet`-mode home filtering.** Today at home all LAN clients
+      are `192.168.1.x` (indistinguishable), so `tailnet` mode only filters
+      away-devices. To filter my home devices but not the roommate _without_
+      losing graceful fallback: reserved-IP device list as AdGuard clients
+      (filtering on) with default off. (Alt: force my devices onto the tailnet
+      DNS path, but that costs their router-secondary fallback.)
+    - **Tailnet-exposed dashboard.** AdGuard web UI is loopback-only (SSH-tunnel to
+      view). Optionally expose on `tailscale0` like netdata (+ admin user in sops).
+    - **nix-index `,` wrinkle** (unrelated): `, dig` misses in the nix-index DB.
+  - **nix build farm (remote builder).** Deprioritised — rue is low-power; the
+    original F / build-farm cross-ref assumed a beefier node. The real need is
+    already covered by cimmerian→t14g1 distributed builds (G.3, done).
+  - **Media backup (Immich + restic).** Deferred to its own project; sops-nix
+    prereq now landed, still needs a storage plan. Cross-ref E.1.
 
 ## I. Dev environment
 
