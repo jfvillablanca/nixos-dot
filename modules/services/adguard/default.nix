@@ -110,7 +110,10 @@
         openFirewall = false;
         settings = {
           dns = {
-            bind_hosts = ["0.0.0.0"];
+            # Listen on both families; the `::` socket serves IPv6 LAN clients
+            # (link-local, ULA, GUA). The interface-scoped firewall rule below
+            # already covers v6 (ip6tables), so no extra opening is needed.
+            bind_hosts = ["0.0.0.0" "::"];
             port = 53;
             upstream_dns = ["127.0.0.1:5335"];
             # bootstrap only resolves upstream hostnames / filter-list URLs before
