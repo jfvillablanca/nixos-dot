@@ -126,14 +126,16 @@ in {
         lanInterface = "enp1s0";
         tailnetIp = "100.70.231.87";
         # lanCidr / blocklistUrl use defaults
-        # Named LAN hosts (RFC 8375 .home.arpa, never publicly delegated).
+        # Named LAN hosts. `.internal` = ICANN-reserved (never publicly
+        # delegated) and resolvable via the OS resolver / browsers, unlike
+        # `.home.arpa` which macOS/iOS refuse via getaddrinfo.
         rewrites = [
           {
-            domain = "rue.home.arpa";
+            domain = "rue.internal";
             answer = "192.168.1.2";
           }
           {
-            domain = "router.home.arpa";
+            domain = "router.internal";
             answer = "192.168.1.1";
           }
         ];

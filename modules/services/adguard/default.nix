@@ -58,7 +58,7 @@
         default = [];
         example = [
           {
-            domain = "rue.home.arpa";
+            domain = "rue.internal";
             answer = "192.168.1.2";
           }
         ];
@@ -70,7 +70,10 @@
           the blocklist and before upstream, but is gated by the querying client's
           effective filtering being on -- so under `adguard-mode tailnet` a name
           resolves for filtered sources (tailnet-source queries), not for the
-          passed-through LAN. Use a collision-safe suffix (RFC 8375 `.home.arpa`).
+          passed-through LAN. Use the `.internal` suffix: ICANN-reserved (never
+          publicly delegated) AND resolvable via the OS resolver. Do NOT use
+          `.home.arpa` -- macOS/iOS special-case the `.arpa` tree and refuse it via
+          getaddrinfo (browsers/apps), so only `dig` would ever see those names.
         '';
       };
     };
