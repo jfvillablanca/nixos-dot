@@ -36,6 +36,43 @@
         default = "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt";
         description = "HaGeZi Pro (low-false-positive) blocklist, AdGuard/adblock format.";
       };
+
+      rewrites = lib.mkOption {
+        type = lib.types.listOf (lib.types.submodule {
+          options = {
+            domain = lib.mkOption {
+              type = lib.types.str;
+              description = "Name to rewrite (a leading `*.` wildcards subdomains).";
+            };
+            answer = lib.mkOption {
+              type = lib.types.str;
+              description = ''IPv4/IPv6 literal, a hostname (CNAME), or "A"/"AAAA" to suppress that family.'';
+            };
+            enabled = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Must stay true; a disabled/omitted entry is silently skipped by AdGuard.";
+            };
+          };
+        });
+        default = [];
+        example = [
+          {
+            domain = "rue.home.arpa";
+            answer = "192.168.1.2";
+          }
+        ];
+        description = ''
+          Static DNS rewrites (name -> answer), declared here so Nix is the source
+          of truth. Wired into `filtering.rewrites`; the nixpkgs module's yaml-merge
+          replaces the whole list, so any runtime `/control/rewrite/add` entry is
+          scratch-only (wiped on the next rebuild). A rewrite short-circuits before
+          the blocklist and before upstream, but is gated by the querying client's
+          effective filtering being on -- so under `adguard-mode tailnet` a name
+          resolves for filtered sources (tailnet-source queries), not for the
+          passed-through LAN. Use a collision-safe suffix (RFC 8375 `.home.arpa`).
+        '';
+      };
     };
 
     config = lib.mkIf cfg.enable {
@@ -84,6 +121,7 @@
             ratelimit = 0; # LAN-only; not internet-exposed
           };
           filtering.filtering_enabled = true;
+          filtering.rewrites = cfg.rewrites;
           filters = [
             {
               enabled = true;

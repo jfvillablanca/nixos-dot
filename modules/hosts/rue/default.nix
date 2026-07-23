@@ -126,6 +126,17 @@ in {
         lanInterface = "enp1s0";
         tailnetIp = "100.70.231.87";
         # lanCidr / blocklistUrl use defaults
+        # Named LAN hosts (RFC 8375 .home.arpa, never publicly delegated).
+        rewrites = [
+          {
+            domain = "rue.home.arpa";
+            answer = "192.168.1.2";
+          }
+          {
+            domain = "router.home.arpa";
+            answer = "192.168.1.1";
+          }
+        ];
       };
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
