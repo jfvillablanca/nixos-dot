@@ -13,7 +13,9 @@
     # like toggling the exit node.
     persistentFlags =
       (lib.optional cfg.enableSSH "--ssh")
-      ++ (lib.optional cfg.advertiseExitNode "--advertise-exit-node");
+      ++ (lib.optional cfg.advertiseExitNode "--advertise-exit-node")
+      ++ (lib.optional (cfg.advertiseRoutes != [])
+        "--advertise-routes=${lib.concatStringsSep "," cfg.advertiseRoutes}");
   in {
     options.myNixosModules.tailscale = {
       enable =
@@ -66,6 +68,21 @@
         '';
       };
 
+      advertiseRoutes = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        example = ["192.168.1.0/24"];
+        description = ''
+          Subnet CIDRs to advertise as a Tailscale subnet router
+          (`--advertise-routes`), letting tailnet peers reach these LAN
+          hosts through this node. Requires `useRoutingFeatures = "server"`
+          or `"both"` (IP forwarding) and a one-time approval in the admin
+          console (Machines -> host -> approve subnet routes). Consuming
+          peers also need `--accept-routes` (default on macOS/iOS/Windows/
+          Android; off on Linux). Empty (default) = not a subnet router.
+        '';
+      };
+
       authKeyFile = lib.mkOption {
         type = lib.types.nullOr lib.types.path;
         default = null;
@@ -102,6 +119,17 @@
           message = ''
             myNixosModules.tailscale.advertiseExitNode requires
             useRoutingFeatures = "server" or "both" (exit nodes need IP
+            forwarding).
+          '';
+        }
+        {
+          assertion =
+            cfg.advertiseRoutes
+            == []
+            || lib.elem cfg.useRoutingFeatures ["server" "both"];
+          message = ''
+            myNixosModules.tailscale.advertiseRoutes requires
+            useRoutingFeatures = "server" or "both" (subnet routers need IP
             forwarding).
           '';
         }

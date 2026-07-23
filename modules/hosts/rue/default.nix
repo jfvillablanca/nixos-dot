@@ -112,6 +112,11 @@ in {
         # one-time approval in the Tailscale console after the first rebuild.
         useRoutingFeatures = "both";
         advertiseExitNode = true;
+        # Subnet-router the home LAN so tailnet peers reach LAN-only hosts
+        # (router admin UI, printers, devices not on the tailnet) through rue.
+        # IPv4 CIDR only: the LAN is IPv4-only while the router's IPv6 RA stays
+        # disabled. One-time console approval, like the exit node.
+        advertiseRoutes = ["192.168.1.0/24"];
       };
       sunshine.enable = true;
       netdata.enable = true;
