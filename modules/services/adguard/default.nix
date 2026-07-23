@@ -88,6 +88,11 @@
         settings.server = {
           interface = ["127.0.0.1@5335"];
           access-control = ["127.0.0.0/8 allow" "::1/128 allow"];
+          # rue's internet path is IPv4-only (the LAN has no IPv6 uplink), so
+          # recurse over IPv4 exclusively. Otherwise a stray, unroutable global
+          # v6 address makes Unbound try dead v6 paths to authoritative servers
+          # and SERVFAIL every external lookup.
+          do-ip6 = false;
           harden-glue = true;
           harden-dnssec-stripped = true;
           use-caps-for-id = true;
