@@ -346,9 +346,10 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
   - ~~**Bootstrap / install.**~~ Done — installed over Windows (USB graphical
     ISO + local disko/`nixos-install --flake github:...#rue`). The B.2
     nixos-anywhere path was abandoned (WiFi broadcast/PXE no-go).
-  - ~~**Tailscale exit-node.**~~ Done — `advertiseExitNode = true` +
-    `useRoutingFeatures = "both"` (one-time console approval). Subnet-router for
-    the home LAN is still open (routes not yet advertised).
+  - ~~**Tailscale exit-node + subnet-router.**~~ Done — `advertiseExitNode = true`
+    - `advertiseRoutes = ["192.168.1.0/24"]` + `useRoutingFeatures = "both"`
+      (one-time console approvals for the exit node and the subnet route). Tailnet
+      peers reach LAN hosts through rue.
   - ~~**WoL relay + MAC registry.**~~ Done — `myNixosModules.wol` with
     `wolTargets` (`self.constants.wolTargets`) generates a `wake-<name>` per
     target; `ssh rue wake-defenestration` is the remote power button.
@@ -368,23 +369,69 @@ off|tailnet|broad|status` CLI (AdGuard control API on loopback). Router
     Router IPv6 RA disabled to close the RDNSS bypass (LAN is IPv4-only now).
     See `docs/ARCHITECTURE.md` if promoted there.
   - **AdGuard hardening session (follow-ups).** Deferred pieces from the build:
-    - **Reliable DNS testing method.** nslookup/dig (macOS + Termux) lie (own
-      resolv.conf, not the system resolver); before/after block tests get fooled
-      by client DNS caching. Document a sane recipe: rue's query log / `top_clients`
-      (server-side truth), `scutil --dns` + `dscacheutil` on macOS, browser test
-      `adblock.turtlecute.org` (watch the Host category — rue is DNS-only), and
-      cache-busting between on/off tests.
-    - **IPv6 broad coverage.** RA is currently disabled (IPv4-only LAN). To restore
-      LAN IPv6 without re-opening the RDNSS bypass: bind AdGuard on `::` too +
-      stable rue LAN IPv6 + point the router's IPv6 DNS at rue (superadmin IPv6).
-    - **Per-device `tailnet`-mode home filtering.** Today at home all LAN clients
-      are `192.168.1.x` (indistinguishable), so `tailnet` mode only filters
-      away-devices. To filter my home devices but not the roommate _without_
-      losing graceful fallback: reserved-IP device list as AdGuard clients
-      (filtering on) with default off. (Alt: force my devices onto the tailnet
-      DNS path, but that costs their router-secondary fallback.)
-    - **Tailnet-exposed dashboard.** AdGuard web UI is loopback-only (SSH-tunnel to
-      view). Optionally expose on `tailscale0` like netdata (+ admin user in sops).
+    - ~~**Reliable DNS testing method.**~~ Done — recipe written in
+      `docs/ARCHITECTURE.md` ("DNS testing (AdGuard sinkhole)"): three probes
+      (routing / filtering / degradation) on rue's query log as ground truth,
+      the macOS `scutil`/`dscacheutil` layer, the `adblock.turtlecute.org` Host
+      test, and cache-busting. Key rule: emit probes via the system resolver
+      (`dscacheutil -q` / `getent` / `ping`), NOT `dig` (which lies — own
+      resolv.conf).
+    - ~~**IPv6 broad coverage.**~~ BLOCKED by the ISP router firmware; router RA
+      stays disabled (LAN is IPv4-only, by design). AdGuard already binds `::`
+      (done), so rue answers v6 the moment a cooperating router advertises it.
+      What failed: the PLDT Huawei HG8145X6 hardcodes its OWN link-local
+      (`fe80::1`) as the RA RDNSS with no suppression toggle. "DNS Source on the
+      LAN Side = Static configuration" only ADDS rue as a DHCPv6 secondary; it
+      does not stop the RA from advertising the router itself, and clients prefer
+      the router's RDNSS (nameserver[0]). Tested live: `dig @fe80::1 <blocked>`
+      resolved unfiltered (real IP) while `dig @<rue-v6> <blocked>` returned
+      0.0.0.0 -> confirmed v6 bypass. The only way to kill the router's RDNSS is
+      to turn its RA off, which also removes the v6 gateway/prefix (back to
+      IPv4-only); rue can't be sole RA source because it has no independent v6
+      uplink. Path forward needs a router you control (bridge the ONT or run your
+      own router behind it -> OpenWrt `odhcpd` can announce ONLY rue as v6 DNS),
+      or re-architect rue as the edge router. Low priority: IPv4-only LAN + rue
+      filtering is a fine end state.
+    - **Per-device `tailnet`-mode home filtering** (design grounded; deferred for
+      the DHCP-reservation legwork). Today at home all LAN clients are
+      `192.168.1.x` (indistinguishable), so `tailnet` mode only filters
+      away-devices. Goal: make `tailnet` mean "filter me at home + away, never
+      touch the roommate." Grounded design (v0.107.77):
+      - **Only exact-IP client `ids` work on rue.** MAC ids need AdGuard's OWN
+        DHCP lease table (rue doesn't run DHCP -> the router does), so query-time
+        MAC resolution never fires; ClientID needs DoT/DoH/DoQ, not plain :53.
+      - Exact-IP beats the CIDR `lan-passthrough` client (AdGuard matches
+        most-specific first, `internal/client/index.go`), so "CIDR passthrough +
+        per-device filtering-on clients" works. `off`-mode global protection
+        still overrides all per-client settings -> roommate fallback preserved.
+      - Impl: a declared `myNixosModules.adguard.homeDevices` (name -> fixed IP)
+        option; `adguard-mode tailnet` reconciles each as a `home:<name>` client
+        (`use_global_settings:false, filtering_enabled:true`). Code was drafted +
+        shellcheck-clean this session, then reverted pending the reservations.
+      - **Dependency:** each device needs a fixed IP (router DHCP reservation
+        under the LAN tab, or a static per device). That legwork is why it's
+        deferred, not the code.
+    - **Tailnet-exposed dashboard** (own standalone session — auth machinery is
+      non-trivial). AdGuard web UI is loopback-only (SSH-tunnel to view). Grounded
+      design (v0.107.77): AdGuard binds ONE web address only, so use the netdata
+      pattern — `host = "0.0.0.0"`, no LAN firewall port, rely on `tailscale0`
+      trusted + loopback (CLI keeps working). Auth is GLOBAL (no loopback carve-out)
+      — adding a `users:` entry forces even the local `adguard-mode` CLI to send
+      Basic auth. Password is a bcrypt hash; can't live in the Nix store, and the
+      `/control/install/configure` seed endpoint is dead once the config exists.
+      So inject via `sops.templates` (admin user YAML) + a `preStart` `yaml-merge`
+      ahead of the module's own, plus a 2nd plaintext sops secret for the CLI.
+      Footgun: the two secrets must stay in sync or the per-IP login rate limiter
+      locks out alL loopback auth (CLI + browser) for 15 min.
+    - ~~**Named LAN domains (AdGuard DNS Rewrites).**~~ Done -- `myNixosModules.adguard.rewrites`
+      declared in Nix -> `filtering.rewrites`; rue names `rue.internal` (`.2`) and
+      `router.internal` (`.1`). Add more hosts to the `rewrites` list as needed.
+      Two gotchas learned: (1) use `.internal` (ICANN-reserved), NOT `.home.arpa` --
+      macOS/iOS special-case the `.arpa` tree and refuse it via getaddrinfo, so
+      browsers/apps can't resolve `.arpa` names (only `dig` can). (2) in
+      `adguard-mode tailnet` a name only resolves for filtered sources (the
+      LAN-passthrough client has filtering off), so names work in `broad`/for
+      tailnet-source; a per-device-filtering client would extend that.
     - **nix-index `,` wrinkle** (unrelated): `, dig` misses in the nix-index DB.
   - **nix build farm (remote builder).** Deprioritised — rue is low-power; the
     original F / build-farm cross-ref assumed a beefier node. The real need is
