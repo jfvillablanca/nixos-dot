@@ -75,6 +75,10 @@ in {
       taps = {
         "homebrew/homebrew-core" = inputs.homebrew-core;
         "homebrew/homebrew-cask" = inputs.homebrew-cask;
+        # Sunshine stream host is disabled on sienna (enabled on work-ct).
+        # Uncomment this tap + the `brews` line below, and the block in
+        # ./_home.nix, to re-enable streaming from sienna.
+        # "lizardbyte/homebrew-homebrew" = inputs.lizardbyte-homebrew;
       };
       mutableTaps = false;
     };
@@ -93,6 +97,7 @@ in {
         "slack"
         "spotify"
       ];
+      # brews = ["lizardbyte/homebrew/sunshine"];
     };
 
     home-manager = {
