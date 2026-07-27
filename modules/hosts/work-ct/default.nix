@@ -132,7 +132,9 @@ in {
       onActivation.cleanup = "zap";
       casks = [
         "1password"
+        "firefox"
         "google-chrome"
+        "mongodb-compass"
       ];
       # Sunshine stream host (arm64_tahoe bottle -- no source build). The
       # .app wrapper + launchd agent that make it usable live in ./_home.nix.
