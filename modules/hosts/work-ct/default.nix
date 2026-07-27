@@ -67,9 +67,11 @@ in {
 
     security.pam.services.sudo_local.touchIdAuth = true;
 
-    # 501 is macOS's first-GUI-user UID. `uid` is required on darwin.
+    # `uid` is required on darwin and must match the real account. On this work
+    # laptop the IT admin account (ct-admin) is the first GUI user (501), so
+    # jmfv is 502 -- unlike sienna where jmfv is 501.
     users.users.${user} = {
-      uid = 501;
+      uid = 502;
       isHidden = false;
       home = "/Users/${user}";
       # A work box stays out of the personal SSH trust web: the shared `user`
