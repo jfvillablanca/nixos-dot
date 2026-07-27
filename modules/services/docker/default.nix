@@ -1,15 +1,21 @@
 # Docker -- one feature, two runtimes. On NixOS the runtime is native
 # dockerd (`virtualisation.docker`), which also ships the CLI. On darwin
-# there is no native dockerd, so Colima runs a headless Linux VM and the
-# CLI comes from nixpkgs; Colima itself comes from Homebrew (its VM
-# tooling needs macOS virtualization entitlements the nixpkgs build
-# lacks). The CLI is co-located with whichever runtime backs it.
+# there is no native dockerd; two backends are selectable via
+# `{myDarwinModules,myHomeModules}.docker.backend` (default "colima"):
+#   - "colima": a headless Linux VM (Homebrew brew, since its VM tooling
+#     needs macOS virtualization entitlements the nixpkgs build lacks) with
+#     the docker CLI from nixpkgs and a login LaunchAgent running colima.
+#   - "docker-desktop": the Docker Desktop cask, which bundles its own
+#     daemon, CLI, and compose -- so the home-manager half adds nothing but
+#     lazydocker. Needs a one-time manual first launch (privileged helper +
+#     accept terms). Uses the standard docker socket, so testcontainers work
+#     without the colima DOCKER_HOST override.
 #
 # Hosts opt in by importing:
 #   NixOS  -> self.modules.nixos.docker  (rootless by default; flip
 #             myNixosModules.docker.rootless = false for WSL/rootful)
-#   darwin -> self.modules.darwin.docker (the colima brew)
-#             + self.modules.homeManager.docker (CLI + agent + env)
+#   darwin -> self.modules.darwin.docker + self.modules.homeManager.docker
+#             (set both .backend to the same value if not "colima")
 # The docker group is provided by the user factory, not here.
 {
   flake.modules.nixos.docker = {
@@ -39,7 +45,30 @@
     };
   };
 
-  flake.modules.darwin.docker.homebrew.brews = ["colima"];
+  flake.modules.darwin.docker = {
+    lib,
+    config,
+    ...
+  }: let
+    cfg = config.myDarwinModules.docker;
+  in {
+    options.myDarwinModules.docker.backend = lib.mkOption {
+      type = lib.types.enum ["colima" "docker-desktop"];
+      default = "colima";
+      description = ''
+        macOS docker runtime. "colima" installs the colima brew (headless
+        Linux VM; docker CLI from nixpkgs via the home-manager half).
+        "docker-desktop" installs the Docker Desktop cask, which bundles its
+        own daemon, CLI, and compose. Set myHomeModules.docker.backend to the
+        same value.
+      '';
+    };
+
+    config = lib.mkMerge [
+      (lib.mkIf (cfg.backend == "colima") {homebrew.brews = ["colima"];})
+      (lib.mkIf (cfg.backend == "docker-desktop") {homebrew.casks = ["docker-desktop"];})
+    ];
+  };
 
   flake.modules.homeManager.docker = {
     config,
@@ -48,17 +77,30 @@
     ...
   }: let
     inherit (pkgs.stdenv.hostPlatform) isDarwin;
+    cfg = config.myHomeModules.docker;
   in {
+    options.myHomeModules.docker.backend = lib.mkOption {
+      type = lib.types.enum ["colima" "docker-desktop"];
+      default = "colima";
+      description = ''
+        Match myDarwinModules.docker.backend. "colima" installs the nixpkgs
+        docker CLI + compose and a login LaunchAgent running colima.
+        "docker-desktop" adds nothing but lazydocker -- Docker Desktop bundles
+        the daemon, CLI, and compose itself.
+      '';
+    };
+
     config = lib.mkMerge [
       {home.packages = [pkgs.lazydocker];}
 
-      # darwin-only: NixOS gets the daemon + CLI from virtualisation.docker
-      # (the nixos half above), so none of this applies there. mkIf (not
-      # optionalAttrs) defers the condition -- with useGlobalPkgs = false,
-      # `pkgs` is config-derived, and forcing isDarwin eagerly recurses.
-      # home-manager declares `launchd` on all platforms (activation is
-      # darwin-gated internally), so mkIf-false is a safe no-op on Linux.
-      (lib.mkIf isDarwin {
+      # colima backend, darwin-only: NixOS gets the daemon + CLI from
+      # virtualisation.docker (the nixos half above), so none of this applies
+      # there. mkIf (not optionalAttrs) defers the condition -- with
+      # useGlobalPkgs = false, `pkgs` is config-derived, and forcing isDarwin
+      # eagerly recurses. home-manager declares `launchd` on all platforms
+      # (activation is darwin-gated internally), so mkIf-false is a safe no-op
+      # on Linux.
+      (lib.mkIf (isDarwin && cfg.backend == "colima") {
         home.packages = [pkgs.docker-client pkgs.docker-compose];
 
         # The docker CLI finds the socket via the `colima` docker context,
