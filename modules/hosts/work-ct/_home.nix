@@ -27,6 +27,7 @@
       nh
       nom
       ripgrep
+      sol
       starship
       tmux
       yazi
@@ -48,6 +49,13 @@
   # ./default.nix): skips the colima CLI/LaunchAgent; Docker Desktop bundles
   # the daemon, CLI, and compose.
   myHomeModules.docker.backend = "docker-desktop";
+
+  # Sol launcher item that spawns a fresh kitty window (Sol's native search
+  # only activates the already-running instance).
+  myHomeModules.sol.newWindowApps.Kitty = {
+    icon = "🐱";
+    command = "open -na kitty";
+  };
 
   home.packages = [pkgs.devenv];
 
