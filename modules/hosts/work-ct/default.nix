@@ -67,9 +67,8 @@ in {
 
     security.pam.services.sudo_local.touchIdAuth = true;
 
-    # `uid` is required on darwin and must match the real account. On this work
-    # laptop the IT admin account (ct-admin) is the first GUI user (501), so
-    # jmfv is 502 -- unlike sienna where jmfv is 501.
+    # `uid` is required on darwin and must match the real account. The first
+    # user on this work laptop is the IT admin (501), so jmfv is 502.
     users.users.${user} = {
       uid = 502;
       isHidden = false;
