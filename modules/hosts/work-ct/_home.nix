@@ -57,7 +57,10 @@
     command = "open -na kitty";
   };
 
-  home.packages = [pkgs.devenv];
+  home.packages = [
+    pkgs.devenv
+    (pkgs.callPackage (inputs.self + /packages/by-name/v/vf) {})
+  ];
 
   # Git identity is inherited from the fleet default (personal). To commit under
   # a work identity on this machine, override `systemConstants.git.email` (and
