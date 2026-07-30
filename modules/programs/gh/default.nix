@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.gh = _: {
+  flake.modules.homeManager.gh = {pkgs, ...}: {
     config = {
       programs = {
         gh = {
@@ -7,6 +7,7 @@
           settings = {
             git_protocol = "ssh";
           };
+          extensions = [pkgs.gh-stack];
         };
         gh-dash = {
           enable = true;
