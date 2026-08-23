@@ -15,6 +15,7 @@
       claudeCode
       direnv
       docker
+      dsh
       eza
       fd
       fish
