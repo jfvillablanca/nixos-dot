@@ -24,6 +24,7 @@ in {
       self.modules.darwin.kanata
       self.modules.darwin.docker
       self.modules.darwin.sol
+      self.modules.darwin.sops
     ];
 
     networking.hostName = hostName;
@@ -44,6 +45,18 @@ in {
     };
 
     myDarwinModules.tailscale.enable = true;
+    myDarwinModules.sops.enable = true;
+
+    # The fleet's first darwin secret. Decrypts at activation using this host's
+    # SSH key (see modules/system/sops) onto the /run/secrets ramdisk -- never
+    # the Nix store, never persistent disk, gone on reboot. defaultSopsFile is
+    # type `path`; ciphertext is safe to copy into the store. owner is the user
+    # because dsh runs under home-manager, and darwin's default is root:staff.
+    sops.defaultSopsFile = ../../../secrets/sienna.yaml;
+    sops.secrets."deepseek-api-key" = {
+      owner = user;
+      mode = "0400";
+    };
 
     services.openssh.enable = true;
 

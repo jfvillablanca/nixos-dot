@@ -1,9 +1,17 @@
 keys:
   - &admin age1fnkfre3sj2w8m3gey4vwcegaufy5ywd03s3dlmz2m93k44akf3wq9k3g0x
   - &rue age170uwv6qymchu0ndq2hg9xmee2ar8k8ay5z42r93q5jph2zlv752qwltth6
+  # sienna: derived from its SSH host key via ssh-to-age -- the same key
+  # recorded in flake.hostIdentityKeys. No separate age identity to manage.
+  - &sienna age1w5ekwkhaek24tjye3s4qvuplqkgffle4846znn7tgmv8y4fey9dqpqqn79
 creation_rules:
   - path_regex: secrets/rue\.yaml$
     key_groups:
       - age:
           - *admin
           - *rue
+  - path_regex: secrets/sienna\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *sienna
