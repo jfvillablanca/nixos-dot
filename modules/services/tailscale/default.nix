@@ -1,4 +1,4 @@
-{
+{self, ...}: {
   flake.modules.nixos.tailscale = {
     lib,
     config,
@@ -166,5 +166,21 @@
     config = lib.mkIf cfg.enable {
       services.tailscale.enable = true;
     };
+  };
+
+  # tsend belongs here rather than in its own aspect: it is tailscale tooling,
+  # and Taildrop is the feature it wraps. The `tailscale` CLI it drives comes
+  # from the system layer above (nixos/darwin `services.tailscale`), not from
+  # this closure -- see packages/by-name/t/tsend for why pinning a second copy
+  # would be wrong.
+  flake.modules.homeManager.tailscale = {pkgs, ...}: {
+    home.packages = [(pkgs.callPackage (self + /packages/by-name/t/tsend) {})];
+  };
+
+  # Pure Python behind a one-line shell shim, so it builds on every system.
+  # Unguarded on purpose (unlike .#dsh): being in packages.x86_64-linux is what
+  # puts the ruff gate in front of every PR, since CI only builds Linux.
+  perSystem = {pkgs, ...}: {
+    packages.tsend = pkgs.callPackage (self + /packages/by-name/t/tsend) {};
   };
 }
