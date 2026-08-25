@@ -30,6 +30,7 @@
       ripgrep
       sol
       starship
+      tailscale
       tmux
       yazi
       zoxide
