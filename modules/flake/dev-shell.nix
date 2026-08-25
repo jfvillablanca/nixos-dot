@@ -20,6 +20,13 @@
         # Task runner — see ./justfile for nvim-{baseline,gate,exp,exp-smoke}.
         just
 
+        # Secret authoring. `sops` edits secrets/*.yaml against the recipients
+        # in .sops.yaml; `ssh-to-age` derives a host's age recipient from its
+        # SSH host key (how darwin hosts get an identity without a ceremony).
+        sops
+        age
+        ssh-to-age
+
         # Local driver for the flake-update PR version-diff (eval-only).
         (callPackage (self + /packages/by-name/f/flake-delta) {})
       ];

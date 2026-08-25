@@ -15,6 +15,7 @@
       claudeCode
       direnv
       docker
+      dsh
       eza
       fd
       fish
@@ -30,6 +31,7 @@
       ripgrep
       sol
       starship
+      tailscale
       tmux
       yazi
       zoxide
@@ -55,6 +57,13 @@
   };
 
   myHomeModules.claudeCode.enable = true;
+
+  # Materialised by sops at activation; see sops.secrets."deepseek-api-key" in
+  # this host's default.nix. /run/secrets is a hardcoded constant of sops-nix's
+  # darwin module, not a path this repo picks, so spelling it literally
+  # duplicates no decision -- and home-manager modules cannot reach
+  # darwin-class config to read .path from it anyway.
+  myHomeModules.dsh.apiKeyFile = "/run/secrets/deepseek-api-key";
 
   # kitty has no native window restoration; the aerospace login restore
   # re-opens its missing windows so they can be placed back onto workspaces.
