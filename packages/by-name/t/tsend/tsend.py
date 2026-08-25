@@ -21,6 +21,10 @@ CLI has to match the tailscaled the system planted, and that version is chosen
 by system config this package cannot read; a second pinned copy would invite a
 skew that stays invisible until it breaks.
 
+The daemon's cached reachability lags -- a phone that just woke can still be
+reported offline for minutes -- so a peer reported offline gets a live probe
+before the guard fires, rather than being taken at its word.
+
 Receiving depends on the peer. GUI clients (Android, Windows, the macOS app)
 auto-accept into Downloads; a peer running the open-source tailscaled leaves
 files in a daemon inbox until someone runs `tailscale file get DIR`.
@@ -40,6 +44,11 @@ from pathlib import Path
 # otherwise. Tagged nodes never appear in this list at all.
 NAME_FIELD = 1
 STATUS_FIELD = 2
+
+# Seconds to wait for a liveness probe before believing "offline". One DERP
+# round trip is well under this; a dead peer costs the full timeout, and only
+# on a path that used to be a hard stop.
+PROBE_TIMEOUT = 3
 
 
 def die(*lines):
@@ -164,11 +173,33 @@ def report_skipped(skipped):
         print(f"    {entry.name}/", file=sys.stderr)
 
 
+def reachable(target):
+    """Probe a peer directly, because the daemon's cached status lags.
+
+    `tailscale ping` exits 1 whether or not the peer answers -- with
+    --until-direct defaulting true, a DERP-only pong is a failure by its own
+    measure -- so the reply text is the only usable signal.
+    """
+    proc = subprocess.run(
+        ["tailscale", "ping", "--c", "1", "--timeout", f"{PROBE_TIMEOUT}s", target],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
+    return "pong from" in proc.stdout
+
+
 def confirm_offline(target, status, force):
-    """Taildrop cannot queue, so an offline peer is a wasted transfer."""
+    """Taildrop cannot queue, so an unreachable peer is a wasted transfer."""
     if force or not status.startswith("offline"):
         return
-    warning = f"{target} is {status}; Taildrop has no store-and-forward"
+    if reachable(target):
+        print(
+            f"tsend: {target} answered a probe; the daemon reported it {status}",
+            file=sys.stderr,
+        )
+        return
+    warning = f"could not reach {target} ({status}); Taildrop has no store-and-forward"
     if not sys.stdin.isatty():
         die(warning, "pass --force to send anyway")
     print(f"tsend: warning: {warning}", file=sys.stderr)
