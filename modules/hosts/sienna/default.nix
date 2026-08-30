@@ -107,6 +107,7 @@ in {
         "google-chrome"
         "keycastr"
         "logi-options+"
+        "obsidian"
         "slack"
         "spotify"
       ];
