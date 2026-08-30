@@ -245,6 +245,27 @@ github:.../#sartre <ssh-target>` deploys NixOS over SSH from any
 - E.3 **Disaster recovery runbook.** From blank disk to working host in N
   minutes; document for cimmerian + t14g1.
 
+- E.4 ★ **Back up the Obsidian vault.** The self-hosted sync on rue
+  (`modules/services/obsidian-sync/`) is replication, not backup: the phone,
+  sienna, and rue's CouchDB are all live members of one replica set, so a
+  mass-delete or a bad merge reaches all three within seconds and "sync
+  working correctly" is exactly what that looks like. There is currently no
+  copy that survives it.
+  - **What to back up.** rue's `/var/lib/couchdb` (persisted at
+    `/persist/system/var/lib/couchdb`) is the obvious target, but note the
+    contents are E2E-encrypted chunks -- restoring them needs the LiveSync
+    passphrase, and they are not human-readable or greppable. A plaintext
+    mirror of the vault is the more useful artifact for disaster recovery;
+    `vrtmrz/livesync-bridge` exists to produce one, or a headless client.
+  - **Shape.** Wants point-in-time history, not a mirror -- the failure mode
+    is deletion propagating, so a synced copy inherits the problem. Restic
+    with a retention policy against E.1's eventual repo is the natural fit;
+    scheduling it on rue keeps it off the laptop.
+  - **Watch out.** CouchDB files are live; snapshot the btrfs subvolume or
+    stop `couchdb.service` for the duration rather than copying a database
+    mid-write. Verify a restore actually opens, ideally into a throwaway
+    CouchDB, since an untested backup of an encrypted blob is worth little.
+
 ## F. CI / automation
 
 - F.1 ★ **nix-flake-update bot + per-bump changelog.** Periodic auto-PRs for
@@ -723,6 +744,38 @@ email}` (was hard-coded in `programs/git`). Also wired the HM
   - Document in HM's release notes; copy the description into the
     upstream option docs.
   - Open the PR; address review.
+
+- N.7 ★ **Make TCC-gated Nix binaries survive upgrades on darwin.** macOS
+  keys Privacy permissions to a binary's path _and_ its cdhash, and
+  nixpkgs-built binaries are ad-hoc signed with no TeamIdentifier
+  (`codesign -dv` on kanata reports `Signature=adhoc`,
+  `TeamIdentifier=not set`). Every version bump therefore yields a new store
+  path and a new cdhash, silently voiding the grant -- and macOS then drops
+  the entry entirely, so it does not even re-prompt. Hit twice now: Sunshine
+  (Screen Recording + Accessibility) and kanata (Accessibility, after a
+  nixpkgs bump arriving on `main` left the machine with no working keymap
+  and no prompt to fix it).
+  - **Symptom to recognise.** The service starts, fails immediately with a
+    permission error, and the binary is absent from System Settings ->
+    Privacy even after the process explicitly asks for it. Current manual
+    recovery is adding it by hand through the file picker at the new store
+    path (Cmd+Shift+G, paste the store path).
+  - **Directions worth trying.** A stable wrapper path outside the store
+    fixes the path half but not the cdhash half. Re-signing with a
+    self-signed identity at activation, or the copy-Mach-O-into-a-`.app`
+    trick already used for Sunshine, would give a stable identity across
+    upgrades. A `tccutil reset` plus re-grant activation hook is cruder but
+    at least scriptable.
+  - **Why it matters.** These land on the input path -- keyboard remapping
+    and screen capture -- so they surface at the worst possible moment, and
+    recovery needs GUI steps that cannot be driven from the machine whose
+    keyboard has just stopped working.
+  - See `docs/kanata-macos.md`, whose gotchas section documents the Input
+    Monitoring half of this but not Accessibility. Upstream kanata ships
+    `--macos-request-permissions` to force re-registration, and its
+    `docs/setup-macos.md` sanctions the System Settings `+` button for
+    Accessibility -- which our note discourages, correctly, but only for
+    Input Monitoring's system scope.
 
 ## O. Long-shot
 
