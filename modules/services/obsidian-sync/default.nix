@@ -283,6 +283,21 @@
         };
       };
 
+      systemd.services.obsidian-sync-funnel = lib.mkIf cfg.funnel.enable {
+        description = "Publish the Obsidian sync endpoint over Tailscale Funnel";
+        after = ["tailscaled.service" "nginx.service"];
+        wants = ["tailscaled.service"];
+        wantedBy = ["multi-user.target"];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          # Re-asserted every boot rather than trusted as one-time state, the
+          # same reasoning as the tailscale module's extraSetFlags.
+          ExecStart = "${config.services.tailscale.package}/bin/tailscale funnel --bg --https=443 http://127.0.0.1:${toString cfg.nginxPort}";
+          ExecStop = "${config.services.tailscale.package}/bin/tailscale funnel --https=443 off";
+        };
+      };
+
       # CouchDB keeps both its databases and its view index under this path,
       # plus the local.ini it writes runtime config into. Without persistence
       # the ephemeral-root wipe destroys the vault on every boot.

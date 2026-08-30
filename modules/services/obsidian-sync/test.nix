@@ -27,8 +27,8 @@ in {
         self.modules.nixos.persistence
       ];
 
-      environment.etc."obsidian-sync-test/admin-password".text = "test-admin-password";
-      environment.etc."obsidian-sync-test/sync-password".text = "test-sync-password";
+      environment.etc."obsidian-sync-test/admin-password".text = "test-admin-password\n";
+      environment.etc."obsidian-sync-test/sync-password".text = "test-sync-password\n";
 
       myNixosModules.obsidian-sync = {
         enable = true;
@@ -165,6 +165,9 @@ in {
       # Idempotent: a second run must not fail or clobber existing data.
       server.succeed("systemctl restart obsidian-sync-provision.service")
       server.succeed(f"curl -fsS {sync} http://127.0.0.1:5984/obsidiannotes/testdoc")
+
+      # funnel.enable is false for this node, so nothing may be published.
+      server.fail("systemctl cat obsidian-sync-funnel.service")
     '';
   };
 }
