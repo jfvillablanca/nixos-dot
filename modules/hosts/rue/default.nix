@@ -200,15 +200,19 @@ in {
         # sops-nix-managed /run/secrets file at activation.
         adminPasswordFile = config.sops.secrets."couchdb-admin-password".path;
         syncPasswordFile = config.sops.secrets."couchdb-sync-password".path;
-        # Off until two things are true: the Tailscale policy file grants
-        # the `funnel` node attribute to `tag:server` (a manual console
-        # change, the same kind rue's exit-node and subnet-route approvals
-        # already needed), and the endpoint has been verified reachable and
-        # correctly authenticated from off the tailnet. Flipping this to
-        # true makes nginx's port reachable from the public internet at
-        # rue's `.ts.net` hostname, defended by nothing but one password and
-        # the rate limiter above.
-        funnel.enable = false;
+        # ON: nginx's port is published to the public internet at rue's
+        # `.ts.net` hostname, defended by one password, the members-only
+        # sync account, the path allowlist, and the rate limiter above.
+        #
+        # This depends on a manual Tailscale policy change that lives
+        # outside this repo: `nodeAttrs` must grant the `funnel` attribute
+        # to `tag:server`. Note the attribute must target the tag, not
+        # `autogroup:member` as Tailscale's own default example does --
+        # tagged devices are not members, so the documented default grants
+        # rue nothing. Revoke that attribute and the funnel unit fails
+        # loudly on the next activation rather than silently publishing
+        # nothing.
+        funnel.enable = true;
       };
       xfce = {
         enable = true;
