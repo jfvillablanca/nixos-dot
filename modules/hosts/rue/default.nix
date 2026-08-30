@@ -159,10 +159,14 @@ in {
         # sops-nix-managed /run/secrets file at activation.
         adminPasswordFile = config.sops.secrets."couchdb-admin-password".path;
         syncPasswordFile = config.sops.secrets."couchdb-sync-password".path;
-        # Left off for the first deploy: prove the loopback path (CouchDB +
-        # nginx + provisioning all healthy on 127.0.0.1) before publishing
-        # anything to the public internet over Tailscale Funnel. Do not flip
-        # this without a deliberate follow-up deploy -- see Task 5 step 7-8.
+        # Off until two things are true: the Tailscale policy file grants
+        # the `funnel` node attribute to `tag:server` (a manual console
+        # change, the same kind rue's exit-node and subnet-route approvals
+        # already needed), and the endpoint has been verified reachable and
+        # correctly authenticated from off the tailnet. Flipping this to
+        # true makes nginx's port reachable from the public internet at
+        # rue's `.ts.net` hostname, defended by nothing but one password and
+        # the rate limiter above.
         funnel.enable = false;
       };
       xfce = {
