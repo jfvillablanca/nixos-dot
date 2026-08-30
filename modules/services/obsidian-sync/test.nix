@@ -126,6 +126,32 @@ in {
           "--user couchadmin:test-admin-password http://127.0.0.1:5985/_up; done"
       )
       assert "429" in codes, f"funnel traffic was not rate limited: {codes}"
+
+      server.wait_for_unit("obsidian-sync-provision.service")
+
+      admin = "--user couchadmin:test-admin-password"
+      sync = "--user obsidian:test-sync-password"
+
+      # System databases exist. CouchDB does not create these on its own when
+      # _cluster_setup is skipped, and replication fails without _users.
+      for db in ("_users", "_replicator", "obsidiannotes"):
+          server.succeed(f"curl -fsS {admin} http://127.0.0.1:5984/{db}")
+
+      # The sync account can use its own database...
+      server.succeed(f"curl -fsS {sync} http://127.0.0.1:5984/obsidiannotes")
+      server.succeed(
+          f"curl -fsS {sync} -X PUT -H 'Content-Type: application/json' "
+          "-d '{\"hello\":\"world\"}' http://127.0.0.1:5984/obsidiannotes/testdoc"
+      )
+
+      # ...and nothing else. This is the whole point of not handing clients the
+      # admin credential.
+      server.fail(f"curl -fsS {sync} http://127.0.0.1:5984/_node/_local/_config")
+      server.fail(f"curl -fsS {sync} http://127.0.0.1:5984/_users/_all_docs")
+
+      # Idempotent: a second run must not fail or clobber existing data.
+      server.succeed("systemctl restart obsidian-sync-provision.service")
+      server.succeed(f"curl -fsS {sync} http://127.0.0.1:5984/obsidiannotes/testdoc")
     '';
   };
 }

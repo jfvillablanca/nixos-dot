@@ -34,6 +34,15 @@
         mv ${adminIni}.new ${adminIni}
       '';
     };
+
+    # Creates the system databases, the vault database, and a members-only
+    # sync account -- see _provision.sh for why this exists instead of
+    # upstream's admin-credential-handing Deno provisioner.
+    provision = pkgs.writeShellApplication {
+      name = "obsidian-sync-provision";
+      runtimeInputs = [pkgs.curl pkgs.jq pkgs.coreutils];
+      text = builtins.readFile ./_provision.sh;
+    };
   in {
     options.myNixosModules.obsidian-sync = {
       enable =
@@ -251,6 +260,26 @@
           Type = "oneshot";
           RemainAfterExit = true;
           ExecStart = lib.getExe hashAdmin;
+        };
+      };
+
+      systemd.services.obsidian-sync-provision = {
+        description = "Provision the Obsidian vault database and its sync account";
+        after = ["couchdb.service"];
+        requires = ["couchdb.service"];
+        wantedBy = ["multi-user.target"];
+        environment = {
+          COUCH_URL = "http://127.0.0.1:${toString couchdbPort}";
+          DATABASE = cfg.database;
+          ADMIN_USER = cfg.adminUser;
+          ADMIN_PASSWORD_FILE = cfg.adminPasswordFile;
+          SYNC_USER = cfg.syncUser;
+          SYNC_PASSWORD_FILE = cfg.syncPasswordFile;
+        };
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = lib.getExe provision;
         };
       };
 
