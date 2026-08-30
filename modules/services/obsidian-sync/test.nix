@@ -145,9 +145,22 @@ in {
       )
 
       # ...and nothing else. This is the whole point of not handing clients the
-      # admin credential.
-      server.fail(f"curl -fsS {sync} http://127.0.0.1:5984/_node/_local/_config")
-      server.fail(f"curl -fsS {sync} http://127.0.0.1:5984/_users/_all_docs")
+      # admin credential. Asserting the exact status code rather than just
+      # `server.fail` matters: curl -f exits non-zero identically for 401,
+      # 404, a refused connection, or a typo'd URL, so a bare `fail` would
+      # pass even if the account were broken outright. CouchDB returns 401
+      # (not 403) for authenticated-but-unauthorized on admin-gated
+      # endpoints.
+      server.succeed(
+          "test 401 = $(curl -s -o /dev/null -w '%{http_code}' "
+          + sync
+          + " http://127.0.0.1:5984/_node/_local/_config)"
+      )
+      server.succeed(
+          "test 401 = $(curl -s -o /dev/null -w '%{http_code}' "
+          + sync
+          + " http://127.0.0.1:5984/_users/_all_docs)"
+      )
 
       # Idempotent: a second run must not fail or clobber existing data.
       server.succeed("systemctl restart obsidian-sync-provision.service")

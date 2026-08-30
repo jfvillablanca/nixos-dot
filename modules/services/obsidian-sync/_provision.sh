@@ -11,7 +11,6 @@
 # unit definition, the store, or the process table.
 
 admin_password=$(cat "$ADMIN_PASSWORD_FILE")
-sync_password=$(cat "$SYNC_PASSWORD_FILE")
 
 # Credentials go through a curl config file rather than --user, which would put
 # the password in argv where any local user could read it out of `ps`.
@@ -63,15 +62,40 @@ esac
 # 4. The sync account. Upserted rather than created, so changing the password
 # in sops and rebuilding is a complete rotation. CouchDB hashes the plaintext
 # `password` field itself using chttpd_auth/iterations.
+#
+# The existing revision is fetched in two steps -- a status check, then a body
+# fetch only on 200 -- rather than swallowing curl's exit code with
+# `|| true`. That would mask a real failure (network blip, permission error)
+# as "no existing document", surfacing later as a confusing 409 on the PUT
+# below instead of an actionable message here.
 user_doc="org.couchdb.user:$SYNC_USER"
-existing=$(curl_admin "$COUCH_URL/_users/$user_doc" 2>/dev/null || true)
-rev=$(printf '%s' "$existing" | jq -r '._rev // empty')
+code=$(status_admin "$COUCH_URL/_users/$user_doc")
+case "$code" in
+200)
+  rev=$(curl_admin "$COUCH_URL/_users/$user_doc" | jq -r '._rev // empty')
+  ;;
+404)
+  rev=""
+  ;;
+*)
+  echo "checking $user_doc failed: HTTP $code" >&2
+  exit 1
+  ;;
+esac
 
+# --rawfile reads the password straight from its file into jq rather than
+# through a shell variable passed as --arg. jq is an external binary in
+# runtimeInputs, so an --arg value becomes part of jq's own argv and is
+# readable from /proc/<pid>/cmdline for the life of the call -- the same
+# hazard --config avoids for curl above, just one step removed. rtrimstr
+# strips the trailing newline a password file conventionally ends with,
+# which --rawfile (unlike the `cat` command substitution used for
+# admin_password) does not do on its own.
 jq -n \
   --arg name "$SYNC_USER" \
-  --arg password "$sync_password" \
+  --rawfile password "$SYNC_PASSWORD_FILE" \
   --arg rev "$rev" \
-  '{name: $name, password: $password, roles: [], type: "user"}
+  '{name: $name, password: ($password | rtrimstr("\n")), roles: [], type: "user"}
    + (if $rev == "" then {} else {_rev: $rev} end)' |
   curl_admin -X PUT -H 'Content-Type: application/json' \
     --data @- "$COUCH_URL/_users/$user_doc" >/dev/null
