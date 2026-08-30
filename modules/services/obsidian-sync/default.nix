@@ -43,6 +43,19 @@
       runtimeInputs = [pkgs.curl pkgs.jq pkgs.coreutils];
       text = builtins.readFile ./_provision.sh;
     };
+
+    # `tailscale funnel --bg` exits 0 even when nothing got published -- see
+    # the funnel unit's ExecStartPost comment. Confirm the mapping is really
+    # there by reading it back rather than trusting the exit code.
+    funnelCheck = pkgs.writeShellApplication {
+      name = "obsidian-sync-funnel-check";
+      runtimeInputs = [config.services.tailscale.package pkgs.jq];
+      text = ''
+        status=$(tailscale serve status --json)
+        echo "$status" | jq -e '.TCP."443".HTTPS == true' >/dev/null
+        echo "$status" | jq -e '(.AllowFunnel // {}) | any' >/dev/null
+      '';
+    };
   in {
     options.myNixosModules.obsidian-sync = {
       enable =
@@ -116,13 +129,33 @@
       maxHttpRequestSize = lib.mkOption {
         type = lib.types.ints.positive;
         default = 4294967296;
-        description = "chttpd/max_http_request_size, per provision.ts:197. Also becomes nginx's client_max_body_size.";
+        description = "chttpd/max_http_request_size, per provision.ts:197. A CouchDB-side setting only -- see nginxMaxBodySize for why nginx does not mirror this number.";
       };
 
       maxDocumentSize = lib.mkOption {
         type = lib.types.ints.positive;
         default = 50000000;
         description = "couchdb/max_document_size, per provision.ts:202.";
+      };
+
+      nginxMaxBodySize = lib.mkOption {
+        type = lib.types.str;
+        default = "64m";
+        description = ''
+          nginx's client_max_body_size, deliberately decoupled from
+          maxHttpRequestSize (4 GiB). That number is LiveSync's own
+          chttpd/max_http_request_size requirement and must not change, but
+          proxy_request_buffering is off below, so nginx streams the request
+          body straight to CouchDB rather than staging the whole thing on
+          disk first. Without a much smaller cap here, an unauthenticated
+          caller could still make nginx buffer up to 4 GiB into a tempfile
+          under PrivateTmp before CouchDB's own auth ever runs -- and that
+          tempfile lands on rue's root btrfs subvolume, which
+          modules/hosts/rue/_disko.nix shares with /persist and /nix.
+          LiveSync chunks documents under maxDocumentSize (50 MB) by design,
+          so 64m leaves headroom without reopening that hole. The two
+          numbers do not need to, and must not, be re-coupled.
+        '';
       };
 
       nginxPort = lib.mkOption {
@@ -227,9 +260,11 @@
               port = cfg.nginxPort;
             }
           ];
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:${toString couchdbPort}";
-            extraConfig = ''
+          locations = let
+            # Shared by both paths the client actually needs -- not by the
+            # 404 catch-all below, since there is nothing to buffer, time
+            # out, or size-limit on a response that never reaches CouchDB.
+            proxiedConfig = ''
               limit_req zone=obsidian_funnel burst=${toString cfg.rateLimit.burst} nodelay;
 
               # LiveSync's live mode holds a continuous _changes feed open;
@@ -238,7 +273,13 @@
               proxy_read_timeout 600s;
               proxy_http_version 1.1;
 
-              client_max_body_size ${toString cfg.maxHttpRequestSize};
+              # Off so nginx streams the request body straight to CouchDB
+              # instead of staging the whole thing on disk under PrivateTmp
+              # first, before CouchDB's own auth ever runs. See
+              # nginxMaxBodySize for why the cap below is far below
+              # maxHttpRequestSize.
+              proxy_request_buffering off;
+              client_max_body_size ${cfg.nginxMaxBodySize};
 
               proxy_set_header Host $host;
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -248,6 +289,43 @@
               # [cors] settings above, and a duplicated
               # Access-Control-Allow-Origin makes browsers reject the response.
             '';
+            proxyPass = "http://127.0.0.1:${toString couchdbPort}";
+          in {
+            # Exact match: PouchDB's replication probes server info at the
+            # root before it ever touches a database.
+            "= /" = {
+              inherit proxyPass;
+              extraConfig = proxiedConfig;
+            };
+
+            # `^~` wins over the catch-all below on prefix length alone, no
+            # regex needed, and covers /${database}, its trailing-slash form,
+            # and every sub-path LiveSync calls against it (_changes,
+            # _bulk_docs, _revs_diff, per-document reads/writes,
+            # attachments). Derived from cfg.database rather than hardcoded
+            # so a renamed vault stays in sync automatically.
+            "^~ /${cfg.database}" = {
+              inherit proxyPass;
+              extraConfig = proxiedConfig;
+            };
+
+            # Everything else -- _node/_local/_config, _users, _all_dbs,
+            # _utils, _cluster_setup, any other database -- accepts the
+            # server admin credential (see the Aspect's top comment), and
+            # the members-only sync account protects none of it: the same
+            # endpoint takes the admin login too. The LiveSync client
+            # source (src/common/utils.ts requestToCouchDBWithCredentials)
+            # only reaches _node/_local/_config from the setup wizard's
+            # admin-only "check database configuration" helper, which
+            # already 401s for the sync account (see test.nix). Returning
+            # 404 here means Funnel never gets a chance to forward any of
+            # it to CouchDB in the first place.
+            "/" = {
+              extraConfig = ''
+                limit_req zone=obsidian_funnel burst=${toString cfg.rateLimit.burst} nodelay;
+              '';
+              return = 404;
+            };
           };
         };
       };
@@ -291,9 +369,53 @@
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
+
+          # Type=oneshot disables the start timeout by default (see the NOTE
+          # under TimeoutStartSec in systemd.service(5); confirmed on rue:
+          # `systemctl show -p TimeoutStartUSec` reports "infinity" for an
+          # otherwise-identical oneshot unit here). Without a bound, the
+          # interactive-enrollment wait below could hang `nixos-rebuild
+          # switch` and boot itself forever, since this unit is wantedBy
+          # multi-user.target.
+          TimeoutStartSec = "60s";
+
           # Re-asserted every boot rather than trusted as one-time state, the
           # same reasoning as the tailscale module's extraSetFlags.
           ExecStart = "${config.services.tailscale.package}/bin/tailscale funnel --bg --https=443 http://127.0.0.1:${toString cfg.nginxPort}";
+
+          # `tailscale funnel ... on` routes through verifyFunnelEnabled ->
+          # enableFeatureInteractive (cmd/tailscale/cli/serve_legacy.go,
+          # confirmed against the tailscale source at v1.102.2, the version
+          # installed on rue) before it ever touches the serve config. If the
+          # node lacks the `funnel` node attribute -- e.g. this got flipped
+          # on before the tag:server policy grant lands -- and control
+          # reports ShouldWait == false, the CLI prints an enrollment URL and
+          # calls os.Exit(0): the oneshot goes "active (exited)" with nothing
+          # published, and the process exit code alone cannot tell that
+          # apart from success. Read the mapping back instead:
+          # applyWebServe/applyFunnel (ipn/serve.go) populate
+          # .TCP["443"].HTTPS and an .AllowFunnel entry once Funnel is really
+          # up; both are absent from the empty `{}` this command returns in
+          # the exit-0-and-silent case.
+          ExecStartPost = lib.getExe funnelCheck;
+
+          # Once the policy grant lands, a unit that failed silent-and-open
+          # should recover on its own rather than wait for a human to notice
+          # and restart it by hand.
+          Restart = "on-failure";
+          RestartSec = "10s";
+
+          # `tailscale funnel ... off` goes through the same
+          # verifyFunnelEnabled gate (serve_v2.go), so a grant that gets
+          # revoked later can make ExecStop hang on the same interactive
+          # watcher as ExecStart. That only happens in the same
+          # not-yet-or-no-longer-enabled state ExecStartPost guards above --
+          # once Funnel is actually enabled, verifyFunnelEnabled's hasCaps()
+          # check short-circuits and ExecStop returns immediately. Tightened
+          # from systemd's 90s default so a stuck stop cannot stall
+          # `nixos-rebuild switch` or a reboot waiting on a click that, on an
+          # unattended server, is never coming.
+          TimeoutStopSec = "20s";
           ExecStop = "${config.services.tailscale.package}/bin/tailscale funnel --https=443 off";
         };
       };

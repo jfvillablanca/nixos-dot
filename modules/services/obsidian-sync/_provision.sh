@@ -10,6 +10,11 @@
 # SYNC_PASSWORD_FILE. Passwords are read from files so they never appear in the
 # unit definition, the store, or the process table.
 
+# Command substitution strips every trailing newline (and nothing else) --
+# the same policy _hash-admin.py uses for this same file (rstrip on "\n"
+# only) and the sync password's jq `sub("\n+$"; "")` below. All three must
+# agree, or a secret file with more than one trailing newline would hash to
+# a different string in one place than it authenticates as in another.
 admin_password=$(cat "$ADMIN_PASSWORD_FILE")
 
 # Credentials go through a curl config file rather than --user, which would put
@@ -87,15 +92,16 @@ esac
 # through a shell variable passed as --arg. jq is an external binary in
 # runtimeInputs, so an --arg value becomes part of jq's own argv and is
 # readable from /proc/<pid>/cmdline for the life of the call -- the same
-# hazard --config avoids for curl above, just one step removed. rtrimstr
-# strips the trailing newline a password file conventionally ends with,
-# which --rawfile (unlike the `cat` command substitution used for
-# admin_password) does not do on its own.
+# hazard --config avoids for curl above, just one step removed. `sub` strips
+# every trailing newline, matching the `admin_password=$(cat ...)` command
+# substitution above byte for byte -- both must agree, or a secret file
+# ending in more than one newline would hash to a different string than
+# _hash-admin.py, which reads the same style of file with the same policy.
 jq -n \
   --arg name "$SYNC_USER" \
   --rawfile password "$SYNC_PASSWORD_FILE" \
   --arg rev "$rev" \
-  '{name: $name, password: ($password | rtrimstr("\n")), roles: [], type: "user"}
+  '{name: $name, password: ($password | sub("\n+$"; "")), roles: [], type: "user"}
    + (if $rev == "" then {} else {_rev: $rev} end)' |
   curl_admin -X PUT -H 'Content-Type: application/json' \
     --data @- "$COUCH_URL/_users/$user_doc" >/dev/null

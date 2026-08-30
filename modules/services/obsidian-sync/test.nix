@@ -27,13 +27,24 @@ in {
         self.modules.nixos.persistence
       ];
 
-      environment.etc."obsidian-sync-test/admin-password".text = "test-admin-password\n";
-      environment.etc."obsidian-sync-test/sync-password".text = "test-sync-password\n";
+      # /run rather than environment.etc: /etc entries are read-only symlinks
+      # into the Nix store, so the rotation test below could never rewrite a
+      # password and re-verify -- exactly what commit 48d6ae7's restartUnits
+      # claims a sops edit plus rebuild now does for real secrets. Content is
+      # seeded by tmpfiles rather than by the test script, because
+      # couchdb-admin-ini runs at boot, before the test script gets a chance
+      # to write anything -- the file has to already hold a valid password by
+      # the time multi-user.target starts pulling in units.
+      systemd.tmpfiles.rules = [
+        "d /run/obsidian-sync-test 0700 root root -"
+        "f /run/obsidian-sync-test/admin-password 0600 root root - test-admin-password-000\\n"
+        "f /run/obsidian-sync-test/sync-password 0600 root root - test-sync-password-000\\n"
+      ];
 
       myNixosModules.obsidian-sync = {
         enable = true;
-        adminPasswordFile = "/etc/obsidian-sync-test/admin-password";
-        syncPasswordFile = "/etc/obsidian-sync-test/sync-password";
+        adminPasswordFile = "/run/obsidian-sync-test/admin-password";
+        syncPasswordFile = "/run/obsidian-sync-test/sync-password";
         funnel.enable = false;
 
         # Production values are 30r/s / burst 120. The test asserts the
@@ -51,11 +62,12 @@ in {
       server.wait_for_unit("couchdb.service")
       server.wait_for_open_port(5984)
 
+      admin = "--user couchadmin:test-admin-password-000"
+      sync = "--user obsidian:test-sync-password-000"
+
       # The admin authenticates with the plaintext password from sops, proving
       # the derived -pbkdf2:sha256- value round-trips.
-      server.succeed(
-          "curl -fsS --user couchadmin:test-admin-password http://127.0.0.1:5984/_up"
-      )
+      server.succeed(f"curl -fsS {admin} http://127.0.0.1:5984/_up")
       server.fail(
           "curl -fsS --user couchadmin:wrong-password http://127.0.0.1:5984/_up"
       )
@@ -69,7 +81,7 @@ in {
       # provision.ts:181-206 at tag 1.0.21.
       def config_value(section, key):
           return server.succeed(
-              "curl -fsS --user couchadmin:test-admin-password "
+              f"curl -fsS {admin} "
               f"http://127.0.0.1:5984/_node/_local/_config/{section}/{key}"
           ).strip()
 
@@ -100,22 +112,28 @@ in {
       server.wait_for_unit("nginx.service")
       server.wait_for_open_port(5985)
 
-      # The proxy reaches CouchDB and auth still applies through it.
-      server.succeed(
-          "curl -fsS --user couchadmin:test-admin-password http://127.0.0.1:5985/_up"
-      )
+      # The proxy reaches CouchDB and auth still applies through it. The root
+      # probe -- not /_up -- is what the allowlist further down actually
+      # admits; LiveSync's replication uses it to read server info before
+      # touching a database.
+      server.succeed(f"curl -fsS {admin} http://127.0.0.1:5985/")
       server.succeed(
           "test 401 = $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:5985/)"
       )
 
       # Tailnet-origin traffic carries no funnel marker and must never be
-      # throttled -- the initial vault seed runs over this path.
-      codes = server.succeed(
-          "for i in $(seq 1 40); do "
-          "curl -s -o /dev/null -w '%{http_code}\\n' "
-          "--user couchadmin:test-admin-password http://127.0.0.1:5985/_up; done"
+      # throttled -- the initial vault seed runs over this path. Asserting
+      # the exact response set (not just "no 429") matters: if auth broke
+      # instead, every request would 401 and "429 not in codes" would still
+      # pass despite nothing actually working.
+      codes = set(
+          server.succeed(
+              "for i in $(seq 1 40); do "
+              "curl -s -o /dev/null -w '%{http_code}\\n' "
+              f"{admin} http://127.0.0.1:5985/; done"
+          ).split()
       )
-      assert "429" not in codes, f"tailnet traffic was rate limited: {codes}"
+      assert codes == {"200"}, f"tailnet traffic was not uniformly 200: {codes}"
 
       # Funnel-origin traffic is throttled. tailscaled sets this header on
       # public requests (ipn/ipnlocal/serve.go at v1.98.5).
@@ -123,14 +141,29 @@ in {
           "for i in $(seq 1 40); do "
           "curl -s -o /dev/null -w '%{http_code}\\n' "
           "-H 'Tailscale-Funnel-Request: ?1' "
-          "--user couchadmin:test-admin-password http://127.0.0.1:5985/_up; done"
+          f"{admin} http://127.0.0.1:5985/; done"
       )
       assert "429" in codes, f"funnel traffic was not rate limited: {codes}"
 
-      server.wait_for_unit("obsidian-sync-provision.service")
+      # Per-IP keying, not one shared bucket for every funnel client. real_ip
+      # substitutes $binary_remote_addr with X-Forwarded-For here because
+      # curl's real source, 127.0.0.1, is trusted by set_real_ip_from -- so
+      # each distinct XFF below lands in its own limiter bucket. If real_ip
+      # were broken and every request collapsed into 127.0.0.1's own bucket
+      # instead, this would 429 immediately given the test's rate=1r/s
+      # burst=1.
+      codes = set(
+          server.succeed(
+              "for i in $(seq 1 40); do "
+              "curl -s -o /dev/null -w '%{http_code}\\n' "
+              "-H 'Tailscale-Funnel-Request: ?1' "
+              "-H \"X-Forwarded-For: 10.0.0.$i\" "
+              f"{admin} http://127.0.0.1:5985/; done"
+          ).split()
+      )
+      assert codes == {"200"}, f"distinct-IP funnel traffic was rate limited: {codes}"
 
-      admin = "--user couchadmin:test-admin-password"
-      sync = "--user obsidian:test-sync-password"
+      server.wait_for_unit("obsidian-sync-provision.service")
 
       # System databases exist. CouchDB does not create these on its own when
       # _cluster_setup is skipped, and replication fails without _users.
@@ -165,6 +198,70 @@ in {
       # Idempotent: a second run must not fail or clobber existing data.
       server.succeed("systemctl restart obsidian-sync-provision.service")
       server.succeed(f"curl -fsS {sync} http://127.0.0.1:5984/obsidiannotes/testdoc")
+
+      # The nginx allowlist: only the root probe and the vault database are
+      # reachable through the public-facing port. Everything else -- admin
+      # config, _users, _all_dbs, the Fauxton UI, an unrelated database name
+      # -- must 404 at nginx before Funnel could ever forward it to CouchDB,
+      # even with a valid admin credential in hand. CouchDB always answers
+      # with a JSON body carrying an "error" key on failure; nginx's bare
+      # `return 404` has no such body, which is what tells "nginx blocked
+      # this" apart from "CouchDB rejected this".
+      for path in (
+          "/_all_dbs",
+          "/_utils",
+          "/_utils/",
+          "/_node/_local/_config",
+          "/_cluster_setup",
+          "/_users",
+          "/otherdb",
+      ):
+          code = server.succeed(
+              "curl -s -o /dev/null -w '%{http_code}' "
+              f"{admin} http://127.0.0.1:5985{path}"
+          )
+          body = server.succeed(f"curl -s {admin} http://127.0.0.1:5985{path}")
+          assert code == "404", f"{path} should be blocked by the nginx allowlist, got {code}"
+          assert '"error"' not in body, f"{path} reached CouchDB instead of being blocked by nginx: {body}"
+
+      # The vault database itself is still reachable through the same port.
+      server.succeed(f"curl -fsS {admin} http://127.0.0.1:5985/obsidiannotes")
+
+      # Rotation: commit 48d6ae7's restartUnits claims a sops edit plus
+      # rebuild is a real credential rotation. Prove it -- rewrite the
+      # password file the way a rebuild would replace a sops secret file,
+      # restart what production restarts, and check both that the new
+      # password works and that the old one is actually gone, not just
+      # additionally accepted.
+      server.succeed(
+          "printf 'test-admin-password-999\\n' > /run/obsidian-sync-test/admin-password"
+      )
+      server.succeed(
+          "systemctl restart couchdb-admin-ini.service couchdb.service obsidian-sync-provision.service"
+      )
+      server.wait_for_unit("couchdb.service")
+      server.wait_for_open_port(5984)
+      server.wait_for_unit("obsidian-sync-provision.service")
+
+      admin = "--user couchadmin:test-admin-password-999"
+      server.succeed(f"curl -fsS {admin} http://127.0.0.1:5984/_up")
+      server.succeed(
+          "test 401 = $(curl -s -o /dev/null -w '%{http_code}' "
+          "--user couchadmin:test-admin-password-000 http://127.0.0.1:5984/_up)"
+      )
+
+      server.succeed(
+          "printf 'test-sync-password-999\\n' > /run/obsidian-sync-test/sync-password"
+      )
+      server.succeed("systemctl restart obsidian-sync-provision.service")
+      server.wait_for_unit("obsidian-sync-provision.service")
+
+      sync = "--user obsidian:test-sync-password-999"
+      server.succeed(f"curl -fsS {sync} http://127.0.0.1:5984/obsidiannotes")
+      server.succeed(
+          "test 401 = $(curl -s -o /dev/null -w '%{http_code}' "
+          "--user obsidian:test-sync-password-000 http://127.0.0.1:5984/obsidiannotes)"
+      )
 
       # funnel.enable is false for this node, so nothing may be published.
       server.fail("systemctl cat obsidian-sync-funnel.service")
