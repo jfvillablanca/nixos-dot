@@ -49,3 +49,14 @@ nvim-exp-t14g1:
 # Headless smoke test: load the experimental wrapped nvim, run a one-liner, exit 0.
 nvim-exp-smoke:
     nix run .#nvim-experimental -- --headless +'lua print("smoke: ok")' +q
+
+# Run the obsidian-sync NixOS VM test on rue. sienna is aarch64-darwin with no
+# Linux builder, so the worktree is synced to a scratch directory on rue and
+# built there. Uses a scratch copy rather than ~/nixos-dot so an in-progress
+# edit never disturbs the checkout rue actually deploys from. rsync excludes
+# .git, so nix sees a plain directory flake on rue and picks up files that are
+# still unstaged locally.
+obsidian-test:
+    rsync -a --delete --exclude .git --exclude result --exclude .direnv \
+      ./ rue:~/nixos-dot-wip/
+    ssh rue 'cd ~/nixos-dot-wip && nix build .#checks.x86_64-linux.obsidian-sync -L'
