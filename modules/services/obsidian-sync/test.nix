@@ -35,6 +35,13 @@ in {
         adminPasswordFile = "/etc/obsidian-sync-test/admin-password";
         syncPasswordFile = "/etc/obsidian-sync-test/sync-password";
         funnel.enable = false;
+
+        # Production values are 30r/s / burst 120. The test asserts the
+        # mechanism, not the tuning, so make it trip immediately.
+        rateLimit = {
+          rate = "1r/s";
+          burst = 1;
+        };
       };
 
       virtualisation.memorySize = 2048;
@@ -89,6 +96,36 @@ in {
 
       # The hashed form must never be written to disk outside tmpfs.
       server.succeed("grep -q '^couchadmin = -pbkdf2:sha256-' /run/couchdb/admin.ini")
+
+      server.wait_for_unit("nginx.service")
+      server.wait_for_open_port(5985)
+
+      # The proxy reaches CouchDB and auth still applies through it.
+      server.succeed(
+          "curl -fsS --user couchadmin:test-admin-password http://127.0.0.1:5985/_up"
+      )
+      server.succeed(
+          "test 401 = $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:5985/)"
+      )
+
+      # Tailnet-origin traffic carries no funnel marker and must never be
+      # throttled -- the initial vault seed runs over this path.
+      codes = server.succeed(
+          "for i in $(seq 1 40); do "
+          "curl -s -o /dev/null -w '%{http_code}\\n' "
+          "--user couchadmin:test-admin-password http://127.0.0.1:5985/_up; done"
+      )
+      assert "429" not in codes, f"tailnet traffic was rate limited: {codes}"
+
+      # Funnel-origin traffic is throttled. tailscaled sets this header on
+      # public requests (ipn/ipnlocal/serve.go at v1.98.5).
+      codes = server.succeed(
+          "for i in $(seq 1 40); do "
+          "curl -s -o /dev/null -w '%{http_code}\\n' "
+          "-H 'Tailscale-Funnel-Request: ?1' "
+          "--user couchadmin:test-admin-password http://127.0.0.1:5985/_up; done"
+      )
+      assert "429" in codes, f"funnel traffic was not rate limited: {codes}"
     '';
   };
 }

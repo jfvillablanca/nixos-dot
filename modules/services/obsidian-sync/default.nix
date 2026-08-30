@@ -184,6 +184,65 @@
         extraConfigFiles = [adminIni];
       };
 
+      services.nginx = {
+        enable = true;
+
+        appendHttpConfig = ''
+          # Funnel forwards through tailscaled on loopback, so without this
+          # every request would look like it came from 127.0.0.1 and the
+          # limiter below would key every client to the same bucket.
+          # tailscaled sets X-Forwarded-For to the real source
+          # (ipn/ipnlocal/serve.go at v1.98.5).
+          set_real_ip_from 127.0.0.1;
+          real_ip_header X-Forwarded-For;
+          real_ip_recursive off;
+
+          # An empty key disables limit_req for that request. Only funnel
+          # traffic carries the marker header, so public callers are throttled
+          # per source IP while tailnet-origin replication runs unmetered --
+          # which is what lets the phone seed the vault at full speed over the
+          # tailnet before switching to funnel-only operation.
+          map $http_tailscale_funnel_request $obsidian_limit_key {
+            default "";
+            "~." $binary_remote_addr;
+          }
+
+          limit_req_zone $obsidian_limit_key zone=obsidian_funnel:10m rate=${cfg.rateLimit.rate};
+          limit_req_status 429;
+        '';
+
+        virtualHosts."obsidian-sync" = {
+          listen = [
+            {
+              addr = "127.0.0.1";
+              port = cfg.nginxPort;
+            }
+          ];
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${toString couchdbPort}";
+            extraConfig = ''
+              limit_req zone=obsidian_funnel burst=${toString cfg.rateLimit.burst} nodelay;
+
+              # LiveSync's live mode holds a continuous _changes feed open;
+              # nginx's default response buffering would stall it.
+              proxy_buffering off;
+              proxy_read_timeout 600s;
+              proxy_http_version 1.1;
+
+              client_max_body_size ${toString cfg.maxHttpRequestSize};
+
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+
+              # No CORS headers here on purpose. CouchDB emits its own from the
+              # [cors] settings above, and a duplicated
+              # Access-Control-Allow-Origin makes browsers reject the response.
+            '';
+          };
+        };
+      };
+
       systemd.services.couchdb-admin-ini = {
         description = "Render CouchDB's [admins] stanza with a pre-hashed password";
         before = ["couchdb.service"];
