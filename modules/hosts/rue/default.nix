@@ -36,6 +36,7 @@ in {
       self.modules.nixos.wol
       self.modules.nixos.sops
       self.modules.nixos.adguard
+      self.modules.nixos.obsidian-sync
     ];
 
     networking.hostName = hostName;
@@ -65,6 +66,13 @@ in {
     sops.defaultSopsFile = ../../../secrets/rue.yaml;
     sops.secrets."rue-password".neededForUsers = true;
     users.users.${user}.hashedPasswordFile = config.sops.secrets."rue-password".path;
+
+    # Obsidian sync's CouchDB admin/sync credentials. Neither is
+    # neededForUsers -- that flag only matters for secrets the user-creation
+    # activation consumes, and these two are read by the Aspect's own
+    # hash-admin/provisioning units instead.
+    sops.secrets."couchdb-admin-password" = {};
+    sops.secrets."couchdb-sync-password" = {};
 
     # Make the sops hash the single source of truth: rewrites the existing
     # user's shadow entry from hashedPasswordFile on every activation. Safe now
@@ -143,6 +151,20 @@ in {
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
       wol.targets = self.constants.wolTargets;
+      obsidian-sync = {
+        enable = true;
+        # Both are `path`-typed but take quoted strings, not Nix path
+        # literals -- see the tailscale authKeyFile comment above and the
+        # Aspect's own adminPasswordFile doc. `.path` resolves to the
+        # sops-nix-managed /run/secrets file at activation.
+        adminPasswordFile = config.sops.secrets."couchdb-admin-password".path;
+        syncPasswordFile = config.sops.secrets."couchdb-sync-password".path;
+        # Left off for the first deploy: prove the loopback path (CouchDB +
+        # nginx + provisioning all healthy on 127.0.0.1) before publishing
+        # anything to the public internet over Tailscale Funnel. Do not flip
+        # this without a deliberate follow-up deploy -- see Task 5 step 7-8.
+        funnel.enable = false;
+      };
       xfce = {
         enable = true;
         autoLoginUser = user;
