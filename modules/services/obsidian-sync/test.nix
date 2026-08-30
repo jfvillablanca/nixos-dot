@@ -74,8 +74,11 @@ in {
       assert config_value("chttpd", "max_http_request_size") == '"4294967296"'
       assert config_value("couchdb", "max_document_size") == '"50000000"'
       assert config_value("chttpd_auth", "iterations") == '"10000"'
-      assert "app://obsidian.md" in config_value("cors", "origins")
-      assert "capacitor://localhost" in config_value("cors", "origins")
+      assert config_value("httpd", "WWW-Authenticate") == '"Basic realm=\\"couchdb\\""'
+      origins = config_value("cors", "origins")
+      assert "app://obsidian.md" in origins
+      assert "capacitor://localhost" in origins
+      assert "http://localhost" in origins
 
       # CouchDB must not have rewritten the credential into its own writable
       # config. If an [admins] section appears here, the value was not

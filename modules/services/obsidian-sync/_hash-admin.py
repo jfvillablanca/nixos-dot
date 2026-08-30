@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render CouchDB's [admins] ini stanza with a pre-hashed password.
 
-CouchDB 3.5.1 stores administrator passwords as
+CouchDB 3.5.2 stores administrator passwords as
 
     -pbkdf2:<prf>-<derived_key_hex>,<salt_hex>,<iterations>
 
@@ -25,8 +25,11 @@ import sys
 
 user, password_file, iterations = sys.argv[1], sys.argv[2], int(sys.argv[3])
 
-with open(password_file, "rb") as handle:
-    password = handle.read().strip()
+try:
+    with open(password_file, "rb") as handle:
+        password = handle.read().strip()
+except FileNotFoundError:
+    sys.exit(f"{password_file} does not exist; point adminPasswordFile/syncPasswordFile at a real secret")
 
 if not password:
     sys.exit(f"{password_file} is empty; refusing to configure a blank admin password")
