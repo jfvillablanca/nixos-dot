@@ -36,6 +36,7 @@ in {
       self.modules.nixos.wol
       self.modules.nixos.sops
       self.modules.nixos.adguard
+      self.modules.nixos.obsidian-sync
     ];
 
     networking.hostName = hostName;
@@ -65,6 +66,54 @@ in {
     sops.defaultSopsFile = ../../../secrets/rue.yaml;
     sops.secrets."rue-password".neededForUsers = true;
     users.users.${user}.hashedPasswordFile = config.sops.secrets."rue-password".path;
+
+    # Obsidian sync's CouchDB admin/sync credentials. Neither is
+    # neededForUsers -- that flag only matters for secrets the user-creation
+    # activation consumes, and these two are read by the Aspect's own
+    # hash-admin/provisioning units instead.
+    #
+    # restartUnits makes `sops edit secrets/rue.yaml` + rebuild an actual
+    # rotation instead of just updating the plaintext under /run/secrets:
+    # sops-nix only restarts/reloads units a secret names here (see
+    # sops.secrets.*.restartUnits in the sops-nix module), so without this a
+    # rotation silently leaves CouchDB and the sync account authenticating
+    # against the old password until something else happens to bounce the
+    # right units.
+    #
+    # - couchdb-admin-password rotates: couchdb-admin-ini.service re-renders
+    #   /run/couchdb/admin.ini with the new hash, then couchdb.service itself
+    #   must restart -- CouchDB reads its ini files at startup only, it does
+    #   not watch admin.ini for changes, so re-rendering alone leaves the old
+    #   hash loaded. obsidian-sync-provision.service is included too: it
+    #   authenticates *as* the admin, so restarting it re-proves the new
+    #   admin password actually works end-to-end (a failure surfaces here
+    #   immediately, as a failed unit, instead of silently at the next
+    #   unrelated CouchDB restart) and is a no-op otherwise -- it just
+    #   re-upserts the same _users document and _security stanza.
+    # - couchdb-sync-password rotates: only obsidian-sync-provision.service
+    #   needs to re-run, to re-upsert org.couchdb.user:obsidian with the new
+    #   plaintext (CouchDB hashes it on the way in). No CouchDB restart, no
+    #   sync downtime.
+    #
+    # All three units are oneshot + RemainAfterExit; systemd's restart verb
+    # (stop, then re-run ExecStart) re-executes them in full, so this isn't
+    # just marking them "changed" -- it actually redoes the work. And
+    # couchdb-admin-ini's existing `before`/`requiredBy` on couchdb.service
+    # (and obsidian-sync-provision's `after`/`requires` on couchdb.service)
+    # keep the three ordered correctly even when several restarts are
+    # submitted in the same activation.
+    #
+    # Trade-off, accepted deliberately: rotating the admin password bounces
+    # couchdb.service, so sync clients see a short gap and reconnect on
+    # their own. That is correct behaviour for a credential rotation (the
+    # old hash must stop being valid), not a bug -- rotating the sync
+    # password alone causes no CouchDB downtime at all.
+    sops.secrets."couchdb-admin-password".restartUnits = [
+      "couchdb-admin-ini.service"
+      "couchdb.service"
+      "obsidian-sync-provision.service"
+    ];
+    sops.secrets."couchdb-sync-password".restartUnits = ["obsidian-sync-provision.service"];
 
     # Make the sops hash the single source of truth: rewrites the existing
     # user's shadow entry from hashedPasswordFile on every activation. Safe now
@@ -143,6 +192,28 @@ in {
       # Always-on + LAN-wired -> the reliable WoL sender. `ssh rue
       # wake-defenestration` from anywhere on the tailnet powers on the box.
       wol.targets = self.constants.wolTargets;
+      obsidian-sync = {
+        enable = true;
+        # Both are `path`-typed but take quoted strings, not Nix path
+        # literals -- see the tailscale authKeyFile comment above and the
+        # Aspect's own adminPasswordFile doc. `.path` resolves to the
+        # sops-nix-managed /run/secrets file at activation.
+        adminPasswordFile = config.sops.secrets."couchdb-admin-password".path;
+        syncPasswordFile = config.sops.secrets."couchdb-sync-password".path;
+        # ON: nginx's port is published to the public internet at rue's
+        # `.ts.net` hostname, defended by one password, the members-only
+        # sync account, the path allowlist, and the rate limiter above.
+        #
+        # This depends on a manual Tailscale policy change that lives
+        # outside this repo: `nodeAttrs` must grant the `funnel` attribute
+        # to `tag:server`. Note the attribute must target the tag, not
+        # `autogroup:member` as Tailscale's own default example does --
+        # tagged devices are not members, so the documented default grants
+        # rue nothing. Revoke that attribute and the funnel unit fails
+        # loudly on the next activation rather than silently publishing
+        # nothing.
+        funnel.enable = true;
+      };
       xfce = {
         enable = true;
         autoLoginUser = user;
