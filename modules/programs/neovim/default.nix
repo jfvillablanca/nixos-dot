@@ -68,6 +68,12 @@
       '';
     };
 
+    options.myHomeModules.neovim.obsidian.enable =
+      lib.mkEnableOption "obsidian.nvim for editing notes in an Obsidian vault"
+      // {
+        default = false;
+      };
+
     config = {
       xdg.configFile."nvim/lua/lsp" = {
         source = ./lua/lsp;
@@ -636,6 +642,11 @@
                   vim.cmd('colorscheme base16-${cfg.base16Scheme}')
                 ''
                 + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
+            }
+            ++ lib.optional cfg.obsidian.enable {
+              plugin = obsidian-nvim;
+              type = "lua";
+              config = builtins.readFile ./lua/obsidian.lua;
             });
 
           extraPackages = with pkgs; [
