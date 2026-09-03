@@ -8,16 +8,16 @@
         enableFishIntegration = true;
         # FIXME: Doesn't work. Requires 'fd' to be available
         # in runtime
-        # changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
-        changeDirWidgetCommand = "fd --type d";
-        changeDirWidgetOptions = [
-          "--preview 'tree -C {} | head -200'"
-        ];
-        fileWidgetCommand = "fd --type f";
-        fileWidgetOptions = [
-          "--preview 'head {}'"
-        ];
-        historyWidgetOptions = [
+        # changeDirWidget.command = "${pkgs.fd}/bin/fd --type d";
+        changeDirWidget = {
+          command = "fd --type d";
+          options = ["--preview 'tree -C {} | head -200'"];
+        };
+        fileWidget = {
+          command = "fd --type f";
+          options = ["--preview 'head {}'"];
+        };
+        historyWidget.options = [
           "--sort"
           "--exact"
         ];
