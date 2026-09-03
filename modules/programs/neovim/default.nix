@@ -14,6 +14,43 @@
       ./lua/cmp.lua # requires luasnip
     ];
     rcLua = builtins.concatStringsSep "\n" (map builtins.readFile luaConfig);
+
+    # home-manager concatenates every plugin's `config` into ONE init.lua
+    # chunk, so a top-level `return` in any single config silently discards
+    # every config that follows it -- no error, no warning. This config uses
+    # the `local status_ok, m = pcall(require, "...")` / `if not status_ok then
+    # return end` guard in 24 places, so the first plugin whose module goes
+    # missing upstream takes the whole rest of the file down with it. That
+    # already happened once: nvim-treesitter's move to its `main` branch
+    # dropped the `nvim-treesitter.configs` module, and roughly half of this
+    # file stopped running.
+    #
+    # Giving each lua config its own function scopes those returns to the
+    # plugin that wrote them. Closures still capture locals declared earlier in
+    # the chunk, so only a config reaching for an *earlier plugin config's*
+    # locals would notice -- none do. `viml` configs are left alone; a lua
+    # wrapper around vimscript would not even parse.
+    #
+    # `do local function ... end` rather than the shorter `(function() end)()`:
+    # a statement beginning with `(` is parsed as a call on whatever preceded
+    # it, so an immediately-invoked function landing after a config that ends
+    # in a call raises "ambiguous syntax (function call x new statement)".
+    # Opening with `do` cannot be read as a continuation of anything.
+    isolateLuaConfig = p:
+      if p ? plugin && p ? config && (p.type or null) == "lua"
+      then
+        p
+        // {
+          config = ''
+            do
+              local function __nvim_plugin_config()
+            ${p.config}
+              end
+              __nvim_plugin_config()
+            end
+          '';
+        }
+      else p;
     neovimInit =
       if options.programs.neovim ? initLua
       then {initLua = rcLua;}
@@ -47,7 +84,7 @@
           withPython3 = true;
           withRuby = true;
 
-          plugins = with pkgs.vimPlugins;
+          plugins = map isolateLuaConfig (with pkgs.vimPlugins;
             [
               # nvim-tree
               {
@@ -599,7 +636,7 @@
                   vim.cmd('colorscheme base16-${cfg.base16Scheme}')
                 ''
                 + builtins.readFile ./lua/colorschemes/setsemantichighlight.lua;
-            };
+            });
 
           extraPackages = with pkgs; [
             # Treesitter complains for a C compiler on the PATH acc to checkhealth
