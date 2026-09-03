@@ -30,4 +30,19 @@
       package = pkgs.nixVersions.stable;
     };
   };
+
+  # darwin gets `nixPath` and nothing else. nix-darwin defaults it to
+  # ["nixpkgs=flake:nixpkgs" "/nix/var/nix/profiles/per-user/root/channels"],
+  # and that second entry does not exist on a channel-less setup -- so every
+  # nix invocation opens with "warning: Nix search path entry
+  # '/nix/var/nix/profiles/per-user/root/channels' does not exist, ignoring".
+  # Pointing it at the flake's own nixpkgs silences that and makes `<nixpkgs>`
+  # resolve to the same tree the flake builds against.
+  #
+  # The rest of the nixos block above is deliberately NOT shared: sienna runs
+  # Lix, so `package` must not be forced from here, and nix-darwin spells the
+  # gc schedule differently (`nix.gc.interval`, not `nix.gc.dates`).
+  flake.modules.darwin.nix = {inputs, ...}: {
+    nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+  };
 }
