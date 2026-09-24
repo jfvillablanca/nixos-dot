@@ -58,6 +58,12 @@
 
   myHomeModules.claudeCode.enable = true;
 
+  # sienna is the host with an Obsidian vault on it (synced from rue). No vault
+  # path is configured anywhere: obsidian.nvim finds the vault by walking up
+  # for the `.obsidian/` marker, so this is the whole opt-in. Left off on the
+  # Linux hosts, which have no vault to edit.
+  myHomeModules.neovim.obsidian.enable = true;
+
   # Materialised by sops at activation; see sops.secrets."deepseek-api-key" in
   # this host's default.nix. /run/secrets is a hardcoded constant of sops-nix's
   # darwin module, not a path this repo picks, so spelling it literally

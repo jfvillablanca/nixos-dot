@@ -85,8 +85,9 @@ octo.setup({
     file_panel = {
         -- changed files panel rows
         size = 10,
-        -- use web-devicons in file panel (if false, nvim-web-devicons does not need to be installed)
-        use_icons = true,
+        -- true = nvim-web-devicons, false = disabled, function = custom provider
+        -- (renamed from `use_icons`, which octo now hard-errors on)
+        icons = true,
     },
     -- used for highlight groups (see Colors section below)
     colors = {

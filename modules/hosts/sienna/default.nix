@@ -20,6 +20,7 @@ in {
       self.modules.darwin.tailscale
       self.modules.darwin.known-hosts
       self.modules.darwin.timezone
+      self.modules.darwin.nix
       self.modules.darwin.nix-index
       self.modules.darwin.kanata
       self.modules.darwin.docker

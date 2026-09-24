@@ -32,7 +32,7 @@
       home = {
         username = name;
         homeDirectory =
-          if pkgs.stdenv.isDarwin
+          if pkgs.stdenv.hostPlatform.isDarwin
           then "/Users/${name}"
           else "/home/${name}";
         # Don't touch me :)
