@@ -63,6 +63,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "BufReadPost", "BufNewFile" }, {
             workspaces = { { name = vim.fs.basename(root), path = root } },
             legacy_commands = false,
             ui = { enable = false },
+            templates = { folder = "Templates" },
         })
     end,
 })
