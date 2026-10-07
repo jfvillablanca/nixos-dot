@@ -111,12 +111,18 @@
     ''
   );
 
+  # `system_tray=disabled`: Sunshine updates its menu-bar icon from the RTSP
+  # thread when a stream starts; macOS 27 AppKit traps off-main-thread
+  # NSStatusItem mutation (SIGTRAP in tray_update), killing Sunshine on every
+  # connect. A `key=value` arg overrides sunshine.conf, so the web UI can't
+  # re-enable it.
   launchd.agents.sunshine = {
     enable = true;
     config = {
       ProgramArguments = [
         "${config.home.homeDirectory}/Applications/Sunshine.app/Contents/MacOS/Sunshine"
         "${config.home.homeDirectory}/.config/sunshine/sunshine.conf"
+        "system_tray=disabled"
       ];
       RunAtLoad = true;
       KeepAlive = true;
