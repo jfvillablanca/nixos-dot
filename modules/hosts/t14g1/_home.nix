@@ -30,6 +30,7 @@
       nom
       ripgrep
       starship
+      tailscale
       tmux
       wezterm
       kitty

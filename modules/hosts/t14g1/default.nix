@@ -76,7 +76,11 @@ in {
 
     myNixosModules = {
       steam.enable = false;
-      tailscale.enable = true;
+      tailscale = {
+        enable = true;
+        # `tailscale file cp`, and so `tsend`, without sudo.
+        operator = user;
+      };
       distributedBuilds.enable = true;
       openssh.enable = true;
       persistence = {

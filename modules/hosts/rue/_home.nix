@@ -47,6 +47,10 @@
       # resurrect uses the ~/.tmux/resurrect default; persist it so
       # continuum-restore brings sessions back after the root wipe.
       ".tmux/resurrect"
+      # Taildrop arrivals waiting for pickup (myNixosModules.taildropInbox).
+      # Persisted here rather than by the Aspect so impermanence treats
+      # /home/jmfv as the permission boundary.
+      "Inbox"
     ];
   };
 

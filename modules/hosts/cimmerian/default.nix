@@ -65,7 +65,11 @@ in {
 
     myNixosModules = {
       steam.enable = true;
-      tailscale.enable = true;
+      tailscale = {
+        enable = true;
+        # `tailscale file cp`, and so `tsend`, without sudo.
+        operator = user;
+      };
     };
 
     users.extraGroups.docker.members = ["username-with-access-to-socket"];

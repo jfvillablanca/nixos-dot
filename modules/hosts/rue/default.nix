@@ -37,6 +37,7 @@ in {
       self.modules.nixos.sops
       self.modules.nixos.adguard
       self.modules.nixos.obsidian-sync
+      self.modules.nixos.taildrop-inbox
     ];
 
     networking.hostName = hostName;
@@ -214,6 +215,10 @@ in {
         # nothing.
         funnel.enable = true;
       };
+      # A second, untagged node (`rue-inbox`) that personal devices can
+      # Taildrop to, since rue's own node is tagged. One-time interactive
+      # login: see docs/taildrop-inbox.md.
+      taildropInbox.enable = true;
       xfce = {
         enable = true;
         autoLoginUser = user;
