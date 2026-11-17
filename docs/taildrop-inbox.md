@@ -43,10 +43,11 @@ AdGuard DNS -- is untouched.
 
 ## Bootstrap (once)
 
-1. Deploy rue with the Aspect enabled:
+1. Deploy rue with the Aspect enabled. `-t` gives sudo a terminal for its
+   password prompt:
 
    ```bash
-   ssh rue 'cd ~/nixos-dot && git pull && sudo nixos-rebuild switch --flake .#rue'
+   ssh -t rue 'cd ~/nixos-dot && git pull && sudo nixos-rebuild switch --flake .#rue'
    ```
 
 2. Log the inbox node in as `jmfv`. No sudo: the daemon runs as `jmfv`, and a
@@ -65,7 +66,15 @@ AdGuard DNS -- is untouched.
    Otherwise the node logs out when its key expires and files stop arriving
    until it is logged back in.
 
-4. Check it:
+4. Rebuild cimmerian and t14g1 as well, each from its own checkout:
+
+   ```bash
+   sudo nixos-rebuild switch --flake .#<host>
+   ```
+
+   They get `tsend` and the operator setting only from their own rebuild.
+
+5. Check it:
 
    ```bash
    ssh rue tailscale-inbox status
@@ -88,14 +97,23 @@ wipe, so this is a one-time step unless the node is removed in the console.
 
 ## Picking files up
 
-Files land in `/home/jmfv/Inbox` on rue, owned by `jmfv`, mode 0700, and
-survive reboots until moved out. A name that is already taken gets renamed
-rather than overwritten (`--conflict=rename`). Pull them off with anything
-that speaks SSH:
+Files land in `/home/jmfv/Inbox` on rue -- a directory only `jmfv` can enter
+(mode 0700) -- as files owned by `jmfv` with mode 0644, and survive reboots
+until moved out. A name that is already taken gets renamed rather than
+overwritten (`--conflict=rename`). Pull them off with anything that speaks
+SSH:
 
 ```bash
 rsync -av --remove-source-files rue:Inbox/ ~/Downloads/
 ```
+
+A copy into `~/Inbox` that fails partway -- a full disk, or the daemon
+restarting mid-copy -- leaves a truncated file under the real name. The
+original stays waiting in `/var/lib/tailscale-inbox` and the getter retries,
+so the complete copy lands under a numbered name such as `name (1).ext`;
+delete the stub. While the disk stays full, each 5-second retry leaves
+another stub. Neither directory has a size cap, and both share `/persist`
+with other services' data.
 
 ## Constraints
 
@@ -117,6 +135,10 @@ rsync -av --remove-source-files rue:Inbox/ ~/Downloads/
   `tailscale file cp` fails with `Access denied: file access denied` and
   prints the `sudo tailscale set --operator=$USER` hint. cimmerian and t14g1
   set `myNixosModules.tailscale.operator`; anywhere else, run that once.
+- **A manual `sudo tailscale up ...` on cimmerian or t14g1 must include
+  `--operator=jmfv`.** `up` keeps the operator implicitly only when `$USER`
+  matches it, and under sudo `$USER` is root; without the flag `up` refuses
+  and prints the flags to add.
 - **No store-and-forward.** Both ends have to be online during a transfer.
   rue is always on, so in practice only the sender matters.
 
@@ -144,7 +166,11 @@ ssh rue tailscale-inbox status
   directory. Check `journalctl -u tailscaled-inbox` for
   `Taildrop disabled; no state directory` -- that means the unit lost its
   `--statedir` flag (tailscale v1.102.2 feature/taildrop/retrieve.go:66-67,
-  feature/taildrop/ext.go:143-147,196-199).
+  feature/taildrop/ext.go:144-148,196-199).
 - `"/home/jmfv/Inbox" is not a directory`: the inbox directory is gone and
-  the getter restarts every 5 seconds until it is back.
-  `sudo systemd-tmpfiles --create` recreates it.
+  the getter restarts every 5 seconds until it is back. On rue `~/Inbox` is a
+  bind mount of `/persist/home/jmfv/Inbox`, so look there:
+  `systemctl status home-jmfv-Inbox.mount` and
+  `ls -ld /persist/home/jmfv/Inbox`. Not `systemd-tmpfiles --create`: with
+  the mount down it would make a plain directory on the wiped root, and the
+  getter needs the mount anyway (`RequiresMountsFor=`).
