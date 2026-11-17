@@ -87,6 +87,26 @@ in {
       assert code == 1 and "Logged out." in out, f"unexpected status: {code} {out!r}"
       machine.succeed(f"{inbox} status --json | jq -e '.TUN == false'")
 
+      # Only the user reaches the socket: its directory is private, so any
+      # other local user fails to connect at all rather than getting the
+      # read-only access a world-writable socket would give them
+      # (ipn/ipnauth/ipnauth.go:166-206), which is enough for `debug prefs`.
+      # Not `status`: on error it looks for a process named `tailscaled`
+      # and, finding only nixpkgs' `.tailscaled-wrapped`, replaces the error
+      # with a generic "doesn't appear to be running"
+      # (cmd/tailscale/cli/status.go:84-86, cmd/tailscale/cli/diag.go:33-62).
+      # `debug prefs` passes the dial error through
+      # (cmd/tailscale/cli/debug.go:630-634, client/local/local.go:180-185).
+      rundir = machine.succeed("stat -c '%U %G %a' /run/tailscale-inbox").strip()
+      assert rundir == "${user} users 700", f"runtime dir is {rundir}"
+      code, out = machine.execute(
+          "runuser -u nobody -- /run/current-system/sw/bin/tailscale-inbox"
+          " debug prefs 2>&1"
+      )
+      assert code != 0 and "connect: permission denied" in out, (
+          f"nobody got: {code} {out!r}"
+      )
+
       # Requirement 5: shields up from the first start, before any login.
       # With no netmap the packet filter drops everything anyway
       # (ipn/ipnlocal/local.go:3460-3466), so a sealed VM can only check the

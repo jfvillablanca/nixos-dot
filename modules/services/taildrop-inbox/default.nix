@@ -140,8 +140,18 @@
           # re-chowns it to User= if the backing copy was created as root.
           StateDirectory = name;
           StateDirectoryMode = "0700";
+          # The socket itself is world-writable (safesocket/unixsocket.go:45,
+          # 69,85-88), and any local user would get read access through it;
+          # the directory keeps them out.
           RuntimeDirectory = name;
+          RuntimeDirectoryMode = "0700";
+          NoNewPrivileges = true;
+          PrivateTmp = true;
           Restart = "on-failure";
+          # systemd's 100ms default would burn through the start limit (5
+          # starts in 10s) on a persistent fault and leave the daemon dead
+          # while the getter keeps polling it.
+          RestartSec = "5s";
         };
       };
 
