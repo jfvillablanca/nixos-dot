@@ -34,6 +34,7 @@
       pet
       ripgrep
       starship
+      tailscale
       tmux
       wezterm
       yazi
