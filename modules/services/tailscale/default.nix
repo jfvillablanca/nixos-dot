@@ -15,7 +15,8 @@
       (lib.optional cfg.enableSSH "--ssh")
       ++ (lib.optional cfg.advertiseExitNode "--advertise-exit-node")
       ++ (lib.optional (cfg.advertiseRoutes != [])
-        "--advertise-routes=${lib.concatStringsSep "," cfg.advertiseRoutes}");
+        "--advertise-routes=${lib.concatStringsSep "," cfg.advertiseRoutes}")
+      ++ (lib.optional (cfg.operator != null) "--operator=${cfg.operator}");
   in {
     options.myNixosModules.tailscale = {
       enable =
@@ -80,6 +81,19 @@
           console (Machines -> host -> approve subnet routes). Consuming
           peers also need `--accept-routes` (default on macOS/iOS/Windows/
           Android; off on Linux). Empty (default) = not a subnet router.
+        '';
+      };
+
+      operator = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        example = "jmfv";
+        description = ''
+          Local user made the daemon's operator (`--operator`), giving them
+          LocalAPI write access without sudo: `tailscale file cp` (and so
+          `tsend`), `tailscale set`, `tailscale up`. Linux otherwise leaves
+          non-root users read-only, and `file cp` fails with "Access denied:
+          file access denied". Null (default) = root only.
         '';
       };
 
