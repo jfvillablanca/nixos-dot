@@ -28,6 +28,7 @@
       neovim
       nh
       nom
+      obsidian-backup
       ripgrep
       sol
       starship
@@ -63,6 +64,14 @@
   # for the `.obsidian/` marker, so this is the whole opt-in. Left off on the
   # Linux hosts, which have no vault to edit.
   myHomeModules.neovim.obsidian.enable = true;
+
+  # The vault lives on sienna in plaintext; rue holds only E2E-encrypted
+  # CouchDB chunks, so this is the only host that can snapshot readable notes.
+  # homeDirectory rather than a literal path so nothing bakes in a username.
+  myHomeModules.obsidian-backup = {
+    enable = true;
+    vaultPath = "${config.home.homeDirectory}/Documents/Obsidian Vault";
+  };
 
   # Materialised by sops at activation; see sops.secrets."deepseek-api-key" in
   # this host's default.nix. /run/secrets is a hardcoded constant of sops-nix's
