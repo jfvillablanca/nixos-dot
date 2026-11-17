@@ -7,7 +7,7 @@ sheet -- and they land in `~/Inbox` on rue, owned by `jmfv`, with no manual
 service feed. Where this lives in the repo:
 
 - `modules/services/taildrop-inbox/default.nix` -- the Aspect: the second
-  tailscaled, the getter loop, the `tailscale-inbox` wrapper, and the four
+  tailscaled, the getter loop, the `tailscale-inbox` wrapper, and the five
   hard requirements with their source citations.
 - `modules/services/taildrop-inbox/test.nix` -- the VM test, run on rue with
   `just taildrop-inbox-test`.
@@ -53,11 +53,13 @@ AdGuard DNS -- is untouched.
    caller with the daemon's own uid gets write access without `--operator`.
 
    ```bash
-   ssh rue tailscale-inbox up --hostname=rue-inbox
+   ssh rue tailscale-inbox up --hostname=rue-inbox --shields-up
    ```
 
    Open the printed URL and log in with your own account -- not a tag, not an
-   auth key.
+   auth key. Keep `--shields-up` (see Constraints): this first `up` replaces
+   the node's settings wholesale, so leaving it out would open the node until
+   the daemon next restarts.
 
 3. In the admin console, Machines -> `rue-inbox` -> Disable key expiry.
    Otherwise the node logs out when its key expires and files stop arriving
@@ -104,6 +106,13 @@ rsync -av --remove-source-files rue:Inbox/ ~/Downloads/
   routes overlapping the LAN or peer endpoints. The inbox daemon's sockets
   carry no fwmark, so they follow the main node's routing table. Advertising
   an exit node and subnets, as rue does, is fine.
+- **The inbox node stays shields-up.** In userspace mode, a connection to
+  `rue-inbox`'s own Tailscale IP that nothing in tailscaled handles is
+  forwarded to the same port on rue's 127.0.0.1, so without shields up every
+  device that can reach `rue-inbox` reaches rue's loopback-only services,
+  such as AdGuard's admin UI and CouchDB. Shields up still lets Taildrop
+  through. The daemon re-applies it on every start; never turn it off, and
+  pass `--shields-up` to any `tailscale-inbox up`.
 - **Sending from Linux needs operator rights.** Without them
   `tailscale file cp` fails with `Access denied: file access denied` and
   prints the `sudo tailscale set --operator=$USER` hint. cimmerian and t14g1

@@ -4,8 +4,8 @@
 # A sealed VM has no Tailscale control plane, so this proves the plumbing
 # only: the inbox daemon and getter run as the user next to a kernel-mode
 # main daemon, and the inbox daemon's startup leaves the host's resolver
-# alone. Login, delivery and the file-sharing node cap are checked by hand at
-# bootstrap (docs/taildrop-inbox.md).
+# alone and puts its shields up. Login, delivery and the file-sharing node
+# cap are checked by hand at bootstrap (docs/taildrop-inbox.md).
 {
   inputs,
   self,
@@ -87,6 +87,14 @@ in {
       assert code == 1 and "Logged out." in out, f"unexpected status: {code} {out!r}"
       machine.succeed(f"{inbox} status --json | jq -e '.TUN == false'")
 
+      # Requirement 5: shields up from the first start, before any login.
+      # With no netmap the packet filter drops everything anyway
+      # (ipn/ipnlocal/local.go:3460-3466), so a sealed VM can only check the
+      # pref the filter is built from once a netmap arrives
+      # (ipn/ipnlocal/local.go:3469-3471). `debug prefs` needs only read
+      # access (ipn/localapi/localapi.go:999-1002).
+      machine.succeed(f"{inbox} debug prefs | jq -e '.ShieldsUp == true'")
+
       # Requirement 2: --statedir, never --state; logs follow $STATE_DIRECTORY
       # into the same directory.
       unit_file = machine.succeed("systemctl cat tailscaled-inbox.service")
@@ -133,6 +141,10 @@ in {
       machine.succeed("ip link show tailscale0")
       machine.wait_until_succeeds(f"tailscale {logged_out}")
       machine.succeed("tailscale status --json | jq -e '.TUN == true'")
+      # Shields up is the inbox daemon's alone: the main node serves the
+      # tailnet on purpose. This converse is also what makes the ShieldsUp
+      # checks on the inbox daemon tell the two daemons apart.
+      machine.succeed("tailscale debug prefs | jq -e '.ShieldsUp == false'")
 
       # Requirement 1, end to end. tailscaled runs dns.CleanUp before it serves
       # anything, even in userspace mode (cmd/tailscaled/tailscaled.go:517).
@@ -141,6 +153,12 @@ in {
       # (net/dns/direct.go:568-578) -- given root's write access to /etc. The
       # decoy is the control that fails under root; the hash shows
       # resolv.conf itself is untouched.
+      #
+      # The same restart shows requirement 5 is re-applied on every start,
+      # not merely remembered: shields go down by hand first, as a stray
+      # `tailscale-inbox set` or `up` without --shields-up would leave them.
+      machine.succeed(f"{inbox} set --shields-up=false")
+      machine.succeed(f"{inbox} debug prefs | jq -e '.ShieldsUp == false'")
       machine.succeed("systemctl stop tailscaled-inbox.service")
       machine.succeed("echo decoy > /etc/resolv.tailscale.conf")
       machine.succeed("grep -qx 'nameserver 127.0.0.1' /etc/resolv.conf")
@@ -154,9 +172,11 @@ in {
       after = machine.succeed("sha256sum /etc/resolv.conf")
       assert after == before, "the inbox daemon changed /etc/resolv.conf"
       machine.succeed("test -f /etc/resolv.tailscale.conf")
+      machine.succeed(f"{inbox} debug prefs | jq -e '.ShieldsUp == true'")
 
-      # A daemon crash: Restart=on-failure brings it back, and the getter,
-      # never stopped, is still there to serve it.
+      # A daemon crash: Restart=on-failure brings it back with shields up
+      # again, and the getter, never stopped, is still there to serve it.
+      machine.succeed(f"{inbox} set --shields-up=false")
       machine.succeed("systemctl kill -s KILL tailscaled-inbox.service")
       machine.wait_until_succeeds(
           "systemctl show -p NRestarts --value tailscaled-inbox.service"
@@ -164,6 +184,7 @@ in {
       )
       machine.wait_for_unit("tailscaled-inbox.service")
       machine.wait_until_succeeds(f"{inbox} {logged_out}")
+      machine.succeed(f"{inbox} debug prefs | jq -e '.ShieldsUp == true'")
       machine.succeed("systemctl is-active taildrop-inbox.service")
 
       # Starting the getter alone pulls the daemon in (fresh boot ordering).

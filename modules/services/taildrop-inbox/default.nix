@@ -7,7 +7,7 @@
 # tailscaled is untouched.
 #
 # Citations are to the tailscale source at v1.102.2, the version installed
-# fleet-wide. Four requirements shape this Aspect:
+# fleet-wide. Five requirements shape this Aspect:
 #
 # 1. Non-root. tailscaled runs dns.CleanUp at startup even in userspace mode
 #    (cmd/tailscaled/tailscaled.go:517, net/dns/manager.go:677-692). As root
@@ -31,6 +31,23 @@
 # 4. Control side, not verifiable from client source: an interactive,
 #    untagged login yields a user-owned node carrying the file-sharing node
 #    cap, like any personal device. Confirmed once, at bootstrap.
+# 5. Shields up. In userspace-networking mode netstack owns the node's own
+#    Tailscale IP (cmd/tailscaled/netstack.go:41) and forwards any inbound
+#    connection it has no handler for to the same port on 127.0.0.1
+#    (wgengine/netstack/netstack.go:1697-1698,1747-1752; UDP likewise,
+#    2038-2040) -- handing every peer that can reach this node the host's
+#    loopback-only services. The kernel-mode main daemon never does that.
+#    Shields up installs a packet filter with no accept rules
+#    (ipn/ipnlocal/local.go:3469-3471, wgengine/filter/filter.go:204-216)
+#    that drops new inbound flows before netstack sees them
+#    (net/tstun/wrap.go:1163,1176-1204; netstack.go:443), except SYNs to
+#    the peerapi port, whose ACLs -- Taildrop's included -- are enforced at
+#    L7 (net/tstun/wrap.go:1165-1174, feature/taildrop/peerapi.go:30-37).
+#    No Taildrop path consults it (feature/taildrop/ext.go:334-375). The
+#    daemon re-applies it after every start, and the interactive login must
+#    pass `--shields-up` as well: the first `up` replaces prefs wholesale
+#    without the usual "mention all non-default flags" check
+#    (cmd/tailscale/cli/up.go:684-686,1011-1014).
 {
   flake.modules.nixos.taildrop-inbox = {
     config,
@@ -46,8 +63,8 @@
     socket = "/run/${name}/tailscaled.sock";
 
     # The stock CLI pointed at this daemon instead of the main one:
-    # `tailscale-inbox up --hostname=rue-inbox` once to log in,
-    # `tailscale-inbox status` after that.
+    # `tailscale-inbox up --hostname=rue-inbox --shields-up` once to log in
+    # (requirement 5), `tailscale-inbox status` after that.
     inboxCli = pkgs.writeShellApplication {
       inherit name;
       runtimeInputs = [pkg];
@@ -111,6 +128,14 @@
           # /run/tailscale and 41641; tailscaled holds no other global lock
           # (safesocket/unixsocket.go:35-41).
           ExecStart = "${pkg}/bin/tailscaled --tun=userspace-networking --statedir=${stateDir} --socket=${socket} --port=0";
+          # Requirement 5, on every start, so a stray `set` or `up` cannot
+          # leave the node open past a restart. tailscaled signals READY
+          # once its LocalAPI listens (ipn/ipnserver/server.go:529-531), and
+          # requests made before the backend is up wait for it
+          # (ipn/ipnserver/server.go:99-118). If this fails, systemd stops
+          # the daemon: the node goes offline rather than open.
+          Type = "notify";
+          ExecStartPost = "${pkg}/bin/tailscale --socket=${socket} set --shields-up";
           # Also implies RequiresMountsFor= on the persisted bind mount, and
           # re-chowns it to User= if the backing copy was created as root.
           StateDirectory = name;
