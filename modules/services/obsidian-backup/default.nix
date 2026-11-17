@@ -20,11 +20,11 @@
 
     backup = pkgs.writeShellApplication {
       name = "obsidian-backup";
-      # openssh is not optional. writeShellApplication pins PATH to exactly
-      # these inputs, and `git push` over an ssh remote forks `ssh` by name --
-      # without it the push dies with "cannot run ssh: No such file or
-      # directory" while every local step still succeeds, so the job would
-      # commit forever and never publish anything.
+      # writeShellApplication PREPENDS these to PATH rather than replacing it
+      # (`inheritPath` defaults to true, so the wrapper emits
+      # `export PATH="<inputs>:$PATH"`). openssh is here to pin the version
+      # `git push` forks for an ssh remote, ahead of the system /usr/bin/ssh,
+      # not because the push would otherwise find nothing.
       runtimeInputs = [pkgs.git pkgs.openssh pkgs.coreutils];
       text = builtins.readFile ./_backup.sh;
     };
@@ -86,6 +86,11 @@
         config = {
           ProgramArguments = ["${backup}/bin/obsidian-backup"];
           EnvironmentVariables = {
+            # launchd agents start with a bare environment, and the wrapper
+            # expands "$PATH" under `set -o nounset` before a line of the
+            # script runs -- an unset PATH would abort it with no output at
+            # all. Same reason the colima agent pins one.
+            PATH = "/usr/bin:/bin:/usr/sbin:/sbin";
             OBSIDIAN_BACKUP_VAULT = cfg.vaultPath;
             OBSIDIAN_BACKUP_REMOTE = cfg.remote;
             OBSIDIAN_BACKUP_MAX_MB = toString cfg.maxFileSizeMB;
@@ -94,8 +99,13 @@
           # Catch anything pending at login or right after a rebuild, rather
           # than waiting out a full interval.
           RunAtLoad = true;
-          StandardOutPath = "/tmp/obsidian-backup.out.log";
-          StandardErrorPath = "/tmp/obsidian-backup.err.log";
+          # ~/Library/Logs, not /tmp: this is the only signal that an
+          # unattended job has been failing, and /tmp is world-readable and
+          # cleared on reboot. Follows the colima agent, the repo's other
+          # long-lived launchd service; the /tmp convention belongs to the
+          # desktop aspects, which log throwaway state.
+          StandardOutPath = "${config.home.homeDirectory}/Library/Logs/obsidian-backup.out.log";
+          StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/obsidian-backup.err.log";
         };
       };
     };
