@@ -71,13 +71,21 @@ in {
       # --operator. With no control plane a fresh node settles in NeedsLogin
       # (ipn/ipnlocal/profiles.go:860-866, ipn/ipnlocal/local.go:6857-6861);
       # the plain-text form prints "Logged out." and exits 1
-      # (cmd/tailscale/cli/status.go:154,268-269).
+      # (cmd/tailscale/cli/status.go:154,268-269). None of that alone proves
+      # the wrapper reached *this* daemon rather than the main one: the main
+      # daemon is equally logged out, so a wrapper misrouted to
+      # /run/tailscale/tailscaled.sock would pass every check above too. TUN
+      # discriminates: it reports !IsNetstack() regardless of login state
+      # (ipn/ipnlocal/local.go:1465), so it is false for this
+      # userspace-networking daemon and true for the kernel-mode main one
+      # (checked below, Coexistence).
       machine.wait_until_succeeds(f"{inbox} {logged_out}")
       machine.succeed("test -S /run/tailscale-inbox/tailscaled.sock")
       owner = machine.succeed("stat -c %U /run/tailscale-inbox/tailscaled.sock").strip()
       assert owner == "${user}", f"socket owned by {owner}"
       code, out = machine.execute(f"{inbox} status")
       assert code == 1 and "Logged out." in out, f"unexpected status: {code} {out!r}"
+      machine.succeed(f"{inbox} status --json | jq -e '.TUN == false'")
 
       # Requirement 2: --statedir, never --state; logs follow $STATE_DIRECTORY
       # into the same directory.
@@ -95,19 +103,36 @@ in {
 
       # Logged out is the normal state until bootstrap, so `file get --loop`
       # must ride it out instead of exiting (cmd/tailscale/cli/file.go:774-795):
-      # still up after two of its 5s retries, never restarted by systemd.
+      # still up after two of its 5s retries, never restarted by systemd. The
+      # files endpoint checks write permission before login state
+      # (feature/taildrop/localapi.go:404-407): a getter stuck behind a 403
+      # ("file access denied") would never reach the login-gated 500 below,
+      # so asserting the 500 alone, without also ruling out the 403, would
+      # still pass for a getter that never actually got write access.
       machine.sleep(12)
       machine.succeed("systemctl is-active taildrop-inbox.service")
       restarts = machine.succeed(
           "systemctl show -p NRestarts --value taildrop-inbox.service"
       ).strip()
       assert restarts == "0", f"getter restarted {restarts} times"
+      machine.succeed(
+          "journalctl -u taildrop-inbox.service --no-pager"
+          " | grep -q 'no storage directory'"
+      )
+      machine.fail(
+          "journalctl -u taildrop-inbox.service --no-pager"
+          " | grep -q 'access denied'"
+      )
 
       # Coexistence: the kernel-mode main daemon keeps its own socket and TUN
-      # and still answers on the default socket.
+      # and still answers on the default socket. Its `status --json` TUN is
+      # true, the converse of the inbox daemon's above, so that field
+      # provably tells the two daemons apart rather than being true (or
+      # false) for both.
       machine.succeed("test -S /run/tailscale/tailscaled.sock")
       machine.succeed("ip link show tailscale0")
       machine.wait_until_succeeds(f"tailscale {logged_out}")
+      machine.succeed("tailscale status --json | jq -e '.TUN == true'")
 
       # Requirement 1, end to end. tailscaled runs dns.CleanUp before it serves
       # anything, even in userspace mode (cmd/tailscaled/tailscaled.go:517).
