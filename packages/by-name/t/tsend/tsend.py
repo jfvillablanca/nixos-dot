@@ -16,6 +16,17 @@ Nested subdirectories are reported and skipped: flattening them would let two
 same-named files from different subdirectories collide silently, so --tar is
 the answer when structure matters.
 
+A tagged node, such as a server, is reached through an inbox node instead: a
+second, untagged tailscaled on that host, logged in as you, that files
+arrivals into a directory (rue runs one as `rue-inbox`). See
+docs/taildrop-inbox.md in nixos-dot.
+
+On Linux, sending needs LocalAPI write access, which a non-root user only has
+as the daemon's operator: `sudo tailscale set --operator=$USER` once, or the
+NixOS tailscale module's `operator` option. Without it `file cp` fails with
+"Access denied: file access denied" plus the CLI's own --operator hint, both
+passed straight through on stderr.
+
 `tailscale` is resolved from PATH rather than a pinned closure on purpose. The
 CLI has to match the tailscaled the system planted, and that version is chosen
 by system config this package cannot read; a second pinned copy would invite a
@@ -27,7 +38,9 @@ before the guard fires, rather than being taken at its word.
 
 Receiving depends on the peer. GUI clients (Android, Windows, the macOS app)
 auto-accept into Downloads; a peer running the open-source tailscaled leaves
-files in a daemon inbox until someone runs `tailscale file get DIR`.
+files in a daemon inbox until someone runs `tailscale file get DIR`. For a
+Linux host that should receive unattended, the taildrop-inbox service runs
+that loop as a user -- see docs/taildrop-inbox.md.
 """
 
 import argparse
@@ -224,6 +237,7 @@ def resolve_target(peers, requested):
             f"{requested!r} is not an eligible Taildrop target",
             f"eligible: {', '.join(name for name, _ in peers)}",
             "tagged nodes never appear: Taildrop is same-user only",
+            "for a tagged server, send to its inbox node (docs/taildrop-inbox.md)",
         )
     return requested, known[requested]
 
@@ -285,6 +299,7 @@ def main():
             die(
                 "no eligible Taildrop peers",
                 "tagged nodes cannot receive: Taildrop is same-user only",
+                "for a tagged server, send to its inbox node (docs/taildrop-inbox.md)",
             )
         target, status = (
             resolve_target(peers, args.target) if args.target else pick_target(peers)

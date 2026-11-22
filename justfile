@@ -60,3 +60,11 @@ obsidian-test:
     rsync -a --delete --exclude .git --exclude result --exclude .direnv \
       ./ rue:~/nixos-dot-wip/
     ssh rue 'cd ~/nixos-dot-wip && nix build .#checks.x86_64-linux.obsidian-sync -L'
+
+# Run the taildrop-inbox NixOS VM test on rue. Same arrangement as
+# obsidian-test above: no Linux builder on sienna, so the worktree is synced
+# to the scratch directory on rue and built there.
+taildrop-inbox-test:
+    rsync -a --delete --exclude .git --exclude result --exclude .direnv \
+      ./ rue:~/nixos-dot-wip/
+    ssh rue 'cd ~/nixos-dot-wip && nix build .#checks.x86_64-linux.taildrop-inbox -L'
