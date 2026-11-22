@@ -22,6 +22,7 @@
     mainBindings = [
       (lib.nameValuePair "ctrl-alt-slash" "layout tiles horizontal vertical")
       (lib.nameValuePair "ctrl-alt-comma" "layout accordion horizontal vertical")
+      (lib.nameValuePair "ctrl-alt-f" "layout floating tiling")
 
       (lib.nameValuePair "ctrl-alt-left" "focus left")
       (lib.nameValuePair "ctrl-alt-down" "focus down")
