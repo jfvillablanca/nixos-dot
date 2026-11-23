@@ -18,15 +18,41 @@
   }: let
     cfg = config.myHomeModules.obsidian-backup;
 
+    # home-manager labels its agents org.nix-community.home.<name>. Mirrored
+    # here so `obsidian-backup status` can say whether the agent is actually
+    # loaded. Display only: if this ever drifts, status reports "NOT loaded"
+    # and backups carry on regardless.
+    agentLabel = "org.nix-community.home.obsidian-backup";
+
     backup = pkgs.writeShellApplication {
       name = "obsidian-backup";
-      # writeShellApplication PREPENDS these to PATH rather than replacing it
-      # (`inheritPath` defaults to true, so the wrapper emits
-      # `export PATH="<inputs>:$PATH"`). openssh is here to pin the version
-      # `git push` forks for an ssh remote, ahead of the system /usr/bin/ssh,
-      # not because the push would otherwise find nothing.
-      runtimeInputs = [pkgs.git pkgs.openssh pkgs.coreutils];
-      text = builtins.readFile ./_backup.sh;
+      # Deliberately NO openssh. writeShellApplication prepends these to PATH
+      # rather than replacing it (`inheritPath` defaults to true), and the
+      # agent's PATH already carries /usr/bin, so `git push` finds Apple's ssh
+      # -- the same one every other git operation on this machine uses.
+      #
+      # Pinning nixpkgs' openssh ahead of it made every push print
+      #   ~/.colima/ssh_config line 13: Unsupported option "gssapiauthentication"
+      # because colima writes GSSAPIAuthentication into the config that
+      # ~/.ssh/config includes, Apple's ssh is built with GSSAPI and accepts
+      # it, and nixpkgs' is not. Harmless, but it landed in the error log on
+      # every push, and that log is the only signal that this unattended job
+      # has started failing. A channel that cries wolf 48 times a day is not a
+      # signal.
+      runtimeInputs = [pkgs.git pkgs.coreutils];
+      # Defaults from this module, so the command is usable when typed in a
+      # shell -- launchd supplies an environment, an interactive shell does
+      # not. The environment still wins, which is what keeps _backup.sh
+      # testable standalone against a throwaway repo.
+      text = ''
+        : "''${OBSIDIAN_BACKUP_VAULT:=${cfg.vaultPath}}"
+        : "''${OBSIDIAN_BACKUP_REMOTE:=${cfg.remote}}"
+        : "''${OBSIDIAN_BACKUP_MAX_MB:=${toString cfg.maxFileSizeMB}}"
+        : "''${OBSIDIAN_BACKUP_LABEL:=${agentLabel}}"
+        export OBSIDIAN_BACKUP_VAULT OBSIDIAN_BACKUP_REMOTE OBSIDIAN_BACKUP_MAX_MB OBSIDIAN_BACKUP_LABEL
+
+        ${builtins.readFile ./_backup.sh}
+      '';
     };
   in {
     options.myHomeModules.obsidian-backup = {
@@ -84,7 +110,9 @@
       launchd.agents.obsidian-backup = {
         enable = true;
         config = {
-          ProgramArguments = ["${backup}/bin/obsidian-backup"];
+          # Explicitly "run": a bare invocation prints status, which is the
+          # friendlier default for a human but would do nothing on a timer.
+          ProgramArguments = ["${backup}/bin/obsidian-backup" "run"];
           EnvironmentVariables = {
             # launchd agents start with a bare environment, and the wrapper
             # expands "$PATH" under `set -o nounset` before a line of the
@@ -94,6 +122,7 @@
             OBSIDIAN_BACKUP_VAULT = cfg.vaultPath;
             OBSIDIAN_BACKUP_REMOTE = cfg.remote;
             OBSIDIAN_BACKUP_MAX_MB = toString cfg.maxFileSizeMB;
+            OBSIDIAN_BACKUP_LABEL = agentLabel;
           };
           StartInterval = cfg.intervalSeconds;
           # Catch anything pending at login or right after a rebuild, rather
