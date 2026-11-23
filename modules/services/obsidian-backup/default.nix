@@ -26,12 +26,20 @@
 
     backup = pkgs.writeShellApplication {
       name = "obsidian-backup";
-      # writeShellApplication PREPENDS these to PATH rather than replacing it
-      # (`inheritPath` defaults to true, so the wrapper emits
-      # `export PATH="<inputs>:$PATH"`). openssh is here to pin the version
-      # `git push` forks for an ssh remote, ahead of the system /usr/bin/ssh,
-      # not because the push would otherwise find nothing.
-      runtimeInputs = [pkgs.git pkgs.openssh pkgs.coreutils];
+      # Deliberately NO openssh. writeShellApplication prepends these to PATH
+      # rather than replacing it (`inheritPath` defaults to true), and the
+      # agent's PATH already carries /usr/bin, so `git push` finds Apple's ssh
+      # -- the same one every other git operation on this machine uses.
+      #
+      # Pinning nixpkgs' openssh ahead of it made every push print
+      #   ~/.colima/ssh_config line 13: Unsupported option "gssapiauthentication"
+      # because colima writes GSSAPIAuthentication into the config that
+      # ~/.ssh/config includes, Apple's ssh is built with GSSAPI and accepts
+      # it, and nixpkgs' is not. Harmless, but it landed in the error log on
+      # every push, and that log is the only signal that this unattended job
+      # has started failing. A channel that cries wolf 48 times a day is not a
+      # signal.
+      runtimeInputs = [pkgs.git pkgs.coreutils];
       # Defaults from this module, so the command is usable when typed in a
       # shell -- launchd supplies an environment, an interactive shell does
       # not. The environment still wins, which is what keeps _backup.sh
